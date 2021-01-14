@@ -9,4 +9,13 @@ export default [
     }
     // children:[]
   },
+  {
+    path: '/home/echarts/basicBar',
+    name: "图表模块",
+    component: resolve => require(['@/views/echarts/basicBar.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块','基础柱状图'],
+    }
+    // children:[]
+  },
 ]

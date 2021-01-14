@@ -1,9 +1,9 @@
 <template>
   <div class="navigation">
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item  v-for="(item, index) in titleData" :key="index">
-      <a href="/" v-if='index==0'>{{item}}</a>
-      <span v-if="index!=0">{{item}}</span>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item v-for="(item, index) in titleData" :key="index">
+        <a href="/" v-if="index == 0"><i class="el-icon-menu"></i>{{ item }}</a>
+        <span v-if="index != 0">{{ item }}</span>
       </el-breadcrumb-item>
 
       <el-dropdown style="float: right">

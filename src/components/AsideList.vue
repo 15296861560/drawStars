@@ -21,19 +21,19 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-s-shop"></i>
-              <span>测试111</span>
+              <span>模块</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="1-1" @click="toOutSide">测试1-1</el-menu-item>
+              <el-menu-item index="1-1" @click="toOutSide">外链</el-menu-item>
               <el-menu-item index="1-2" @click="toEcharts">图表</el-menu-item>
               <el-menu-item index="1-3" @click="toTest1">特效</el-menu-item>
-              <el-menu-item index="1-3" @click="toTest2">组件</el-menu-item>
+              <el-menu-item index="1-4" @click="toTest2">组件</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-order"></i>
-              <span>测试222</span>
+              <span>权限测试</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="2-1" v-if="userData.level > 1"
@@ -47,7 +47,7 @@
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-s-data"></i>
-              <span>测试333</span>
+              <span>权限</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="3-1" @click="levelDown">降低权限</el-menu-item>

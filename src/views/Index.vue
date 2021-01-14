@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside width="200px" style="background-color: #282c34; overflow: hidden"
+      <el-aside width="150px" class="g-aside"
         ><asideList></asideList
       ></el-aside>
       <el-container>
@@ -9,13 +9,13 @@
           <!-- 导航栏 -->
           <navigation :titleData="$route.meta.title"></navigation
         ></el-header>
-        <el-main>
+        <el-main class="g-main">
         <keep-alive class="f-flexvscroll">
            <router-view v-if="$route.meta.keepAlive" ></router-view>
         </keep-alive>
            <router-view v-if="!$route.meta.keepAlive"></router-view>
         </el-main>
-        <el-footer style="padding: 0px">
+        <el-footer class="g-footer">
           <myfooter></myfooter>
         </el-footer>
       </el-container>
