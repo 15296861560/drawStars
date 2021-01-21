@@ -10,7 +10,7 @@
           background-color="#282c34"
           text-color="#fff"
           active-text-color="#ffd04b"
-          style="width: 101%"
+          :collapse="isCollapse"
         >
           >
           <el-menu-item @click="goPage('/')">
@@ -28,6 +28,7 @@
               <el-menu-item index="1-2" @click="toEcharts">图表</el-menu-item>
               <el-menu-item index="1-3" @click="toTest1">特效</el-menu-item>
               <el-menu-item index="1-4" @click="toTest2">组件</el-menu-item>
+              <el-menu-item index="1-5" @click="toTest2">工具</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
@@ -69,6 +70,7 @@ export default {
       userData: {
         level: 3,
       },
+      isCollapse: false,
     };
   },
   // beforeCreate() {
@@ -107,10 +109,15 @@ export default {
       this.goPage("/home/test2");
     },
     toEcharts() {
-      this.goPage("/home/echartHomePages");
+      this.goPage("/home/echartHomePage");
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+</style>

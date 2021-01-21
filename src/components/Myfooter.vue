@@ -1,7 +1,6 @@
 <template>
   <div>
-    <footer style="background-color: aliceblue; height: 40px;
-    padding-top: 20px;">
+    <footer class="footer">
       Copyright © {{ year }}· LGY社区 · 服务器赞助: {{ server }} · 网站程序: {{ website }}
     </footer>
   </div>
@@ -20,4 +19,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.footer {
+  background-color: aliceblue;
+  height: 40px;
+  padding-top: 20px;
+}
+</style>

@@ -1,16 +1,19 @@
 <template>
   <div>
     <el-container>
-      <el-aside width="150px" class="g-aside"
+      <el-aside  class="g-aside" :style="width"
         ><asideList></asideList
       ></el-aside>
       <el-container>
         <el-header>
           <!-- 导航栏 -->
           <navigation :titleData="$route.meta.title"></navigation
-        ></el-header>
+        >
+        <!-- 历史浏览模块 -->
+        <!-- <history></history> -->
+        </el-header>
         <el-main class="g-main">
-        <keep-alive class="f-flexvscroll">
+        <keep-alive>
            <router-view v-if="$route.meta.keepAlive" ></router-view>
         </keep-alive>
            <router-view v-if="!$route.meta.keepAlive"></router-view>
@@ -26,11 +29,11 @@
 <script>
 // import Interface from "@/views/interface.vue";
 import AsideList from "@/components/AsideList.vue";
-import Test1 from "@/views/pages/test1.vue";
+import History from "@/components/History.vue";
 export default {
   components: {
     AsideList,
-    Test1,
+    History,
   },
   data() {
     return {
@@ -38,12 +41,17 @@ export default {
         userName: "AAA",
       },
       userName: "Main",
+      width:"width:200px;",
     };
   },
   methods: {
     synResult() {
       this.userData = this.$refs.test1.userData;
     },
+    textClick(){
+      this.width="width:50px;";
+      
+    }
   },
   mounted() {
     // this.$store.dispatch("changeUserInfo", { attr: "userName", val: "pie" });

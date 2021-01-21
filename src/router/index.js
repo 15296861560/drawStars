@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/views/Index'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
+import HomePage from '@/views/homePages/HomePage.vue'
 import MyEcharts from '@/router/homePages/echarts.js'
 
 Vue.use(Router)
@@ -10,18 +11,28 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: '首页',
+      name: '初始页面',
       component: Index,
+      redirect: '/home/homepage',
       meta: {
         title: ['首页']
       }
     },
     {
       path: '/home',
-      name: "首页",
+      name: "index",
       component: Index,
       // redirect: '/home/homepage',
       children: [{
+          path: '/home/homepage',
+          name: "首页",
+          component: HomePage,
+          meta: {
+            title: ['首页'],
+            keepAlive: true
+          }
+        }, 
+        {
           path: '/home/test1',
           name: "测试页1",
           component: Test1,
