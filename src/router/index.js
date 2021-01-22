@@ -4,7 +4,10 @@ import Index from '@/views/Index'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
 import HomePage from '@/views/homePages/HomePage.vue'
-import MyEcharts from '@/router/homePages/echarts.js'
+import MyEcharts from '@/router/homePages/myEcharts.js'
+import MyComponents from '@/router/homePages/myComponents.js'
+import Tools from '@/router/homePages/tools.js'
+import Special from '@/router/homePages/special.js'
 
 Vue.use(Router)
 
@@ -51,6 +54,9 @@ export default new Router({
           }
         },
         ...MyEcharts,
+        ...MyComponents,
+        ...Tools,
+        ...Special,
       ]
     },
   ]

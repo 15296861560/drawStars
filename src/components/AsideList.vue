@@ -13,9 +13,9 @@
           :collapse="isCollapse"
         >
           >
-          <el-menu-item @click="goPage('/')">
+          <el-menu-item @click="collapse">
             <i class="el-icon-s-home"></i>
-            <span slot="title">后台中心</span>
+            <!-- <span slot="title">后台中心</span> -->
           </el-menu-item>
 
           <el-submenu index="1">
@@ -110,6 +110,10 @@ export default {
     },
     toEcharts() {
       this.goPage("/home/echartHomePage");
+    },
+    collapse() {
+      this.isCollapse = !this.isCollapse;
+      this.$emit("collapse", this.isCollapse);
     },
   },
 };

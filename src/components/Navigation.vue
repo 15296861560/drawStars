@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item v-for="(item, index) in titleData" :key="index">
         <a href="/" v-if="index == 0"><i class="el-icon-menu"></i>{{ item }}</a>
-        <span v-if="index != 0">{{ item }}</span>
+        <span v-if="index != 0" @click="goPage(index)" class="title">{{ item }}</span>
       </el-breadcrumb-item>
 
       <el-dropdown style="float: right">
@@ -40,6 +40,7 @@ export default {
       // if(key=='1-3')this.$router.push('https://cn.bing.com/');
       // if(key=='1-3')window.localtion.href = 'https://cn.bing.com/';
     },
+    goPage() {},
   },
   mounted() {
     console.log(this.titleData);
@@ -51,5 +52,12 @@ export default {
 <style scoped>
 .navigation {
   padding: 20px;
+}
+
+.title:hover {
+  color: #4395FF;
+}
+.title:active {
+  color: aqua;
 }
 </style>
