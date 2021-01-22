@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/echarts/basicBar" class="m-router-link">
+      <router-link to="/home/echartHomePage/basicBar" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
             <img class="m-home-img" src="@/assets/img/bar.svg" alt="柱状图" />
@@ -11,7 +11,7 @@
           </div>
         </div>
       </router-link>
-      <router-link to="/home/echarts/basicLine" class="m-router-link">
+      <router-link to="/home/echartHomePage/basicLine" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
             <img class="m-home-img" src="@/assets/img/line.svg" alt=" 折线图" />
@@ -21,7 +21,7 @@
           </div>
         </div>
       </router-link>
-      <router-link to="/home/echarts/basicPie" class="m-router-link">
+      <router-link to="/home/echartHomePage/basicPie" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
             <img class="m-home-img" src="@/assets/img/pie.svg" alt="饼图" />

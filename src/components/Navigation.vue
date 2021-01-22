@@ -40,7 +40,20 @@ export default {
       // if(key=='1-3')this.$router.push('https://cn.bing.com/');
       // if(key=='1-3')window.localtion.href = 'https://cn.bing.com/';
     },
-    goPage() {},
+    goPage(index) {
+      let path = this.$route.path;
+      let paths = path.split("/");
+      let toPath = "";
+      for (let i = 1; i <= index + 1; i++) {
+        toPath += "/" + paths[i];
+      }
+      console.log(toPath);
+      //当前路径不跳转
+      if (toPath == path) return;
+      this.$router.push({
+        path: toPath,
+      });
+    },
   },
   mounted() {
     console.log(this.titleData);
@@ -55,7 +68,7 @@ export default {
 }
 
 .title:hover {
-  color: #4395FF;
+  color: #4395ff;
 }
 .title:active {
   color: aqua;

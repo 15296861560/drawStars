@@ -10,7 +10,7 @@ export default [
     // children:[]
   },
   {
-    path: '/home/echarts/basicBar',
+    path: '/home/echartHomePage/basicBar',
     name: "基础柱状图",
     component: resolve => require(['@/views/echarts/basicBar.vue'], resolve),
     meta: {
@@ -19,7 +19,7 @@ export default [
     // children:[]
   },
   {
-    path: '/home/echarts/basicLine',
+    path: '/home/echartHomePage/basicLine',
     name: "基础折线图",
     component: resolve => require(['@/views/echarts/basicLine.vue'], resolve),
     meta: {
@@ -28,7 +28,7 @@ export default [
     // children:[]
   },
   {
-    path: '/home/echarts/basicPie',
+    path: '/home/echartHomePage/basicPie',
     name: "基础饼图",
     component: resolve => require(['@/views/echarts/basicPie.vue'], resolve),
     meta: {
