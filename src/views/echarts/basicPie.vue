@@ -19,7 +19,7 @@ export default {
           text: "某站点用户访问来源",
           subtext: "纯属虚构",
           left: "center",
-          top:"20"
+          top: "20",
         },
         tooltip: {
           trigger: "item",
@@ -28,7 +28,7 @@ export default {
         legend: {
           orient: "vertical",
           left: "20",
-          top:"20"
+          top: "20",
         },
         series: [
           {

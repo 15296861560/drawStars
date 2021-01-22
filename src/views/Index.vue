@@ -30,7 +30,6 @@
 </template>
 
 <script>
-// import Interface from "@/views/interface.vue";
 import AsideList from "@/components/AsideList.vue";
 import History from "@/components/History.vue";
 export default {
@@ -40,10 +39,6 @@ export default {
   },
   data() {
     return {
-      userData: {
-        userName: "AAA",
-      },
-      userName: "Main",
       width: "width:200px;",
     };
   },
@@ -60,10 +55,6 @@ export default {
     },
   },
   mounted() {
-    // this.$store.dispatch("changeUserInfo", { attr: "userName", val: "pie" });
-    // this.userName=this.$store.getters.getUserName;
-    // this.userName=this.$store.getters.getUserName;
-    console.log(this.$store);
   },
 };
 </script>

@@ -14,7 +14,7 @@
       <router-link to="/home/echartHomePage/basicLine" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/line.svg" alt=" 折线图" />
+            <img class="m-home-img" src="@/assets/img/echarts/line.svg" alt=" 折线图" />
           </div>
           <div>
             <p class="m-p">折线图</p>
@@ -24,7 +24,7 @@
       <router-link to="/home/echartHomePage/basicPie" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/pie.svg" alt="饼图" />
+            <img class="m-home-img" src="@/assets/img/echarts/pie.svg" alt="饼图" />
           </div>
           <div>
             <p class="m-p">饼图</p>
@@ -39,21 +39,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
-    toTest() {
-      this.$router.push({
-        path: "/home/homepage",
-      });
-    },
-    toBasicBar() {
-      this.$router.push({
-        path: "/home/echarts/basicBar",
-      });
-    },
-    uploadData() {
-      this.$emit("syn");
-    },
-  },
+  methods: {},
 };
 </script>
 <style></style>

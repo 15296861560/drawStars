@@ -52,11 +52,6 @@ export default {
     return {};
   },
   methods: {
-    toTest() {
-      this.$router.push({
-        path: "/home/homepage",
-      });
-    },
   },
 };
 </script>
