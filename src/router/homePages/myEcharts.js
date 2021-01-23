@@ -1,6 +1,5 @@
 /*图表模块*/
-export default [
-  {
+export default [{
     path: '/home/echartHomePage',
     name: "图表模块",
     component: resolve => require(['@/views/homePages/echartHomePage.vue'], resolve),
@@ -14,7 +13,7 @@ export default [
     name: "基础柱状图",
     component: resolve => require(['@/views/echarts/basicBar.vue'], resolve),
     meta: {
-      title: ['首页', '图表模块','基础柱状图'],
+      title: ['首页', '图表模块', '基础柱状图'],
     }
     // children:[]
   },
@@ -23,7 +22,7 @@ export default [
     name: "基础折线图",
     component: resolve => require(['@/views/echarts/basicLine.vue'], resolve),
     meta: {
-      title: ['首页', '图表模块','基础折线图'],
+      title: ['首页', '图表模块', '基础折线图'],
     }
     // children:[]
   },
@@ -32,8 +31,15 @@ export default [
     name: "基础饼图",
     component: resolve => require(['@/views/echarts/basicPie.vue'], resolve),
     meta: {
-      title: ['首页', '图表模块','基础饼图'],
+      title: ['首页', '图表模块', '基础饼图'],
     }
-    // children:[]
+  },
+  {
+    path: '/home/echartHomePage/baiduMap',
+    name: "百度地图",
+    component: resolve => require(['@/views/echarts/baiduMap.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '百度地图'],
+    }
   },
 ]
