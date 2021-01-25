@@ -7,6 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import Vuex from 'vuex'
 import store from '@/vuex'
+import '@/components/dragAndDropComponents/custom-component' // 注册可视化拖拽自定义组件
 
 import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";

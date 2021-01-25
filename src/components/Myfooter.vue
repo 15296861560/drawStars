@@ -21,8 +21,8 @@ export default {
 
 <style scoped>
 .footer {
-  background-color: aliceblue;
-  height: 40px;
+  /* background-color: aliceblue; */
+  height: 60px;
   padding-top: 20px;
 }
 </style>

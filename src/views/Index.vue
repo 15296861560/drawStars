@@ -20,10 +20,10 @@
           <transition name="fade" mode="out-in">
             <router-view v-if="!$route.meta.keepAlive"></router-view>
           </transition>
+          <el-footer class="g-footer">
+            <myfooter></myfooter>
+          </el-footer>
         </el-main>
-        <el-footer class="g-footer">
-          <myfooter></myfooter>
-        </el-footer>
       </el-container>
     </el-container>
   </div>
@@ -54,8 +54,7 @@ export default {
       this.width = "width:50px;";
     },
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script>
 
@@ -89,8 +88,8 @@ export default {
   /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3); */
   border-radius: 10px;
   /*滚动条里面轨道*/
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background   : #ededed;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #ededed;
 }
 /* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
