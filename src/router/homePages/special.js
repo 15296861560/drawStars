@@ -1,4 +1,4 @@
-/*图表模块*/
+/*特效模块*/
 export default [
   {
     path: '/home/specialHomePage',
@@ -7,6 +7,21 @@ export default [
     meta: {
       title: ['首页', '特效模块'],
     }
-    // children:[]
+  },
+  {
+    path: '/home/specialHomePage/transition',
+    name: "过渡",
+    component: resolve => require(['@/views/specials/transition.vue'], resolve),
+    meta: {
+      title: ['首页', '特效模块','过渡'],
+    }
+  },
+  {
+    path: '/home/specialHomePage/animation',
+    name: "动画",
+    component: resolve => require(['@/views/specials/animation.vue'], resolve),
+    meta: {
+      title: ['首页', '特效模块','动画'],
+    }
   },
 ]

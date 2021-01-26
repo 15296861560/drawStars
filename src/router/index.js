@@ -8,6 +8,7 @@ import MyEcharts from '@/router/homePages/myEcharts.js'
 import MyComponents from '@/router/homePages/myComponents.js'
 import Tools from '@/router/homePages/tools.js'
 import Special from '@/router/homePages/special.js'
+import Data from '@/router/homePages/data.js'
 
 Vue.use(Router)
 
@@ -34,7 +35,7 @@ export default new Router({
             title: ['首页'],
             keepAlive: true
           }
-        }, 
+        },
         {
           path: '/home/test1',
           name: "测试页1",
@@ -57,6 +58,7 @@ export default new Router({
         ...MyComponents,
         ...Tools,
         ...Special,
+        ...Data,
       ]
     },
   ]

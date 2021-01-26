@@ -22,6 +22,9 @@
         </div>
       </router-link>
     </div>
+    <div class="g-home-module m-mg-top">
+    <router-view/>
+    </div>
   </div>
 </template>
 <script>
