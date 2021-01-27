@@ -28,12 +28,13 @@
   }
 }
 
+//路由模块
 .m-router-link {
   color: black;
   text-decoration: none;
 }
 
-
+// 图表常用
 .m-echart-standard {
   width: 85vw;
   height: 80vh;
@@ -62,6 +63,131 @@
   }
 }
 
-.m-mg-top{
+.m-block {
+  text-align: left;
+
+  .m-block-title {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .m-block-content {
+    .m-content-title {
+      font-size: 16px;
+      margin-bottom: 40px;
+    }
+
+    .m-content-area {
+
+      .m-template {
+        font-size: 14px;
+        margin-bottom: 20px;
+        padding: 8px;
+        color: #c7254e;
+        background-color: #f9f2f4;
+        border-radius: 4px;
+      }
+
+
+      .m-example-area {
+        display: flex;
+        flex-direction: row;
+
+        .m-example-code {
+          margin-bottom: 20px;
+          font-size: 14px;
+          position: relative;
+          padding: 18px;
+          border-radius: 6px;
+          border: none;
+          display: block;
+          background: #F5F5F5;
+          text-align: left;
+          margin-right: 50px;
+          width: 40vw;
+
+        }
+
+        .m-example-code ::after {
+          content: '=>';
+          position: absolute;
+          top: 50%;
+          right: -25px;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          color: #999;
+          margin-top: -10px;
+        }
+
+
+
+        .m-example-result {
+          margin-bottom: 20px;
+          font-size: 14px;
+          position: relative;
+          display: block;
+          background: #F5F5F5;
+          text-align: left;
+          padding: 18px;
+          border-radius: 6px;
+          border: none;
+          background: #F5F5F5;
+          width: 40vw;
+
+          .m-refresh {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            opacity: .3;
+            color: #339966;
+            font-size: 20px;
+          }
+
+          .m-refresh:hover {
+            color: aqua;
+          }
+        }
+
+        .m-badge {
+          position: absolute;
+          right: 0;
+          top: 0;
+          border-radius: 0 6px 0 6px;
+          padding: 5px 6px;
+          font-weight: normal;
+          color: #999;
+          background-color: #E6E6E6;
+          display: inline-block;
+          width: 120px;
+          font-size: 10px;
+        }
+
+        .m-badge ::after{
+          content: 'xxxxxxxxxxx';
+          position: absolute;
+          top: 50%;
+          right: -25px;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          color: #999;
+          margin-top: -10px;
+          text-align: center;
+        }
+
+      }
+
+
+    }
+
+
+
+
+  }
+}
+
+//通用margin
+.m-mt10 {
   margin-top: 10px;
 }

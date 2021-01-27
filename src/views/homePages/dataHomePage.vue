@@ -1,7 +1,14 @@
 <template>
   <div>
     <div class="g-home-module">
-      
+      <router-link to="/home/dataHomePage/Mock" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img"><h1>Mock</h1></div>
+          <!-- <div>
+            <p class="m-p">Mock</p>
+          </div> -->
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -10,9 +17,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
- 
-  },
+  methods: {},
 };
 </script>
 <style></style>

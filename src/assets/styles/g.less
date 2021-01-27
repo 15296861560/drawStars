@@ -1,14 +1,25 @@
 // 布局样式
 
-.flex {
+.g-flex {
   display: flex;
 }
 
-.flex-normal {
+.g-flex-normal {
   display: flex;
+  flex-direction: row;//决定主轴的方向
+  flex-wrap:wrap;//如果一条轴线排不下，如何换行
+  justify-content: flex-start;//项目在主轴上的对齐方式
+  align-items: flex-start;//项目在交叉轴上如何对齐
+  align-content: flex-start;//多根轴线的对齐方式
+}
+
+.g-flex-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap:wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  align-content: flex-start
+  align-content: flex-start;
 }
 
 .g-main {
