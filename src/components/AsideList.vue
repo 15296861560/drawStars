@@ -73,6 +73,7 @@ export default {
         level: 3,
       },
       isCollapse: false,
+      isComputer: true,
     };
   },
   // beforeCreate() {
@@ -114,6 +115,7 @@ export default {
       this.goPage("/home/echartHomePage");
     },
     collapse() {
+      if(!this.isComputer)return;
       this.isCollapse = !this.isCollapse;
       this.$emit("collapse", this.isCollapse);
     },

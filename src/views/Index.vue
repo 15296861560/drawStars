@@ -2,12 +2,12 @@
   <div>
     <el-container>
       <el-aside class="g-aside" :style="width"
-        ><asideList @collapse="collapse"></asideList
+        ><asideList @collapse="collapse" ref="asideList"></asideList
       ></el-aside>
       <el-container>
         <el-header>
           <!-- 导航栏 -->
-          <navigation :titleData="$route.meta.title"></navigation>
+          <navigation :titleData="$route.meta.title" ref="navigation"></navigation>
           <!-- 历史浏览模块 -->
           <!-- <history></history> -->
         </el-header>
@@ -40,6 +40,9 @@ export default {
   data() {
     return {
       width: "width:200px;",
+      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      isComputer: true,
     };
   },
   methods: {
@@ -54,7 +57,45 @@ export default {
       this.width = "width:50px;";
     },
   },
-  mounted() {},
+  watch: {
+    screenHeight(val) {
+      if (val < this.screenWidth) {
+        this.isComputer = true;
+      } else {
+        this.isComputer = false;
+      }
+      console.log(this.isComputer);
+    },
+    isComputer(newVal, oldVal) {
+      if (oldVal) {
+        //切换成手机
+        this.$refs.asideList.isCollapse = true;
+        this.$refs.asideList.isComputer = newVal;
+        this.$refs.navigation.isComputer = newVal;
+        this.width = "width:50px;";
+      } else {
+        //切换回电脑
+        // this.$refs.asideList.isCollapse = false;
+        this.$refs.asideList.isComputer = newVal;
+        this.$refs.navigation.isComputer = newVal;
+        // this.width = "width:50px;";
+      }
+    },
+  },
+  mounted() {
+    let that = this;
+    window.onresize = function () {
+      //开启实时修改页面高度值
+      return (function () {
+        that.screenHeight = document.documentElement.clientHeight;
+        that.screenWidth = document.documentElement.clientWidth;
+      })();
+    };
+
+    if (this.screenHeight > this.screenWidth) {
+      this.isComputer = false;
+    }
+  },
 };
 </script>
 

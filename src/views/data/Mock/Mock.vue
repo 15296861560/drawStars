@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="g-home-module">
+    <div class="g-home-module" style="justify-content: flex-start;">
       <el-menu
         :default-active="activeIndex"
         class="el-menu-demo"

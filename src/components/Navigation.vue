@@ -1,9 +1,17 @@
 <template>
   <div class="navigation">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item v-for="(item, index) in titleData" :key="index">
+      <el-breadcrumb-item
+        v-if="isComputer"
+        v-for="(item, index) in titleData"
+        :key="index"
+      >
         <a href="/" v-if="index == 0"><i class="el-icon-menu"></i>{{ item }}</a>
         <span v-if="index != 0" @click="goPage(index)" class="title">{{ item }}</span>
+      </el-breadcrumb-item>
+
+      <el-breadcrumb-item v-if="!isComputer">
+        <a href="/"><i class="el-icon-menu"></i>{{ titleData[0] }}</a>
       </el-breadcrumb-item>
 
       <el-dropdown style="float: right">
@@ -31,6 +39,9 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       search: "",
+      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      isComputer: true,
     };
   },
   methods: {
@@ -55,9 +66,8 @@ export default {
       });
     },
   },
-  mounted() {
-    console.log(this.titleData);
-  },
+  watch: {},
+  mounted() {},
 };
 </script>
 
