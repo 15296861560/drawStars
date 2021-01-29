@@ -52,6 +52,16 @@
             </div>
           </div>
         </router-link>
+        <router-link to="/home/multimediaHomePage" class="m-router-link">
+          <div class="m-home-button">
+            <div class="m-img">
+              <img class="m-home-img" src="@/assets/img/multimedia.svg" alt="多媒体" />
+            </div>
+            <div>
+              <p class="m-p">多媒体</p>
+            </div>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>

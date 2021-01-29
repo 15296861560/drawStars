@@ -37,7 +37,7 @@
         </el-submenu>
       </el-menu>
     </div>
-    <div class="g-home-module m-mt10">
+    <div class="g-module-normal mt10">
       <router-view />
     </div>
   </div>

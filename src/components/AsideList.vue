@@ -28,9 +28,11 @@
               <el-menu-item index="1-2" @click="goPage('/home/toolHomePage')"><i class="el-icon-s-cooperation"></i>工具</el-menu-item>
               <el-menu-item index="1-3" @click="goPage('/home/componentsHomePage')"><i class="el-icon-s-grid"></i>组件</el-menu-item>
               <el-menu-item index="1-4" @click="goPage('/home/specialHomePage')"><i class="el-icon-magic-stick"></i>特效</el-menu-item>
-              <el-menu-item index="1-5" @click="toOutSide"><i class="el-icon-sunny"></i>外链</el-menu-item>
-              <el-menu-item index="1-6" @click="toTest1"><i class="el-icon-water-cup"></i>测试页一</el-menu-item>
-              <el-menu-item index="1-7" @click="toTest2"><i class="el-icon-coffee-cup"></i>测试页二</el-menu-item>
+              <el-menu-item index="1-5" @click="goPage('/home/dataHomePage')"><i class="el-icon-sort"></i>数据传输</el-menu-item>
+              <el-menu-item index="1-6" @click="goPage('/home/multimediaHomePage')"><i class="el-icon-video-camera"></i>多媒体</el-menu-item>
+              <el-menu-item index="1-out" @click="toOutSide"><i class="el-icon-sunny"></i>外链</el-menu-item>
+              <el-menu-item index="1-end1" @click="toTest1"><i class="el-icon-water-cup"></i>测试页一</el-menu-item>
+              <el-menu-item index="1-end2" @click="toTest2"><i class="el-icon-coffee-cup"></i>测试页二</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">

@@ -9,6 +9,7 @@ import MyComponents from '@/router/homePages/myComponents.js'
 import Tools from '@/router/homePages/tools.js'
 import Special from '@/router/homePages/special.js'
 import Data from '@/router/homePages/data.js'
+import Multimedia from '@/router/homePages/multimedia.js'
 
 Vue.use(Router)
 
@@ -59,6 +60,7 @@ export default new Router({
         ...Tools,
         ...Special,
         ...Data,
+        ...Multimedia
       ]
     },
   ]

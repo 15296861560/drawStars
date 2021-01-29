@@ -22,7 +22,7 @@
         </div>
       </router-link>
     </div>
-    <div class="g-home-module m-mt10">
+    <div class="g-home-module mt10">
     <router-view/>
     </div>
   </div>
