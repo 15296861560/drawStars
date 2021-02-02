@@ -24,4 +24,12 @@ export default [{
       }
     }]
   },
+  {
+    path: '/home/dataHomePage/axios',
+    name: "axios",
+    component: resolve => require(['@/views/data/axios/axios.vue'], resolve),
+    meta: {
+      title: ['首页', '数据传输模块', 'axios'],
+    },
+  },
 ]
