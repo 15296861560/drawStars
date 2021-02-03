@@ -21,6 +21,16 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/echartHomePage/basicArea" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/echarts/area.svg" alt=" 基础面积图" />
+          </div>
+          <div>
+            <p class="m-p">基础面积图</p>
+          </div>
+        </div>
+      </router-link>
       <router-link to="/home/echartHomePage/basicPie" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">

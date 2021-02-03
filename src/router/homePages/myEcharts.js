@@ -27,6 +27,14 @@ export default [{
     // children:[]
   },
   {
+    path: '/home/echartHomePage/basicArea',
+    name: "基础折线图",
+    component: resolve => require(['@/views/echarts/basicArea.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '基础面积图'],
+    }
+  },
+  {
     path: '/home/echartHomePage/basicPie',
     name: "基础饼图",
     component: resolve => require(['@/views/echarts/basicPie.vue'], resolve),
