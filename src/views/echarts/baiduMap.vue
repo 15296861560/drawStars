@@ -158,19 +158,16 @@ export default {
 .map {
   width: 100%;
   height: 500px;
-  div .anchorBL {
-    display: none;
-  }
 }
 
 //隐藏百度图标
-.anchorBL {
+/deep/.anchorBL {
   display: none;
 }
 
-.BMap_cpyCtrl {
-  display: none;
-}
+// .BMap_cpyCtrl {
+//   display: none;
+// }
 
 .more_panel {
   text-align: center;
