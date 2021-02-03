@@ -28,7 +28,7 @@ export default [{
   },
   {
     path: '/home/echartHomePage/basicArea',
-    name: "基础折线图",
+    name: "基础面积图",
     component: resolve => require(['@/views/echarts/basicArea.vue'], resolve),
     meta: {
       title: ['首页', '图表模块', '基础面积图'],
