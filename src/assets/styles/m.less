@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   flex-flow: column;
+  transition: all .3s ease;
 
   .m-img {
     text-align: center;
@@ -28,6 +29,11 @@
   }
 }
 
+.m-home-button:hover {
+  transform: scale(1.1, 1.1);
+  box-shadow:#cfd5d6 10px 10px 10px;
+}
+
 //路由模块
 .m-router-link {
   color: black;
@@ -40,6 +46,20 @@
   height: 80vh;
   background-color: white;
   border-radius: 30px;
+}
+
+.m-echart-small {
+  width: 40vw;
+  height: 35vh;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.m-echart-components {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  border-radius: 15px;
 }
 
 .m-text-center {
