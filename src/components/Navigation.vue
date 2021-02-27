@@ -41,8 +41,12 @@ export default {
       search: "",
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
-      isComputer: true,
     };
+  },
+  computed: {
+    isComputer() {
+      return this.$store.getters.getIsComputer;
+    },
   },
   methods: {
     handleSelect(key, keyPath) {

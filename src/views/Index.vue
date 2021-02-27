@@ -37,12 +37,16 @@ export default {
     AsideList,
     History,
   },
+  computed: {
+    isComputer() {
+      return this.$store.getters.getIsComputer;
+    },
+  },
   data() {
     return {
       width: "width:200px;",
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
-      isComputer: true,
     };
   },
   methods: {
@@ -60,25 +64,21 @@ export default {
   watch: {
     screenHeight(val) {
       if (val < this.screenWidth) {
-        this.isComputer = true;
+        //电脑
+        this.$store.dispatch("changeSettingInfo", {
+          attr: "isComputer",
+          val: true,
+        });
+        this.$refs.asideList.isCollapse = false;
+        this.width = "width:200px;";
       } else {
-        this.isComputer = false;
-      }
-      console.log(this.isComputer);
-    },
-    isComputer(newVal, oldVal) {
-      if (oldVal) {
-        //切换成手机
+        //手机
+        this.$store.dispatch("changeSettingInfo", {
+          attr: "isComputer",
+          val: false,
+        });
         this.$refs.asideList.isCollapse = true;
-        this.$refs.asideList.isComputer = newVal;
-        this.$refs.navigation.isComputer = newVal;
         this.width = "width:50px;";
-      } else {
-        //切换回电脑
-        // this.$refs.asideList.isCollapse = false;
-        this.$refs.asideList.isComputer = newVal;
-        this.$refs.navigation.isComputer = newVal;
-        // this.width = "width:50px;";
       }
     },
   },
