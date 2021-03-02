@@ -62,16 +62,70 @@
             </div>
           </div>
         </router-link>
+        <BasicEchart
+          :chartData="areaOption"
+          echartId="echart-area"
+          class="m-echart-small"
+        ></BasicEchart>
+        <BasicEchart
+          :chartData="lineOption"
+          echartId="echart-line"
+          class="m-echart-small"
+        ></BasicEchart>
+        <BasicEchart
+          :chartData="pieOption"
+          echartId="echart-pie"
+          class="m-echart-small"
+        ></BasicEchart>
       </div>
     </div>
   </div>
 </template>
 <script>
+var echarts = require("echarts");
+import BasicEchart from "@/components/echarts/BasicEchart.vue";
+import chartData from "@/assets/js/testData/chartData";
+import Mock from "mockjs";
+
 export default {
+  components: {
+    BasicEchart,
+  },
   data() {
-    return {};
+    return {
+      dataTimer: null, //定时器
+      areaOption: {},
+      lineOption: {},
+      pieOption: {},
+    };
   },
   methods: {
+    getChartData() {
+      this.areaOption = chartData.areaOption;
+      this.lineOption = chartData.lineOption;
+      this.pieOption = chartData.pieOption;
+    },
+    //模拟更新数据
+    updateChartData() {
+      let data = this.areaOption.series[0].data;
+      data.forEach((element,index,arr) => {
+        arr[index] = Mock.mock({
+          "number|0-250": 1,
+        }).number;
+      });
+      this.areaOption.series[0].data = [];
+      this.areaOption.series[0].data = data;
+    },
+  },
+  mounted() {
+    this.getChartData();
+
+    this.dataTimer = setInterval(() => {
+      this.updateChartData();
+    }, 3000);
+  },
+  beforeDestroy() {
+    clearTimeout(this.dataTimer);
   },
 };
 </script>
