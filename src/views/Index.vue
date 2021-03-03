@@ -112,11 +112,14 @@ export default {
   transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .fade-enter /* .fade-leave-active below version 2.1.8 */ {
-  transform: translateX(80vw);
+  /* transform: translateX(80vw); */
+  /* 沿y轴旋转 */
+  transform:rotateY(90deg);
   /* opacity不透明级别 */
   opacity: 0.5;
 }
 .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  /* transform: translateX(-80vw); */
   transform: translateX(-80vw);
   opacity: 0.5;
 }
