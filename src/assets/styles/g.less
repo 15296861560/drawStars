@@ -6,17 +6,17 @@
 
 .g-flex-normal {
   display: flex;
-  flex-direction: row;//决定主轴的方向
-  flex-wrap:wrap;//如果一条轴线排不下，如何换行
-  justify-content: flex-start;//项目在主轴上的对齐方式
-  align-items: flex-start;//项目在交叉轴上如何对齐
-  align-content: flex-start;//多根轴线的对齐方式
+  flex-direction: row; //决定主轴的方向
+  flex-wrap: wrap; //如果一条轴线排不下，如何换行
+  justify-content: flex-start; //项目在主轴上的对齐方式
+  align-items: flex-start; //项目在交叉轴上如何对齐
+  align-content: flex-start; //多根轴线的对齐方式
 }
 
 .g-flex-column {
   display: flex;
   flex-direction: column;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start;
@@ -29,7 +29,7 @@
 .g-aside {
   background-color: #282c34;
   overflow: hidden;
-  transition:width 0.4s;
+  transition: width 0.4s;
   text-align: left;
 }
 
@@ -37,32 +37,34 @@
   padding: 0px;
 }
 
-.g-bg-red{
+.g-bg-red {
   background-color: red;
 }
-.g-bg-yellow{
+
+.g-bg-yellow {
   background-color: yellow;
 }
-.g-bg-blue{
+
+.g-bg-blue {
   background-color: blue;
 }
 
-.g-bg-greenyellow{
+.g-bg-greenyellow {
   background-color: greenyellow;
 }
 
-.g-h-33vh{
+.g-h-33vh {
   height: 33vh;
 }
 
-.g-home{
+.g-home {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start
 }
 
-.g-home-module{
+.g-home-module {
   border: solid;
   padding: 10px;
   border-radius: 10px;
@@ -70,12 +72,21 @@
   background-color: white;
   display: flex;
   flex-wrap: wrap;
-  // width: 95vw;
+  width: 100%;
   justify-content: space-around;
   overflow: hidden;
+
+  .g-module-item {
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    border-color: transparent;
+    height: 42vh;
+    overflow: hidden;
+  }
 }
 
-.g-module-normal{
+.g-module-normal {
   border: solid;
   border-width: 10px;
   border-radius: 10px;

@@ -4,6 +4,15 @@ var echarts = require("echarts");
 export default {
   // 基础面积图测试数据
   areaOption: {
+    title: {
+      top:'10',
+      left:'center',
+      text: '访问量',
+      subtext: 'Mock数据'
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
     xAxis: {
       type: "category",
       boundaryGap: false,
