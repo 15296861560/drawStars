@@ -47,7 +47,7 @@ export default {
   methods: {},
 };
 </script>
-<style>
+<style lang="less" scoped>
 .fade-out {
   transition: all 0.5s ease 0s;
 }
