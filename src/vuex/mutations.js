@@ -27,8 +27,8 @@ export default {
       }
       
       data.id = generateID()
-      store.commit('addComponent', { component: data })
-      store.commit('recordSnapshot')
+      this.commit('addComponent', { component: data })
+      this.commit('recordSnapshot')
       state.copyData = null
   },
 
@@ -39,15 +39,15 @@ export default {
       }
       
       if (state.copyData) {
-          store.commit('addComponent', { component: state.copyData.data, index: state.copyData.index })
+          this.commit('addComponent', { component: state.copyData.data, index: state.copyData.index })
           if (state.curComponentIndex >= state.copyData.index) {
               // 如果当前组件索引大于等于插入索引，需要加一，因为当前组件往后移了一位
               state.curComponentIndex++
           }
       }
 
-      store.commit('copy')
-      store.commit('deleteComponent')
+      this.commit('copy')
+      this.commit('deleteComponent')
   },
 
   setEditMode(state, mode) {
@@ -86,14 +86,14 @@ export default {
   undo(state) {
       if (state.snapshotIndex >= 0) {
           state.snapshotIndex--
-          store.commit('setComponentData', deepCopy(state.snapshotData[state.snapshotIndex]))
+          this.commit('setComponentData', deepCopy(state.snapshotData[state.snapshotIndex]))
       }
   },
 
   redo(state) {
       if (state.snapshotIndex < state.snapshotData.length - 1) {
           state.snapshotIndex++
-          store.commit('setComponentData', deepCopy(state.snapshotData[state.snapshotIndex]))
+          this.commit('setComponentData', deepCopy(state.snapshotData[state.snapshotIndex]))
       }
   },
 
