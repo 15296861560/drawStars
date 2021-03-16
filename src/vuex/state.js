@@ -1,16 +1,31 @@
+import animation from './dragAndDropComponents/animation'
+import compose from './dragAndDropComponents/compose'
+import contextmenu from './dragAndDropComponents/contextmenu'
+import copy from './dragAndDropComponents/copy'
+import event from './dragAndDropComponents/event'
+import layer from './dragAndDropComponents/layer'
+import snapshot from './dragAndDropComponents/snapshot'
+import lock from './dragAndDropComponents/lock'
 export default {
-  editMode: 'edit', // 编辑器模式 edit read
-  canvasStyleData: { // 页面全局数据
-    width: 1100,
-    height: 740,
-  },
-  componentData: [], // 画布组件数据
-  curComponent: null,
-  curComponentIndex: null,
-  snapshotData: [], // 编辑器快照数据
-  snapshotIndex: -1, // 快照索引
-  menuTop: 0, // 右击菜单数据
-  menuLeft: 0,
-  menuShow: false,
-  copyData: null, // 复制粘贴剪切
+  ...animation.state,
+    ...compose.state,
+    ...contextmenu.state,
+    ...copy.state,
+    ...event.state,
+    ...layer.state,
+    ...snapshot.state,
+    ...lock.state,
+
+    editMode: 'edit', // 编辑器模式 edit preview
+    canvasStyleData: { // 页面全局数据
+      width: 1200,
+      height: 740,
+      scale: 100,
+    },
+    componentData: [], // 画布组件数据
+    curComponent: null,
+    curComponentIndex: null,
+    // 点击画布时是否点中组件，主要用于取消选中组件用。
+    // 如果没点中组件，并且在画布空白处弹起鼠标，则取消当前组件的选中状态
+    isClickComponent: false,
 }

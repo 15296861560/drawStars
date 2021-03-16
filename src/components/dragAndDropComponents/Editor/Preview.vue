@@ -1,8 +1,13 @@
 <template>
-    <div class="bg" v-if="show" style="background: rgb(0, 0, 0, 0.5);">
+    <div class="bg" v-if="show">
         <el-button @click="close" class="close">关闭</el-button>
         <div class="canvas-container">
-            <div class="canvas" :style="{ width: canvasStyleData.width + 'px', height: canvasStyleData.height + 'px' }">
+            <div class="canvas"
+                :style="{
+                    width: changeStyleWithScale(canvasStyleData.width) + 'px',
+                    height: changeStyleWithScale(canvasStyleData.height) + 'px',
+                }"
+            >
                 <ComponentWrapper
                     v-for="(item, index) in componentData"
                     :key="index"
@@ -17,6 +22,7 @@
 import getStyle from '@/utils/dragAndDropComponents/style'
 import { mapState } from 'vuex'
 import ComponentWrapper from './ComponentWrapper'
+import { changeStyleWithScale } from '@/utils/dragAndDropComponents/translate'
 
 export default {
     model: {
@@ -35,6 +41,8 @@ export default {
         'canvasStyleData',
     ]),
     methods: {
+        changeStyleWithScale,
+        
         getStyle,
 
         close() {
@@ -51,7 +59,7 @@ export default {
     top: 0;
     left: 0;
     position: fixed;
-    background: rgb(0, 0, 0, 0.5);
+    background: rgb(0, 0, 0, .5);
     z-index: 10;
     display: flex;
     align-items: center;
@@ -63,14 +71,11 @@ export default {
         width: calc(100% - 40px);
         height: calc(100% - 120px);
         overflow: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
 
         .canvas {
             background: #fff;
             position: relative;
-            flex-shrink: 0;
+            margin: auto;
         }
     }
 

@@ -8,11 +8,21 @@
             <el-button @click="preview" style="margin-left: 10px;">预览</el-button>
             <el-button @click="save">保存</el-button>
             <el-button @click="clearCanvas">清空画布</el-button>
+            <el-button @click="compose" :disabled="!areaData.components.length">组合</el-button>
+            <el-button @click="decompose" 
+            :disabled="!curComponent || curComponent.isLock || curComponent.component != 'Group'">拆分</el-button>
+            
+            <el-button @click="lock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
+            <el-button @click="unlock" :disabled="!curComponent || !curComponent.isLock">解锁</el-button>
             <div class="canvas-config">
                 <span>画布大小</span>
                 <input v-model="canvasStyleData.width">
                 <span>*</span>
                 <input v-model="canvasStyleData.height">
+            </div>
+            <div class="canvas-config">
+                <span>画布比例</span>
+                <input v-model="scale" @input="handleScaleChange"> %
             </div>
         </div>
 
@@ -26,19 +36,92 @@ import generateID from '@/utils/dragAndDropComponents/generateID'
 import toast from '@/utils/dragAndDropComponents/toast'
 import { mapState } from 'vuex'
 import Preview from '@/components/dragAndDropComponents/Editor/Preview'
+import { commonStyle, commonAttr } from '@/components/dragAndDropComponents/custom-component/component-list'
+import eventBus from '@/utils/dragAndDropComponents/eventBus'
+import { deepCopy } from '@/utils/dragAndDropComponents/utils'
 
 export default {
     components: { Preview },
     data() {
         return {
             isShowPreview: false,
+            needToChange: [
+                'top',
+                'left',
+                'width',
+                'height',
+                'fontSize',
+                'borderWidth',
+            ],
+            scale: '100%',
+            timer: null,
         }
     },
     computed: mapState([
         'componentData',
         'canvasStyleData',
+        'areaData',
+        'curComponent',
     ]),
+    created() {
+        eventBus.$on('preview', this.preview)
+        eventBus.$on('save', this.save)
+        eventBus.$on('clearCanvas', this.clearCanvas)
+
+        this.scale = this.canvasStyleData.scale
+    },
     methods: {
+        format(value) {
+            const scale = this.scale
+            return value * parseInt(scale) / 100
+        },
+
+        getOriginStyle(value) {
+            const scale = this.canvasStyleData.scale
+            const result = value / (parseInt(scale) / 100)
+            return result
+        },
+
+        handleScaleChange() {
+            clearTimeout(this.timer)
+            setTimeout(() => {
+                const componentData = deepCopy(this.componentData)
+                componentData.forEach(component => {
+                    Object.keys(component.style).forEach(key => {
+                        if (this.needToChange.includes(key)) {
+                        // 根据原来的比例获取样式原来的尺寸
+                        // 再用原来的尺寸 * 现在的比例得出新的尺寸
+                            component.style[key] = this.format(this.getOriginStyle(component.style[key]))
+                        }
+                    })
+                })
+
+                this.$store.commit('setComponentData', componentData)
+                this.$store.commit('setCanvasStyle', {
+                    ...this.canvasStyleData,
+                    scale: this.scale,
+                })
+            }, 500)
+        },
+
+        lock() {
+            this.$store.commit('lock')
+        },
+
+        unlock() {
+            this.$store.commit('unlock')
+        },
+
+        compose() {
+            this.$store.commit('compose')
+            this.$store.commit('recordSnapshot')
+        },
+
+        decompose() {
+            this.$store.commit('decompose')
+            this.$store.commit('recordSnapshot')
+        },
+        
         undo() {
             this.$store.commit('undo')
         },
@@ -61,19 +144,18 @@ export default {
                 img.onload = () => {
                     this.$store.commit('addComponent', {
                         component: {
+                            ...commonAttr,
                             id: generateID(),
                             component: 'Picture', 
                             label: '图片', 
                             icon: '',
                             propValue: fileResult,
-                            animations: [],
-                            events: [],
                             style: {
+                                ...commonStyle,
                                 top: 0,
                                 left: 0,
                                 width: img.width,
                                 height: img.height,
-                                rotate: '',
                             },
                         },
                     })
@@ -89,7 +171,7 @@ export default {
 
         preview() {
             this.isShowPreview = true
-            this.$store.commit('setEditMode', 'read')
+            this.$store.commit('setEditMode', 'preview')
         },
 
         save() {
@@ -100,6 +182,7 @@ export default {
 
         clearCanvas() {
             this.$store.commit('setComponentData', [])
+            this.$store.commit('recordSnapshot')
         },
 
         handlePreviewChange() {

@@ -6,7 +6,7 @@ import Mutations from './mutations'
 import Getters from './getters'
 import State from './state'
 Vue.use(Vuex)
-const store = new Vuex.Store({
+const data ={
   // strict:true,
   state: State,
   getters: Getters,
@@ -15,6 +15,6 @@ const store = new Vuex.Store({
     userInfo: UserInfo,
     settingInfo: SettingInfo
   }
+}
 
-})
-export default store
+export default new Vuex.Store(data)

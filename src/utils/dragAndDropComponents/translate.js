@@ -1,3 +1,5 @@
+import store from '@/vuex'
+
 // 角度转弧度
 // Math.PI = 180 度
 function angleToRadian(angle) {
@@ -114,4 +116,12 @@ export function sin(rotate) {
   
 export function cos(rotate) {
     return Math.abs(Math.cos(angleToRadian(rotate)))
+}
+
+export function mod360(deg) {
+    return (deg + 360) % 360
+}
+
+export function changeStyleWithScale(value) {
+    return value * parseInt(store.state.canvasStyleData.scale) / 100
 }

@@ -1,10 +1,11 @@
 <template>
     <div @click="handleClick">
         <component
-            class="conponent"
+            class="component"
             :is="config.component"
             :style="getStyle(config.style)"
             :propValue="config.propValue"
+            :element="config"
         />
     </div>
 </template>
@@ -39,7 +40,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.conponent {
+.component {
     position: absolute;
 }
 </style>

@@ -1,11 +1,12 @@
 <template>
-    <div class="shape" :class="{ active: this.active }" @click="selectCurComponent" @mousedown="handleMouseDownOnShape">
-        <i class="el-icon-refresh-right" v-show="active" @mousedown="handleRotate"></i>
+    <div class="shape" :class="{ active }" @click="selectCurComponent" @mousedown="handleMouseDownOnShape">
+        <span class="iconfont icon-xiangyouxuanzhuan" v-show="isActive()" @mousedown="handleRotate"></span>
+        <span class="iconfont icon-suo" v-show="element.isLock"></span>
         <div
             class="shape-point"
-            v-for="(item, index) in (active? pointList : [])"
+            v-for="item in (isActive()? pointList : [])"
             @mousedown="handleMouseDownOnPoint(item, $event)"
-            :key="index"
+            :key="item"
             :style="getPointStyle(item)">
         </div>
         <slot></slot>
@@ -17,6 +18,7 @@ import eventBus from '@/utils/dragAndDropComponents/eventBus'
 import runAnimation from '@/utils/dragAndDropComponents/runAnimation'
 import { mapState } from 'vuex'
 import calculateComponentPositonAndSize from '@/utils/dragAndDropComponents/calculateComponentPositonAndSize'
+import { mod360 } from '@/utils/dragAndDropComponents/translate'
 
 export default {
     props: {
@@ -65,8 +67,14 @@ export default {
     },
     computed: mapState([
         'curComponent',
+        'editor',
     ]),
     mounted() {
+        // 用于 Group 组件
+        if (this.curComponent) {
+            this.cursors = this.getCursor() // 根据旋转角度获取光标位置
+        }
+
         eventBus.$on('runAnimation', () => {
             if (this.element == this.curComponent) {
                 runAnimation(this.$el, this.curComponent.animations)
@@ -74,8 +82,14 @@ export default {
         })
     },
     methods: {
+        isActive() {
+            return this.active && !this.element.isLock
+        },
+
         // 处理旋转
         handleRotate(e) {
+            this.$store.commit('setClickComponentStatus', true)
+            e.preventDefault()
             e.stopPropagation()
             // 初始坐标和初始角度
             const pos = { ...this.defaultStyle }
@@ -156,22 +170,25 @@ export default {
 
         getCursor() {
             const { angleToCursor, initialAngle, pointList, curComponent } = this
-            const rotate = (curComponent.style.rotate + 360) % 360 // 防止角度有负数，所以 + 360
+            const rotate = mod360(curComponent.style.rotate) // 取余 360
             const result = {}
             let lastMatchIndex = -1 // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
+            
             pointList.forEach(point => {
-                const angle = (initialAngle[point] + rotate) % 360
+                const angle = mod360(initialAngle[point] + rotate)
                 const len = angleToCursor.length
                 while (true) {
                     lastMatchIndex = (lastMatchIndex + 1) % len
                     const angleLimit = angleToCursor[lastMatchIndex]
                     if (angle < 23 || angle >= 338) {
                         result[point] = 'nw-resize'
+                        
                         return
                     }
 
                     if (angleLimit.start <= angle && angle < angleLimit.end) {
                         result[point] = angleLimit.cursor + '-resize'
+                        
                         return
                     }
                 }
@@ -181,21 +198,24 @@ export default {
         },
 
         handleMouseDownOnShape(e) {
-            if (this.element.component != 'v-text') {
+            this.$store.commit('setClickComponentStatus', true)
+            if (this.element.component != 'v-text' && this.element.component != 'rect-shape') {
                 e.preventDefault()
             }
-
+            
             e.stopPropagation()
             this.$store.commit('setCurComponent', { component: this.element, index: this.index })
-            this.cursors = this.getCursor() // 根据旋转角度获取光标位置
+            if (this.element.isLock) return
 
+            this.cursors = this.getCursor() // 根据旋转角度获取光标位置
+            
             const pos = { ...this.defaultStyle }
             const startY = e.clientY
             const startX = e.clientX
             // 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
             const startTop = Number(pos.top)
             const startLeft = Number(pos.left)
-
+            
             // 如果元素没有移动，则不保存快照
             let hasMove = false
             const move = (moveEvent) => {
@@ -204,7 +224,7 @@ export default {
                 const curY = moveEvent.clientY
                 pos.top = curY - startY + startTop
                 pos.left = curX - startX + startLeft
-
+                
                 // 修改当前组件样式
                 this.$store.commit('setShapeStyle', pos)
                 // 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
@@ -234,22 +254,27 @@ export default {
             // 阻止向父组件冒泡
             e.stopPropagation()
             e.preventDefault()
-            this.$store.commit('hideContexeMenu')
+            this.$store.commit('hideContextMenu')
         },
 
         handleMouseDownOnPoint(point, e) {
-            const downEvent = window.event
-            downEvent.stopPropagation()
-            downEvent.preventDefault()
+            this.$store.commit('setClickComponentStatus', true)
+            e.stopPropagation()
+            e.preventDefault()
  
             const style = { ...this.defaultStyle }
+
+            // 组件宽高比
+            const proportion = style.width / style.height
+
+            // 组件中心点
             const center = {
                 x: style.left + style.width / 2,
                 y: style.top + style.height / 2,
             }
 
             // 获取画布位移信息
-            const editorRectInfo = document.querySelector('#editor').getBoundingClientRect()
+            const editorRectInfo = this.editor.getBoundingClientRect()
 
             // 当前点击坐标
             const curPoint = {
@@ -266,6 +291,8 @@ export default {
             // 是否需要保存快照
             let needSave = false
             let isFirst = true
+
+            const needLockProportion = this.isNeedLockProportion()
             const move = (moveEvent) => {
                 // 第一次点击时也会触发 move，所以会有“刚点击组件但未移动，组件的大小却改变了”的情况发生
                 // 因此第一次点击时不触发 move 事件
@@ -280,7 +307,7 @@ export default {
                     y: moveEvent.clientY - editorRectInfo.top,
                 }
                 
-                calculateComponentPositonAndSize(point, style, curPositon, {
+                calculateComponentPositonAndSize(point, style, curPositon, proportion, needLockProportion, {
                     center,
                     curPoint,
                     symmetricPoint,
@@ -297,6 +324,18 @@ export default {
 
             document.addEventListener('mousemove', move)
             document.addEventListener('mouseup', up)
+        },
+
+        isNeedLockProportion() {
+            if (this.element.component != 'Group') return false
+            const ratates = [0, 90, 180, 360]
+            for (const component of this.element.propValue) {
+                if (!ratates.includes(mod360(parseInt(component.style.rotate)))) {
+                    return true
+                }
+            }
+
+            return false
         },
     },
 }
@@ -321,21 +360,27 @@ export default {
     width: 8px;
     height: 8px;
     border-radius: 50%;
+    z-index: 1;
 }
-.el-icon-refresh-right {
+.icon-xiangyouxuanzhuan {
     position: absolute;
-    top: -30px;
+    top: -34px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     cursor: grab;
     color: #59c7f9;
-    font-size: 22px;
-    font-weight: normal;
+    font-size: 20px;
+    font-weight: 600;
 
     &:active {
         cursor: grabbing;
     }
+}
+.icon-suo {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 </style>
