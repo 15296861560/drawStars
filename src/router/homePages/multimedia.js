@@ -16,4 +16,13 @@ export default [{
       keepAlive: true
     }
   },
+  {
+    path: '/home/multimediaHomePage/camera',
+    name: "捕捉摄像头画面",
+    component: resolve => require(['@/views/multimedia/camera.vue'], resolve),
+    meta: {
+      title: ['首页', '多媒体模块', '捕捉摄像头画面'],
+      keepAlive: true
+    }
+  },
 ]
