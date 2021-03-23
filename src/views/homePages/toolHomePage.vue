@@ -11,6 +11,16 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/toolHomePage/utilities" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/tools/utilities.svg"  />
+          </div>
+          <div>
+            <p class="m-p">实用工具</p>
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
