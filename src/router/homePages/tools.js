@@ -26,10 +26,18 @@ export default [
     },
     children: [{
       path: '/home/toolHomePage/utilities/time',
-      name: "获取时间",
+      name: "时间",
       component: resolve => require(['@/views/tools/utilities/time.vue'], resolve),
       meta: {
-        title: ['首页', '工具模块', '工具列表', '获取时间'],
+        title: ['首页', '工具模块', '工具列表', '时间'],
+      }
+    },
+    {
+      path: '/home/toolHomePage/utilities/regex',
+      name: "正则表达式",
+      component: resolve => require(['@/views/tools/utilities/regex'], resolve),
+      meta: {
+        title: ['首页', '工具模块', '工具列表', '正则表达式'],
       }
     }]
   },

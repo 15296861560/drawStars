@@ -57,18 +57,14 @@ export default {
         {
           title: "数据",
           index: "2",
-          titleData: [{ title: "正则表达式", index: "/home/toolHomePage/utilities" }],
+          titleData: [{ title: "正则表达式", index: "/home/toolHomePage/utilities/regex" }],
         },
       ],
     };
   },
   methods: {
     handleSelect(key, keyPath) {
-      // console.log(key, keyPath);
       this.toPage(key);
-      // if (key == "1-1") {
-      //   this.$router.push({ path: "/home/toolHomePage/utilities/time", query: {} });
-      // }
     },
     toPage(path) {
       this.$router.push(path).catch((error) => error);
