@@ -39,6 +39,13 @@
           <span class="in-text" :style="{ left: rate + '%' }">{{ rate + "%" }}</span>
         </div>
       </div>
+
+      <div class="m-item">
+        <div class="gradualBar">
+          <div class="gradual" :style="{ width: rate + '%' }"></div>
+          <span class="in-text" :style="{ left: rate + '%' }">{{ rate + "%" }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,7 +53,7 @@
 export default {
   data() {
     return {
-      rate: 33,
+      rate: 66,
     };
   },
   methods: {},
@@ -84,18 +91,37 @@ export default {
 
 .progressBar {
   width: 200px;
-  height: 20px;
+  height: 1vh;
   border: 1px solid transparent;
   border-radius: 10px;
   text-align: left;
   .progress {
-    height: 20px;
+    height: 1vh;
     background: aqua;
     border-radius: 10px;
   }
   .in-text {
     position: relative;
-    bottom: 19px;
+    bottom: 1.3vh;
+  }
+}
+.gradualBar {
+  width: 200px;
+  height: 1vh;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  text-align: left;
+  .gradual {
+    height: 1vh;
+    background-image: linear-gradient(to right, transparent, #01d4e5);
+    border-radius: 15px;
+    height: 1vh;
+  }
+  .in-text {
+    position: relative;
+    font-size: 2vh;
+    bottom: 1.6vh;
+    margin-left: 1vw;
   }
 }
 </style>
