@@ -61,7 +61,6 @@
 </template>
 
 <script>
-var echarts = require("echarts");
 
 export default {
   props: {

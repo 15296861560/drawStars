@@ -54,11 +54,6 @@ export default {
 
   methods: {
     initPage(newVal) {
-      // debugger series xAxis
-      // 基于准备好的dom，初始化echarts实例
-      // let chart = document.getElementById(this.ids);
-      // this.AbnormalStatusEchart = this.$echarts.init(chart);
-
       let chart = this.$echarts.getInstanceByDom(document.getElementById(this.ids));
       if (chart === undefined) {
         this.AbnormalStatusEchart = this.$echarts.init(document.getElementById(this.ids));
@@ -67,45 +62,60 @@ export default {
       }
 
       let option = {
-        color: ["#00FCFF", "#FF8A79", "#A5C7C8"],
-        title: {
-          text: newVal.title,
-          left: "center",
-          top: "20px",
-          textStyle: {
-            color: "white",
-          },
-        },
+        // color: ["#02FCFB"],
+        // 提示框
         tooltip: {
           trigger: "item",
+          formatter: newVal.tooltip + "<br/>{a}：{c}%",
         },
-        legend: {
-          show: newVal.showLegend,
-          orient: "vertical",
-          bottom: "20px",
+        //标题
+        title: {
+          text: newVal.data + "%",
+          subtext: newVal.tooltip,
           textStyle: {
-            color: "#00FCFF",
+            color: "aqua",
+            fontSize: 32,
+            fontWeight: "bold",
+            fontFamily: this.fontFamily,
           },
+          subtextStyle: {
+            color: "aqua",
+            fontSize: 24,
+            fontWeight: "bold",
+            fontFamily: this.fontFamily,
+          },
+          left: "center",
+          top: "center",
+        },
+        angleAxis: {
+          max: 100,
+          show: false,
+        },
+        radiusAxis: {
+          type: "category",
+
+          axisLine: {
+            show: false,
+          },
+        },
+        polar: {
+          radius: "100%",
+          center: ["50%", "50%"],
         },
         series: [
           {
-            name: newVal.title,
-            type: "pie",
-            radius: "50%",
+            type: "bar",
             data: newVal.data,
-            emphasis: {
-              itemStyle: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
-            },
-            label: {
-              show: newVal.showLabel,
-            },
+            showBackground: true,
+            // 该系列使用的坐标系
+            coordinateSystem: "polar",
+            name: newVal.name,
+            stack: "a",
+            roundCap: true,
+            barWidth: 12,
             itemStyle: {
-              borderWidth: 3, //设置border的宽度有多大
-              borderColor: "#061720",
+              barBorderRadius: 10,
+              color: "#02FCFB",
             },
           },
         ],
@@ -113,7 +123,6 @@ export default {
       // 使用刚指定的配置项和数据显示图表。
       this.AbnormalStatusEchart.setOption(option, true);
     },
-
     $_handleResizeChart() {
       if (this.AbnormalStatusEchart) {
         this.AbnormalStatusEchart.resize();

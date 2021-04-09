@@ -13,6 +13,9 @@ import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";
 
 import BaiduMap from 'vue-baidu-map'
+
+var echarts = require("echarts");
+Vue.prototype.$echarts = echarts
  
 
 

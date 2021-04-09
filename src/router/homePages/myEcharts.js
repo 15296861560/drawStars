@@ -50,4 +50,36 @@ export default [{
       title: ['首页', '图表模块', '百度地图'],
     }
   },
+  {
+    path: '/home/echartHomePage/bar',
+    name: "柱状图",
+    component: resolve => require(['@/views/echarts/bar.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '柱状图'],
+    }
+  },
+  {
+    path: '/home/echartHomePage/stackedBar',
+    name: "堆叠柱状图",
+    component: resolve => require(['@/views/echarts/stackedBar.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '堆叠柱状图'],
+    }
+  },
+  {
+    path: '/home/echartHomePage/barLineDrill',
+    name: "折柱混合图",
+    component: resolve => require(['@/views/echarts/barLineDrill.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '折柱混合图'],
+    }
+  },
+  {
+    path: '/home/echartHomePage/polar',
+    name: "极坐标系",
+    component: resolve => require(['@/views/echarts/polar.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '极坐标系'],
+    }
+  },
 ]

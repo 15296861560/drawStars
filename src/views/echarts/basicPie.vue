@@ -5,7 +5,6 @@
 </template>
 
 <script>
-var echarts = require("echarts");
 
 export default {
   props: {
@@ -61,7 +60,7 @@ export default {
       this.initData();
 
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = echarts.init(document.getElementById("echart-pie"));
+      this.myChart = this.$echarts.init(document.getElementById("echart-pie"));
       // 绘制图表
       this.myChart.setOption(this.option);
     },

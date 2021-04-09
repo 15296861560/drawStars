@@ -35,6 +35,15 @@ export default {
         if (Object.keys(newVal).length != 0) {
           this.$nextTick(() => {
             this.initPage(newVal);
+            // let can = false;
+            // for(let i = 0; i < newVal.series.length;i++){
+            //   if(newVal.series[i]){
+            //     can = true;
+            //   }
+            // }
+            // if(can){
+            //   this.initPage(newVal)
+            // }
           });
         }
       },
@@ -54,6 +63,11 @@ export default {
 
   methods: {
     initPage(newVal) {
+      // debugger series xAxis
+      // 基于准备好的dom，初始化echarts实例
+      // let chart = document.getElementById(this.ids);
+      // this.AbnormalStatusEchart = this.$echarts.init(chart);
+
       let chart = this.$echarts.getInstanceByDom(document.getElementById(this.ids));
       if (chart === undefined) {
         this.AbnormalStatusEchart = this.$echarts.init(document.getElementById(this.ids));
@@ -61,67 +75,46 @@ export default {
         this.AbnormalStatusEchart = chart;
       }
 
+      newVal.series.forEach((item) => {
+        //柱样式
+        if (!item.itemStyle) {
+          item.itemStyle = {
+            barBorderRadius: 0,
+          };
+        }
+        //柱宽度
+        if (!item.barWidth) {
+          item.barWidth = "15px";
+        }
+      });
+
       let option = {
-        // 调色盘颜色列表。如果系列没有设置颜色，则会依次循环从该列表中取颜色作为系列颜色
-        color: ["#5f9041", "yellow", "#4472c4"],
-        //标题
-        title: {
-          show: true,
-          //主标题文本
-          text: newVal.title,
-          //主标题样式
-          textStyle: {
-            //字体大小
-            fontSize: 32,
-          },
-          // 副标题文本
-          subtext: newVal.title.subtext,
-          //副标题样式
-          textStyle: {
-            //字体大小
-            fontSize: 24,
-          },
-          // 标题内边距
-          padding: [3, 3, 3, 3],
-          // 主副标题之间的间距
-          itemGap: 10,
-          // 标题离容器左侧的距离
-          left: "5%",
-          // 标题离容器顶部的距离
-          top: "5%",
-        },
-        // 图例组件
-        legend: {
-          show: true,
-        },
-        // 直角坐标系内绘图网格
-        grid: {
-          left: "3%",
-          right: "4%",
-          top: "10%",
-          bottom: "3%",
-          //grid 区域是否包含坐标轴的刻度标签
-          containLabel: true,
-        },
-        // 提示框
+        color: newVal.color?newVal.color:["#03E4F6", "#2E86F2", "#E99936"],
         tooltip: {
           trigger: "axis",
-          // 坐标轴指示器，坐标轴触发有效
           axisPointer: {
-            type: "shadow",
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+            label: {
+              show: true,
+            },
           },
         },
-        //x轴属性
+        legend: newVal.legend,
+        grid: {
+          show: false,
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
         xAxis: [
           {
             type: "category",
-            data: newVal.xAxis.data,
+            data: newVal.xAxis,
             //坐标轴轴线相关设置
             axisLine: {
-              lineStyle: {
-                color: "aqua",
-              },
-              symbol: newVal.symbol,
+              show: false,
             },
             // 坐标轴刻度相关设置
             axisTick: {
@@ -137,56 +130,40 @@ export default {
             },
           },
         ],
-        //y轴属性
         yAxis: [
           {
             type: "value",
             axisLine: {
-              show: true,
               lineStyle: {
                 color: "aqua",
+                width: 0, //不显示y轴
               },
-              symbol: newVal.symbol,
             },
             //坐标轴在 grid 区域中的分隔线。
             splitLine: {
               show: true,
             },
-          },
-        ],
-        series: [
-          {
-            // 系列名称
-            name: "数据",
-            data: newVal.series[0],
-            type: "bar",
-            //不同系列的柱间距离
-            barGap: "20",
-            //柱条的宽度
-            barWidth: newVal.barWidth ? newVal.barWidth : "30px",
-            //柱条的样式
-            itemStyle: {
-              normal: {
-                //柱条的颜色
-                color: "yellow",
-                // 柱条的描边角度(圆角半径，单位px)
-                barBorderRadius: [30, 30, 0, 0],
-                // 柱条阴影颜色
-                shadowColor: "rgba(0,160,221,1)",
-                //图形阴影的模糊大小
-                shadowBlur: 4,
-              },
-            },
-            // 图形上的文本标签
-            label: {
-              show: true,
+            // 坐标轴刻度相关设置
+            axisTick: {
+              show: false,
             },
           },
         ],
+        series: newVal.series,
       };
       // 使用刚指定的配置项和数据显示图表。
       this.AbnormalStatusEchart.setOption(option, true);
+      let that = this;
+      this.AbnormalStatusEchart.on("click", function (object) {
+        that.drill(object);
+      });
     },
+    drill(object) {
+      console.log(object.name);
+      //调用父组件重绘方法
+      this.$emit("rp", object);
+    },
+
     $_handleResizeChart() {
       if (this.AbnormalStatusEchart) {
         this.AbnormalStatusEchart.resize();
