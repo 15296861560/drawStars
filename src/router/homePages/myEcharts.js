@@ -82,4 +82,12 @@ export default [{
       title: ['首页', '图表模块', '极坐标系'],
     }
   },
+  {
+    path: '/home/echartHomePage/dynamicOrderBar',
+    name: "动态排序柱状图",
+    component: resolve => require(['@/views/echarts/dynamicOrderBar.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '动态排序柱状图'],
+    }
+  },
 ]

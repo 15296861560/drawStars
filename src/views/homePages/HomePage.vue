@@ -122,12 +122,16 @@ export default {
   mounted() {
     this.getChartData();
 
+    if (this.dataTimer) {
+      clearInterval(this.dataTimer);
+    }
     this.dataTimer = setInterval(() => {
       this.updateChartData();
     }, 3000);
   },
   beforeDestroy() {
-    clearTimeout(this.dataTimer);
+    //销毁定时器
+   clearInterval(this.dataTimer);
   },
 };
 </script>

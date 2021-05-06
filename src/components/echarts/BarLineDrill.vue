@@ -108,11 +108,6 @@ export default {
       let seriesData = [];
       for (let i = 0; i < newVal.series.length; i++) {
         if (newVal.series[i].type == "line") {
-          // color: (...)
-          // data: (...)
-          // name: (...)
-          // type: "line"
-          // yAxisIndex: 1
           seriesData.push({
             name: newVal.series[i].name,
             type: newVal.series[i].type,
@@ -199,10 +194,14 @@ export default {
           right: newVal.gridRight ? newVal.gridRight : "5%",
           bottom: newVal.gridBottom ? newVal.gridBottom : "25px",
         },
+        // 提示框组件
         tooltip: {
+          // 触发类型
           trigger: "axis",
+          // 坐标轴指示器配置项
           axisPointer: {
             type: "shadow",
+            // 坐标轴指示器的文本标签
             label: {
               show: true,
             },
@@ -226,7 +225,6 @@ export default {
         yAxis: [
           {
             type: "value",
-            /*name: "亿元",*/
             nameTextStyle: {
               color: "#ebf8ac",
               fontSize: 16,

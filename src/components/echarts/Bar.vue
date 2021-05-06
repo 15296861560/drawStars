@@ -93,6 +93,24 @@ export default {
         // 图例组件
         legend: {
           show: true,
+          // 图例列表的布局朝向
+          orient: "horizontal",
+          // 图例标记和文本的对齐
+          align: "left",
+          // 图例内边距
+          padding: [5, 5, 5, 5],
+          // 图例每项之间的间隔
+          itemGap: 13.5,
+          // 图例项的 icon
+          icon: "circle",
+          top: "20px",
+          textStyle: {
+            color: "#00FCFF",
+          },
+          // 图例的 提示框组件
+          tooltip: {
+            show: true,
+          },
         },
         // 直角坐标系内绘图网格
         grid: {
@@ -103,18 +121,31 @@ export default {
           //grid 区域是否包含坐标轴的刻度标签
           containLabel: true,
         },
-        // 提示框
+        // 提示框组件
         tooltip: {
+          // 触发类型
           trigger: "axis",
           // 坐标轴指示器，坐标轴触发有效
           axisPointer: {
             type: "shadow",
+            // 坐标轴指示器的文本标签
+            label: {
+              show: true,
+            },
           },
+          //模板变量有 {a}, {b}，{c}，{d}，{e}，分别表示系列名，数据名，数据值等。 在 trigger 为 'axis' 的时候，会有多个系列的数据，此时可以通过 {a0}, {a1}, {a2} 这种后面加索引的方式表示系列的索引。 不同图表类型下的 {a}，{b}，{c}，{d} 含义不一样。 其中变量{a}, {b}, {c}, {d}在不同图表类型下代表数据含义为：
+          // 折线（区域）图、柱状（条形）图、K线图 : {a}（系列名称），{b}（类目值），{c}（数值）, {d}（无）
+          // 散点图（气泡）图 : {a}（系列名称），{b}（数据名称），{c}（数值数组）, {d}（无）
+          // 地图 : {a}（系列名称），{b}（区域名称），{c}（合并数值）, {d}（无）
+          // 饼图、仪表盘、漏斗图: {a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+          formatter: "{a} <br/>{b}: {c} ({d}%)",
         },
         //x轴属性
         xAxis: [
           {
             type: "category",
+            // 坐标轴两边留白策略
+            boundaryGap: true,
             data: newVal.xAxis.data,
             //坐标轴轴线相关设置
             axisLine: {
@@ -157,11 +188,11 @@ export default {
         series: [
           {
             // 系列名称
-            name: "数据",
+            name: "数据1",
             data: newVal.series[0],
             type: "bar",
             //不同系列的柱间距离
-            barGap: "20",
+            barGap: "50%",
             //柱条的宽度
             barWidth: newVal.barWidth ? newVal.barWidth : "30px",
             //柱条的样式
@@ -169,6 +200,33 @@ export default {
               normal: {
                 //柱条的颜色
                 color: "yellow",
+                // 柱条的描边角度(圆角半径，单位px)
+                barBorderRadius: [30, 30, 0, 0],
+                // 柱条阴影颜色
+                shadowColor: "rgba(0,160,221,1)",
+                //图形阴影的模糊大小
+                shadowBlur: 4,
+              },
+            },
+            // 图形上的文本标签
+            label: {
+              show: true,
+            },
+          },
+          {
+            // 系列名称
+            name: "数据2",
+            data: newVal.series[1],
+            type: "bar",
+            //不同系列的柱间距离
+            barGap: "50%",
+            //柱条的宽度
+            barWidth: newVal.barWidth ? newVal.barWidth : "30px",
+            //柱条的样式
+            itemStyle: {
+              normal: {
+                //柱条的颜色
+                color: "green",
                 // 柱条的描边角度(圆角半径，单位px)
                 barBorderRadius: [30, 30, 0, 0],
                 // 柱条阴影颜色

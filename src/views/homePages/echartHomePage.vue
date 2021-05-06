@@ -91,6 +91,16 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/echartHomePage/dynamicOrderBar" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/echarts/dynamicOrderBar.svg" />
+          </div>
+          <div>
+            <p class="m-p">动态排序柱状图</p>
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
