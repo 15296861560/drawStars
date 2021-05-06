@@ -46,7 +46,7 @@
           <router-link to="/home/dataHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/data.svg" alt="特效" />
+                <img class="m-home-img" src="@/assets/img/data.svg" alt="数据传输" />
               </div>
               <div>
                 <p class="m-p">数据传输</p>
@@ -60,6 +60,16 @@
               </div>
               <div>
                 <p class="m-p">多媒体</p>
+              </div>
+            </div>
+          </router-link>
+          <router-link to="/home/labHomePage" class="m-router-link">
+            <div class="m-home-button">
+              <div class="m-img">
+                <img class="m-home-img" src="@/assets/img/lab.svg" alt="实验室" />
+              </div>
+              <div>
+                <p class="m-p">实验室</p>
               </div>
             </div>
           </router-link>
