@@ -24,7 +24,11 @@
       <router-link to="/home/echartHomePage/basicArea" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/area.svg" alt=" 基础面积图" />
+            <img
+              class="m-home-img"
+              src="@/assets/img/echarts/area.svg"
+              alt=" 基础面积图"
+            />
           </div>
           <div>
             <p class="m-p">基础面积图</p>
@@ -44,7 +48,7 @@
       <router-link to="/home/echartHomePage/baiduMap" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/map.svg" />
+            <img class="m-home-img" src="@/assets/img/echarts/location.svg" />
           </div>
           <div>
             <p class="m-p">百度地图</p>
@@ -98,6 +102,16 @@
           </div>
           <div>
             <p class="m-p">动态排序柱状图</p>
+          </div>
+        </div>
+      </router-link>
+      <router-link to="/home/echartHomePage/eMap" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/echarts/map.svg" />
+          </div>
+          <div>
+            <p class="m-p">中国地图</p>
           </div>
         </div>
       </router-link>

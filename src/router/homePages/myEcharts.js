@@ -90,4 +90,12 @@ export default [{
       title: ['首页', '图表模块', '动态排序柱状图'],
     }
   },
+  {
+    path: '/home/echartHomePage/eMap',
+    name: "中国地图",
+    component: resolve => require(['@/views/echarts/echartMap.vue'], resolve),
+    meta: {
+      title: ['首页', '图表模块', '中国地图'],
+    }
+  },
 ]
