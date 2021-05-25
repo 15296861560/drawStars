@@ -10,7 +10,7 @@ export default [
   },
   {
     path: '/home/labHomePage/vue-reactivity',
-    name: "实验室",
+    name: "vue响应式原理",
     component: resolve => require(['@/views/lab/vue-reactivity.vue'], resolve),
     meta: {
       title: ['首页', '实验室','vue响应式原理'],

@@ -73,6 +73,16 @@
               </div>
             </div>
           </router-link>
+          <router-link to="/home/caseHomePage" class="m-router-link">
+            <div class="m-home-button">
+              <div class="m-img">
+                <img class="m-home-img" src="@/assets/img/case.svg" alt="例子" />
+              </div>
+              <div>
+                <p class="m-p">例子</p>
+              </div>
+            </div>
+          </router-link>
         </div>
 
         <div class="g-module-item">
