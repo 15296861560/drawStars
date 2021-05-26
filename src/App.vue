@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App',
-    created() {
+  name: "App",
+  created() {
     //刷新页面时保存状态管理方案
     //在页面加载时读取sessionStorage里的状态信息
     if (sessionStorage.getItem("store")) {
@@ -21,16 +21,26 @@ export default {
     window.addEventListener("beforeunload", () => {
       sessionStorage.setItem("store", JSON.stringify(this.$store.state));
     });
-  },
-}
 
+    this.$router.beforeEach((to, from, next) => {
+      let hasLogin = true;
+      if (to.name!="首页"&&this.$store.getters.getUserName == "未登录") {
+        hasLogin = false;
+      }
+      if (hasLogin) next();
+      else{
+        next({ name: '首页' });
+      }
+    });
+  },
+};
 </script>
 
 <style lang="less">
 @import "./assets/styles/global.less";
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

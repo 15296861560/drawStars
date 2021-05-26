@@ -60,6 +60,12 @@ export default {
     textClick() {
       this.width = "width:50px;";
     },
+    login(){
+       this.$store.dispatch("changeUserInfo", {
+        attr: "userName",
+        val: "lgy"
+      });
+    }
   },
   watch: {
     screenHeight(val) {
@@ -95,6 +101,8 @@ export default {
     if (this.screenHeight > this.screenWidth) {
       this.isComputer = false;
     }
+
+    this.login();
   },
 };
 </script>

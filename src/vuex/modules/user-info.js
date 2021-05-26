@@ -1,6 +1,6 @@
 export default {
   state: {
-    userName: "666",
+    userName: "未登录",
     userCode: "",
     url: "",
     userId: 0,

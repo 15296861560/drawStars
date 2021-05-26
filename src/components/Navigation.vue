@@ -16,12 +16,13 @@
 
       <el-dropdown style="float: right">
         <span class="el-dropdown-link">
-          lgy<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ $store.getters.getUserName
+          }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人中心</el-dropdown-item>
           <el-dropdown-item>修改密码</el-dropdown-item>
-          <el-dropdown-item divided>退出登录</el-dropdown-item>
+          <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-breadcrumb>
@@ -67,6 +68,12 @@ export default {
       if (toPath == path) return;
       this.$router.push({
         path: toPath,
+      });
+    },
+    logout() {
+      this.$store.dispatch("changeUserInfo", {
+        attr: "userName",
+        val: "未登录",
       });
     },
   },
