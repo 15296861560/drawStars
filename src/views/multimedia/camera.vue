@@ -12,7 +12,7 @@
           </div>
           <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
           <ul>
-            <li v-for="c in captures">
+            <li v-for="(c,index) in captures" :key="index">
               <img v-bind:src="c" height="50" />
             </li>
           </ul>

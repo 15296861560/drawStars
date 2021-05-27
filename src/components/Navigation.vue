@@ -2,7 +2,7 @@
   <div class="navigation">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item
-        v-if="isComputer"
+        v-show="isComputer"
         v-for="(item, index) in titleData"
         :key="index"
       >
@@ -10,7 +10,7 @@
         <span v-if="index != 0" @click="goPage(index)" class="title">{{ item }}</span>
       </el-breadcrumb-item>
 
-      <el-breadcrumb-item v-if="!isComputer">
+      <el-breadcrumb-item v-show="!isComputer">
         <a href="/"><i class="el-icon-menu"></i>{{ titleData[0] }}</a>
       </el-breadcrumb-item>
 

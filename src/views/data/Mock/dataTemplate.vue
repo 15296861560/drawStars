@@ -43,7 +43,7 @@
               }
 
               <div class="m-refresh">
-                <i class="el-icon-refresh" @click=""></i>
+                <i class="el-icon-refresh" ></i>
               </div>
             </div>
           </div>
