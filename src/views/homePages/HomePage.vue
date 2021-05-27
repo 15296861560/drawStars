@@ -2,7 +2,7 @@
   <div>
     <div class="g-home">
       <div class="g-home-module">
-        <div style="display: flex">
+        <div class="g-home-block">
           <router-link to="/home/echartHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
@@ -84,20 +84,21 @@
             </div>
           </router-link>
         </div>
-
-        <div class="g-module-item">
-          <BasicEchart
-            :chartData="areaOption"
-            echartId="echart-area"
-            class="m-echart-small"
-          ></BasicEchart>
-        </div>
-        <div class="g-module-item">
-          <BasicEchart
-            :chartData="pieOption"
-            echartId="echart-pie"
-            class="m-echart-small"
-          ></BasicEchart>
+        <div class="g-home-block">
+          <div class="g-module-item">
+            <BasicEchart
+              :chartData="areaOption"
+              echartId="echart-area"
+              class="m-echart-small"
+            ></BasicEchart>
+          </div>
+          <div class="g-module-item">
+            <BasicEchart
+              :chartData="pieOption"
+              echartId="echart-pie"
+              class="m-echart-small"
+            ></BasicEchart>
+          </div>
         </div>
       </div>
     </div>
@@ -151,7 +152,7 @@ export default {
   },
   beforeDestroy() {
     //销毁定时器
-   clearInterval(this.dataTimer);
+    clearInterval(this.dataTimer);
   },
 };
 </script>
