@@ -60,12 +60,21 @@ export default {
     textClick() {
       this.width = "width:50px;";
     },
-    login(){
-       this.$store.dispatch("changeUserInfo", {
+    login() {
+      this.$store.dispatch("changeUserInfo", {
         attr: "userName",
-        val: "lgy"
+        val: "lgy",
       });
-    }
+    },
+    isPhone() {
+      //手机
+      this.$store.dispatch("changeSettingInfo", {
+        attr: "isComputer",
+        val: false,
+      });
+      this.$refs.asideList.isCollapse = true;
+      this.width = "width:50px;";
+    },
   },
   watch: {
     screenHeight(val) {
@@ -79,12 +88,7 @@ export default {
         this.width = "width:200px;";
       } else {
         //手机
-        this.$store.dispatch("changeSettingInfo", {
-          attr: "isComputer",
-          val: false,
-        });
-        this.$refs.asideList.isCollapse = true;
-        this.width = "width:50px;";
+        this.isPhone();
       }
     },
   },
@@ -98,9 +102,7 @@ export default {
       })();
     };
 
-    if (this.screenHeight > this.screenWidth) {
-      this.isComputer = false;
-    }
+    if(this.screenHeight>this.screenWidth)this.isPhone();
 
     this.login();
   },
@@ -123,7 +125,7 @@ export default {
 .fade-enter /* .fade-leave-active below version 2.1.8 */ {
   /* transform: translateX(80vw); */
   /* 沿y轴旋转 */
-  transform:rotateY(90deg);
+  transform: rotateY(90deg);
   /* opacity不透明级别 */
   opacity: 0.5;
 }

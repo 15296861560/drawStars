@@ -144,8 +144,11 @@ export default {
       this.goPage("/home/echartHomePage");
     },
     collapse() {
-      if (!this.isComputer) return;
-      this.isCollapse = !this.isCollapse;
+      if (!this.isComputer) {
+        this.isCollapse = true;
+      } else {
+        this.isCollapse = !this.isCollapse;
+      }
       this.$emit("collapse", this.isCollapse);
     },
   },
