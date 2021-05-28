@@ -11,6 +11,15 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/labHomePage/promise" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <h1>Promise简单使用</h1>
+          </div>
+          <div>
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

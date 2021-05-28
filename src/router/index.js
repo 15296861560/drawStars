@@ -11,6 +11,7 @@ import Special from '@/router/homePages/special.js'
 import Data from '@/router/homePages/data.js'
 import Multimedia from '@/router/homePages/multimedia.js'
 import Case from '@/router/homePages/case.js'
+import Lab from '@/router/homePages/lab.js'
 
 Vue.use(Router)
 
@@ -62,7 +63,8 @@ export default new Router({
         ...Special,
         ...Data,
         ...Multimedia,
-        ...Case
+        ...Case,
+        ...Lab
       ]
     },
   ]
