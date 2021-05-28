@@ -6,6 +6,15 @@
 </template>
 
 <script>
+import NoProgress from "nprogress";
+import 'nprogress/nprogress.css';
+
+NoProgress.configure({
+  easing: "ease",
+  speed: 500,
+  trickleSpeed: 200,
+  showSpinner: false,
+});
 export default {
   name: "App",
   created() {
@@ -23,14 +32,20 @@ export default {
     });
 
     this.$router.beforeEach((to, from, next) => {
+      NoProgress.start()
       let hasLogin = true;
-      if (to.name!="首页"&&this.$store.getters.getUserName == "未登录") {
+      if (to.name != "首页" && this.$store.getters.getUserName == "未登录") {
         hasLogin = false;
       }
       if (hasLogin) next();
-      else{
-        next({ name: '首页' });
+      else {
+        next({ name: "首页" });
       }
+      NoProgress.done();
+    });
+
+    router.afterEach(() => {
+       NoProgress.done();
     });
   },
 };

@@ -6,12 +6,16 @@
         v-for="(item, index) in titleData"
         :key="index"
       >
-        <a href="/" v-if="index == 0"><i class="el-icon-menu"></i>{{ item }}</a>
+        <span @click="toFirstPage" v-if="index == 0" class="firstPage"
+          ><i class="el-icon-menu"></i>{{ item }}</span
+        >
         <span v-if="index != 0" @click="goPage(index)" class="title">{{ item }}</span>
       </el-breadcrumb-item>
 
       <el-breadcrumb-item v-show="!isComputer">
-        <a href="/"><i class="el-icon-menu"></i>{{ titleData[0] }}</a>
+        <span @click="toFirstPage" class="firstPage"
+          ><i class="el-icon-menu"></i>{{ titleData[0] }}</span
+        >
       </el-breadcrumb-item>
 
       <el-dropdown style="float: right">
@@ -63,7 +67,6 @@ export default {
       for (let i = 1; i <= index + 1; i++) {
         toPath += "/" + paths[i];
       }
-      console.log(toPath);
       //当前路径不跳转
       if (toPath == path) return;
       this.$router.push({
@@ -74,6 +77,11 @@ export default {
       this.$store.dispatch("changeUserInfo", {
         attr: "userName",
         val: "未登录",
+      });
+    },
+    toFirstPage() {
+      this.$router.push({
+        path: "/",
       });
     },
   },
@@ -93,5 +101,17 @@ export default {
 }
 .title:active {
   color: aqua;
+}
+.firstPage {
+  color: black;
+  font-weight: bold;
+}
+.firstPage:hover {
+  color: #4395ff;
+  font-weight: bold;
+}
+.firstPage:active {
+  color: aqua;
+  font-weight: bold;
 }
 </style>
