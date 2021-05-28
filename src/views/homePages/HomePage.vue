@@ -100,12 +100,16 @@
             ></BasicEchart>
           </div>
         </div>
+
+        <div class="g-home-block">
+          <dependence></dependence>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-var echarts = require("echarts");
+import Dependence from "@/components/stars/dependence.vue";
 import BasicEchart from "@/components/echarts/BasicEchart.vue";
 import chartData from "@/assets/js/testData/chartData";
 import Mock from "mockjs";
@@ -113,6 +117,7 @@ import Mock from "mockjs";
 export default {
   components: {
     BasicEchart,
+    Dependence
   },
   data() {
     return {
