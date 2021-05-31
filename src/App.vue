@@ -44,7 +44,7 @@ export default {
       NoProgress.done();
     });
 
-    router.afterEach(() => {
+    this.$router.afterEach(() => {
        NoProgress.done();
     });
   },
