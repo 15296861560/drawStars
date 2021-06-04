@@ -57,7 +57,10 @@ export default {
         {
           title: "数据",
           index: "2",
-          titleData: [{ title: "正则表达式", index: "/home/toolHomePage/utilities/regex" }],
+          titleData: [
+            { title: "正则表达式", index: "/home/toolHomePage/utilities/regex" },
+            { title: "导入与导出", index: "/home/toolHomePage/utilities/importAndExport" },
+            ],
         },
       ],
     };
