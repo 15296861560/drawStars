@@ -4,10 +4,10 @@
       <div class="action-row">
         <input type="file" @input="importFile" ref="file" hidden />
 
-        <div class="m-btn-simple mr-2vw" @click="selectFile"><span>导入</span></div>
-        <div class="m-btn-simple mr-2vw" @click="exportFile"><span>导出</span></div>
-        <div class="m-btn-simple mr-2vw" @click="getTemplate"><span>获取模板</span></div>
-        <div class="m-btn-simple" @click="printPage"><span>打印</span></div>
+        <div class="m-btn-simple mr-2vw" @click="selectFile"><span>{{$t("btn.import")}}</span></div>
+        <div class="m-btn-simple mr-2vw" @click="exportFile"><span>{{$t("btn.export")}}</span></div>
+        <div class="m-btn-simple mr-2vw" @click="getTemplate"><span>{{$t("btn.getTemplate")}}</span></div>
+        <div class="m-btn-simple" @click="printPage"><span>{{$t("btn.print")}}</span></div>
       </div>
 
       <div class="showTable" ref="printcontent">

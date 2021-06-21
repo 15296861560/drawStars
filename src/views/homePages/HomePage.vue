@@ -6,80 +6,80 @@
           <router-link to="/home/echartHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/bar.svg" alt="图表" />
+                <img class="m-home-img" src="@/assets/img/bar.svg" :alt="$t('homePage.echart')" />
               </div>
               <div>
-                <p class="m-p">图表</p>
+                <p class="m-p">{{$t("homePage.echart")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/toolHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/tool.svg" alt="工具" />
+                <img class="m-home-img" src="@/assets/img/tool.svg" :alt="$t('homePage.tool')" />
               </div>
               <div>
-                <p class="m-p">工具</p>
+                <p class="m-p">{{$t("homePage.tool")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/componentsHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/components.svg" alt="组件" />
+                <img class="m-home-img" src="@/assets/img/components.svg" :alt="$t('homePage.components')" />
               </div>
               <div>
-                <p class="m-p">组件</p>
+                <p class="m-p">{{$t("homePage.components")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/specialHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/special.svg" alt="特效" />
+                <img class="m-home-img" src="@/assets/img/special.svg" :alt="$t('homePage.special')" />
               </div>
               <div>
-                <p class="m-p">特效</p>
+                <p class="m-p">{{$t("homePage.special")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/dataHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/data.svg" alt="数据传输" />
+                <img class="m-home-img" src="@/assets/img/data.svg" :alt="$t('homePage.data')" />
               </div>
               <div>
-                <p class="m-p">数据传输</p>
+                <p class="m-p">{{$t("homePage.data")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/multimediaHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/multimedia.svg" alt="多媒体" />
+                <img class="m-home-img" src="@/assets/img/multimedia.svg" :alt="$t('homePage.multimedia')" />
               </div>
               <div>
-                <p class="m-p">多媒体</p>
+                <p class="m-p">{{$t("homePage.multimedia")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/labHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/lab.svg" alt="实验室" />
+                <img class="m-home-img" src="@/assets/img/lab.svg" :alt="$t('homePage.lab')" />
               </div>
               <div>
-                <p class="m-p">实验室</p>
+                <p class="m-p">{{$t("homePage.lab")}}</p>
               </div>
             </div>
           </router-link>
           <router-link to="/home/caseHomePage" class="m-router-link">
             <div class="m-home-button">
               <div class="m-img">
-                <img class="m-home-img" src="@/assets/img/case.svg" alt="例子" />
+                <img class="m-home-img" src="@/assets/img/case.svg" :alt="$t('homePage.case')" />
               </div>
               <div>
-                <p class="m-p">例子</p>
+                <p class="m-p">{{$t("homePage.case")}}</p>
               </div>
             </div>
           </router-link>

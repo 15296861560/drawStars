@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/multimedia/simple.svg"  />
           </div>
           <div>
-            <p class="m-p">简单使用方式</p>
+            <p class="m-p">{{$t("homePage.multimediaHomePage.simpleUse")}}</p>
           </div>
         </div>
       </router-link>
@@ -17,7 +17,7 @@
             <img class="m-home-img" src="@/assets/img/multimedia/camera.svg"  />
           </div>
           <div>
-            <p class="m-p">捕捉摄像头画面</p>
+            <p class="m-p">{{$t("homePage.multimediaHomePage.camera")}}</p>
           </div>
         </div>
       </router-link>

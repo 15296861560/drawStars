@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/tools/lodash.png"  />
           </div>
           <div>
-            <p class="m-p">Lodash</p>
+            <p class="m-p">{{$t("homePage.toolHomePage.Lodash")}}</p>
           </div>
         </div>
       </router-link>
@@ -17,7 +17,7 @@
             <img class="m-home-img" src="@/assets/img/tools/utilities.svg"  />
           </div>
           <div>
-            <p class="m-p">实用工具</p>
+            <p class="m-p">{{$t("homePage.toolHomePage.utilities")}}</p>
           </div>
         </div>
       </router-link>

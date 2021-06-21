@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/case/boards.svg"  />
           </div>
           <div>
-            <p class="m-p">看板类</p>
+            <p class="m-p">{{$t("homePage.caseHomePage.board")}}</p>
           </div>
         </div>
       </router-link>

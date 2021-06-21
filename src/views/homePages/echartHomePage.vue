@@ -4,44 +4,40 @@
       <router-link to="/home/echartHomePage/basicBar" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/bar.svg" alt="柱状图" />
+            <img class="m-home-img" src="@/assets/img/bar.svg" />
           </div>
           <div>
-            <p class="m-p">基础柱状图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.basicBar")}}</p>
           </div>
         </div>
       </router-link>
       <router-link to="/home/echartHomePage/basicLine" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/line.svg" alt=" 折线图" />
+            <img class="m-home-img" src="@/assets/img/echarts/line.svg" />
           </div>
           <div>
-            <p class="m-p">基础折线图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.basicLine")}}</p>
           </div>
         </div>
       </router-link>
       <router-link to="/home/echartHomePage/basicArea" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img
-              class="m-home-img"
-              src="@/assets/img/echarts/area.svg"
-              alt=" 基础面积图"
-            />
+            <img class="m-home-img" src="@/assets/img/echarts/area.svg" />
           </div>
           <div>
-            <p class="m-p">基础面积图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.basicArea")}}</p>
           </div>
         </div>
       </router-link>
       <router-link to="/home/echartHomePage/basicPie" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/pie.svg" alt="饼图" />
+            <img class="m-home-img" src="@/assets/img/echarts/pie.svg" />
           </div>
           <div>
-            <p class="m-p">基础饼图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.basicPie")}}</p>
           </div>
         </div>
       </router-link>
@@ -51,7 +47,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/location.svg" />
           </div>
           <div>
-            <p class="m-p">百度地图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.baiduMap")}}</p>
           </div>
         </div>
       </router-link>
@@ -61,7 +57,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/bar.svg" />
           </div>
           <div>
-            <p class="m-p">柱状图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.bar")}}</p>
           </div>
         </div>
       </router-link>
@@ -71,7 +67,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/stackedBar.svg" />
           </div>
           <div>
-            <p class="m-p">堆叠柱状图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.stackedBar")}}</p>
           </div>
         </div>
       </router-link>
@@ -81,7 +77,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/barLineDrill.svg" />
           </div>
           <div>
-            <p class="m-p">折柱混合图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.barLineDrill")}}</p>
           </div>
         </div>
       </router-link>
@@ -91,7 +87,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/polar.svg" />
           </div>
           <div>
-            <p class="m-p">极坐标系</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.polar")}}</p>
           </div>
         </div>
       </router-link>
@@ -101,7 +97,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/dynamicOrderBar.svg" />
           </div>
           <div>
-            <p class="m-p">动态排序柱状图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.dynamicOrderBar")}}</p>
           </div>
         </div>
       </router-link>
@@ -111,7 +107,7 @@
             <img class="m-home-img" src="@/assets/img/echarts/map.svg" />
           </div>
           <div>
-            <p class="m-p">中国地图</p>
+            <p class="m-p">{{$t("homePage.echartHomePage.eMap")}}</p>
           </div>
         </div>
       </router-link>

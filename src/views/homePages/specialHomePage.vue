@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/special/transition.svg" />
           </div>
           <div>
-            <p class="m-p">过渡</p>
+            <p class="m-p">{{$t("homePage.specialHomePage.transition")}}</p>
           </div>
         </div>
       </router-link>
@@ -17,7 +17,7 @@
             <img class="m-home-img" src="@/assets/img/special/animation.svg" />
           </div>
           <div>
-            <p class="m-p">动画</p>
+            <p class="m-p">{{$t("homePage.specialHomePage.animation")}}</p>
           </div>
         </div>
       </router-link>

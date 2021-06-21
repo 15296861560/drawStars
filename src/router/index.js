@@ -18,7 +18,7 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: '初始页面',
+      name: 'firstPage',
       component: Index,
       redirect: '/home/homepage',
       meta: {

@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="m-map-search">
-      <label>地区：<el-input v-model="location" class="m-map-search-input" /></label>
+      <label>{{$t("module.echarts.baiduMap.area")}}<el-input v-model="location" class="m-map-search-input" /></label>
 
-      <label> 关键词：<el-input v-model="keyword" class="m-map-search-input" /></label>
+      <label> {{$t("module.echarts.baiduMap.keyWord")}}<el-input v-model="keyword" class="m-map-search-input" /></label>
 
       <label>
-        经度： <el-input v-model="markerPo.lat" class="m-map-search-input"
+        {{$t("module.echarts.baiduMap.longitude")}} <el-input v-model="markerPo.lat" class="m-map-search-input"
       /></label>
 
       <label>
-        纬度： <el-input v-model="markerPo.lng" class="m-map-search-input"
+        {{$t("module.echarts.baiduMap.latitude")}} <el-input v-model="markerPo.lng" class="m-map-search-input"
       /></label>
     </div>
     <!-- <div id="echart-map" class="m-echart-standard"></div> -->
@@ -23,8 +23,8 @@
 
       <div class="more_panel">
         <span :class="{ down: isShowPanel }" @click.stop="showPanel">
-          <span>{{ isShowPanel ? "隐藏" : "显示" }}</span
-          >搜索列表<i class="el-icon-d-arrow-right"></i>
+          <span>{{ isShowPanel ? $t("module.echarts.baiduMap.showSearchList") :$t("module.echarts.baiduMap.hideSearchList") }}</span
+          ><i class="el-icon-d-arrow-right"></i>
         </span>
       </div>
 
@@ -44,7 +44,7 @@
         :position="markerPo"
         :dragging="true"
         :title="storeName"
-        :zIndex="999999999"
+        :zIndex="999"
         @click="infoWindowOpen"
         :icon="{ url: markerIcon, size: { width: 34, height: 34 } }"
         @dragend="dragend"

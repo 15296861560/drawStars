@@ -17,16 +17,28 @@
           ><i class="el-icon-menu"></i>{{ titleData[0] }}</span
         >
       </el-breadcrumb-item>
+      <!-- 选择语言 -->
+      <el-dropdown class="selectLang"  @command="handleSetLanguage">
+          <img style="height: 3vh;" src="@/assets/img/nav/translate.svg" ></img>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item :disabled="language === 'zh'" command="zh">
+            中文
+          </el-dropdown-item>
+          <el-dropdown-item :disabled="language === 'en'" command="en">
+            English
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
-      <el-dropdown style="float: right">
+      <el-dropdown class="profile">
         <span class="el-dropdown-link">
-          {{ $store.getters.getUserName
-          }}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ $store.getters.getUserName}}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>修改密码</el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
+          <el-dropdown-item>{{$t("navigation.profile")}}</el-dropdown-item>
+          <el-dropdown-item>{{$t("navigation.setting")}}</el-dropdown-item>
+          <el-dropdown-item>{{$t("navigation.changePasswork")}}</el-dropdown-item>
+          <el-dropdown-item divided @click.native="logout">{{$t("navigation.logOut")}}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-breadcrumb>
@@ -34,6 +46,8 @@
 </template>
 
 <script>
+import db from '@/utils/commom/db'
+
 export default {
   name: "Navigation",
   props: {
@@ -51,6 +65,9 @@ export default {
   computed: {
     isComputer() {
       return this.$store.getters.getIsComputer;
+    },
+    language() {
+      return this.$store.getters.getLanguage;
     },
   },
   methods: {
@@ -84,6 +101,19 @@ export default {
         path: "/",
       });
     },
+    handleSetLanguage(lang) {
+      console.log(lang);
+      this.$i18n.locale = lang;
+      db.local.save('LANGUAGE', lang)
+      this.$store.dispatch("changeSettingInfo", {
+        attr: "language",
+        val: lang,
+      });
+      this.$message({
+        message: this.$t("tips.switchLanguageSuccess"),
+        type: "success",
+      });
+    },
   },
   watch: {},
   mounted() {},
@@ -91,9 +121,19 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="less" scoped>
 .navigation {
   padding: 20px;
+  .selectLang{
+    position: absolute;
+    top:1vh;
+    right: 6vw;
+  }
+
+  .profile{
+    position: absolute;
+    right: 2vw;
+  }
 }
 
 .title:hover {
@@ -114,4 +154,6 @@ export default {
   color: aqua;
   font-weight: bold;
 }
+
+
 </style>

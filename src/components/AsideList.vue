@@ -21,66 +21,66 @@
           <el-submenu index="1">
             <template slot="title">
               <i class="el-icon-s-shop"></i>
-              <span>模块</span>
+              <span>{{$t("aside.module")}}</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="1-1" @click="toEcharts"
-                ><i class="el-icon-s-data"></i>图表</el-menu-item
+                ><i class="el-icon-s-data"></i>{{$t("homePage.echart")}}</el-menu-item
               >
               <el-menu-item index="1-2" @click="goPage('/home/toolHomePage')"
-                ><i class="el-icon-s-cooperation"></i>工具</el-menu-item
+                ><i class="el-icon-s-cooperation"></i>{{$t("homePage.tool")}}</el-menu-item
               >
               <el-menu-item index="1-3" @click="goPage('/home/componentsHomePage')"
-                ><i class="el-icon-s-grid"></i>组件</el-menu-item
+                ><i class="el-icon-s-grid"></i>{{$t("homePage.components")}}</el-menu-item
               >
               <el-menu-item index="1-4" @click="goPage('/home/specialHomePage')"
-                ><i class="el-icon-magic-stick"></i>特效</el-menu-item
+                ><i class="el-icon-magic-stick"></i>{{$t("homePage.special")}}</el-menu-item
               >
               <el-menu-item index="1-5" @click="goPage('/home/dataHomePage')"
-                ><i class="el-icon-sort"></i>数据传输</el-menu-item
+                ><i class="el-icon-sort"></i>{{$t("homePage.data")}}</el-menu-item
               >
               <el-menu-item index="1-6" @click="goPage('/home/multimediaHomePage')"
-                ><i class="el-icon-video-camera"></i>多媒体</el-menu-item
-              >
-              <el-menu-item index="1-out" @click="toOutSide"
-                ><i class="el-icon-sunny"></i>外链</el-menu-item
-              >
-              <el-menu-item index="1-end1" @click="toTest1"
-                ><i class="el-icon-water-cup"></i>测试页一</el-menu-item
-              >
-              <el-menu-item index="1-end2" @click="toTest2"
-                ><i class="el-icon-coffee-cup"></i>测试页二</el-menu-item
+                ><i class="el-icon-video-camera"></i>{{$t("homePage.multimedia")}}</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-user-solid"></i>
-              <span>权限测试</span>
+              <span>{{$t("aside.test")}}</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="2-1" v-if="userData.level > 1"
-                >一级以上权限</el-menu-item
+                >{{$t("aside.moreThanOne")}}</el-menu-item
               >
               <el-menu-item index="2-2" v-if="userData.level > 2"
-                >二级以上权限</el-menu-item
+                >{{$t("aside.moreThanTwo")}}</el-menu-item
+              >
+              <el-menu-item index="2-out" @click="toOutSide"
+                ><i class="el-icon-sunny"></i>{{$t("aside.externalLinks")}}</el-menu-item
+              >
+              <el-menu-item index="2-test1" @click="toTest1"
+                ><i class="el-icon-water-cup"></i>{{$t("aside.testPageOne")}}</el-menu-item
+              >
+              <el-menu-item index="2-test2" @click="toTest2"
+                ><i class="el-icon-coffee-cup"></i>{{$t("aside.testPageTwo")}}</el-menu-item
               >
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
               <i class="el-icon-user"></i>
-              <span>权限</span>
+              <span>{{$t("aside.power")}}</span>
             </template>
             <el-menu-item-group>
               <el-menu-item index="3-1" @click="levelDown"
-                ><i class="el-icon-caret-bottom"></i>降低权限</el-menu-item
+                ><i class="el-icon-caret-bottom"></i>{{$t("aside.levelDown")}}</el-menu-item
               >
               <el-menu-item index="3-2" @click="levelUp"
-                ><i class="el-icon-caret-top"></i>提高权限</el-menu-item
+                ><i class="el-icon-caret-top"></i>{{$t("aside.levelUp")}}</el-menu-item
               >
               <el-menu-item index="3-3"
-                ><i class="el-icon-d-caret"></i>当前权限等级{{
+                ><i class="el-icon-d-caret"></i>{{$t("aside.curLevel")+
                   userData.level
                 }}</el-menu-item
               >
@@ -100,12 +100,14 @@ export default {
       userData: {
         level: 3,
       },
-      isCollapse: false,
     };
   },
   computed: {
     isComputer() {
       return this.$store.getters.getIsComputer;
+    },
+    isCollapse() {
+      return this.$store.getters.getIsCollapse;
     },
   },
   methods: {
@@ -145,9 +147,15 @@ export default {
     },
     collapse() {
       if (!this.isComputer) {
-        this.isCollapse = true;
+        this.$store.dispatch("changeSettingInfo", {
+          attr: "isCollapse",
+          val: true,
+        });
       } else {
-        this.isCollapse = !this.isCollapse;
+        this.$store.dispatch("changeSettingInfo", {
+          attr: "isCollapse",
+          val: !this.isCollapse,
+        });
       }
       this.$emit("collapse", this.isCollapse);
     },

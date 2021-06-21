@@ -2,7 +2,7 @@
   <div>
     <div class="g-module-normal">
       <div class="m-block">
-        <div class="m-block-title">音频</div>
+        <div class="m-block-title">{{$t("module.media.audio")}}</div>
         <div class="m-block-content2">
           <el-button size="medium" round type="success u-el-icon-auqa" @click="playMusic">
             <i
@@ -11,7 +11,7 @@
                 ' fontsize-16'
               "
             ></i>
-            <span>播放</span>
+            <span>{{Music ?$t("btn.pause"):$t("btn.play")}}</span>
           </el-button>
           <audio width="320" height="240" controls class="ml40" ref="music">
             <source :src="musicSrc" type="audio/mpeg" />
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="m-block">
-        <div class="m-block-title">视频</div>
+        <div class="m-block-title">{{$t("module.media.video")}}</div>
         <div class="m-block-content2">
           <el-button size="medium" round type="success u-el-icon-auqa" @click="playVideo">
             <i
@@ -28,7 +28,7 @@
                 ' fontsize-16'
               "
             ></i>
-            <span>播放</span>
+            <span>{{Video ?$t("btn.pause"):$t("btn.play")}}</span>
           </el-button>
           <video width="320" height="240" controls class="ml40" ref="video">
             <source :src="videoSrc" type="video/mp4" />

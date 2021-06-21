@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/myComponents/progressBar.svg" />
           </div>
           <div>
-            <p class="m-p">进度条</p>
+            <p class="m-p">{{$t("homePage.componentsHomePage.common.progressBar")}}</p>
           </div>
         </div>
       </router-link>
@@ -17,7 +17,7 @@
             <img class="m-home-img" src="@/assets/img/myComponents/promptBox.svg" />
           </div>
           <div>
-            <p class="m-p">提示框</p>
+            <p class="m-p">{{$t("homePage.componentsHomePage.common.promptBox")}}</p>
           </div>
         </div>
       </router-link>

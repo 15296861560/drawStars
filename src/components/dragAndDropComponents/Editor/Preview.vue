@@ -1,6 +1,6 @@
 <template>
     <div class="bg" v-if="show">
-        <el-button @click="close" class="close">关闭</el-button>
+        <el-button @click="close" class="close">{{$t("btn.close")}}</el-button>
         <div class="canvas-container">
             <div class="canvas"
                 :style="{

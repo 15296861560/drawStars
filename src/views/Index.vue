@@ -103,6 +103,7 @@ export default {
     };
 
     if(this.screenHeight>this.screenWidth)this.isPhone();
+    if (this.$store.getters.getIsCollapse) this.width = "width:50px;";
 
     this.login();
   },
@@ -117,7 +118,10 @@ export default {
 }
 
 /* 组件过渡 */
-.fade-enter-active,
+.fade-enter-active{
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
 .fade-leave-active {
   transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
   position: absolute;

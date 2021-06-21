@@ -7,7 +7,7 @@
             <img class="m-home-img" src="@/assets/img/myComponents/drag.svg" />
           </div>
           <div>
-            <p class="m-p">可视化拖拽组件</p>
+            <p class="m-p">{{$t("homePage.componentsHomePage.dragAndDropComponents")}}</p>
           </div>
         </div>
       </router-link>
@@ -17,7 +17,7 @@
             <img class="m-home-img" src="@/assets/img/myComponents/common.svg" />
           </div>
           <div>
-            <p class="m-p">常用组件</p>
+            <p class="m-p">{{$t("homePage.componentsHomePage.commonComponents")}}</p>
           </div>
         </div>
       </router-link>
