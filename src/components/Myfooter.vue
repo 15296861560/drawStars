@@ -16,6 +16,7 @@ export default {
 .footer {
   /* background-color: aliceblue; */
   height: 60px;
+  line-height: 60px;
   margin-top: 20px;
 }
 </style>

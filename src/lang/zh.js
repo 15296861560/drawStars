@@ -47,6 +47,7 @@ export default {
     multimediaHomePage: {
       simpleUse: "简单使用方式",
       camera: "捕捉摄像头画面",
+      pictureEditing:"图片编辑",
     },
     labHomePage: {
       vueReactivity: "Vue响应式原理",
@@ -68,6 +69,17 @@ export default {
   },
   tips: {
     switchLanguageSuccess: "切换语言成功",
+    addImgSuccess:"成功添加图片后，编辑功能自动启动",
+    comfirmDownloadImg:"是否确认下载该图片?",
+    downloadSuccess:"下载成功!",
+    cancelDownload:"已取消下载!", 
+    confirmUpload:"重新上传将会清空所有编辑内容, 是否继续上传?",
+    cancelUpload:"已取消上传",
+    uploadSuccess:"上传成功",
+  },
+  tipsTitle:{
+    tip:"提示",
+    warmTip:"温馨提示"
   },
   module: {
     echarts: {
@@ -88,8 +100,9 @@ export default {
     },
     media:{
       audio:"音频",
-      video:"视频"
-    }
+      video:"视频",
+      cropPic:"裁剪图片"
+    },
   },
   btn: {
     copy: "复制",
@@ -124,6 +137,13 @@ export default {
     export:"导出",
     print:"打印",
     getTemplate:"获取模板",
+    originalImg:"原图片",
+    reLoad:"重新上传",
+    crop:"裁剪",
+    addImg:"添加图片",
+    cancel:"取消",
+    continue:"继续",
+    return:"返回"
   },
   placeholder:{
     redirect:"请输入完整的 URL",

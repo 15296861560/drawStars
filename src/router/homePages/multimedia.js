@@ -13,7 +13,6 @@ export default [{
     component: resolve => require(['@/views/multimedia/simpleUse.vue'], resolve),
     meta: {
       title: ['首页', '多媒体模块', '简单使用'],
-      keepAlive: true
     }
   },
   {
@@ -22,7 +21,23 @@ export default [{
     component: resolve => require(['@/views/multimedia/camera.vue'], resolve),
     meta: {
       title: ['首页', '多媒体模块', '捕捉摄像头画面'],
-      keepAlive: true
     }
+  },
+  {
+    path: '/home/multimediaHomePage/pictureEditing',
+    name: "图片编辑",
+    component: resolve => require(['@/views/multimedia/pictureEditing'], resolve),
+    meta: {
+      title: ['首页', '多媒体模块', '图片编辑'],
+    },
+    children: [{
+      path: '/home/multimediaHomePage/pictureEditing',
+      name: "裁剪图片",
+      component: resolve => require(['@/views/multimedia/pictureEditing/crop'], resolve),
+      meta: {
+        title: ['首页', '多媒体模块', '图片编辑', "裁剪图片"],
+      }
+    }, ]
+
   },
 ]

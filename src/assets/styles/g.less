@@ -118,3 +118,37 @@
   overflow: scroll;
   height: 80vh;
 }
+
+.g-box-normal {
+  width: 100%;
+  height: 80vh;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  align-items: center;
+}
+
+.g-box-double {
+  width: 90%;
+  border: solid;
+  border-color: #d7d7d7;
+  border-radius: 5px;
+  display: flex;
+  // flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .g-box-inside {
+    border: dashed;
+    border-color: #d7d7d7;
+    margin: 1vw;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    width: 45%;
+    justify-content: center;
+    position: relative;
+  }
+}

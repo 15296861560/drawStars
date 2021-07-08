@@ -47,6 +47,7 @@ export default {
     multimediaHomePage: {
       simpleUse: "Simple usage",
       camera: "Capture camera image",
+      pictureEditing:"Picture editing",
     },
     labHomePage: {
       vueReactivity: "Vue Reactivity ",
@@ -68,6 +69,17 @@ export default {
   },
   tips: {
     switchLanguageSuccess: "Switch language successfully",
+    addImgSuccess:"After the picture is successfully added, the editing function starts automatically",
+    comfirmDownloadImg:"Are you sure you want to download the picture?",
+    downloadSuccess:"Download successful!",
+    cancelDownload:"Download canceled!", 
+    confirmUpload:"Re uploading will clear all the edited content. Do you want to continue uploading?",
+    cancelUpload:"Upload canceled",
+    uploadSuccess:"Upload succeeded",
+  },
+  tipsTitle:{
+    tip:"Tips",
+    warmTip:"Warm prompt"
   },
   module: {
     echarts: {
@@ -88,7 +100,8 @@ export default {
     },
     media:{
       audio:"audio",
-      video:"video"
+      video:"video",
+      cropPic:"Crop A Picture"
     }
   },
   btn: {
@@ -124,6 +137,13 @@ export default {
     export:"Export",
     print:"Print",
     getTemplate:"Get template",
+    originalImg:"Original picture",
+    reLoad:"Upload again",
+    crop:"Tailoring",
+    addImg:"Add picture",
+    cancel:"Cancel",
+    continue:"Continue",
+    return:"Return"
   },
   placeholder:{
     redirect:"Please enter the full URL",
