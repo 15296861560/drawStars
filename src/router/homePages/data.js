@@ -32,4 +32,12 @@ export default [{
       title: ['首页', '数据传输模块', 'axios'],
     },
   },
+  {
+    path: '/home/dataHomePage/Sqlite',
+    name: "Sqlite",
+    component: resolve => require(['@/views/data/Sqlite/Sqlite.vue'], resolve),
+    meta: {
+      title: ['首页', '数据传输模块', 'Sqlite'],
+    },
+  },
 ]
