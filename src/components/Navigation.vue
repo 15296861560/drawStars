@@ -1,6 +1,7 @@
 <template>
   <div class="navigation">
     <el-breadcrumb separator-class="el-icon-arrow-right">
+    <!-- 路由导航 -->
       <el-breadcrumb-item
         v-show="isComputer"
         v-for="(item, index) in titleData"

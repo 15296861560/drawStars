@@ -1,7 +1,7 @@
 <template>
   <div class="dependence">
     <div class="title-row">
-      <div class="dependence-title">{{$t("dependence.dependenceInfos")}}</div>
+      <div class="dependence-title">{{$t("dependence.dependenceInfo")}}</div>
     </div>
     <div class="dependence-main">
       <ul>

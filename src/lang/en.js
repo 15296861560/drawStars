@@ -157,8 +157,8 @@ export default {
     redirect: "Please enter the full URL",
     alertContent: "Please enter the content to alert",
     selectComponents: "Please select component",
-    inputUserName:"Please enter user name",
-    inputBalance:"Please enter the balance",
+    inputUserName: "Please enter user name",
+    inputBalance: "Please enter the balance",
   },
   text: {
     selected: "Selected",
@@ -175,8 +175,8 @@ export default {
     testPageOne: "Test page 1",
     testPageTwo: "Test page 2",
     power: "Authority",
-    levelDown: "Reduce permissions",
-    levelUp: "Increase permissions",
-    curLevel: "Current permission level"
+    levelDown: "Reduce Level",
+    levelUp: "Increase Level",
+    curLevel: "Current  Level"
   }
 }
