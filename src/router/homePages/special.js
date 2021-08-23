@@ -24,4 +24,12 @@ export default [
       title: ['首页', '特效模块','动画'],
     }
   },
+  {
+    path: '/home/specialHomePage/words',
+    name: "文字",
+    component: resolve => require(['@/views/specials/words.vue'], resolve),
+    meta: {
+      title: ['首页', '特效模块','文字'],
+    }
+  },
 ]

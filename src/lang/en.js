@@ -39,6 +39,7 @@ export default {
     specialHomePage: {
       transition: "transition",
       animation: "animation",
+      words:"words",
     },
     dataHomePage: {
       Mock: "Mock",

@@ -21,6 +21,16 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/specialHomePage/words" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/special/words.svg" />
+          </div>
+          <div>
+            <p class="m-p">{{$t("homePage.specialHomePage.words")}}</p>
+          </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

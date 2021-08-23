@@ -39,6 +39,7 @@ export default {
     specialHomePage: {
       transition: "过渡",
       animation: "动画",
+      words: "文字",
     },
     dataHomePage: {
       Mock: "Mock",
@@ -157,8 +158,8 @@ export default {
     redirect: "请输入完整的 URL",
     alertContent: "请输入要 alert 的内容",
     selectComponents: "请选择组件",
-    inputUserName:"请输入用户名",
-    inputBalance:"请输入余额",
+    inputUserName: "请输入用户名",
+    inputBalance: "请输入余额",
   },
   text: {
     selected: "选中",
