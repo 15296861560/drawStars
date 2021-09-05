@@ -53,6 +53,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue Reactivity ",
       promise: "Simple use of Promise",
+      webpack:"Webpack packaging"
     },
     caseHomePage: {
       board: "Board"

@@ -53,6 +53,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue响应式原理",
       promise: "Promise简单使用",
+      webpack:"Webpack打包"
     },
     caseHomePage: {
       board: "看板类"

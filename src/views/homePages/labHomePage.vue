@@ -4,19 +4,28 @@
       <router-link to="/home/labHomePage/vue-reactivity" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/lab/bind.svg"  />
+            <img class="m-home-img" src="@/assets/img/lab/bind.svg" />
           </div>
           <div>
-            <p class="m-p">{{$t("homePage.labHomePage.vueReactivity")}}</p>
+            <p class="m-p">{{ $t("homePage.labHomePage.vueReactivity") }}</p>
           </div>
         </div>
       </router-link>
       <router-link to="/home/labHomePage/promise" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <h1>{{$t("homePage.labHomePage.promise")}}</h1>
+            <h1>{{ $t("homePage.labHomePage.promise") }}</h1>
+          </div>
+          <div></div>
+        </div>
+      </router-link>
+      <router-link to="/home/labHomePage/webpack" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/lab/webpack.svg" />
           </div>
           <div>
+            <p class="m-p">{{ $t("homePage.labHomePage.webpack") }}</p>
           </div>
         </div>
       </router-link>
@@ -28,9 +37,7 @@ export default {
   data() {
     return {};
   },
-  methods: {
- 
-  },
+  methods: {},
 };
 </script>
 <style></style>

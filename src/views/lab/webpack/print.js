@@ -1,0 +1,1 @@
+export default (item)=>console.log(item)

@@ -24,4 +24,12 @@ export default [
       title: ['首页', '实验室','Primise简单使用'],
     },
   },
+  {
+    path: '/home/labHomePage/webpack',
+    name: "Webpack打包",
+    component: resolve => require(['@/views/lab/webpack'], resolve),
+    meta: {
+      title: ['首页', '实验室','Webpack打包'],
+    },
+  },
 ]
