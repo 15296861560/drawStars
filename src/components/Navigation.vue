@@ -109,7 +109,7 @@ export default {
     toFirstPage() {
       this.$router.push({
         path: "/",
-      });
+      }).catch(()=>{});
     },
     handleSetLanguage(lang) {
       console.log(lang);

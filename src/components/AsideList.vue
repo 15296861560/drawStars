@@ -148,7 +148,8 @@ export default {
     getHomePages() {
       //获取HomePage列表
       let paths = [];
-      RouterList[1].children.forEach((route) => {
+      let homeRouter = RouterList.filter((item) => item.name == "index")[0];
+      homeRouter.children.forEach((route) => {
         let i = route.path.indexOf("HomePage");
         let path = route.path.slice(0, i + 8);
         if (i != -1 && !paths.includes(path)) paths.push(path);

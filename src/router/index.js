@@ -15,20 +15,13 @@ import Lab from '@/router/homePages/lab.js'
 
 Vue.use(Router)
 
-export const RouterList = [{
-    path: '/',
-    name: 'firstPage',
-    component: Index,
-    redirect: '/home/homepage',
-    meta: {
-      title: ['首页']
-    }
-  },
+export const RouterList = [
   {
     path: '/home',
     name: "index",
+    alias: "/",
     component: Index,
-    // redirect: '/home/homepage',
+    redirect: '/home/homepage',
     children: [{
         path: '/home/homepage',
         name: "首页",
