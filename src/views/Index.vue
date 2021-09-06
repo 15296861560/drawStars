@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="g-aside" :style="width"
+      <el-aside class="g-aside" :style="width" v-show="isComputer"
         ><asideList @collapse="collapse" ref="asideList"></asideList
       ></el-aside>
       <el-container>
@@ -72,19 +72,17 @@ export default {
         attr: "isComputer",
         val: false,
       });
-      this.$refs.asideList.isCollapse = true;
-      this.width = "width:50px;";
     },
   },
   watch: {
     screenHeight(val) {
+      console.log();
       if (val < this.screenWidth) {
         //电脑
         this.$store.dispatch("changeSettingInfo", {
           attr: "isComputer",
           val: true,
         });
-        this.$refs.asideList.isCollapse = false;
         this.width = "width:200px;";
       } else {
         //手机
