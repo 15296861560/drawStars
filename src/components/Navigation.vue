@@ -1,7 +1,7 @@
 <template>
   <div class="navigation">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-    <!-- 路由导航 -->
+      <!-- 路由导航 -->
       <el-breadcrumb-item
         v-show="isComputer"
         v-for="(item, index) in titleData"
@@ -18,9 +18,14 @@
           ><i class="el-icon-menu"></i>{{ titleData[0] }}</span
         >
       </el-breadcrumb-item>
+    </el-breadcrumb>
+
+    <div class="right-part">
+      <!-- 全屏 -->
+      <i class="el-icon-full-screen full-screen u-icon" @click="fullScreen"></i>
       <!-- 选择语言 -->
-      <el-dropdown class="selectLang"  @command="handleSetLanguage">
-          <img style="height: 3vh;" src="@/assets/img/nav/translate.svg" ></img>
+      <el-dropdown class="selectLang" @command="handleSetLanguage">
+        <img style="height: 3vh" src="@/assets/img/nav/translate.svg" />
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item :disabled="language === 'zh'" command="zh">
             中文
@@ -33,21 +38,24 @@
 
       <el-dropdown class="profile">
         <span class="el-dropdown-link">
-          {{ $store.getters.getUserName}}<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ $store.getters.getUserName
+          }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>{{$t("navigation.profile")}}</el-dropdown-item>
-          <el-dropdown-item>{{$t("navigation.setting")}}</el-dropdown-item>
-          <el-dropdown-item>{{$t("navigation.changePasswork")}}</el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">{{$t("navigation.logOut")}}</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navigation.profile") }}</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navigation.setting") }}</el-dropdown-item>
+          <el-dropdown-item>{{ $t("navigation.changePasswork") }}</el-dropdown-item>
+          <el-dropdown-item divided @click.native="logout">{{
+            $t("navigation.logOut")
+          }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-    </el-breadcrumb>
+    </div>
   </div>
 </template>
 
 <script>
-import db from '@/utils/commom/db'
+import db from "@/utils/commom/db";
 
 export default {
   name: "Navigation",
@@ -61,6 +69,7 @@ export default {
       search: "",
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      isFullscreen: false, //是否全屏显示
     };
   },
   computed: {
@@ -105,7 +114,7 @@ export default {
     handleSetLanguage(lang) {
       console.log(lang);
       this.$i18n.locale = lang;
-      db.local.save('LANGUAGE', lang)
+      db.local.save("LANGUAGE", lang);
       this.$store.dispatch("changeSettingInfo", {
         attr: "language",
         val: lang,
@@ -114,6 +123,17 @@ export default {
         message: this.$t("tips.switchLanguageSuccess"),
         type: "success",
       });
+    },
+    //全屏
+    fullScreen() {
+      //该方法进入全屏的方式与f11有差异
+      if (this.isFullscreen) {
+        this.isFullscreen = false;
+        document.webkitCancelFullScreen();
+      } else {
+        this.isFullscreen = true;
+        document.documentElement.webkitRequestFullScreen();
+      }
     },
   },
   watch: {},
@@ -125,15 +145,22 @@ export default {
 <style lang="less" scoped>
 .navigation {
   padding: 20px;
-  .selectLang{
-    position: absolute;
-    top:1vh;
-    right: 6vw;
-  }
+  display: flex;
+  justify-content: space-between;
 
-  .profile{
-    position: absolute;
-    right: 2vw;
+  .right-part {
+    display: flex;
+    align-items: center;
+    .full-screen {
+      margin-left: 1vw;
+    }
+    .selectLang {
+      margin-left: 1vw;
+    }
+
+    .profile {
+      margin-left: 2vw;
+    }
   }
 }
 
@@ -155,6 +182,4 @@ export default {
   color: aqua;
   font-weight: bold;
 }
-
-
 </style>
