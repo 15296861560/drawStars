@@ -107,9 +107,11 @@ export default {
       });
     },
     toFirstPage() {
-      this.$router.push({
-        path: "/",
-      }).catch(()=>{});
+      this.$router
+        .push({
+          path: "/",
+        })
+        .catch(() => {});
     },
     handleSetLanguage(lang) {
       console.log(lang);
@@ -133,6 +135,10 @@ export default {
       } else {
         this.isFullscreen = true;
         document.documentElement.webkitRequestFullScreen();
+        this.$store.dispatch("changeSettingInfo", {
+          attr: "isCollapse",
+          val: false,
+        });
       }
     },
   },
