@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'https://www.runoob.com/', // 你要代理的域名和端口号，要加上http
+        target: 'http://localhost:8010/', // 你要代理的域名和端口号，要加上http
         changeOrigin: true, // 跨域
         pathRewrite: {
           '^/api': '' 

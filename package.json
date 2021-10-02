@@ -9,7 +9,8 @@
     "start": "npm run dev",
     "test": "npm run unit",
     "build": "node build/build.js",
-    "serve": "vue-cli-service serve"
+    "serve": "vue-cli-service serve",
+    "db:serve": "node serve/db-serve.js"
   },
   "dependencies": {
     "@babel/core": "^7.15.5",
@@ -22,6 +23,7 @@
     "less": "^4.1.0",
     "less-loader": "^5.0.0",
     "mockjs": "^1.1.0",
+    "mysql": "^2.18.1",
     "nprogress": "^0.2.0",
     "vue": "^2.5.2",
     "vue-baidu-map": "^0.21.22",
