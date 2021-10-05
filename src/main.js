@@ -9,6 +9,7 @@ import Vuex from 'vuex'
 import store from '@/vuex'
 import '@/components/dragAndDropComponents/custom-component' // 注册可视化拖拽自定义组件
 import '@/assets/js/db/sqlite.js' // 定义sqlite常用操作
+import '@/assets/js/axios-api/axios-config.js' //封装请求
 
 import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";
@@ -18,12 +19,12 @@ import i18n from './lang'
 
 var echarts = require("echarts");
 Vue.prototype.$echarts = echarts
- 
+
 
 
 Vue.config.productionTip = false
 
-Vue.use(ElementUI ,{
+Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
 });
 Vue.component('Navigation', Navigation)
@@ -35,8 +36,7 @@ Vue.use(BaiduMap, {
   ak: 'fLZT8N8BfIbR2eAyV4gGRE683PCFOZXn'
 })
 
-/* eslint-disable no-new */
-new Vue({
+const VueObject = new Vue({
   el: '#app',
   router,
   store,
@@ -46,5 +46,4 @@ new Vue({
   render: h => h(App),
 })
 
-Vue.prototype.$vue = Vue;
-
+Vue.prototype.$vue = VueObject;

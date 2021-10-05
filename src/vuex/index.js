@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import UserInfo from './modules/user-info';
 import SettingInfo from './modules/setting-info';
+import ApiInfo from './modules/api-info';
 import Mutations from './mutations'
 import Getters from './getters'
 import State from './state'
@@ -13,7 +14,8 @@ const data ={
   mutations: Mutations,
   modules: {
     userInfo: UserInfo,
-    settingInfo: SettingInfo
+    settingInfo: SettingInfo,
+    apiInfo: ApiInfo
   }
 }
 

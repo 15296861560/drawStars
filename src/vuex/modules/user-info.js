@@ -2,7 +2,6 @@ export default {
   state: {
     userName: "未登录",
     userCode: "",
-    url: "",
     userId: 0,
   },
   mutations: {
@@ -19,9 +18,6 @@ export default {
     },
     getUserName(state) {
       return state.userName
-    },
-    getUrl(state) {
-      return state.url
     },
     getUserId(state) {
       return state.userId
