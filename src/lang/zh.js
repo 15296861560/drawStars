@@ -161,12 +161,15 @@ export default {
     selectComponents: "请选择组件",
     inputUserName: "请输入用户名",
     inputBalance: "请输入余额",
+    inputPhone: "请输入手机号码",
   },
   text: {
     selected: "选中",
     userName: "用户名",
     balance: "余额",
-    operate: "操作"
+    operate: "操作",
+    phone:"手机号码",
+    level:"等级",
   },
   aside: {
     module: "模块",

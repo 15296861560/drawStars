@@ -12,52 +12,54 @@ const db = require('../src/assets/js/db/mysql/base.js')
 router.post('/login', function (req, res) {
   let name = req.body.name;
   let password = req.body.password;
-  let errText = '',
-    resultData = '';
+
   db.selectData('select * from user where name = ' + name, (e, r) => {
-    if (e) {
-      res.status(200).json({
-        "status": false,
-        "msg": e,
-        "data": []
-      });
-    }
+    let message = '登录成功',
+      status = true,
+      resultData = r;
+
     if (r.length == 0) {
-      errText = "账号不存在";
+      message = "账号不存在";
     } else if (password != r[0].password) {
-      errText = "密码错误";
+      message = "密码错误";
     } else {
-      errText = "登录成功";
       resultData = r[0];
     }
+    if (e) {
+      message = "登录失败"
+      status = false;
+      resultData = e;
+    }
     res.status(200).json({
-      "status": true,
-      "msg": errText,
+      "status": status,
+      "msg": message,
       "data": resultData
     });
   })
 });
 // 注册接口 增加的方法使用案例
 router.post('/register', (req, res) => {
-  let errText = '注册成功',
-    resultData = 'sccusee';
+  let nowDate=new Date().getTime();
   let saveData = {
     "name": req.body.name,
     "password": req.body.password,
-    "phone": req.body.phone
+    "phone": req.body.phone,
+    "createTime": nowDate,
+    "updateTime": nowDate,
+    "level": 1,
   };
   db.insertData('user', saveData, (e, r) => {
+    let message = '注册成功',
+      status = true,
+      resultData = r;
     if (e) {
-      errText = "注册失败";
-      res.status(200).json({
-        "status": false,
-        "msg": errText,
-        "data": e
-      });
+      message = "注册失败"
+      status = false;
+      resultData = e;
     }
     res.status(200).json({
-      "status": true,
-      "msg": errText,
+      "status": status,
+      "msg": message,
       "data": resultData
     });
   })
@@ -68,17 +70,18 @@ router.post('/cancel', (req, res) => {
     phone: req.body.phone
   }
   db.deleteData('user', data, (e, r) => {
+    let message = '删除成功',
+      status = true,
+      resultData = null;
     if (e) {
-      return res.status(200).json({
-        "status": false,
-        "msg": "删除失败",
-        "data": e
-      });
+      message = "删除失败"
+      status = false;
+      resultData = e;
     }
     res.status(200).json({
-      "status": true,
-      "msg": "删除成功",
-      "data": '删除成功'
+      "status": status,
+      "msg": message,
+      "data": resultData
     });
   });
 
@@ -93,37 +96,55 @@ router.post('/modify', (req, res) => {
   };
 
   db.updateData('user', _set, _where, (e, r) => {
+    let message = '修改成功',
+      status = true,
+      resultData = null;
     if (e) {
-      return res.status(200).json({
-        "status": false,
-        "msg": e,
-        "data": ''
-      });
+      message = "修改失败"
+      status = false;
+      resultData = e;
     }
     res.status(200).json({
-      "status": true,
-      "msg": 'ok',
-      "data": 'resultData'
+      "status": status,
+      "msg": message,
+      "data": resultData
     });
   })
 })
 
 router.post('/query', function (req, res) {
-  let errText = '查询成功',
-    resultData = null;
   db.selectData('select id,name,level,phone from user', (e, r) => {
+    let message = '查询成功',
+      status = true,
+      resultData = r;
     if (e) {
-      errText = "查询失败"
-      res.status(200).json({
-        "status": false,
-        "msg": errText,
-        "data": e
-      });
+      message = "查询失败"
+      status = false;
+      resultData = e;
     }
-    resultData = r;
     res.status(200).json({
-      "status": true,
-      "msg": errText,
+      "status": status,
+      "msg": message,
+      "data": resultData
+    });
+  })
+});
+
+router.post('/sql', function (req, res) {
+  let sql = req.body.sql;
+
+  db.selectData(sql, (e, r) => {
+    let message = '执行成功',
+      status = true,
+      resultData = r;
+    if (e) {
+      message = "执行失败";
+      status = false;
+      resultData = e;
+    }
+    res.status(200).json({
+      "status": status,
+      "msg": message,
       "data": resultData
     });
   })

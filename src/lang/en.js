@@ -39,7 +39,7 @@ export default {
     specialHomePage: {
       transition: "transition",
       animation: "animation",
-      words:"words",
+      words: "words",
     },
     dataHomePage: {
       Mock: "Mock",
@@ -53,7 +53,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue Reactivity ",
       promise: "Simple use of Promise",
-      webpack:"Webpack packaging"
+      webpack: "Webpack packaging"
     },
     caseHomePage: {
       board: "Board"
@@ -161,12 +161,15 @@ export default {
     selectComponents: "Please select component",
     inputUserName: "Please enter user name",
     inputBalance: "Please enter the balance",
+    inputPhone: "Please enter your mobile phone number",
   },
   text: {
     selected: "Selected",
     userName: "User Name",
     balance: "Balance",
-    operate: "Operate"
+    operate: "Operate",
+    phone: "Phone Number",
+    level: "Level",
   },
   aside: {
     module: "Module",

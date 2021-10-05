@@ -11,7 +11,7 @@ export default [{
   {
     path: '/home/dataHomePage/Mock',
     name: "Mock",
-    component: resolve => require(['@/views/data/Mock/Mock.vue'], resolve),
+    component: resolve => require(['@/views/data/Mock/mock.vue'], resolve),
     meta: {
       title: ['首页', '数据传输模块', 'Mock'],
     },
@@ -35,9 +35,17 @@ export default [{
   {
     path: '/home/dataHomePage/Sqlite',
     name: "Sqlite",
-    component: resolve => require(['@/views/data/Sqlite/Sqlite.vue'], resolve),
+    component: resolve => require(['@/views/data/Sqlite/sqlite.vue'], resolve),
     meta: {
       title: ['首页', '数据传输模块', 'Sqlite'],
+    },
+  },
+  {
+    path: '/home/dataHomePage/MySQL',
+    name: "MySQL",
+    component: resolve => require(['@/views/data/MySQL/mysql.vue'], resolve),
+    meta: {
+      title: ['首页', '数据传输模块', 'MySQL'],
     },
   },
 ]
