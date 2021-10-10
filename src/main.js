@@ -10,6 +10,7 @@ import store from '@/vuex'
 import '@/components/dragAndDropComponents/custom-component' // 注册可视化拖拽自定义组件
 import '@/assets/js/db/sqlite.js' // 定义sqlite常用操作
 import '@/assets/js/axios-api/axios-config.js' //封装请求
+import '@/assets/js/umami/umami.js' //配置埋点
 
 import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";
