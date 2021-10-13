@@ -9,7 +9,7 @@
           background-color="#282c34"
           text-color="#fff"
           active-text-color="#ffd04b"
-          :collapse="isCollapse"
+          :collapse="websiteInfo.isCollapse"
           :unique-opened="true"
           :router="true"
           default-active="/home/homepage"
@@ -88,6 +88,7 @@
 import { RouterList } from "@/router";
 export default {
   name: "Aside",
+  inject: ["websiteInfo"],
   data() {
     return {
       userData: {
@@ -95,14 +96,6 @@ export default {
       },
       pathList: [],
     };
-  },
-  computed: {
-    isComputer() {
-      return this.$store.getters.getIsComputer;
-    },
-    isCollapse() {
-      return this.$store.getters.getIsCollapse;
-    },
   },
   methods: {
     levelDown() {
@@ -130,19 +123,13 @@ export default {
     toOutSide() {
       window.open("https://cn.bing.com/");
     },
+    // 收缩侧边栏
     collapse() {
-      if (!this.isComputer) {
-        this.$store.dispatch("changeSettingInfo", {
-          attr: "isCollapse",
-          val: true,
-        });
+      if (!this.websiteInfo.isPC) {
+        this.websiteInfo.isCollapse = true;
       } else {
-        this.$store.dispatch("changeSettingInfo", {
-          attr: "isCollapse",
-          val: !this.isCollapse,
-        });
+        this.websiteInfo.isCollapse = !this.websiteInfo.isCollapse;
       }
-      this.$emit("collapse", this.isCollapse);
     },
     // 获取主页列表数据
     getHomePages() {

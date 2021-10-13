@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-container>
-      <el-aside class="g-aside" :style="width" v-show="isComputer"
-        ><asideList @collapse="collapse" ref="asideList"></asideList
+      <el-aside class="g-aside" :style="width" v-if="websiteInfo.isPC"
+        ><asideList ref="asideList"></asideList
       ></el-aside>
       <el-container>
         <el-header>
@@ -37,71 +37,50 @@ export default {
     AsideList,
     History,
   },
-  computed: {
-    isComputer() {
-      return this.$store.getters.getIsComputer;
-    },
+  provide() {
+    return {
+      websiteInfo: this.websiteInfo,
+    };
   },
   data() {
     return {
       width: "width:200px;",
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      websiteInfo: {
+        isPC: true,//判断是否是电脑
+        isCollapse: false,// 侧边栏是否收缩
+      },
     };
   },
+  computed: {},
   methods: {
-    collapse(collapse) {
-      if (collapse) {
-        this.width = "width:50px;";
-      } else {
-        this.width = "width:200px;";
-      }
-    },
-    textClick() {
-      this.width = "width:50px;";
-    },
     login() {
       this.$store.dispatch("changeUserInfo", {
         attr: "userName",
         val: "lgy",
       });
     },
-    isPhone() {
-      //手机
-      this.$store.dispatch("changeSettingInfo", {
-        attr: "isComputer",
-        val: false,
-      });
+    isComputer() {
+      let userAgent = navigator.userAgent;
+      let phoneList = ["Android", "iPhone", "SymbianOS"];
+      this.websiteInfo.isPC = phoneList.every((item) => userAgent.indexOf(item) == -1); //不包含手机型号则视为PC
     },
   },
   watch: {
-    screenHeight(val) {
-      console.log();
-      if (val < this.screenWidth) {
-        //电脑
-        this.$store.dispatch("changeSettingInfo", {
-          attr: "isComputer",
-          val: true,
-        });
-        this.width = "width:200px;";
+    "websiteInfo.isCollapse"(val) {
+      if (val) {
+        this.width = "width:50px;";
       } else {
-        //手机
-        this.isPhone();
+        this.width = "width:200px;";
       }
     },
   },
   mounted() {
     let that = this;
-    window.onresize = function () {
-      //开启实时修改页面高度值
-      return (function () {
-        that.screenHeight = document.documentElement.clientHeight;
-        that.screenWidth = document.documentElement.clientWidth;
-      })();
-    };
-
-    if(this.screenHeight>this.screenWidth)this.isPhone();
-    if (this.$store.getters.getIsCollapse) this.width = "width:50px;";
+    this.isComputer();
+    window.onresize = this.isComputer;
+    if (this.websiteInfo.isCollapse) this.width = "width:50px;";
 
     this.login();
   },
@@ -116,7 +95,7 @@ export default {
 }
 
 /* 组件过渡 */
-.fade-enter-active{
+.fade-enter-active {
   transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 

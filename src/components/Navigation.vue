@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <!-- 路由导航 -->
       <el-breadcrumb-item
-        v-show="isComputer"
+        v-show="websiteInfo.isPC"
         v-for="(item, index) in titleData"
         :key="index"
       >
@@ -13,7 +13,7 @@
         <span v-if="index != 0" @click="goPage(index)" class="title">{{ item }}</span>
       </el-breadcrumb-item>
 
-      <el-breadcrumb-item v-show="!isComputer">
+      <el-breadcrumb-item v-show="!websiteInfo.isPC">
         <span @click="toFirstPage" class="firstPage"
           ><i class="el-icon-menu"></i>{{ titleData[0] }}</span
         >
@@ -62,6 +62,7 @@ export default {
   props: {
     titleData: Array,
   },
+  inject: ["websiteInfo"],
   data() {
     return {
       activeIndex: "1",
@@ -73,9 +74,6 @@ export default {
     };
   },
   computed: {
-    isComputer() {
-      return this.$store.getters.getIsComputer;
-    },
     language() {
       return this.$store.getters.getLanguage;
     },
@@ -135,10 +133,6 @@ export default {
       } else {
         this.isFullscreen = true;
         document.documentElement.webkitRequestFullScreen();
-        this.$store.dispatch("changeSettingInfo", {
-          attr: "isCollapse",
-          val: false,
-        });
       }
     },
   },
