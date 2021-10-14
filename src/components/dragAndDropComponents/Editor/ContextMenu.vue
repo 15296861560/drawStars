@@ -5,7 +5,7 @@
                 <template v-if="!curComponent.isLock">
                     <li @click="copy">{{$t("btn.copy")}}</li>
                     <li @click="paste">{{$t("btn.paste")}}</li>
-                    <li @click="cut">{{$t("btn.cut")}}</li>
+                    <li @click="cut">{{$t("btn.shear")}}</li>
                     <li @click="deleteComponent">{{$t("btn.delete")}}</li>
                     <li @click="lock">{{$t("btn.lock")}}</li>
                     <li @click="topComponent">{{$t("btn.toTop")}}</li>

@@ -108,6 +108,7 @@ export default {
   },
   btn: {
     copy: "Copy",
+    shear :"Shear cut",
     paste: "Paste",
     delete: "Delete",
     lock: "Lock",

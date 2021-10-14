@@ -53,7 +53,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue响应式原理",
       promise: "Promise简单使用",
-      webpack:"Webpack打包"
+      webpack: "Webpack打包"
     },
     caseHomePage: {
       board: "看板类"
@@ -108,6 +108,7 @@ export default {
   },
   btn: {
     copy: "复制",
+    shear: "剪切",
     paste: "粘贴",
     delete: "删除",
     lock: "锁定",
@@ -168,8 +169,8 @@ export default {
     userName: "用户名",
     balance: "余额",
     operate: "操作",
-    phone:"手机号码",
-    level:"等级",
+    phone: "手机号码",
+    level: "等级",
   },
   aside: {
     module: "模块",
