@@ -1,6 +1,6 @@
 <template>
   <div>
-    <polar ids="polar" :itemData="polarData" class="m-echart-standard"></polar>
+    <polar echartId="polar" :chartData="polarData" class="m-echart-standard"></polar>
   </div>
 </template>
 
@@ -19,12 +19,6 @@ export default {
         name: "已达成",
       },
     };
-  },
-  methods: {
-    initData() {},
-  },
-  mounted() {
-    this.initData();
   },
 };
 </script>

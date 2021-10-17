@@ -5,11 +5,9 @@
 </template>
 
 <script>
-
+import { echartViewsMixin } from "../mixin/echartViewsMixin";
 export default {
-  props: {
-    chartData: Array,
-  },
+  mixins: [echartViewsMixin],
   data() {
     return {
       myChart: null,
@@ -68,14 +66,6 @@ export default {
       // this.option.xAxis.data = this.XData;
       // this.option.series[0].data = this.statisticalData;
     },
-  },
-  mounted() {
-    this.paint();
-    //根据窗口的大小变动图表
-    var that = this;
-    window.onresize = function () {
-      that.myChart.resize();
-    };
   },
 };
 </script>

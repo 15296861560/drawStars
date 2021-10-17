@@ -1,8 +1,8 @@
 <template>
   <div>
     <dynamicOrderBar
-      ids="dynamicOrderBar"
-      :itemData="barData"
+      echartId="dynamicOrderBar"
+      :chartData="barData"
       class="m-echart-standard"
     ></dynamicOrderBar>
   </div>

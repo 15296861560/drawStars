@@ -1,15 +1,13 @@
 <template>
   <div>
-    <div id="echart-bar" class="m-echart-standard"></div>
+    <div id="echart-basic-bar" class="m-echart-standard"></div>
   </div>
 </template>
 
 <script>
-
+import { echartViewsMixin } from "../mixin/echartViewsMixin";
 export default {
-  props: {
-    chartData: Array,
-  },
+  mixins: [echartViewsMixin],
   data() {
     return {
       myChart: null,
@@ -39,7 +37,7 @@ export default {
       this.initData();
 
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = this.$echarts.init(document.getElementById("echart-bar"));
+      this.myChart = this.$echarts.init(document.getElementById("echart-basic-bar"));
       // 绘制图表
       this.myChart.setOption(this.option);
     },
@@ -47,14 +45,6 @@ export default {
       this.option.xAxis.data = this.XData;
       this.option.series[0].data = this.statisticalData;
     },
-  },
-  mounted() {
-    this.paint();
-    //根据窗口的大小变动图表
-    var that = this;
-    window.onresize = function () {
-      that.myChart.resize();
-    };
   },
 };
 </script>

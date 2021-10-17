@@ -1,6 +1,6 @@
 <template>
   <div>
-    <bar ids="echart-bar" :itemData="barData" class="m-echart-standard"></bar>
+    <bar echartId="echart-bar" :chartData="barData" class="m-echart-standard"></bar>
   </div>
 </template>
 
@@ -22,13 +22,6 @@ export default {
         series: [[120, 200, 150, 80, 70, 110, 130],[20, 20, 50, 80, 70, 10, 30]],
       },
     };
-  },
-  methods: {
-    initData() {
-    },
-  },
-  mounted() {
-    this.initData();
   },
 };
 </script>

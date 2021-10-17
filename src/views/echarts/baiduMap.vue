@@ -63,9 +63,6 @@
 <script>
 
 export default {
-  props: {
-    chartData: Array,
-  },
   data() {
     return {
       option: {},
@@ -140,11 +137,6 @@ export default {
   },
   mounted() {
     // this.initData();
-    //根据窗口的大小变动图表
-    // var that = this;
-    // window.onresize = function () {
-    //   that.myChart.resize();
-    // };
     // 隐藏百度广告
     // let baidu = document.getElementsByClassName("anchorBL");
     // baidu[0].style = "display:none";

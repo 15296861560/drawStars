@@ -209,13 +209,12 @@ export default {
   mounted() {
     this.getChartData();
 
-    if (this.dataTimer) {
-      clearInterval(this.dataTimer);
-    }
-    this.dataTimer = setInterval(() => {
-      this.updateChartData();
-    }, 3000);
-
+    // if (this.dataTimer) {
+    //   clearInterval(this.dataTimer);
+    // }
+    // this.dataTimer = setInterval(() => {
+    //   this.updateChartData();
+    // }, 3000);
     this.autoTooltip(this.pieOption);
   },
   beforeDestroy() {

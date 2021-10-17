@@ -79,7 +79,7 @@ export default {
   mounted() {
     let that = this;
     this.isComputer();
-    window.onresize = this.isComputer;
+    window.addEventListener("resize", this.isComputer);
     if (this.websiteInfo.isCollapse) this.width = "width:50px;";
 
     this.login();

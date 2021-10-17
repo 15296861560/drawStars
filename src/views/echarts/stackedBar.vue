@@ -1,8 +1,8 @@
 <template>
   <div>
     <stackedBar
-      ids="StackedBar"
-      :itemData="barData"
+      echartId="stacked-bar"
+      :chartData="stackedBarData"
       class="m-echart-standard"
     ></stackedBar>
   </div>
@@ -17,8 +17,8 @@ export default {
   },
   data() {
     return {
-      barData: {
-        color:["#03E4F6", "#2E86F2", "#E99936","#FF8A79","#D9221A","#A8DE96"],
+      stackedBarData: {
+        color: ["#03E4F6", "#2E86F2", "#E99936", "#FF8A79", "#D9221A", "#A8DE96"],
         legend: [
           {
             name: "访问方式一",
@@ -72,7 +72,7 @@ export default {
           {
             name: "访问方式三",
             type: "bar",
-            stack: '网络',
+            stack: "网络",
             emphasis: {
               focus: "series",
             },
@@ -81,7 +81,7 @@ export default {
           {
             name: "访问方式四",
             type: "bar",
-            stack: '网络',
+            stack: "网络",
             emphasis: {
               focus: "series",
             },
@@ -90,7 +90,7 @@ export default {
           {
             name: "访问方式五",
             type: "bar",
-            stack: '网络',
+            stack: "网络",
             emphasis: {
               focus: "series",
             },
@@ -98,14 +98,7 @@ export default {
           },
         ],
       },
-    }
-  },
-  methods: {
-    initData() {
-    },
-  },
-  mounted() {
-    this.initData();
+    };
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <e-map ids="echart-e-map" :itemData="mapData" height="80vh" width="80vw" class="m-echart-standard"></e-map>
+    <e-map echartId="echart-e-map" :chartData="mapData" height="80vh" width="80vw" class="m-echart-standard"></e-map>
   </div>
 </template>
 
@@ -53,12 +53,6 @@ export default {
         ], //数据
       },
     };
-  },
-  methods: {
-    initData() {},
-  },
-  mounted() {
-    this.initData();
   },
 };
 </script>

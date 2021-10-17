@@ -1,34 +1,18 @@
 <!-- 头部 -->
 <template>
-  <div class="charts" :style="{ width: width, height: height }">
-    <div :id="ids" :style="{ width: '100%', height: height }"></div>
-    <slot></slot>
+  <div :style="{ width: width, height: height }">
+    <div :id="echartId" :style="{ width: '100%', height: height }"></div>
   </div>
 </template>
 
 <script>
 import china from "@/assets/json/china.json";
+import { echartMixin } from "../mixin/echartMixin";
 export default {
-  props: {
-    ids: {
-      type: String,
-    },
-    itemData: {
-      type: Object,
-      default: {},
-    },
-    width: {
-      type: String,
-      default: "",
-    },
-    height: {
-      type: String,
-      default: "1",
-    },
-  },
+  mixins: [echartMixin],
   data() {
     return {
-      AbnormalStatusEchart: "",
+      myChart: null,
       mapData: [],
       geoCoordMap: {
         江西: [115.892151, 28.676493],
@@ -65,6 +49,7 @@ export default {
         江苏: [118.767413, 32.041544],
         北京: [116.405285, 39.904989],
         香港: [114.173355, 22.320048],
+        澳门: [113.5, 22.2],
       },
     };
   },
@@ -80,36 +65,8 @@ export default {
       return linesEndCoords;
     },
   },
-
-  components: {},
-  watch: {
-    itemData: {
-      handler: function (newVal, oldVal) {
-        if (Object.keys(newVal).length != 0) {
-          this.$nextTick(() => {
-            this.initPage(newVal);
-          });
-        }
-      },
-      immediate: true,
-      deep: true,
-    },
-  },
-
-  mounted() {
-    this.$echarts.registerMap("china", china);
-    // 监听窗口发生变化，resize组件
-    window.addEventListener("resize", this.$_handleResizeChart);
-    // 通过hook监听组件销毁钩子函数，并取消监听事件
-    this.$once("hook:beforeDestroy", () => {
-      window.removeEventListener("resize", this.$_handleResizeChart);
-    });
-  },
-
   methods: {
-    initPage(newVal) {
-      console.log("map");
-      console.log(newVal);
+    initData(newVal) {
       //显示前10具体数据
       this.mapData = JSON.parse(JSON.stringify(newVal.data));
       let datas = this.mapData
@@ -133,8 +90,6 @@ export default {
       datas.forEach((item) => {
         showValue[item.name] = item.value + "m³";
       });
-      console.log("linesEndCoords");
-      console.log(linesEndCoords);
       keys.forEach((item, index) => {
         let toLocation = linesEndCoords[item];
         toLocation[1] = 40 - index * 2;
@@ -151,21 +106,7 @@ export default {
         });
       });
 
-      // 基于准备好的dom，初始化echarts实例
-      // let chart = document.getElementById(this.ids);
-      // this.AbnormalStatusEchart = this.$echarts.init(chart);
-
-      let chart = this.$echarts.getInstanceByDom(
-        document.getElementById(this.ids),
-        "macarons"
-      );
-      if (chart === undefined) {
-        this.AbnormalStatusEchart = this.$echarts.init(document.getElementById(this.ids));
-      } else {
-        this.AbnormalStatusEchart = chart;
-      }
-
-      let option = {
+      this.option = {
         title: {
           show: true,
           text: newVal.title,
@@ -244,11 +185,11 @@ export default {
           },
         ],
       };
-      // 使用刚指定的配置项和数据显示图表。
-      this.AbnormalStatusEchart.setOption(option, true);
+
+      this.myChart.setOption(this.option, true);
 
       let that = this;
-      this.AbnormalStatusEchart.on("click", function (params) {
+      this.myChart.on("click", function (params) {
         // that.$router.push({ path: "/MapDetail", query: {} });
         that.getProvince(params);
       });
@@ -257,38 +198,15 @@ export default {
       //调用父组件设置的点击事件
       this.$emit("getProvince", params);
     },
-    $_handleResizeChart() {
-      if (this.AbnormalStatusEchart) {
-        this.AbnormalStatusEchart.resize();
-      }
+    paint() {
+      this.$echarts.registerMap("china", china);
+      this.myChart = this.$echarts.init(document.getElementById(this.echartId));
+      if (this.chartData) this.initData(this.chartData);
+      //不重新渲染下排名信息第一次渲染不出来
+      this.$nextTick(() => {
+        this.resizeChart();
+      });
     },
   },
 };
 </script>
-<style lang="less" scoped>
-.charts {
-  position: relative;
-  .title {
-    position: absolute;
-    top: 0;
-    left: 0rem;
-    margin-bottom: 1vh;
-    width: 1.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0.01rem 0;
-    background-color: rgba(32, 75, 93, 0.5);
-    span {
-      font-size: 0.11rem;
-      font-family: Source Han Sans CN Medium, Source Han Sans CN Medium-Medium;
-      font-weight: 500;
-      color: #00ecff;
-    }
-    img {
-      margin-left: 0.07rem;
-      margin-right: 0.05rem;
-      width: 0.07rem;
-    }
-  }
-}
-</style>

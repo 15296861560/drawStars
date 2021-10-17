@@ -1,10 +1,9 @@
 <template>
   <div>
     <barLineDrill
-      ids="barLineDrill"
-      :itemData="barData"
+      echartId="barLineDrill"
+      :chartData="barLineData"
       class="m-echart-standard"
-      height="80vh"
     ></barLineDrill>
   </div>
 </template>
@@ -18,7 +17,7 @@ export default {
   },
   data() {
     return {
-      barData: {
+      barLineData: {
         gridLeft: "40px",
         gridBottom: "40px",
         openLegend: true,
@@ -52,12 +51,6 @@ export default {
         ],
       },
     };
-  },
-  methods: {
-    initData() {},
-  },
-  mounted() {
-    this.initData();
   },
 };
 </script>

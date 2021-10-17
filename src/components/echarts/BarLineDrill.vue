@@ -1,62 +1,14 @@
 <!-- 头部 -->
 <template>
-  <div class="charts" :style="{ width: width, height: height }">
-    <div :id="ids" :style="{ width: '100%', height: height }"></div>
-    <slot></slot>
-  </div>
+  <div  :id="echartId" :style="{ width: width, height: height }"></div>
 </template>
 
 <script>
+import { echartMixin } from "../mixin/echartMixin";
 export default {
-  props: {
-    ids: {
-      type: String,
-    },
-    itemData: {
-      type: Object,
-      default: {},
-    },
-    width: {
-      type: String,
-      default: "",
-    },
-    height: {
-      type: String,
-      default: "1",
-    },
-  },
-  data() {
-    return {
-      AbnormalStatusEchart: "",
-    };
-  },
-
-  components: {},
-  watch: {
-    itemData: {
-      handler: function (newVal, oldVal) {
-        if (Object.keys(newVal).length != 0) {
-          this.$nextTick(() => {
-            this.initPage(newVal);
-          });
-        }
-      },
-      immediate: true,
-      deep: true,
-    },
-  },
-
-  mounted() {
-    // 监听窗口发生变化，resize组件
-    window.addEventListener("resize", this.$_handleResizeChart);
-    // 通过hook监听组件销毁钩子函数，并取消监听事件
-    this.$once("hook:beforeDestroy", () => {
-      window.removeEventListener("resize", this.$_handleResizeChart);
-    });
-  },
-
+  mixins: [echartMixin],
   methods: {
-    initPage(newVal) {
+    initData(newVal) {
       //是否开启legend
       let showLegend = false;
       let legend = [];
@@ -119,7 +71,7 @@ export default {
               //折线拐点标志的样式
               color: newVal.series[i].color,
               borderColor: "#fff",
-              borderWidth:2,
+              borderWidth: 2,
               // width: 2,
               // shadowColor: "#3D7EEB",
               // shadowBlur: 4
@@ -137,7 +89,7 @@ export default {
           seriesData.push({
             name: newVal.series[i].name,
             type: newVal.series[i].type,
-            barWidth: newVal.barWidth?newVal.barWidth:15,
+            barWidth: newVal.barWidth ? newVal.barWidth : 15,
             itemStyle: {
               normal: {
                 //条形颜色
@@ -153,14 +105,14 @@ export default {
         }
       }
       // 基于准备好的dom，初始化echarts实例
-      // let chart = document.getElementById(this.ids);
-      // this.AbnormalStatusEchart = this.$echarts.init(chart);
+      // let chart = document.getElementById(this.echartId);
+      // this.myChart = this.$echarts.init(chart);
 
-      let chart = this.$echarts.getInstanceByDom(document.getElementById(this.ids));
+      let chart = this.$echarts.getInstanceByDom(document.getElementById(this.echartId));
       if (chart === undefined) {
-        this.AbnormalStatusEchart = this.$echarts.init(document.getElementById(this.ids));
+        this.myChart = this.$echarts.init(document.getElementById(this.echartId));
       } else {
-        this.AbnormalStatusEchart = chart;
+        this.myChart = chart;
       }
 
       let axisLabel = {};
@@ -185,7 +137,7 @@ export default {
         };
       }
 
-      let option = {
+      this.option = {
         color: newVal.color,
         grid: {
           top: "19%",
@@ -255,49 +207,16 @@ export default {
         series: seriesData,
       };
       // 使用刚指定的配置项和数据显示图表。
-      this.AbnormalStatusEchart.setOption(option, true);
-      this.AbnormalStatusEchart.off("click");//使点击事件只触发一次
-      this.AbnormalStatusEchart.on("click", (object) => {
+      this.myChart.off("click"); //使点击事件只触发一次
+      this.myChart.on("click", (object) => {
         this.drill(object);
       });
     },
     drill(object) {
-      console.log(object.name);
+      alert(object.name);
       //调用父组件重绘方法
       this.$emit("rp", object);
-    },
-    $_handleResizeChart() {
-      if (this.AbnormalStatusEchart) {
-        this.AbnormalStatusEchart.resize();
-      }
     },
   },
 };
 </script>
-<style lang="less" scoped>
-.charts {
-  position: relative;
-  .title {
-    position: absolute;
-    top: 0;
-    left: 0rem;
-    margin-bottom: 1vh;
-    width: 1.5rem;
-    display: flex;
-    align-items: center;
-    padding: 0.01rem 0;
-    background-color: rgba(32, 75, 93, 0.5);
-    span {
-      font-size: 0.11rem;
-      font-family: Source Han Sans CN Medium, Source Han Sans CN Medium-Medium;
-      font-weight: 500;
-      color: #00ecff;
-    }
-    img {
-      margin-left: 0.07rem;
-      margin-right: 0.05rem;
-      width: 0.07rem;
-    }
-  }
-}
-</style>
