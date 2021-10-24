@@ -12,11 +12,15 @@
           :collapse="websiteInfo.isCollapse"
           :unique-opened="true"
           :router="true"
-          default-active="/home/homepage"
+          default-active="/"
         >
-          <el-menu-item index="/home/homepage" @click="collapse" class="m-text-center">
+          <el-menu-item @click="collapse" class="m-text-center">
+            <i v-show="websiteInfo.isCollapse" class="el-icon-d-arrow-right"></i>
+            <span slot="title">Draw Starts</span>
+          </el-menu-item>
+          <el-menu-item index="/">
             <i class="el-icon-s-home"></i>
-            <!-- <span slot="title">首页</span> -->
+            <span slot="title">首页</span>
           </el-menu-item>
 
           <el-submenu index="1">
@@ -105,21 +109,12 @@ export default {
       this.userData.level++;
     },
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-      if (key == "1-1") window.open("https://cn.bing.com/");
-      if (key == "2-1") {
-        this.$router.push({
-          path: "/home/homepage",
-        });
-      }
+      // 展开
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      // 收起
     },
 
-    goPage(link) {
-      this.$router.push(link).catch((error) => error);
-    },
     toOutSide() {
       window.open("https://cn.bing.com/");
     },
@@ -161,5 +156,7 @@ export default {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+  height: 100vh;
+  overflow: hidden auto;
 }
 </style>
