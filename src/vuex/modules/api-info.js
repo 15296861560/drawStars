@@ -1,6 +1,6 @@
 export default {
   state: {
-    url: "/api/mysqlApi/"
+    url: "/api"
   },
   mutations: {
     changeApi(state, {

@@ -86,7 +86,7 @@ export default {
         phone: rowData.phone,
       };
 
-      this.$axios(data, "/register").then((res) => {
+      this.$axios(data, "/mysqlApi/register").then((res) => {
         if (res.status) {
           this.$message({
             type: "success",
@@ -101,7 +101,7 @@ export default {
     },
     // 查询
     query() {
-      this.$axios({}, "/query").then((res) => {
+      this.$axios({}, "/mysqlApi/query").then((res) => {
         if (res.status) {
           this.tableData = res.data;
         }
@@ -109,7 +109,7 @@ export default {
     },
     // 删除
     deleteRow(phone) {
-      this.$axios({ phone: phone }, "/cancel").then((res) => {
+      this.$axios({ phone: phone }, "/mysqlApi/cancel").then((res) => {
         if (res.status) {
           this.$message({
             type: "success",
@@ -118,18 +118,6 @@ export default {
           this.query();
         }
       });
-    },
-    //更新数据
-    update(columnName, columnValue, id) {
-      let sql =
-        "UPDATE processStorage SET " +
-        columnName +
-        " = '" +
-        columnValue +
-        "' WHERE Id = " +
-        id;
-
-      this.$transaction(sql);
     },
     // 更新多条数据
     updateDatas() {
@@ -147,7 +135,7 @@ export default {
             "' WHERE Id in (" +
             ids +
             ")";
-          this.$axios({sql:sql}, "/sql").then(() => {
+          this.$axios({sql:sql}, "/mysqlApi/sql").then(() => {
             // 更新成功后操作
             this.checkList = [];
             this.query();
@@ -175,7 +163,7 @@ export default {
           //构造sql
           let ids = this.getCheckListIds();
           let sql = { sql: "delete from user where id in (" + ids + ")" };
-          this.$axios(sql, "/sql").then((res) => {
+          this.$axios(sql, "/mysqlApi/sql").then((res) => {
             // 删除成功后操作
             this.checkList = [];
             this.query();

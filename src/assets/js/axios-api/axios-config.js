@@ -43,7 +43,6 @@ Vue.prototype.$axios = function (params, methodUrl) {
       }
       resolve(res.data)
     }).catch(err => {
-      debugger;
       let errObj = JSON.parse(JSON.stringify(err));
       if (errObj.response) {
         let status = errObj.response.status;

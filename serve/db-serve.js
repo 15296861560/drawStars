@@ -4,6 +4,7 @@ const server = express()
 // 我的基础路由文件.
 const mysqlApi = require('./mysql-api.js')
 const testApi = require('./test-api.js')
+const controller = require('./controller.js')
 
 // json 解析 
 server.use(express.json());
@@ -21,6 +22,7 @@ server.all('*', function(req, res, next) {
 server.use(express.static('public'))
 server.use('/mysqlApi',mysqlApi)
 server.use('/testApi',testApi)
+server.use('/controller',controller)
 server.listen(8010)
 
 console.log('server run port 8010')
