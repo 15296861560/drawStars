@@ -27,6 +27,7 @@ export default {
     toolHomePage: {
       Lodash: "Lodash",
       utilities: "Utilities",
+      practice: "Practice room",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",
@@ -53,7 +54,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue Reactivity ",
       promise: "Simple use of Promise",
-      webpack: "Webpack packaging"
+      webpack: "Webpack packaging",
     },
     caseHomePage: {
       board: "Board"
@@ -155,6 +156,10 @@ export default {
     batchUpdate: "Batch Update",
     dropTable: "Drop Table",
     clearTable: "Clear Table:",
+    sourceCode:"Source Code",
+    runningRes:"Running Results",
+    clickRun:"Click Run",
+    reset:"Reset",
   },
   placeholder: {
     redirect: "Please enter the full URL",

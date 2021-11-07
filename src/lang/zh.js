@@ -27,6 +27,7 @@ export default {
     toolHomePage: {
       Lodash: "Lodash",
       utilities: "实用工具",
+      practice: "练习室",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",
@@ -53,7 +54,7 @@ export default {
     labHomePage: {
       vueReactivity: "Vue响应式原理",
       promise: "Promise简单使用",
-      webpack: "Webpack打包"
+      webpack: "Webpack打包",
     },
     caseHomePage: {
       board: "看板类"
@@ -155,6 +156,10 @@ export default {
     batchUpdate: "批量更新",
     dropTable: "删除表",
     clearTable: "清空表",
+    sourceCode:"源代码",
+    runningRes:"运行结果",
+    clickRun:"点击运行",
+    reset:"重置",
   },
   placeholder: {
     redirect: "请输入完整的 URL",

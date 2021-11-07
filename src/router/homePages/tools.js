@@ -49,4 +49,12 @@ export default [{
       },
     ]
   },
+  {
+    path: '/home/toolHomePage/practice',
+    name: "练习室",
+    component: resolve => require(['@/views/tools/practice'], resolve),
+    meta: {
+      title: ['首页', '工具模块','练习室'],
+    },
+  },
 ]
