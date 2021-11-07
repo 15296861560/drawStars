@@ -1,7 +1,7 @@
 ## DrawStarts
 
 ## 目的
-    这个项目主要目的是记录下一下可能会使用到的前端相关知识，进行学习和练习。
+    这个项目主要目的是记录下一些前端相关的知识、技巧和一些有意思的功能。
 
 ## 常用命令
 
@@ -10,7 +10,7 @@
 npm install
 
 # 启动服务
-npm run dev || npm run serve
+npm run dev || npm run start
 
 # 启动后台服务
 npm run db:serve
