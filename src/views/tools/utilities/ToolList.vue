@@ -3,8 +3,8 @@
     <div class="g-list-normal">
       <el-menu
         default-active="1"
-        class="el-menu-vertical-demo m-list-normal"
-        mode="vertical"
+        class="el-menu-demo m-list-horizontal"
+        mode="horizontal"
         @select="handleSelect"
       >
         <el-submenu :index="item.index" v-for="(item, index) in titleArray" :key="index">
@@ -38,7 +38,7 @@
         </el-submenu>
       </el-menu>
 
-      <div class="ml10 w-per80">
+      <div class="mt10 w-per100">
         <router-view />
       </div>
     </div>

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="g-home-module" style="justify-content: flex-start;">
+    <div class="g-list-normal">
       <el-menu
         :default-active="activeIndex"
-        class="el-menu-demo"
+        class="el-menu-demo m-list-horizontal"
         mode="horizontal"
         @select="handleSelect"
       >
@@ -21,7 +21,7 @@
           <!-- 二级标题（有三级标题） -->
           <el-submenu
             v-show="secondItem.titleData"
-            v-for="(secondItem) in item.titleData"
+            v-for="secondItem in item.titleData"
             :key="secondItem.index"
             :index="secondItem.index"
           >
@@ -36,9 +36,10 @@
           </el-submenu>
         </el-submenu>
       </el-menu>
-    </div>
-    <div class="g-module-normal mt10">
-      <router-view />
+
+      <div class="g-module-normal mt10">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>

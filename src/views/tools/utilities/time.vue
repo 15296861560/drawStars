@@ -1,5 +1,5 @@
 <template>
-  <div class="g-flex-column">
+  <div class="g-flex-column border-normal">
     <div class="m-block">
       <div class="m-block-title">时间</div>
       <div class="m-block-content">

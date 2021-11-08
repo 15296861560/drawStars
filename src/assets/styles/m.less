@@ -57,6 +57,12 @@
   text-align: left;
 }
 
+.m-list-horizontal {
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+}
+
 //路由模块
 .m-router-link {
   color: black;
@@ -111,6 +117,7 @@
 .m-block {
   text-align: left;
   width: 100%;
+  padding: 10px;
 
   .m-block-title {
     font-size: 20px;
@@ -244,7 +251,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #ececec;
+    background-color: #f5f7fa;
     padding: 15px;
     border-radius: 5px 5px 0 0;
     height: 60px;
@@ -280,7 +287,7 @@
       transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
       resize: none; //去掉右下角三角图标
       border: none;
-      outline: none;//去掉外边框
+      outline: none; //去掉外边框
     }
   }
 }

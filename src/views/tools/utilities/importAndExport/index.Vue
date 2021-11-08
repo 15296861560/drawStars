@@ -4,14 +4,22 @@
       <div class="action-row">
         <input type="file" @input="importFile" ref="file" hidden />
 
-        <div class="m-btn-simple mr-2vw" @click="selectFile"><span>{{$t("btn.import")}}</span></div>
-        <div class="m-btn-simple mr-2vw" @click="exportFile"><span>{{$t("btn.export")}}</span></div>
-        <div class="m-btn-simple mr-2vw" @click="getTemplate"><span>{{$t("btn.getTemplate")}}</span></div>
-        <div class="m-btn-simple" @click="printPage"><span>{{$t("btn.print")}}</span></div>
+        <el-button type="primary" size="small" @click="selectFile">{{
+          $t("btn.import")
+        }}</el-button>
+        <el-button type="primary" size="small" @click="exportFile">{{
+          $t("btn.export")
+        }}</el-button>
+        <el-button type="primary" size="small" @click="getTemplate">{{
+          $t("btn.getTemplate")
+        }}</el-button>
+        <el-button type="primary" size="small" @click="printPage">{{
+          $t("btn.print")
+        }}</el-button>
       </div>
 
       <div class="showTable" ref="printcontent">
-        <div class="table-th">
+        <div class="table-th bg-gray-white">
           <table width="100%" cellspacing="0" cellpadding="0" align="center">
             <tr>
               <th style="width: 20%">
@@ -86,7 +94,7 @@ export default {
     currentPage(newVal) {
       this.singelTableTdData = this.tableTdData.slice(
         (newVal - 1) * this.pageSize,
-        newVal*this.pageSize
+        newVal * this.pageSize
       );
     },
   },
@@ -254,17 +262,14 @@ export default {
   .table-th {
     border-radius: 5px 5px 0px 0px;
     th {
-      background-color: #f5f7f9;
       color: #666666;
       padding: 0.5vh 0;
-      border-right: 2px solid #f0f0f0;
-      border-left: 2px solid #f0f0f0;
       font-weight: bold;
     }
   }
 
   .table-body {
-    height: 60vh;
+    height: 50vh;
     overflow: hidden;
     td {
       // color: #00f8ff;
