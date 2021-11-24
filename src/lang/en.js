@@ -70,6 +70,9 @@ export default {
   dependence: {
     dependenceInfo: "Dependences info",
   },
+  commit: {
+    updateLog: "Update log",
+  },
   tips: {
     switchLanguageSuccess: "Switch language successfully",
     addImgSuccess: "After the picture is successfully added, the editing function starts automatically",

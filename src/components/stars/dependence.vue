@@ -1,7 +1,7 @@
 <template>
   <div class="dependence">
     <div class="title-row">
-      <div class="dependence-title">{{$t("dependence.dependenceInfo")}}</div>
+      <div class="dependence-title">{{ $t("dependence.dependenceInfo") }}</div>
     </div>
     <div class="dependence-main">
       <ul>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getDpList() {
-      let dpList=[];
+      let dpList = [];
       for (let key in packageMsg.dependencies) {
         dpList.push({
           relyOn: key,
@@ -34,7 +34,7 @@ export default {
         });
       }
 
-      this.dpList=dpList;
+      this.dpList = dpList;
     },
   },
   mounted() {
@@ -47,15 +47,18 @@ export default {
 <style lang="less" scoped>
 .dependence {
   display: flex;
-  width: 70vw;
+  width: 49%;
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
   .title-row {
     display: flex;
     padding-left: 2vw;
-    padding-right: 2vw;
-    margin-top: 2vh;
+    align-items: center;
+    height: 5vh;
+    border-bottom: solid;
+    border-color: #e6e6e6;
+    border-width: 1px;
     .dependence-title {
       color: black;
     }

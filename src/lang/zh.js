@@ -70,6 +70,9 @@ export default {
   dependence: {
     dependenceInfo: "依赖信息",
   },
+  commit: {
+    updateLog: "更新日志",
+  },
   tips: {
     switchLanguageSuccess: "切换语言成功",
     addImgSuccess: "成功添加图片后，编辑功能自动启动",

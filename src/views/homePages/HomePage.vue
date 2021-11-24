@@ -133,8 +133,9 @@
           </div>
         </div>
 
-        <div class="g-home-block">
+        <div class="g-flex-between w-per100">
           <dependence></dependence>
+          <commitInfo></commitInfo>
         </div>
       </div>
     </div>
@@ -142,6 +143,7 @@
 </template>
 <script>
 import Dependence from "@/components/stars/dependence.vue";
+import CommitInfo from "@/components/stars/commitInfo.vue";
 import BasicEchart from "@/components/echarts/BasicEchart.vue";
 import chartData from "@/assets/js/testData/chartData";
 import Mock from "mockjs";
@@ -150,6 +152,7 @@ export default {
   components: {
     BasicEchart,
     Dependence,
+    CommitInfo,
   },
   data() {
     return {
