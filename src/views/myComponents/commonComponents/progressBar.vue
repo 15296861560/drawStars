@@ -1,23 +1,6 @@
 <template>
   <div>
     <div class="g-home-module">
-      <div class="m-item" style="align-items: normal">
-        <el-progress :percentage="rate"></el-progress>
-      </div>
-      <div class="m-item" style="align-items: normal">
-        <el-progress
-          :text-inside="true"
-          :stroke-width="26"
-          :percentage="rate"
-        ></el-progress>
-      </div>
-
-      <div class="m-item">
-        <el-progress type="circle" :percentage="rate"></el-progress>
-      </div>
-      <div class="m-item">
-        <el-progress type="dashboard" :percentage="rate"></el-progress>
-      </div>
       <div class="m-item">
         <div class="liPerson">
           <div class="liPersonBar">
@@ -36,7 +19,7 @@
       <div class="m-item">
         <div class="progressBar">
           <div class="progress" :style="{ width: rate + '%' }"></div>
-          <span class="in-text" :style="{ left: rate + '%' }">{{ rate + "%" }}</span>
+          <div class="in-text" :style="{ left: rate + '%' }">{{ rate + "%" }}</div>
         </div>
       </div>
 
@@ -102,7 +85,9 @@ export default {
   }
   .in-text {
     position: relative;
-    bottom: 1.3vh;
+    transform: translateY(-100%);
+    top: 50%;
+    padding-left: 1vw;
   }
 }
 .gradualBar {

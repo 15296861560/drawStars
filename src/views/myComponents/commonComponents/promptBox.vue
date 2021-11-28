@@ -1,14 +1,12 @@
 <template>
   <div>
     <div class="g-home-module">
-      <div class="m-item" @click="showHardTip()">普通软提示</div>
-      <div class="m-item"></div>
-      <div class="m-item"></div>
+       <el-button type="primary" @click="showHardTip()">硬提示</el-button>
     </div>
-    <div class="hardTip-bg">
+    <div class="hardTip-bg" v-if="hardTip">
       <div class="hardTip">
-        硬提示内容
-        <button class="btn">关闭提示</button>
+        <div class="content-area">硬提示内容</div>
+        <button class="btn" @click="hardTip = false">关闭提示</button>
       </div>
     </div>
   </div>
@@ -45,25 +43,30 @@ export default {
     background-color: white;
     overflow: hidden;
     position: fixed;
-    top: 30%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-color: #80ffff;
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
-    height: 200px;
-    width: 200px;
+    height: 20vh;
+    width: 20vw;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     flex-direction: column;
+    .content-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 70%;
+    }
     .btn {
       background-color: #6fe7f1;
       border: solid;
       border-color: transparent;
       height: 30%;
-      width:100%;
+      width: 100%;
     }
   }
 }
