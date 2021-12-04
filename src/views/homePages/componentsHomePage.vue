@@ -1,35 +1,24 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/componentsHomePage/dragAndDropComponents" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/myComponents/drag.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.componentsHomePage.dragAndDropComponents")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/componentsHomePage/commonComponents" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/myComponents/common.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.componentsHomePage.commonComponents")}}</p>
-          </div>
-        </div>
-      </router-link>
+      <router-link-normal
+        to="/home/componentsHomePage/dragAndDropComponents"
+        imgSrc="myComponents/"
+        imgName="drag"
+        :text="$t('homePage.componentsHomePage.dragAndDropComponents')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/componentsHomePage/commonComponents"
+        imgSrc="myComponents/"
+        imgName="common"
+        :text="$t('homePage.componentsHomePage.commonComponents')"
+      ></router-link-normal>
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>

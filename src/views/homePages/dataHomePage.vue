@@ -32,11 +32,8 @@
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>

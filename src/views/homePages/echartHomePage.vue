@@ -1,125 +1,78 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/echartHomePage/basicBar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/bar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.basicBar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/basicLine" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/line.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.basicLine")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/basicArea" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/area.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.basicArea")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/basicPie" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/pie.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.basicPie")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/baiduMap" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/location.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.baiduMap")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/bar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/bar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.bar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/stackedBar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/stackedBar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.stackedBar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/barLineDrill" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/barLineDrill.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.barLineDrill")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/polar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/polar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.polar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/dynamicOrderBar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/dynamicOrderBar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.dynamicOrderBar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/echartHomePage/eMap" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/echarts/map.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.echartHomePage.eMap")}}</p>
-          </div>
-        </div>
-      </router-link>
+      <router-link-normal
+        to="/home/echartHomePage/basicBar"
+        imgSrc="echarts/"
+        imgName="bar"
+        :text="$t('homePage.echartHomePage.basicBar')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/basicLine"
+        imgSrc="echarts/"
+        imgName="line"
+        :text="$t('homePage.echartHomePage.basicLine')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/basicArea"
+        imgSrc="echarts/"
+        imgName="area"
+        :text="$t('homePage.echartHomePage.basicArea')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/basicPie"
+        imgSrc="echarts/"
+        imgName="pie"
+        :text="$t('homePage.echartHomePage.basicPie')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/baiduMap"
+        imgSrc="echarts/"
+        imgName="location"
+        :text="$t('homePage.echartHomePage.baiduMap')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/bar"
+        imgSrc="echarts/"
+        imgName="bar"
+        :text="$t('homePage.echartHomePage.bar')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/stackedBar"
+        imgSrc="echarts/"
+        imgName="stackedBar"
+        :text="$t('homePage.echartHomePage.stackedBar')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/barLineDrill"
+        imgSrc="echarts/"
+        imgName="barLineDrill"
+        :text="$t('homePage.echartHomePage.barLineDrill')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/polar"
+        imgSrc="echarts/"
+        imgName="polar"
+        :text="$t('homePage.echartHomePage.polar')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/dynamicOrderBar"
+        imgSrc="echarts/"
+        imgName="dynamicOrderBar"
+        :text="$t('homePage.echartHomePage.dynamicOrderBar')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/echartHomePage/eMap"
+        imgSrc="echarts/"
+        imgName="map"
+        :text="$t('homePage.echartHomePage.eMap')"
+      ></router-link-normal>
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>

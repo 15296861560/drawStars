@@ -3,118 +3,14 @@
     <div class="g-home">
       <div class="g-home-module">
         <div class="g-home-block">
-          <router-link to="/home/echartHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/bar.svg"
-                  :alt="$t('homePage.echart')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.echart") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/toolHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/tool.svg"
-                  :alt="$t('homePage.tool')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.tool") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/componentsHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/components.svg"
-                  :alt="$t('homePage.components')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.components") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/specialHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/special.svg"
-                  :alt="$t('homePage.special')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.special") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/dataHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/data.svg"
-                  :alt="$t('homePage.data')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.data") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/multimediaHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/multimedia.svg"
-                  :alt="$t('homePage.multimedia')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.multimedia") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/labHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/lab.svg"
-                  :alt="$t('homePage.lab')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.lab") }}</p>
-              </div>
-            </div>
-          </router-link>
-          <router-link to="/home/caseHomePage" class="m-router-link">
-            <div class="m-home-button">
-              <div class="m-img">
-                <img
-                  class="m-home-img"
-                  src="@/assets/img/case.svg"
-                  :alt="$t('homePage.case')"
-                />
-              </div>
-              <div>
-                <p class="m-p">{{ $t("homePage.case") }}</p>
-              </div>
-            </div>
-          </router-link>
+          <router-link-normal to="/home/echartHomePage" imgName="bar" :text="$t('homePage.echart')" ></router-link-normal>
+          <router-link-normal to="/home/toolHomePage" imgName="tool" :text="$t('homePage.tool')" ></router-link-normal>
+          <router-link-normal to="/home/componentsHomePage" imgName="components" :text="$t('homePage.components')" ></router-link-normal>
+          <router-link-normal to="/home/specialHomePage" imgName="special" :text="$t('homePage.special')" ></router-link-normal>
+          <router-link-normal to="/home/dataHomePage" imgName="data" :text="$t('homePage.data')" ></router-link-normal>
+          <router-link-normal to="/home/multimediaHomePage" imgName="multimedia" :text="$t('homePage.multimedia')" ></router-link-normal>
+          <router-link-normal to="/home/labHomePage" imgName="lab" :text="$t('homePage.lab')" ></router-link-normal>
+          <router-link-normal to="/home/caseHomePage" imgName="case" :text="$t('homePage.case')" ></router-link-normal>
         </div>
         <div class="g-home-block">
           <div class="g-module-item">
@@ -142,8 +38,9 @@
   </div>
 </template>
 <script>
-import Dependence from "@/components/stars/dependence.vue";
-import CommitInfo from "@/components/stars/commitInfo.vue";
+import Dependence from "@/components/part/dependence.vue";
+import CommitInfo from "@/components/part/commitInfo.vue";
+import RouterLinkNormal from "@/components/stars/RouterLinkNormal.vue";
 import BasicEchart from "@/components/echarts/BasicEchart.vue";
 import chartData from "@/assets/js/testData/chartData";
 import Mock from "mockjs";
@@ -153,11 +50,11 @@ export default {
     BasicEchart,
     Dependence,
     CommitInfo,
+    RouterLinkNormal
   },
   data() {
     return {
       dataTimer: null, //定时器
-      dataTimer2: null, //定时器
       areaOption: {},
       lineOption: {},
       pieOption: {},
@@ -185,7 +82,7 @@ export default {
         document.getElementById("echart-pie")
       );
       let currentIndex = 0;
-      this.dataTimer2 = setInterval(function () {
+      this.dataTimer = setInterval(function () {
         let dataLen = option.series[0].data.length;
         // 取消之前高亮的图形
         pieChart.dispatchAction({
@@ -212,18 +109,11 @@ export default {
   mounted() {
     this.getChartData();
 
-    // if (this.dataTimer) {
-    //   clearInterval(this.dataTimer);
-    // }
-    // this.dataTimer = setInterval(() => {
-    //   this.updateChartData();
-    // }, 3000);
     this.autoTooltip(this.pieOption);
   },
   beforeDestroy() {
     //销毁定时器
     clearInterval(this.dataTimer);
-    clearInterval(this.dataTimer2);
   },
 };
 </script>

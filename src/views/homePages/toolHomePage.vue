@@ -11,35 +11,25 @@
           </div>
         </div>
       </router-link>
-      <router-link to="/home/toolHomePage/utilities" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/utilities.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{ $t("homePage.toolHomePage.utilities") }}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/toolHomePage/practice" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/practice.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{ $t("homePage.toolHomePage.practice") }}</p>
-          </div>
-        </div>
-      </router-link>
+
+      <router-link-normal
+        to="/home/toolHomePage/utilities"
+        imgSrc="tools/"
+        imgName="utilities"
+        :text="$t('homePage.toolHomePage.utilities')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/toolHomePage/practice"
+        imgSrc="tools/"
+        imgName="practice"
+        :text="$t('homePage.toolHomePage.practice')"
+      ></router-link-normal>
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>

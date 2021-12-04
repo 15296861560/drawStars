@@ -1,45 +1,30 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/specialHomePage/transition" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/special/transition.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.specialHomePage.transition")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/specialHomePage/animation" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/special/animation.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.specialHomePage.animation")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/specialHomePage/words" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/special/words.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.specialHomePage.words")}}</p>
-          </div>
-        </div>
-      </router-link>
+      <router-link-normal
+        to="/home/specialHomePage/transition"
+        imgSrc="special/"
+        imgName="transition"
+        :text="$t('homePage.specialHomePage.transition')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/specialHomePage/animation"
+        imgSrc="special/"
+        imgName="animation"
+        :text="$t('homePage.specialHomePage.animation')"
+      ></router-link-normal>
+      <router-link-normal
+        to="/home/specialHomePage/words"
+        imgSrc="special/"
+        imgName="words"
+        :text="$t('homePage.specialHomePage.words')"
+      ></router-link-normal>
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>

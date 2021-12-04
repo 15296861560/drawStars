@@ -1,27 +1,18 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/caseHomePage/" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/case/boards.svg"  />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.caseHomePage.board")}}</p>
-          </div>
-        </div>
-      </router-link>
+      <router-link-normal
+        to="/home/caseHomePage"
+        imgSrc="case/"
+        imgName="boards"
+        :text="$t('homePage.caseHomePage.board')"
+      ></router-link-normal>
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../mixin/homePageMixin";
 export default {
-  data() {
-    return {};
-  },
-  methods: {
- 
-  },
+  mixins: [homePageMixin],
 };
 </script>
-<style></style>
