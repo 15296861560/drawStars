@@ -11,6 +11,7 @@ export default {
     multimedia: "多媒体",
     lab: "实验室",
     case: "例子",
+    resource: "资料库",
     echartHomePage: {
       basicBar: "基础柱状图",
       basicLine: "基础折线图",
@@ -58,6 +59,10 @@ export default {
     },
     caseHomePage: {
       board: "看板类"
+    },
+    resourceHomePage: {
+      configure: "配置资料",
+      webFrame: "前端框架"
     },
 
   },
@@ -159,10 +164,10 @@ export default {
     batchUpdate: "批量更新",
     dropTable: "删除表",
     clearTable: "清空表",
-    sourceCode:"源代码",
-    runningRes:"运行结果",
-    clickRun:"点击运行",
-    reset:"重置",
+    sourceCode: "源代码",
+    runningRes: "运行结果",
+    clickRun: "点击运行",
+    reset: "重置",
   },
   placeholder: {
     redirect: "请输入完整的 URL",
@@ -171,6 +176,11 @@ export default {
     inputUserName: "请输入用户名",
     inputBalance: "请输入余额",
     inputPhone: "请输入手机号码",
+    inputName: "请输入名称",
+    inputType: "请输入类型",
+    inputIcon: "请输入图标链接",
+    inputAdress: "请输入地址",
+    inputOpenWay: "请选择打开方式",
   },
   text: {
     selected: "选中",

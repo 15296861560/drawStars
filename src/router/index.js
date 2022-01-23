@@ -12,6 +12,7 @@ import Data from '@/router/homePages/data.js'
 import Multimedia from '@/router/homePages/multimedia.js'
 import Case from '@/router/homePages/case.js'
 import Lab from '@/router/homePages/lab.js'
+import Resource from '@/router/homePages/resource.js'
 
 Vue.use(Router)
 
@@ -56,7 +57,8 @@ export const RouterList = [
       ...Data,
       ...Multimedia,
       ...Case,
-      ...Lab
+      ...Lab,
+      ...Resource
     ]
   },
 ]

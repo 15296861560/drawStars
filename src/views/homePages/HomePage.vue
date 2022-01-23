@@ -11,6 +11,7 @@
           <router-link-normal to="/home/multimediaHomePage" imgName="multimedia" :text="$t('homePage.multimedia')" ></router-link-normal>
           <router-link-normal to="/home/labHomePage" imgName="lab" :text="$t('homePage.lab')" ></router-link-normal>
           <router-link-normal to="/home/caseHomePage" imgName="case" :text="$t('homePage.case')" ></router-link-normal>
+          <router-link-normal to="/home/resourceHomePage" imgName="resource" :text="$t('homePage.resource')" ></router-link-normal>
         </div>
         <div class="g-home-block">
           <div class="g-module-item">

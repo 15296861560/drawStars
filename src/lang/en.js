@@ -11,6 +11,7 @@ export default {
     multimedia: "Multimedia",
     lab: "Lab",
     case: "Case",
+    resource: "Resource Center",
     echartHomePage: {
       basicBar: "Basic Histogram",
       basicLine: "Basic Line",
@@ -58,6 +59,10 @@ export default {
     },
     caseHomePage: {
       board: "Board"
+    },
+    resourceHomePage: {
+      configure: "Configuration data",
+      webFrame: "Web Frame"
     },
 
   },
@@ -171,6 +176,11 @@ export default {
     inputUserName: "Please enter user name",
     inputBalance: "Please enter the balance",
     inputPhone: "Please enter your mobile phone number",
+    inputName: "Please enter a name",
+    inputType: "Please enter the type",
+    inputIcon: "Please enter icon link",
+    inputAdress: "Please enter the address",
+    inputOpenWay: "Please select the opening method",
   },
   text: {
     selected: "Selected",
