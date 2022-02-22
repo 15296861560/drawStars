@@ -50,6 +50,7 @@ export default {
     multimediaHomePage: {
       simpleUse: "Simple usage",
       camera: "Capture camera image",
+      processVideo: "Process Video",
       pictureEditing: "Picture editing",
     },
     labHomePage: {

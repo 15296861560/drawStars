@@ -19,6 +19,12 @@
         imgName="crop"
         :text="$t('homePage.multimediaHomePage.pictureEditing')"
       ></router-link-normal>
+      <router-link-normal
+        to="/home/multimediaHomePage/processVideo"
+        imgSrc="multimedia/"
+        imgName="processVideo"
+        :text="$t('homePage.multimediaHomePage.processVideo')"
+      ></router-link-normal>
     </div>
   </div>
 </template>

@@ -50,6 +50,7 @@ export default {
     multimediaHomePage: {
       simpleUse: "简单使用方式",
       camera: "捕捉摄像头画面",
+      processVideo: "处理视频",
       pictureEditing: "图片编辑",
     },
     labHomePage: {

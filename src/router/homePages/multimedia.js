@@ -24,6 +24,14 @@ export default [{
     }
   },
   {
+    path: '/home/multimediaHomePage/processVideo',
+    name: "处理视频",
+    component: resolve => require(['@/views/multimedia/processVideo.vue'], resolve),
+    meta: {
+      title: ['首页', '多媒体模块', '处理视频'],
+    }
+  },
+  {
     path: '/home/multimediaHomePage/pictureEditing',
     name: "图片编辑",
     component: resolve => require(['@/views/multimedia/pictureEditing'], resolve),
