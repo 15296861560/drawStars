@@ -1,3 +1,34 @@
+//  组件使用全局样式文件中定义的less变量操作步骤
+//  1、安装less和less-loader
+//  npm i less less-loader -D
+//  2、要想全局使用还需使用一个插件( sass-resources-loader )
+//  npm i sass-resources-loader -D
+//  3、安装完sass-resources-loader后,找到build/utils.js(webpack的配置)文件，在cssLoaders函数中添加使用全局less函数
+// // 增加全局使用less函数
+// function lessResourceLoader() {
+//   var loaders = [
+//    cssLoader,
+//    'less-loader',
+//    {
+//    loader: 'sass-resources-loader',
+//    options: {
+//     resources: [
+//     path.resolve(__dirname, '../src/assets/styles/theme/theme.less'), //定义全局变量的文件路径
+//     ]
+//    }
+//    }
+//   ];
+//   if (options.extract) {
+//    return ExtractTextPlugin.extract({
+//    use: loaders,
+//    fallback: 'vue-style-loader'
+//    })
+//   } else {
+//    return ['vue-style-loader'].concat(loaders)
+//   }
+//   }
+//   并在return中用你定义的lessResourceLoader函数替换less: generateLoaders('less')这个函数
+
 @color-primary: #409eff /* 主色 */;
 @color-icon-normal: #626364 /* 默认态图标色 */;
 @color-icon-placeholder: #939496 /* 占位符图标色 */;
