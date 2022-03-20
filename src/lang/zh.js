@@ -27,6 +27,7 @@ export default {
     },
     toolHomePage: {
       Lodash: "Lodash",
+      agora: "声网",
       utilities: "实用工具",
       practice: "练习室",
     },

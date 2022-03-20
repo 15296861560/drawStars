@@ -27,6 +27,7 @@ export default {
     },
     toolHomePage: {
       Lodash: "Lodash",
+      agora: "agora",
       utilities: "Utilities",
       practice: "Practice room",
     },
@@ -118,7 +119,7 @@ export default {
   },
   btn: {
     copy: "Copy",
-    shear :"Shear cut",
+    shear: "Shear cut",
     paste: "Paste",
     delete: "Delete",
     lock: "Lock",
@@ -165,10 +166,10 @@ export default {
     batchUpdate: "Batch Update",
     dropTable: "Drop Table",
     clearTable: "Clear Table:",
-    sourceCode:"Source Code",
-    runningRes:"Running Results",
-    clickRun:"Click Run",
-    reset:"Reset",
+    sourceCode: "Source Code",
+    runningRes: "Running Results",
+    clickRun: "Click Run",
+    reset: "Reset",
   },
   placeholder: {
     redirect: "Please enter the full URL",

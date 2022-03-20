@@ -9,6 +9,15 @@ export default [{
     }
   },
   {
+    path: '/home/toolHomePage/agora',
+    name: "agora",
+    component: resolve => require(['@/views/tools/Agora/agora.vue'], resolve),
+    meta: {
+      title: ['首页', '工具模块', 'agora'],
+      keepAlive: true
+    }
+  },
+  {
     path: '/home/toolHomePage',
     name: "工具模块",
     component: resolve => require(['@/views/homePages/toolHomePage.vue'], resolve),
@@ -54,7 +63,7 @@ export default [{
     name: "练习室",
     component: resolve => require(['@/views/tools/practice'], resolve),
     meta: {
-      title: ['首页', '工具模块','练习室'],
+      title: ['首页', '工具模块', '练习室'],
     },
   },
 ]

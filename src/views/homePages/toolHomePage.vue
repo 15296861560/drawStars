@@ -11,6 +11,16 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/home/toolHomePage/agora" class="m-router-link">
+        <div class="m-home-button">
+          <div class="m-img">
+            <img class="m-home-img" src="@/assets/img/tools/agora.png" />
+          </div>
+          <div>
+            <p class="m-p">{{ $t("homePage.toolHomePage.agora") }}</p>
+          </div>
+        </div>
+      </router-link>
 
       <router-link-normal
         to="/home/toolHomePage/utilities"
