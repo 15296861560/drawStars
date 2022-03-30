@@ -19,6 +19,12 @@
         imgName="words"
         :text="$t('homePage.specialHomePage.words')"
       ></router-link-normal>
+      <router-link-normal
+        to="/home/specialHomePage/drag"
+        imgSrc="special/"
+        imgName="drag"
+        :text="$t('homePage.specialHomePage.drag')"
+      ></router-link-normal>
     </div>
   </div>
 </template>

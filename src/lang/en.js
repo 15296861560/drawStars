@@ -43,6 +43,7 @@ export default {
       transition: "transition",
       animation: "animation",
       words: "words",
+      drag: "drag"
     },
     dataHomePage: {
       Mock: "Mock",

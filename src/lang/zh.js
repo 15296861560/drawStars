@@ -43,6 +43,7 @@ export default {
       transition: "过渡",
       animation: "动画",
       words: "文字",
+      drag: "拖拽"
     },
     dataHomePage: {
       Mock: "Mock",
