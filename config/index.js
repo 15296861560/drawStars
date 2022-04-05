@@ -13,9 +13,10 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://localhost:8010/', // 你要代理的域名和端口号，要加上http
+        // target: 'http://localhost:8011/', // 本地测试端口
         changeOrigin: true, // 跨域
         pathRewrite: {
-          '^/api': '' 
+          '^/api': ''
         }
       }
     },

@@ -1,45 +1,76 @@
 <template>
   <div>
-    <el-button size="medium" type="success" @click="join">
-      <span>加入</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="exit">
-      <span>退出</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="openVideo">
-      <span>打开视频</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="closeVideo">
-      <span>关闭视频</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="openAudio">
-      <span>打开麦克风</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="closeAudio">
-      <span>关闭麦克风</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="shareScreen">
-      <span>共享屏幕</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="closeShare">
-      <span>关闭屏幕共享</span>
-    </el-button>
-    <el-button size="medium" type="success" @click="showSetting = true">
-      <span> 音视频设备测试 </span>
-    </el-button>
-    <el-button size="medium" type="success" @click="">
-      <span> 调整通话音量 </span>
-    </el-button>
-    <div
-      class="window"
-      v-for="(user, index) in userList"
-      :key="index"
-      :id="`user-${user.uid}`"
-    ></div>
-    <h1>本地视频</h1>
-    <div class="window" ref="video"></div>
-    <h1>本地屏幕</h1>
-    <div class="window" ref="screen"></div>
+    <el-form :inline="true" :model="localUser">
+      <el-form-item label="账户">
+        <el-input
+          v-model="localUser.account"
+          placeholder="请输入账户"
+          ref="account"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="频道">
+        <el-input
+          v-model="localUser.channelName"
+          placeholder="请输入频道"
+          ref="channelName"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button size="medium" type="success" @click="join">
+          <span>加入</span>
+        </el-button>
+        <el-button size="medium" type="success" @click="exit">
+          <span>退出</span>
+        </el-button>
+      </el-form-item>
+    </el-form>
+    <div>
+      <el-button size="medium" type="success" @click="openVideo">
+        <span>打开视频</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="closeVideo">
+        <span>关闭视频</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="openAudio">
+        <span>打开麦克风</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="closeAudio">
+        <span>关闭麦克风</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="shareScreen">
+        <span>共享屏幕</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="closeShare">
+        <span>关闭屏幕共享</span>
+      </el-button>
+      <el-button size="medium" type="success" @click="showSetting = true">
+        <span> 音视频设备测试 </span>
+      </el-button>
+      <el-button size="medium" type="success" @click="">
+        <span> 调整通话音量 </span>
+      </el-button>
+    </div>
+
+    <el-row class="video-row">
+      <div
+        class="window"
+        v-for="(user, index) in userList"
+        :key="index"
+        :id="`user-${user.uid}`"
+      ></div>
+    </el-row>
+
+    <el-row class="video-row">
+      <el-col :xs="24" :sm="12" class="local-video">
+        <h1>本地视频</h1>
+        <div class="window" ref="video"></div>
+      </el-col>
+      <el-col :xs="24" :sm="12" class="local-video">
+        <h1>本地屏幕</h1>
+        <div class="window" ref="screen"></div>
+      </el-col>
+    </el-row>
 
     <mediaSettings
       v-show="showSetting"
@@ -65,7 +96,13 @@ export default {
         screenClient: null,
       },
       options: null,
+      localUser: {
+        account: "",
+        channelName: "",
+        role: "PUBLISHER",
+      },
       users: {},
+
       client: null,
       showSetting: false,
       deviceObj: {
@@ -73,6 +110,7 @@ export default {
         microphoneId: "",
         playbackDeviceId: "",
       },
+      rtcToken: "",
     };
   },
   computed: {
@@ -85,16 +123,24 @@ export default {
   },
   methods: {
     async init() {
-      this.options = {
-        appId: agoraConfig.appId,
-        channel: "test",
-        token: agoraConfig.token,
-        uid: parseInt(Math.random() * 1000).toString(),
-      };
-
       this.rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
       this.bindEvent();
-      // this.join();
+    },
+    async getRTCToken(account, channelName, role) {
+      let rtcToken = "";
+      await this.$axios(
+        { user: account, channelName, role },
+        "/agoraApi/getRTCToken"
+      ).then((res) => {
+        if (res.status) {
+          rtcToken = res.data;
+          this.rtcToken = res.data;
+        } else {
+          throw new Error("getRTCToken fail");
+        }
+      });
+
+      return rtcToken;
     },
     bindEvent() {
       this.rtc.client.on("user-published", async (user, mediaType) => {
@@ -120,7 +166,14 @@ export default {
       });
     },
     async join() {
-      let { appId, channel, token, uid } = this.options;
+      const { account, channelName, role } = this.localUser;
+      this.options = {
+        appId: agoraConfig.appId,
+        channel: channelName,
+        token: await this.getRTCToken(account, channelName, role),
+        uid: account,
+      };
+      const { appId, channel, token, uid } = this.options;
       await this.rtc.client.join(appId, channel, token, uid);
     },
     exit() {
@@ -155,9 +208,17 @@ export default {
     },
     async shareScreen() {
       if (!this.rtc.screenClient) {
-        let { appId, channel, token, uid } = this.options;
+        const { appId, channel, uid } = this.options;
+
+        const account = this.options.uid + "_screen";
+        this.options.token = await this.getRTCToken(
+          account,
+          channel,
+          this.localUser.role
+        );
+        const token = this.options.token;
         this.rtc.screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-        await this.rtc.screenClient.join(appId, channel, token, uid + "_screen");
+        await this.rtc.screenClient.join(appId, channel, token, account);
       }
 
       this.rtc.localSreenTrack = await AgoraRTC.createScreenVideoTrack();
@@ -180,9 +241,20 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .window {
-  width: 100px;
-  height: 100px;
+  width: 6.25rem /* 100/16 */;
+  height: 6.25rem /* 100/16 */;
+  margin: 0.625rem; /* 10/16 */
+}
+.video-row {
+  margin-top: 0.625rem /* 10/16 */;
+  display: flex;
+
+  .local-video {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>
