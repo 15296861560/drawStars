@@ -30,6 +30,7 @@ export default {
       agora: "声网",
       utilities: "实用工具",
       practice: "练习室",
+      chat: "聊天室",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",

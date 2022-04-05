@@ -34,6 +34,12 @@
         imgName="practice"
         :text="$t('homePage.toolHomePage.practice')"
       ></router-link-normal>
+      <router-link-normal
+        to="/home/toolHomePage/chat"
+        imgSrc="tools/"
+        imgName="chat"
+        :text="$t('homePage.toolHomePage.chat')"
+      ></router-link-normal>
     </div>
   </div>
 </template>

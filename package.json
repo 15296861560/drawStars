@@ -13,6 +13,8 @@
     "db:serve": "node serve/db-serve.js"
   },
   "dependencies": {
+    "agora-rtc-sdk": "^2.8.0",
+    "agora-rtm-sdk": "1.4.1",
     "@babel/core": "^7.15.5",
     "@babel/preset-env": "^7.15.4",
     "@babel/traverse": "^7.15.4",
@@ -22,6 +24,7 @@
     "file-saver": "^2.0.5",
     "less": "^4.1.0",
     "less-loader": "^5.0.0",
+    "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "mysql": "^2.18.1",
     "nprogress": "^0.2.0",

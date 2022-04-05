@@ -66,4 +66,12 @@ export default [{
       title: ['首页', '工具模块', '练习室'],
     },
   },
+  {
+    path: '/home/toolHomePage/chat',
+    name: "聊天室",
+    component: resolve => require(['@/views/tools/chat'], resolve),
+    meta: {
+      title: ['首页', '工具模块', '聊天室'],
+    },
+  },
 ]

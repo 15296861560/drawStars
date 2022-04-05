@@ -30,6 +30,7 @@ export default {
       agora: "agora",
       utilities: "Utilities",
       practice: "Practice room",
+      chat: "Chat room",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",
