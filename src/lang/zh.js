@@ -37,14 +37,15 @@ export default {
       commonComponents: "常用组件",
       common: {
         progressBar: "进度条",
-        promptBox: "提示框"
+        promptBox: "提示框",
+        flop: "翻牌器"
       }
     },
     specialHomePage: {
       transition: "过渡",
       animation: "动画",
       words: "文字",
-      drag: "拖拽"
+      drag: "拖拽",
     },
     dataHomePage: {
       Mock: "Mock",

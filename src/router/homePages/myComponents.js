@@ -1,6 +1,5 @@
 /*组件模块*/
-export default [
-  {
+export default [{
     path: '/home/componentsHomePage',
     name: "组件模块",
     component: resolve => require(['@/views/homePages/componentsHomePage.vue'], resolve),
@@ -13,7 +12,7 @@ export default [
     name: "可视化拖拽组件",
     component: resolve => require(['@/views/myComponents/dragAndDropComponents/dragAndDropComponents.vue'], resolve),
     meta: {
-      title: ['首页', '组件模块','可视化拖拽组件'],
+      title: ['首页', '组件模块', '可视化拖拽组件'],
     }
   },
   {
@@ -21,15 +20,14 @@ export default [
     name: "常用组件",
     component: resolve => require(['@/views/myComponents/commonComponents/commonComponents.vue'], resolve),
     meta: {
-      title: ['首页', '组件模块','常用组件'],
+      title: ['首页', '组件模块', '常用组件'],
     },
-    children:[
-      {
+    children: [{
         path: '/home/componentsHomePage/commonComponents/progressBar',
         name: "进度条",
         component: resolve => require(['@/views/myComponents/commonComponents/progressBar.vue'], resolve),
         meta: {
-          title: ['首页', '组件模块','常用组件','进度条'],
+          title: ['首页', '组件模块', '常用组件', '进度条'],
         }
       },
       {
@@ -37,7 +35,15 @@ export default [
         name: "提示框",
         component: resolve => require(['@/views/myComponents/commonComponents/promptBox.vue'], resolve),
         meta: {
-          title: ['首页', '组件模块','常用组件','提示框'],
+          title: ['首页', '组件模块', '常用组件', '提示框'],
+        }
+      },
+      {
+        path: '/home/componentsHomePage/commonComponents/flop',
+        name: "翻牌器",
+        component: resolve => require(['@/views/myComponents/commonComponents/flop.vue'], resolve),
+        meta: {
+          title: ['首页', '组件模块', '常用组件', '翻牌器'],
         }
       },
     ]

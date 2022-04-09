@@ -37,14 +37,15 @@ export default {
       commonComponents: "Common components",
       common: {
         progressBar: "progress bar",
-        promptBox: "prompt box"
+        promptBox: "prompt box",
+        flop: "flop"
       }
     },
     specialHomePage: {
       transition: "transition",
       animation: "animation",
       words: "words",
-      drag: "drag"
+      drag: "drag",
     },
     dataHomePage: {
       Mock: "Mock",

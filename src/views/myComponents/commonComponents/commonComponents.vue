@@ -1,34 +1,36 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/componentsHomePage/commonComponents/progressBar" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/myComponents/progressBar.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.componentsHomePage.common.progressBar")}}</p>
-          </div>
-        </div>
-      </router-link>
-      <router-link to="/home/componentsHomePage/commonComponents/promptBox" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/myComponents/promptBox.svg" />
-          </div>
-          <div>
-            <p class="m-p">{{$t("homePage.componentsHomePage.common.promptBox")}}</p>
-          </div>
-        </div>
-      </router-link>
+      <router-link-normal
+        to="/home/componentsHomePage/commonComponents/progressBar"
+        imgSrc="myComponents/"
+        imgName="progressBar"
+        :text="$t('homePage.componentsHomePage.common.progressBar')"
+      ></router-link-normal>
+
+      <router-link-normal
+        to="/home/componentsHomePage/commonComponents/promptBox"
+        imgSrc="myComponents/"
+        imgName="promptBox"
+        :text="$t('homePage.componentsHomePage.common.promptBox')"
+      ></router-link-normal>
+
+      <router-link-normal
+        to="/home/componentsHomePage/commonComponents/flop"
+        imgSrc="myComponents/"
+        imgName="flop"
+        :text="$t('homePage.componentsHomePage.common.flop')"
+      ></router-link-normal>
     </div>
     <div class="g-home-module mt10">
-    <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
 <script>
+import { homePageMixin } from "../../mixin/homePageMixin";
 export default {
+  mixins: [homePageMixin],
   data() {
     return {};
   },
