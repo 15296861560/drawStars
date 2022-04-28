@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import db from "@/utils/commom/db";
+import storage from "@/utils/commom/storage";
 
 export default {
   name: "Navigation",
@@ -114,7 +114,7 @@ export default {
     handleSetLanguage(lang) {
       console.log(lang);
       this.$i18n.locale = lang;
-      db.local.save("LANGUAGE", lang);
+      storage.local.save("LANGUAGE", lang);
       this.$store.dispatch("changeSettingInfo", {
         attr: "language",
         val: lang,

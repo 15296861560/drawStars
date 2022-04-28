@@ -74,4 +74,12 @@ export default [{
       title: ['首页', '工具模块', '聊天室'],
     },
   },
+  {
+    path: '/home/toolHomePage/translate',
+    name: "翻译",
+    component: resolve => require(['@/views/tools/translate'], resolve),
+    meta: {
+      title: ['首页', '工具模块', '翻译'],
+    },
+  },
 ]

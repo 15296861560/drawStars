@@ -22,7 +22,6 @@ var echarts = require("echarts");
 Vue.prototype.$echarts = echarts
 
 
-
 Vue.config.productionTip = false
 
 Vue.use(ElementUI, {

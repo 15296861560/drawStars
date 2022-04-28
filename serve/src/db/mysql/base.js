@@ -54,6 +54,11 @@ let deleteData = function (table, where, callback) {
   connection.query(sql, callback);
 }
 
+
+
+
+
+
 exports.selectData = selectData;
 exports.insertData = insertData;
 exports.deleteData = deleteData;

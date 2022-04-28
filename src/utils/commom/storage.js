@@ -1,4 +1,4 @@
-const db = {
+const storage = {
   local: {
     save(key, value) {
       localStorage.setItem(key, JSON.stringify(value))
@@ -29,4 +29,4 @@ const db = {
   }
 }
 
-export default db
+export default storage

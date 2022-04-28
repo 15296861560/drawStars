@@ -31,6 +31,7 @@ export default {
       utilities: "Utilities",
       practice: "Practice room",
       chat: "Chat room",
+      translate: "Translate",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",

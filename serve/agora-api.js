@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../src/assets/js/db/mysql/base.js')
+const {
+  getAppInfo
+} = require('./src/db/mysql/commom-api.js')
 
 const AccessToken = require("./src/agora/AccessToken").AccessToken
 const Priviledges = require('./src/agora/AccessToken').priviledges
@@ -103,21 +105,15 @@ class RtcTokenBuilder {
 let appID = "";
 let appCertificate = "";
 
-// 获取app账户信息
-db.selectData("select * from app_info where app_name = 'agora'", (e, r) => {
-  if (!r.length) {
-    console.log("无该app信息")
-  } else {
-    resultData = r[0];
-    appID = resultData.app_id;
-    appCertificate = resultData.app_certificate;
-  }
-  if (e) {
-    console.log("获取app信息失败")
-    resultData = e;
-  }
-})
+// 获取声网账户信息
+const appName = 'agora';
 
+getAppInfo(appName).then(appInfo => {
+  if (appInfo && appInfo.app_id && appInfo.app_certificate) {
+    appID = appInfo.app_id;
+    appCertificate = appInfo.app_certificate;
+  }
+});
 
 const expirationTimeInSeconds = 60 * 60 * 24;
 const currentTimestamp = Math.floor(Date.now() / 1000);

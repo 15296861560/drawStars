@@ -9,6 +9,7 @@ const mysqlApi = require('./mysql-api.js')
 const testApi = require('./test-api.js')
 const controller = require('./controller.js')
 const agoraApi = require('./agora-api.js')
+const translateApi = require('./translate-api.js')
 
 // json 解析 
 server.use(express.json());
@@ -30,6 +31,7 @@ server.use('/mysqlApi', mysqlApi)
 server.use('/testApi', testApi)
 server.use('/controller', controller)
 server.use('/agoraApi', agoraApi)
+server.use('/translateApi', translateApi)
 
 
 server.listen(port)

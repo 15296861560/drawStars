@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../src/assets/js/db/mysql/base.js')
+const db = require('./src/db/mysql/base.js')
 
 // 该路由使用的中间件
 /*router.use(function timeLog(req, res, next) {
@@ -39,7 +39,7 @@ router.post('/login', function (req, res) {
 });
 // 注册接口 增加的方法使用案例
 router.post('/register', (req, res) => {
-  let nowDate=new Date().getTime();
+  let nowDate = new Date().getTime();
   let saveData = {
     "name": req.body.name,
     "password": req.body.password,

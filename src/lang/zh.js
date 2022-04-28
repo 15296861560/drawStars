@@ -31,6 +31,7 @@ export default {
       utilities: "实用工具",
       practice: "练习室",
       chat: "聊天室",
+      translate: "翻译",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",

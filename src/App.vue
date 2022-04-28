@@ -7,7 +7,7 @@
 
 <script>
 import NoProgress from "nprogress";
-import 'nprogress/nprogress.css';
+import "nprogress/nprogress.css";
 
 NoProgress.configure({
   easing: "ease",
@@ -32,7 +32,7 @@ export default {
     });
 
     this.$router.beforeEach((to, from, next) => {
-      NoProgress.start()
+      NoProgress.start();
       let hasLogin = true;
       if (to.name != "首页" && this.$store.getters.getUserName == "未登录") {
         hasLogin = false;
@@ -45,7 +45,7 @@ export default {
     });
 
     this.$router.afterEach(() => {
-       NoProgress.done();
+      NoProgress.done();
     });
   },
 };

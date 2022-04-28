@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
-import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
+import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN' // element-ui lang
 import enLocale from './en'
 import zhLocale from './zh'
-import db from '@/utils/commom/db'
+import storage from '@/utils/commom/storage'
 
 Vue.use(VueI18n)
 
@@ -19,7 +19,7 @@ const messages = {
   }
 }
 export function getLanguage() {
-  const chooseLanguage = db.local.get('LANGUAGE', '')
+  const chooseLanguage = storage.local.get('LANGUAGE', '')
   if (chooseLanguage) return chooseLanguage
 
   // if has not choose language

@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getCommitInfoList() {
-      this.$axios({}, "controller/getCommitInfo").then((res) => {
+      this.$axios({}, "/controller/getCommitInfo").then((res) => {
         if (res.status) {
           if (res.data.length > 15) {
             this.commitInfoList = res.data.splice(0, 15);

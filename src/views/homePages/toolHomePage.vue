@@ -23,22 +23,12 @@
       </router-link>
 
       <router-link-normal
-        to="/home/toolHomePage/utilities"
+        :to="`/home/toolHomePage/${name}`"
         imgSrc="tools/"
-        imgName="utilities"
-        :text="$t('homePage.toolHomePage.utilities')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/toolHomePage/practice"
-        imgSrc="tools/"
-        imgName="practice"
-        :text="$t('homePage.toolHomePage.practice')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/toolHomePage/chat"
-        imgSrc="tools/"
-        imgName="chat"
-        :text="$t('homePage.toolHomePage.chat')"
+        :imgName="name"
+        :text="$t(`homePage.toolHomePage.${name}`)"
+        v-for="(name, index) in routes"
+        :key="name"
       ></router-link-normal>
     </div>
   </div>
@@ -47,5 +37,10 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      routes: ["utilities", "practice", "chat", "translate"],
+    };
+  },
 };
 </script>
