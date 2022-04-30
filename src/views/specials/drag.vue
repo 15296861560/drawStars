@@ -62,6 +62,15 @@
         >
           <span>输出GroupC</span>
         </el-button>
+
+        <div class="box-row">
+          <div class="group-title">groupA(刷新数据方式)</div>
+          <div class="group" ref="groupARefresh">
+            <div class="card card1" v-for="(item, index) in groupAData" :key="index">
+              {{ item.text }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -109,6 +118,7 @@ export default {
       const groupElA = this.$refs.groupA;
       const groupElB = this.$refs.groupB;
       const groupElC = this.$refs.groupC;
+      const groupELRefreshA = this.$refs.groupARefresh;
       const optionA = {
         group: "sameGroup",
         //是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
@@ -144,9 +154,28 @@ export default {
         ghostClass: "ghost",
         filter: ".group-title",
       };
+      const optionRefreshA = {
+        //是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
+        sort: true,
+        //动画效果
+        animation: 500,
+        // Easing 动画
+        easing: "ease",
+        //停靠位置的自定义样式
+        ghostClass: "ghost",
+        //选中元素的自定义样式
+        chosenClass: "chosen",
+        //拖拽时的自定义样式
+        dragClass: "drag",
+        //忽略HTML5原生拖拽行为
+        forceFallback: true,
+        //拖动结束
+        onEnd: this.onEndRefreshA,
+      };
       let sortable1 = new Sortable(groupElA, optionA);
       let sortable2 = new Sortable(groupElB, optionB);
       let sortable3 = new Sortable(groupElC, optionC);
+      let sortable4 = new Sortable(groupELRefreshA, optionRefreshA);
     },
     printGroup(groupData, dataName) {
       this.curShowData = dataName;
@@ -164,6 +193,7 @@ export default {
     onEndA(evt) {
       let newIndex = evt.newIndex;
       let oldIndex = evt.oldIndex;
+      if (newIndex === oldIndex) return;
       let newNode = evt.item;
       let group = evt.to;
 
@@ -191,6 +221,7 @@ export default {
     onEndB(evt) {
       let newIndex = evt.newIndex;
       let oldIndex = evt.oldIndex;
+      if (newIndex === oldIndex) return;
       let newNode = evt.item;
       let group = evt.to;
 
@@ -217,6 +248,19 @@ export default {
     },
     onAddA(evt) {
       console.log("onAddA");
+    },
+    onEndRefreshA(evt) {
+      let newIndex = evt.newIndex;
+      let oldIndex = evt.oldIndex;
+      if (newIndex === oldIndex) return;
+      let newNode = evt.item;
+      let group = evt.to;
+      let groupData = cloneDeep(this.groupAData);
+      groupData.splice(newIndex, 0, ...groupData.splice(oldIndex, 1));
+      this.groupAData = [];
+      this.$nextTick(() => {
+        this.groupAData = groupData;
+      });
     },
   },
 };
