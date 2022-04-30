@@ -2,10 +2,12 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        to="/home/caseHomePage"
-        imgSrc="case/"
-        imgName="boards"
-        :text="$t('homePage.caseHomePage.board')"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -14,5 +16,12 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "caseHomePage",
+      imgSrc: "case/",
+      routes: [{ name: "board", imgName: "boards" }],
+    };
+  },
 };
 </script>

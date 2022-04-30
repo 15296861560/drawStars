@@ -1,31 +1,16 @@
 <template>
   <div>
     <div class="g-home-module">
-      <router-link to="/home/dataHomePage/Mock" class="m-router-link">
+      <router-link
+        :to="`/home/${homepage}/${name}`"
+        class="m-router-link"
+        v-for="(name, index) in routes"
+        :key="name"
+      >
         <div class="m-home-button">
           <div class="m-img">
-            <h1>{{ $t("homePage.dataHomePage.Mock") }}</h1>
+            <h1>{{ name }}</h1>
           </div>
-        </div>
-      </router-link>
-
-      <router-link to="/home/dataHomePage/axios" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img">
-            <h1>{{ $t("homePage.dataHomePage.axios") }}</h1>
-          </div>
-        </div>
-      </router-link>
-
-      <router-link to="/home/dataHomePage/Sqlite" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img"><h1>Sqlite</h1></div>
-        </div>
-      </router-link>
-
-      <router-link to="/home/dataHomePage/MySQL" class="m-router-link">
-        <div class="m-home-button">
-          <div class="m-img"><h1>MySQL</h1></div>
         </div>
       </router-link>
     </div>
@@ -35,5 +20,12 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "dataHomePage",
+      imgSrc: "",
+      routes: ["Mock", "axios", "Sqlite", "MySQL"],
+    };
+  },
 };
 </script>

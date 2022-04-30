@@ -2,28 +2,12 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        to="/home/multimediaHomePage/simpleUse"
-        imgSrc="multimedia/"
-        imgName="simple"
-        :text="$t('homePage.multimediaHomePage.simpleUse')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/multimediaHomePage/camera"
-        imgSrc="multimedia/"
-        imgName="camera"
-        :text="$t('homePage.multimediaHomePage.camera')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/multimediaHomePage/pictureEditing"
-        imgSrc="multimedia/"
-        imgName="crop"
-        :text="$t('homePage.multimediaHomePage.pictureEditing')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/multimediaHomePage/processVideo"
-        imgSrc="multimedia/"
-        imgName="processVideo"
-        :text="$t('homePage.multimediaHomePage.processVideo')"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -32,5 +16,17 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "multimediaHomePage",
+      imgSrc: "multimedia/",
+      routes: [
+        { name: "simpleUse", imgName: "simple" },
+        { name: "camera", imgName: "camera" },
+        { name: "pictureEditing", imgName: "crop" },
+        { name: "processVideo", imgName: "processVideo" },
+      ],
+    };
+  },
 };
 </script>

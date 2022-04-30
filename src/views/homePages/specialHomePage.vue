@@ -2,28 +2,12 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        to="/home/specialHomePage/transition"
-        imgSrc="special/"
-        imgName="transition"
-        :text="$t('homePage.specialHomePage.transition')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/specialHomePage/animation"
-        imgSrc="special/"
-        imgName="animation"
-        :text="$t('homePage.specialHomePage.animation')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/specialHomePage/words"
-        imgSrc="special/"
-        imgName="words"
-        :text="$t('homePage.specialHomePage.words')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/specialHomePage/drag"
-        imgSrc="special/"
-        imgName="drag"
-        :text="$t('homePage.specialHomePage.drag')"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -32,5 +16,17 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "specialHomePage",
+      imgSrc: "special/",
+      routes: [
+        { name: "transition", imgName: "transition" },
+        { name: "animation", imgName: "animation" },
+        { name: "words", imgName: "words" },
+        { name: "drag", imgName: "drag" },
+      ],
+    };
+  },
 };
 </script>

@@ -2,70 +2,12 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        to="/home/echartHomePage/basicBar"
-        imgSrc="echarts/"
-        imgName="bar"
-        :text="$t('homePage.echartHomePage.basicBar')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/basicLine"
-        imgSrc="echarts/"
-        imgName="line"
-        :text="$t('homePage.echartHomePage.basicLine')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/basicArea"
-        imgSrc="echarts/"
-        imgName="area"
-        :text="$t('homePage.echartHomePage.basicArea')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/basicPie"
-        imgSrc="echarts/"
-        imgName="pie"
-        :text="$t('homePage.echartHomePage.basicPie')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/baiduMap"
-        imgSrc="echarts/"
-        imgName="location"
-        :text="$t('homePage.echartHomePage.baiduMap')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/bar"
-        imgSrc="echarts/"
-        imgName="bar"
-        :text="$t('homePage.echartHomePage.bar')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/stackedBar"
-        imgSrc="echarts/"
-        imgName="stackedBar"
-        :text="$t('homePage.echartHomePage.stackedBar')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/barLineDrill"
-        imgSrc="echarts/"
-        imgName="barLineDrill"
-        :text="$t('homePage.echartHomePage.barLineDrill')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/polar"
-        imgSrc="echarts/"
-        imgName="polar"
-        :text="$t('homePage.echartHomePage.polar')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/dynamicOrderBar"
-        imgSrc="echarts/"
-        imgName="dynamicOrderBar"
-        :text="$t('homePage.echartHomePage.dynamicOrderBar')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/echartHomePage/eMap"
-        imgSrc="echarts/"
-        imgName="map"
-        :text="$t('homePage.echartHomePage.eMap')"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -74,5 +16,24 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "echartHomePage",
+      imgSrc: "echarts/",
+      routes: [
+        { name: "basicBar", imgName: "bar" },
+        { name: "basicLine", imgName: "line" },
+        { name: "basicPie", imgName: "pie" },
+        { name: "baiduMap", imgName: "location" },
+        { name: "bar", imgName: "bar" },
+        { name: "stackedBar", imgName: "stackedBar" },
+        { name: "barLineDrill", imgName: "barLineDrill" },
+        { name: "polar", imgName: "polar" },
+        { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
+        { name: "basicBar", imgName: "bar" },
+        { name: "eMap", imgName: "map" },
+      ],
+    };
+  },
 };
 </script>

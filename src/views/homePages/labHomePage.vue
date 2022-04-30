@@ -11,16 +11,12 @@
       </router-link>
 
       <router-link-normal
-        to="/home/labHomePage/vue-reactivity"
-        imgSrc="lab/"
-        imgName="bind"
-        :text="$t('homePage.labHomePage.vueReactivity')"
-      ></router-link-normal>
-      <router-link-normal
-        to="/home/labHomePage/webpack"
-        imgSrc="lab/"
-        imgName="webpack"
-        :text="$t('homePage.labHomePage.webpack')"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -29,5 +25,15 @@
 import { homePageMixin } from "../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
+  data() {
+    return {
+      homepage: "labHomePage",
+      imgSrc: "lab/",
+      routes: [
+        { name: "vueReactivity", imgName: "bind" },
+        { name: "webpack", imgName: "webpack" },
+      ],
+    };
+  },
 };
 </script>
