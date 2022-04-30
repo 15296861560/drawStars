@@ -23,6 +23,7 @@ export default {
       routes: [
         { name: "basicBar", imgName: "bar" },
         { name: "basicLine", imgName: "line" },
+        { name: "basicArea", imgName: "area" },
         { name: "basicPie", imgName: "pie" },
         { name: "baiduMap", imgName: "location" },
         { name: "bar", imgName: "bar" },
@@ -30,7 +31,6 @@ export default {
         { name: "barLineDrill", imgName: "barLineDrill" },
         { name: "polar", imgName: "polar" },
         { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
-        { name: "basicBar", imgName: "bar" },
         { name: "eMap", imgName: "map" },
       ],
     };
