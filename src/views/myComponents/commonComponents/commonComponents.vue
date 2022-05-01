@@ -2,24 +2,12 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        to="/home/componentsHomePage/commonComponents/progressBar"
-        imgSrc="myComponents/"
-        imgName="progressBar"
-        :text="$t('homePage.componentsHomePage.common.progressBar')"
-      ></router-link-normal>
-
-      <router-link-normal
-        to="/home/componentsHomePage/commonComponents/promptBox"
-        imgSrc="myComponents/"
-        imgName="promptBox"
-        :text="$t('homePage.componentsHomePage.common.promptBox')"
-      ></router-link-normal>
-
-      <router-link-normal
-        to="/home/componentsHomePage/commonComponents/flop"
-        imgSrc="myComponents/"
-        imgName="flop"
-        :text="$t('homePage.componentsHomePage.common.flop')"
+        :to="`/home/componentsHomePage/${homepage}/${page.name}`"
+        :imgSrc="imgSrc"
+        :imgName="page.imgName"
+        :text="$t(`homePage.componentsHomePage.common.${page.name}`)"
+        v-for="(page, index) in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
     <div class="g-home-module mt10">
@@ -32,7 +20,15 @@ import { homePageMixin } from "../../mixin/homePageMixin";
 export default {
   mixins: [homePageMixin],
   data() {
-    return {};
+    return {
+      homepage: "commonComponents",
+      imgSrc: "myComponents/",
+      routes: [
+        { name: "progressBar", imgName: "progressBar" },
+        { name: "promptBox", imgName: "promptBox" },
+        { name: "flop", imgName: "flop" },
+      ],
+    };
   },
   methods: {},
 };
