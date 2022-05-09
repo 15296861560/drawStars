@@ -32,6 +32,10 @@ export default {
       practice: "Practice room",
       chat: "Chat room",
       translate: "Translate",
+      pay: "Pay",
+      payment: {
+        Alipay: "Alipay"
+      }
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",

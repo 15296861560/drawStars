@@ -82,4 +82,20 @@ export default [{
       title: ['首页', '工具模块', '翻译'],
     },
   },
+  {
+    path: '/home/toolHomePage/pay',
+    name: "支付",
+    component: resolve => require(['@/views/tools/pay/pay.vue'], resolve),
+    meta: {
+      title: ['首页', '工具模块', '支付'],
+    },
+    children: [{
+      path: '/home/toolHomePage/pay/Alipay',
+      name: "支付宝 ",
+      component: resolve => require(['@/views/tools/pay/Alipay.vue'], resolve),
+      meta: {
+        title: ['首页', '工具模块', '支付', '支付宝 '],
+      }
+    }, ]
+  },
 ]

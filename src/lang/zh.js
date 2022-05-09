@@ -32,6 +32,10 @@ export default {
       practice: "练习室",
       chat: "聊天室",
       translate: "翻译",
+      pay: "支付",
+      payment: {
+        Alipay: "支付宝"
+      }
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",

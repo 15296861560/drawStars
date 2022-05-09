@@ -39,7 +39,7 @@ export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["utilities", "practice", "chat", "translate"],
+      routes: ["utilities", "practice", "chat", "translate", "pay"],
     };
   },
 };

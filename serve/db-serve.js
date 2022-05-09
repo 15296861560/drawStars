@@ -1,6 +1,6 @@
 const express = require('express')
-const port = 8010; //发布端口
-// const port = 8011; //本地测试端口
+// const port = 8010 //发布端口
+const port = 8011; //本地测试端口
 
 
 const server = express()
@@ -10,6 +10,7 @@ const testApi = require('./test-api.js')
 const controller = require('./controller.js')
 const agoraApi = require('./agora-api.js')
 const translateApi = require('./translate-api.js')
+const payApi = require('./pay-api.js')
 
 // json 解析 
 server.use(express.json());
@@ -32,6 +33,7 @@ server.use('/testApi', testApi)
 server.use('/controller', controller)
 server.use('/agoraApi', agoraApi)
 server.use('/translateApi', translateApi)
+server.use('/payApi', payApi)
 
 
 server.listen(port)
