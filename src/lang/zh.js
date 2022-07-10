@@ -201,6 +201,7 @@ export default {
     level: "等级",
   },
   aside: {
+    homePage: "首页",
     module: "模块",
     test: "测试",
     moreThanOne: "一级以上权限",

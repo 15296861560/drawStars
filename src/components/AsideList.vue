@@ -20,7 +20,7 @@
           </el-menu-item>
           <el-menu-item index="/">
             <i class="el-icon-s-home"></i>
-            <span slot="title">首页</span>
+            <span slot="title">{{ $t("aside.homePage") }}</span>
           </el-menu-item>
 
           <el-submenu index="1">

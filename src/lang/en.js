@@ -201,6 +201,7 @@ export default {
     level: "Level",
   },
   aside: {
+    homePage: "Home Page",
     module: "Module",
     test: "Test",
     moreThanOne: "More than one level of authority",

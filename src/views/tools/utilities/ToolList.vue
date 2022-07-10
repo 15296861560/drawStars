@@ -11,13 +11,13 @@
           <!-- 一级标题 -->
           <template slot="title">{{ item.title }}</template>
           <!-- 二级标题（无三级标题） -->
-            <el-menu-item
-              v-show="!secondItem.titleData"
-              v-for="(secondItem) in item.titleData"
-              :key="secondItem.index"
-              :index="secondItem.index"
-              >{{ secondItem.title }}
-            </el-menu-item>
+          <el-menu-item
+            v-show="!secondItem.titleData"
+            v-for="secondItem in item.titleData"
+            :key="secondItem.index"
+            :index="secondItem.index"
+            >{{ secondItem.title }}
+          </el-menu-item>
           <!-- 二级标题（有三级标题） -->
           <el-submenu
             v-show="secondItem.titleData"
@@ -34,7 +34,6 @@
               >{{ thirdItem.title }}</el-menu-item
             >
           </el-submenu>
-
         </el-submenu>
       </el-menu>
 
@@ -47,23 +46,37 @@
 <script>
 export default {
   data() {
-    return {
-      titleArray: [
+    return {};
+  },
+  computed: {
+    titleArray() {
+      return [
         {
-          title: "时间",
+          title: this.$t("time"),
           index: "1",
-          titleData: [{ title: "获取时间", index: "/home/toolHomePage/utilities/time" }],
+          titleData: [
+            {
+              title: this.$t("timeList.getTime"),
+              index: "/home/toolHomePage/utilities/time",
+            },
+          ],
         },
         {
-          title: "数据",
+          title: this.$t("data"),
           index: "2",
           titleData: [
-            { title: "正则表达式", index: "/home/toolHomePage/utilities/regex" },
-            { title: "导入与导出", index: "/home/toolHomePage/utilities/importAndExport" },
-            ],
+            {
+              title: this.$t("dataList.regex"),
+              index: "/home/toolHomePage/utilities/regex",
+            },
+            {
+              title: this.$t("dataList.importAndExport"),
+              index: "/home/toolHomePage/utilities/importAndExport",
+            },
+          ],
         },
-      ],
-    };
+      ];
+    },
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -76,3 +89,29 @@ export default {
 };
 </script>
 <style></style>
+<i18n>
+{
+  "en": {
+    "time": "Time",
+    "data":"Data",
+    "timeList":{
+      "getTime":"Get Time"
+    },
+    "dataList":{
+      "regex":"Regex",
+      "importAndExport":"Import And Export"
+    }
+  },
+  "zh": {
+    "time": "时间",
+    "data":"数据",
+    "timeList":{
+      "getTime":"获取时间"
+    },
+    "dataList":{
+      "regex":"正则表达式",
+      "importAndExport":"导入与导出"
+    }
+  }
+}
+</i18n>
