@@ -32,6 +32,7 @@ export default {
       routes: [
         { name: "vueReactivity", imgName: "bind" },
         { name: "webpack", imgName: "webpack" },
+        { name: "frame", imgName: "frame" },
       ],
     };
   },

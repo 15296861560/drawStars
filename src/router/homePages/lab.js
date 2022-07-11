@@ -31,4 +31,12 @@ export default [{
       title: ['首页', '实验室', 'Webpack打包'],
     },
   },
+  {
+    path: '/home/labHomePage/frame',
+    name: "嵌入页",
+    component: resolve => require(['@/views/lab/frame'], resolve),
+    meta: {
+      title: ['首页', '实验室', '嵌入页'],
+    },
+  },
 ]

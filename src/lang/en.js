@@ -66,6 +66,7 @@ export default {
       vueReactivity: "Vue Reactivity ",
       promise: "Simple use of Promise",
       webpack: "Webpack packaging",
+      frame: "Embedded pages"
     },
     caseHomePage: {
       board: "Board"

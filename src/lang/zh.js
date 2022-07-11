@@ -66,6 +66,7 @@ export default {
       vueReactivity: "Vue响应式原理",
       promise: "Promise简单使用",
       webpack: "Webpack打包",
+      frame: "嵌入页"
     },
     caseHomePage: {
       board: "看板类"
