@@ -96,7 +96,7 @@
   </div>
 </template>
 <script>
-import * as webAdressApi from "@/assets/js/api/webAdressContrller/webAdressApi.js";
+import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 
 export default {
   data() {

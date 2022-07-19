@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { queryWebsite } from "@/assets/js/api/webAdressContrller/webAdressApi.js";
+import { queryWebsite } from "@/assets/js/api/webAdressController/webAdressApi.js";
 export default {
   data() {
     return {
