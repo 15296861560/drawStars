@@ -70,3 +70,22 @@ Vue.prototype.$axios = function (params, methodUrl) {
   })
   return promise
 }
+
+Vue.prototype.$axiosGet = function (params, methodUrl) {
+  let promise = new Promise(function (resolve, reject) {
+    let requestUrl = Vue.prototype.$vue.$store.getters.getUrl;
+    if (methodUrl) requestUrl += methodUrl;
+    axios.get(requestUrl, {
+      params
+    }, {
+      timeout: params.timeout || 300000
+    }).then(res => {
+      resolve(res.data)
+    }).catch(err => {
+      let errStr = JSON.stringify(err);
+      showError(errStr)
+      reject(err)
+    })
+  })
+  return promise
+}
