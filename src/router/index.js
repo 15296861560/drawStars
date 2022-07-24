@@ -13,55 +13,56 @@ import Multimedia from '@/router/homePages/multimedia.js'
 import Case from '@/router/homePages/case.js'
 import Lab from '@/router/homePages/lab.js'
 import Resource from '@/router/homePages/resource.js'
+import Profile from '@/router/homePages/profile.js'
+
 
 Vue.use(Router)
 
-export const RouterList = [
-  {
-    path: '/home',
-    name: "index",
-    alias: "/",
-    component: Index,
-    redirect: '/home/homepage',
-    children: [{
-        path: '/home/homepage',
-        name: "首页",
-        component: HomePage,
-        meta: {
-          title: ['首页'],
-          keepAlive: true
-        }
-      },
-      {
-        path: '/home/test1',
-        name: "测试页1",
-        component: Test1,
-        meta: {
-          title: ['首页', '测试页1'],
-          keepAlive: true
-        }
-      },
-      {
-        path: '/home/test2',
-        name: "测试页2",
-        component: Test2,
-        meta: {
-          title: ['首页', '测试页2'],
-          keepAlive: true
-        }
-      },
-      ...MyEcharts,
-      ...MyComponents,
-      ...Tools,
-      ...Special,
-      ...Data,
-      ...Multimedia,
-      ...Case,
-      ...Lab,
-      ...Resource
-    ]
-  },
-]
+export const RouterList = [{
+  path: '/home',
+  name: "index",
+  alias: "/",
+  component: Index,
+  redirect: '/home/homepage',
+  children: [{
+      path: '/home/homepage',
+      name: "首页",
+      component: HomePage,
+      meta: {
+        title: ['首页'],
+        keepAlive: true
+      }
+    },
+    {
+      path: '/home/test1',
+      name: "测试页1",
+      component: Test1,
+      meta: {
+        title: ['首页', '测试页1'],
+        keepAlive: true
+      }
+    },
+    {
+      path: '/home/test2',
+      name: "测试页2",
+      component: Test2,
+      meta: {
+        title: ['首页', '测试页2'],
+        keepAlive: true
+      }
+    },
+    ...MyEcharts,
+    ...MyComponents,
+    ...Tools,
+    ...Special,
+    ...Data,
+    ...Multimedia,
+    ...Case,
+    ...Lab,
+    ...Resource,
+    ...Profile,
+  ]
+}]
 
 
 const router = new Router({

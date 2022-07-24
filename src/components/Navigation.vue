@@ -42,7 +42,9 @@
           }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>{{ $t("navigation.profile") }}</el-dropdown-item>
+          <el-dropdown-item @click.native="toPersonalCenter">{{
+            $t("navigation.profile")
+          }}</el-dropdown-item>
           <el-dropdown-item>{{ $t("navigation.setting") }}</el-dropdown-item>
           <el-dropdown-item>{{ $t("navigation.changePasswork") }}</el-dropdown-item>
           <el-dropdown-item divided @click.native="logout">{{
@@ -96,6 +98,11 @@ export default {
       if (toPath == path) return;
       this.$router.push({
         path: toPath,
+      });
+    },
+    toPersonalCenter() {
+      this.$router.push({
+        path: "/home/profile/personalCenter",
       });
     },
     logout() {
