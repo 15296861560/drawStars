@@ -18,7 +18,11 @@ import Myfooter from "@/components/Myfooter.vue";
 //多语言
 import i18n from './lang'
 
-var echarts = require("echarts");
+//lodash工具库
+let _ = require('lodash');
+
+// echarts图表
+let echarts = require("echarts");
 Vue.prototype.$echarts = echarts
 
 
