@@ -1,8 +1,17 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:24:08
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-07-25 23:08:06
+ */
 export default {
   state: {
-    userName: "未登录",
-    userCode: "",
-    userId: 0,
+    userInfo: {
+      name: "",
+      userId: 0
+    },
   },
   mutations: {
     changeUserInfo(state, {
@@ -13,14 +22,14 @@ export default {
     }
   },
   getters: {
-    getUserCode(state) {
-      return state.userCode
-    },
-    getUserName(state) {
-      return state.userName
+    getUserInfo(state) {
+      return state.userInfo
     },
     getUserId(state) {
-      return state.userId
+      return state.userInfo.id
+    },
+    getUserName(state) {
+      return state.userInfo.name || '未登录'
     },
   },
   actions: {

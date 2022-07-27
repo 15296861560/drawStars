@@ -107,8 +107,12 @@ export default {
     },
     logout() {
       this.$store.dispatch("changeUserInfo", {
-        attr: "userName",
-        val: "未登录",
+        attr: "userInfo",
+        val: {},
+      });
+
+      this.$router.push({
+        path: "/login",
       });
     },
     toFirstPage() {
@@ -119,7 +123,6 @@ export default {
         .catch(() => {});
     },
     handleSetLanguage(lang) {
-      console.log(lang);
       this.$i18n.locale = lang;
       storage.local.save("LANGUAGE", lang);
       this.$store.dispatch("changeSettingInfo", {

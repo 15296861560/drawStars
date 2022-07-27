@@ -25,6 +25,10 @@ let _ = require('lodash');
 let echarts = require("echarts");
 Vue.prototype.$echarts = echarts
 
+// 粒子特效
+import VueParticles from 'vue-particles'
+Vue.use(VueParticles)
+
 
 Vue.config.productionTip = false
 

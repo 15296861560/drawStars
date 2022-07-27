@@ -48,19 +48,13 @@ export default {
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
       websiteInfo: {
-        isPC: true,//判断是否是电脑
-        isCollapse: false,// 侧边栏是否收缩
+        isPC: true, //判断是否是电脑
+        isCollapse: false, // 侧边栏是否收缩
       },
     };
   },
   computed: {},
   methods: {
-    login() {
-      this.$store.dispatch("changeUserInfo", {
-        attr: "userName",
-        val: "lgy",
-      });
-    },
     isComputer() {
       let userAgent = navigator.userAgent;
       let phoneList = ["Android", "iPhone", "SymbianOS"];
@@ -81,8 +75,6 @@ export default {
     this.isComputer();
     window.addEventListener("resize", this.isComputer);
     if (this.websiteInfo.isCollapse) this.width = "width:50px;";
-
-    this.login();
   },
 };
 </script>

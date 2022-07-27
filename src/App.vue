@@ -1,7 +1,16 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:24:07
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-07-25 23:33:01
+-->
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view />
+    <transition name="all" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -34,12 +43,14 @@ export default {
     this.$router.beforeEach((to, from, next) => {
       NoProgress.start();
       let hasLogin = true;
-      if (to.name != "首页" && this.$store.getters.getUserName == "未登录") {
+
+      if (to.path != "/login" && !this.$store.getters.getUserId) {
         hasLogin = false;
       }
+
       if (hasLogin) next();
       else {
-        next({ name: "首页" });
+        next({ path: "/login" });
       }
       NoProgress.done();
     });
@@ -60,6 +71,17 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  /* margin: 60px; */
+}
+
+.all-enter-active,
+.all-leave-active {
+  transition: all 0.5s ease;
+}
+
+.all-enter {
+  opacity: 1;
+}
+.all-leave-to {
+  opacity: 0;
 }
 </style>
