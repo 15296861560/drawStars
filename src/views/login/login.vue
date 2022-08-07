@@ -109,6 +109,7 @@ export default {
       userInfo: {},
     };
   },
+  created() {},
   methods: {
     submit() {
       if (this.loginMode === LOGIN_MODE.password) {
@@ -126,6 +127,10 @@ export default {
         this.$store.dispatch("changeUserInfo", {
           attr: "userInfo",
           val: this.userInfo,
+        });
+        this.$store.dispatch("changeUserInfo", {
+          attr: "token",
+          val: this.userInfo.token,
         });
 
         this.$router.push({

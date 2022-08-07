@@ -1,14 +1,27 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:24:07
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-08-07 15:13:52
+ */
 import axios from 'axios'
 import Vue from 'vue'
 
 axios.defaults.timeout = 30000
-// axios.interceptors.request.use(
-//   config => {
-//     // console.log('请求拦截器',config)      
-//     // config.url = Vue.prototype.$vue.$store.getters.getUrl;
-//     return config
-//   }
-// )
+axios.interceptors.request.use(
+  config => {
+    // console.log('请求拦截器',config)      
+    // config.url = Vue.prototype.$vue.$store.getters.getUrl;
+    let token = Vue.prototype.$vue.$store.getters.getToken;
+    if (token) {
+      //将token放到请求头发送给服务器,将tokenkey放在请求头中
+      config.headers.accessToken = token;
+    }
+    return config
+  }
+)
 // axios.interceptors.response.use(
 //   response => {
 //     // console.log('回复拦截器',response)     

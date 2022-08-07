@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
  * @LastEditors: lgy
- * @LastEditTime: 2022-07-25 23:08:06
+ * @LastEditTime: 2022-08-07 15:08:24
  */
 export default {
   state: {
@@ -12,6 +12,7 @@ export default {
       name: "",
       userId: 0
     },
+    token: ""
   },
   mutations: {
     changeUserInfo(state, {
@@ -30,6 +31,9 @@ export default {
     },
     getUserName(state) {
       return state.userInfo.name || '未登录'
+    },
+    getToken(state) {
+      return state.token
     },
   },
   actions: {
