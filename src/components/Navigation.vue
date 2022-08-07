@@ -102,7 +102,7 @@ export default {
     },
     toPersonalCenter() {
       this.$router.push({
-        path: "/home/profile/personalCenter",
+        path: "/home/personalCenter/personalProfile",
       });
     },
     logout() {

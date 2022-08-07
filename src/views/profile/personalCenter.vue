@@ -11,7 +11,9 @@
         {{ menu.name }}
       </li>
     </ul>
-    <router-view class="container-right" />
+    <div class="container-right">
+      <router-view />
+    </div>
   </div>
 </template>
 <script>
@@ -34,6 +36,13 @@ export default {
   methods: {
     toggleMenu(menu) {
       this.curMenu = menu;
+      let nextPath = "/home/personalCenter/" + menu;
+      if (nextPath === this.$route.path) {
+        return;
+      }
+      this.$router.push({
+        path: nextPath,
+      });
     },
   },
 };
