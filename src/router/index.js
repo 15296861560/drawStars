@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:24:08
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-08-07 21:21:13
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/views/Index'
@@ -35,6 +43,14 @@ export const RouterList = [{
         }
       },
       {
+        path: '/404',
+        name: 'NotFound',
+        meta: {
+          title: ['404'],
+        },
+        component: () => import('@/views/pages/NotFound')
+      },
+      {
         path: '/home/test1',
         name: "测试页1",
         component: Test1,
@@ -64,7 +80,12 @@ export const RouterList = [{
       ...Profile,
     ]
   },
-  ...Login
+  ...Login,
+  // 所有未定义路由，全部重定向到404页
+  {
+    path: '*',
+    redirect: '/404'
+  },
 ]
 
 
