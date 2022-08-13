@@ -313,6 +313,7 @@ export default {
 
   .history-content {
     display: flex;
+    flex-wrap: wrap;
     .content {
       position: relative;
       .msg {
