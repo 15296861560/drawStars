@@ -15,6 +15,7 @@
               <div class="m-card-transition skew">倾斜</div>
               <div class="m-card-transition transshape">变形</div>
               <div class="m-card-transition gradients">渐变色</div>
+              <div class="m-card-transition opacityColor">动画透明色</div>
             </div>
           </div>
         </div>
@@ -218,6 +219,18 @@ export default {
   }
   100% {
     background-image: linear-gradient(to top, red, yellow, blue);
+  }
+}
+
+.opacityColor {
+  animation: opacityColor 1s -0.3s linear paused;
+}
+@keyframes opacityColor {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: aqua;
   }
 }
 </style>
