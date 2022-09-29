@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-08-14 21:40:40
+ * @LastEditTime: 2022-08-07 15:13:52
  */
 import axios from 'axios'
 import Vue from 'vue'
@@ -22,21 +22,16 @@ axios.interceptors.request.use(
     return config
   }
 )
-axios.interceptors.response.use(
-  response => {
-    // console.log('回复拦截器', response)
-    if (response.data && response.data.code && response.data.code === 'TOKEN-FAIL') {
-      Vue.prototype.$vue._router.push({
-        path: "/login",
-      });
-    }
-    return response
-  },
-  err => {
-    // console.log('报错拦截器',err)    
-    return Promise.reject(err)
-  }
-)
+// axios.interceptors.response.use(
+//   response => {
+//     // console.log('回复拦截器',response)     
+//     return response
+//   },
+//   err => {
+//     // console.log('报错拦截器',err)    
+//     return Promise.reject(err)
+//   }
+// )
 
 let showError = function (errorMessage) {
   Vue.prototype.$message({
