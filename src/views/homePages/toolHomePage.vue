@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:28:07
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-09-25 23:02:02
+-->
 <template>
   <div>
     <div class="g-home-module">
@@ -39,7 +47,7 @@ export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["utilities", "practice", "chat", "translate", "pay"],
+      routes: ["utilities", "practice", "chat", "translate", "pay", "compress"],
     };
   },
 };
