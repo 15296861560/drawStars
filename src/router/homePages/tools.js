@@ -98,4 +98,12 @@ export default [{
       }
     }, ]
   },
+  {
+    path: '/home/toolHomePage/compress',
+    name: "压缩代码",
+    component: resolve => require(['@/views/tools/compress'], resolve),
+    meta: {
+      title: ['首页', '工具模块', '压缩代码'],
+    },
+  },
 ]

@@ -35,7 +35,8 @@ export default {
       pay: "Pay",
       payment: {
         Alipay: "Alipay"
-      }
+      },
+      compress: "Compressed code",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",
@@ -66,10 +67,12 @@ export default {
       vueReactivity: "Vue Reactivity ",
       promise: "Simple use of Promise",
       webpack: "Webpack packaging",
-      frame: "Embedded pages"
+      frame: "Embedded pages",
     },
     caseHomePage: {
-      board: "Board"
+      board: "Board",
+      demo: "Demo",
+      game: "Game",
     },
     resourceHomePage: {
       configure: "Configuration data",
@@ -179,6 +182,7 @@ export default {
     runningRes: "Running Results",
     clickRun: "Click Run",
     reset: "Reset",
+    clear: "Clear",
   },
   placeholder: {
     redirect: "Please enter the full URL",

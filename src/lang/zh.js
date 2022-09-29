@@ -35,7 +35,8 @@ export default {
       pay: "支付",
       payment: {
         Alipay: "支付宝"
-      }
+      },
+      compress: "压缩代码",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",
@@ -66,10 +67,12 @@ export default {
       vueReactivity: "Vue响应式原理",
       promise: "Promise简单使用",
       webpack: "Webpack打包",
-      frame: "嵌入页"
+      frame: "嵌入页",
     },
     caseHomePage: {
-      board: "看板类"
+      board: "看板类",
+      demo: "演示类",
+      game: "游戏类",
     },
     resourceHomePage: {
       configure: "配置资料",
@@ -179,6 +182,7 @@ export default {
     runningRes: "运行结果",
     clickRun: "点击运行",
     reset: "重置",
+    clear: "清空",
   },
   placeholder: {
     redirect: "请输入完整的 URL",
