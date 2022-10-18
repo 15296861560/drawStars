@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-10-09 23:03:46
+ */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
@@ -5,6 +13,8 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import DrawStartsUI from 'draw-stars-ui';
+import 'draw-stars-ui/dist/draw-stars-ui.css';
 import Vuex from 'vuex'
 import store from '@/vuex'
 import '@/components/dragAndDropComponents/custom-component' // 注册可视化拖拽自定义组件
@@ -35,6 +45,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI, {
   i18n: (key, value) => i18n.t(key, value)
 });
+Vue.use(DrawStartsUI)
 Vue.component('Navigation', Navigation)
 Vue.component('Myfooter', Myfooter)
 Vue.use(Vuex)
