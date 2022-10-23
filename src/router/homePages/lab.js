@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-10-19 22:15:08
+ */
 /*实验室*/
 export default [{
     path: '/home/labHomePage',
@@ -37,6 +45,14 @@ export default [{
     component: resolve => require(['@/views/lab/frame'], resolve),
     meta: {
       title: ['首页', '实验室', '嵌入页'],
+    },
+  },
+  {
+    path: '/home/labHomePage/directive',
+    name: "指令",
+    component: resolve => require(['@/views/lab/directive'], resolve),
+    meta: {
+      title: ['首页', '实验室', '指令'],
     },
   },
 ]

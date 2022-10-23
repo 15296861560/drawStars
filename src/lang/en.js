@@ -68,6 +68,7 @@ export default {
       promise: "Simple use of Promise",
       webpack: "Webpack packaging",
       frame: "Embedded pages",
+      directive: "Directive",
     },
     caseHomePage: {
       board: "Board",

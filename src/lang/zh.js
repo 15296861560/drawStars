@@ -68,6 +68,7 @@ export default {
       promise: "Promise简单使用",
       webpack: "Webpack打包",
       frame: "嵌入页",
+      directive: "指令",
     },
     caseHomePage: {
       board: "看板类",
