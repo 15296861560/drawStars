@@ -4,10 +4,11 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-09-29 23:37:47
+ * @LastEditTime: 2022-10-25 23:41:38
  */
 import axios from 'axios'
 import Vue from 'vue'
+import reqCache from './cache.js'
 
 axios.defaults.timeout = 30000
 axios.interceptors.request.use(
@@ -46,12 +47,12 @@ let showError = function (errorMessage) {
 }
 
 
-Vue.prototype.$axios = function (params, methodUrl) {
-  let requestUrl = Vue.prototype.$vue.$store.getters.getUrl;
+Vue.prototype.$axios = function (params, methodURL) {
+  let requestURL = Vue.prototype.$vue.$store.getters.getUrl;
 
   let promise = new Promise(function (resolve, reject) {
-    let url = requestUrl;
-    if (methodUrl) url += methodUrl;
+    let url = requestURL;
+    if (methodURL) url += methodURL;
     axios.post(url, params, {
       timeout: params.timeout || 30000
     }).then(res => {
@@ -89,15 +90,33 @@ Vue.prototype.$axios = function (params, methodUrl) {
   return promise
 }
 
-Vue.prototype.$axiosGet = function (params, methodUrl) {
-  let promise = new Promise(function (resolve, reject) {
-    let requestUrl = Vue.prototype.$vue.$store.getters.getUrl;
-    if (methodUrl) requestUrl += methodUrl;
-    axios.get(requestUrl, {
+let apiObj = reqCache();
+
+Vue.prototype.$axiosGet = function (params = {}, methodURL = "", options = {}) {
+  let promise = new Promise(async function (resolve, reject) {
+    let requestURL = Vue.prototype.$vue.$store.getters.getUrl;
+    methodURL && (requestURL += methodURL);
+    let realURL = requestURL + "?";
+
+
+    Object.keys(params).forEach(key => {
+      realURL = `${realURL}${key}=${params[key]}&`
+    })
+    realURL = realURL.slice(0, -1);
+
+
+    const cacheResp = await apiObj.beforeFetch(realURL, options);
+    if (cacheResp) {
+      resolve(cacheResp.data);
+      return;
+    }
+
+    axios.get(requestURL, {
       params
     }, {
       timeout: params.timeout || 300000
     }).then(res => {
+      res.status === 200 && apiObj.afterFetch(res, realURL, options);
       resolve(res.data)
     }).catch(err => {
       let errStr = JSON.stringify(err);

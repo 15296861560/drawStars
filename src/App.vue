@@ -4,12 +4,17 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-07-25 23:33:01
+ * @LastEditTime: 2022-10-23 23:31:35
 -->
 <template>
   <div id="app">
     <transition name="all" mode="out-in">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+    </transition>
+    <transition name="fade" mode="out-in">
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
   </div>
 </template>
@@ -41,6 +46,7 @@ export default {
     });
 
     this.$router.beforeEach((to, from, next) => {
+      if (to.path === from.path) return;
       NoProgress.start();
       let hasLogin = true;
 

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
  * @LastEditors: lgy
- * @LastEditTime: 2022-08-07 21:21:13
+ * @LastEditTime: 2022-10-23 23:43:11
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -47,6 +47,7 @@ export const RouterList = [{
         name: 'NotFound',
         meta: {
           title: ['404'],
+          keepAlive: true
         },
         component: () => import('@/views/pages/NotFound')
       },

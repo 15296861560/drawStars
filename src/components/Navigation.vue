@@ -101,8 +101,12 @@ export default {
       });
     },
     toPersonalCenter() {
+      let path = this.$route.path;
+      let toPath = "/home/personalCenter/personalProfile";
+      if (path === toPath) return;
+
       this.$router.push({
-        path: "/home/personalCenter/personalProfile",
+        path: toPath,
       });
     },
     logout() {
