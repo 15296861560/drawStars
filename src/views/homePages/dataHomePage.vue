@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-05-23 23:24:08
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-10-29 17:15:28
+-->
 <template>
   <div>
     <div class="g-home-module">
@@ -24,7 +32,7 @@ export default {
     return {
       homepage: "dataHomePage",
       imgSrc: "",
-      routes: ["Mock", "axios", "Sqlite", "MySQL"],
+      routes: ["Mock", "axios", "Sqlite", "MySQL", "WebSocket"],
     };
   },
 };

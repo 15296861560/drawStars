@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-10-29 17:14:39
+ */
 /*数据模块*/
 export default [{
     path: '/home/dataHomePage',
@@ -46,6 +54,14 @@ export default [{
     component: resolve => require(['@/views/data/MySQL/mysql.vue'], resolve),
     meta: {
       title: ['首页', '数据传输模块', 'MySQL'],
+    },
+  },
+  {
+    path: '/home/dataHomePage/WebSocket',
+    name: "WebSocket",
+    component: resolve => require(['@/views/data/WebSocket/webSocket.vue'], resolve),
+    meta: {
+      title: ['首页', '数据传输模块', 'WebSocket'],
     },
   },
 ]
