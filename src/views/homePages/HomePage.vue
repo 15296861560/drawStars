@@ -3,19 +3,56 @@
     <div class="g-home">
       <div class="g-home-module">
         <div class="g-home-block">
-          <router-link-normal to="/home/echartHomePage" imgName="bar" :text="$t('homePage.echart')" ></router-link-normal>
-          <router-link-normal to="/home/toolHomePage" imgName="tool" :text="$t('homePage.tool')" ></router-link-normal>
-          <router-link-normal to="/home/componentsHomePage" imgName="components" :text="$t('homePage.components')" ></router-link-normal>
-          <router-link-normal to="/home/specialHomePage" imgName="special" :text="$t('homePage.special')" ></router-link-normal>
-          <router-link-normal to="/home/dataHomePage" imgName="data" :text="$t('homePage.data')" ></router-link-normal>
-          <router-link-normal to="/home/multimediaHomePage" imgName="multimedia" :text="$t('homePage.multimedia')" ></router-link-normal>
-          <router-link-normal to="/home/labHomePage" imgName="lab" :text="$t('homePage.lab')" ></router-link-normal>
-          <router-link-normal to="/home/caseHomePage" imgName="case" :text="$t('homePage.case')" ></router-link-normal>
-          <router-link-normal to="/home/resourceHomePage" imgName="resource" :text="$t('homePage.resource')" ></router-link-normal>
+          <router-link-normal
+            to="/home/echartHomePage"
+            imgName="bar"
+            :text="$t('homePage.echart')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/toolHomePage"
+            imgName="tool"
+            :text="$t('homePage.tool')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/componentsHomePage"
+            imgName="components"
+            :text="$t('homePage.components')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/specialHomePage"
+            imgName="special"
+            :text="$t('homePage.special')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/dataHomePage"
+            imgName="data"
+            :text="$t('homePage.data')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/multimediaHomePage"
+            imgName="multimedia"
+            :text="$t('homePage.multimedia')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/labHomePage"
+            imgName="lab"
+            :text="$t('homePage.lab')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/caseHomePage"
+            imgName="case"
+            :text="$t('homePage.case')"
+          ></router-link-normal>
+          <router-link-normal
+            to="/home/resourceHomePage"
+            imgName="resource"
+            :text="$t('homePage.resource')"
+          ></router-link-normal>
         </div>
         <div class="g-home-block">
           <div class="g-module-item">
             <BasicEchart
+              v-if="!isHidden"
               :chartData="areaOption"
               echartId="echart-area"
               class="m-echart-small"
@@ -23,6 +60,7 @@
           </div>
           <div class="g-module-item">
             <BasicEchart
+              v-if="!isHidden"
               :chartData="pieOption"
               echartId="echart-pie"
               class="m-echart-small"
@@ -51,7 +89,7 @@ export default {
     BasicEchart,
     Dependence,
     CommitInfo,
-    RouterLinkNormal
+    RouterLinkNormal,
   },
   data() {
     return {
@@ -59,6 +97,7 @@ export default {
       areaOption: {},
       lineOption: {},
       pieOption: {},
+      isHidden: true,
     };
   },
   methods: {
@@ -107,10 +146,18 @@ export default {
       }, 1000);
     },
   },
-  mounted() {
-    this.getChartData();
-
-    this.autoTooltip(this.pieOption);
+  activated() {
+    this.isHidden = false;
+    this.$nextTick(() => {
+      this.getChartData();
+      this.autoTooltip(this.pieOption);
+    });
+  },
+  mounted() {},
+  deactivated() {
+    this.isHidden = true;
+    //销毁定时器
+    clearInterval(this.dataTimer);
   },
   beforeDestroy() {
     //销毁定时器
