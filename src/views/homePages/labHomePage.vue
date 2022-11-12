@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-10-19 22:03:22
+-->
 <template>
   <div>
     <div class="g-home-module">
@@ -33,6 +41,7 @@ export default {
         { name: "vueReactivity", imgName: "bind" },
         { name: "webpack", imgName: "webpack" },
         { name: "frame", imgName: "frame" },
+        { name: "directive", imgName: "directive" },
       ],
     };
   },
