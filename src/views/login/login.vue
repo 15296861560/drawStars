@@ -20,9 +20,10 @@
       class="canvas-particles"
     >
     </vue-particles>
-    <div class="login-form-bg"></div>
-    <el-form :rules="rules" :model="loginForm">
-      <div class="login-form">
+    <div class="form-bg" :class="isRegister ? 'register-form-bg' : 'login-form-bg'"></div>
+    <!-- 登录框 -->
+    <el-form :rules="rules" :model="loginForm" v-show="!isRegister">
+      <div class="form-container login-form">
         <h2 class="welcome">{{ $t("welcome") }}</h2>
         <el-form-item prop="account" style="width: 100%">
           <el-input v-model="loginForm.account" :placeholder="$t('placeholder.account')">
@@ -53,24 +54,107 @@
           </el-input>
         </el-form-item>
 
-        <router-link to="/forgetPassword" class="forget-password">
+        <router-link to="/forgetPassword" class="link link__forget-password">
           {{ $t("btn.forgetPassword") }}
         </router-link>
 
-        <el-button type="primary" class="btn-submit" @click="submit">{{
+        <el-button type="primary" class="btn-submit mb20" @click="login">{{
           $t("btn.login")
         }}</el-button>
+
+        <div class="switch-row">
+          <span>{{ $t("noAccount") }}</span>
+          <span @click="toRegister" class="link">
+            {{ $t("btn.registerNow") }}
+          </span>
+        </div>
       </div>
     </el-form>
+
+    <!-- 注册账号 -->
+    <div class="form-container register-form" v-show="isRegister">
+      <h2 class="welcome">{{ $t("welcome") }}</h2>
+
+      <div class="input-box mb20">
+        <input
+          class="input-box__inner"
+          type="phone"
+          required
+          v-model="registerForm.account"
+        />
+        <span class="input-box__tip">{{ $t("placeholder.account") }}</span>
+      </div>
+      <div class="input-box mb20">
+        <input
+          class="input-box__inner"
+          type="text"
+          required
+          v-model="registerForm.nickname"
+        />
+        <span class="input-box__tip">{{ $t("placeholder.nickname") }}</span>
+      </div>
+      <div class="input-box mb20">
+        <input
+          class="input-box__inner"
+          type="password"
+          required
+          v-model="registerForm.password"
+        />
+        <span class="input-box__tip">{{ $t("placeholder.password") }}</span>
+        <!-- 密码强度验证 -->
+        <ul class="validate-list">
+          <li v-for="(item, index) in validatePasswordArray" :key="index">
+            <i
+              :class="
+                item.flag
+                  ? 'el-icon-error icon-error'
+                  : 'el-icon-circle-check icon-circle-check'
+              "
+            ></i>
+            <span>{{ item.tip }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="input-box mb20">
+        <input
+          class="input-box__inner"
+          type="password"
+          required
+          v-model="registerForm.rePassword"
+        />
+        <span class="input-box__tip">{{ $t("placeholder.passwordAgain") }}</span>
+      </div>
+
+      <el-button type="primary" class="btn-submit mb20" @click="beforeRegister">{{
+        $t("btn.register")
+      }}</el-button>
+
+      <div class="switch-row">
+        <span>{{ $t("hasAccount") }}</span>
+        <span @click="toLogin" class="link">
+          {{ $t("btn.signNow") }}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { loginByPassword } from "@/assets/js/api/loginController/loginApi.js";
+import {
+  loginByPassword,
+  registerByPhone,
+} from "@/assets/js/api/loginController/loginApi.js";
 const LOGIN_MODE = {
   password: "password", //密码登录
   passwordFree: "passwordFree", //免密登录
   authorize: "authorize", //授权登录
 };
+
+const debounceOption = {
+  leading: true,
+  trailing: false,
+};
+const debounceTime = 1000;
 export default {
   name: "Login",
   data() {
@@ -96,6 +180,12 @@ export default {
         account: "",
         password: "",
       },
+      registerForm: {
+        account: "",
+        nickname: "",
+        password: "",
+        rePassword: "",
+      },
       rules: {
         account: [
           { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
@@ -107,16 +197,55 @@ export default {
       loginMode: LOGIN_MODE.password,
       showPassword: false,
       userInfo: {},
+      isRegister: false,
     };
+  },
+  computed: {
+    validatePasswordArray() {
+      let password = this.registerForm.password || "";
+      let validateArray = [
+        {
+          reg: /^.{8,20}$/,
+          tip: this.$t("validate.passwordLength"),
+          flag: false,
+        },
+        {
+          reg: /(?=.*?[A-Z])/,
+          tip: this.$t("validate.passwordUppercase"),
+          flag: false,
+        },
+        {
+          reg: /(?=.*?[a-z])/,
+          tip: this.$t("validate.passwordLowercase"),
+          flag: false,
+        },
+        {
+          reg: /(?=.*\d)/,
+          tip: this.$t("validate.passwordNumber"),
+          flag: false,
+        },
+      ];
+
+      validateArray.forEach((validate) => {
+        validate.flag = !validate.reg.test(password);
+      });
+
+      return validateArray;
+    },
   },
   created() {},
   methods: {
-    submit() {
-      if (this.loginMode === LOGIN_MODE.password) {
-        this.login();
-      }
-    },
-    async login() {
+    login: _.debounce(
+      function () {
+        if (this.loginMode === LOGIN_MODE.password) {
+          this.passwordLogin();
+        }
+      },
+      debounceTime,
+      debounceOption
+    ),
+    // 密码登录
+    async passwordLogin() {
       let params = {
         phone: this.loginForm.account,
         password: this.loginForm.password,
@@ -124,21 +253,79 @@ export default {
       let res = await loginByPassword(params);
       if (res.status) {
         this.userInfo = res.data;
-        this.$store.dispatch("changeUserInfo", {
-          attr: "userInfo",
-          val: this.userInfo,
-        });
-        this.$store.dispatch("changeUserInfo", {
-          attr: "token",
-          val: this.userInfo.token,
-        });
-
-        this.$router.push({
-          path: "/",
-        });
+        this.afterLogin(this.userInfo);
       } else {
         this.$message.error(res.msg);
       }
+    },
+
+    beforeRegister: _.debounce(
+      function () {
+        try {
+          if (!this.registerForm.account.length) {
+            throw this.$t("validate.accountEmpty");
+          }
+          if (!this.registerForm.nickname.length) {
+            throw this.$t("validate.nicknameEmpty");
+          }
+          if (!this.registerForm.password.length) {
+            throw this.$t("validate.passwordEmpty");
+          }
+          if (this.registerForm.password !== this.registerForm.rePassword) {
+            throw this.$t("validate.passwordInconsistent");
+          }
+          let flagIndex = this.validatePasswordArray.findIndex((item) => item.flag);
+          if (flagIndex > -1) {
+            throw this.$t("validate.passwordStrength");
+          }
+        } catch (e) {
+          this.$message.error(e);
+          return;
+        }
+
+        this.register();
+      },
+      debounceTime,
+      debounceOption
+    ),
+
+    async register() {
+      let params = {
+        phone: this.registerForm.account,
+        name: this.registerForm.nickname,
+        password: this.registerForm.password,
+      };
+      let res = await registerByPhone(params);
+      if (res.status) {
+        this.userInfo = res.data;
+        this.$message({
+          type: "success",
+          message: this.$t("tip.registerSuccess"),
+        });
+        this.afterLogin(this.userInfo);
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    afterLogin(userInfo) {
+      this.$store.dispatch("changeUserInfo", {
+        attr: "userInfo",
+        val: userInfo,
+      });
+      this.$store.dispatch("changeUserInfo", {
+        attr: "token",
+        val: userInfo.token,
+      });
+
+      this.$router.push({
+        path: "/",
+      });
+    },
+    toRegister() {
+      this.isRegister = true;
+    },
+    toLogin() {
+      this.isRegister = false;
     },
     // 离开表单
     leaveForm(e) {
@@ -180,9 +367,9 @@ export default {
   position: absolute;
   z-index: 2;
 }
-.login-form-bg {
+.form-bg {
   width: 30vw;
-  height: 40vh;
+  height: 50vh;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -192,11 +379,26 @@ export default {
   filter: blur(4px);
   opacity: 0.5;
   z-index: 3;
+  transition: all ease 0.3s;
+}
+
+.login-form-bg {
+  height: 40vh;
+}
+.register-form-bg {
+  height: 50vh;
 }
 
 .login-form {
   width: 30vw;
   height: 40vh;
+}
+.register-form {
+  width: 30vw;
+  height: 50vh;
+}
+
+.form-container {
   background-color: transparent;
   position: fixed;
   left: 50%;
@@ -210,6 +412,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   overflow: hidden;
+  transition: all ease 0.3s;
   .welcome {
     font-size: 1.5em;
     font-weight: bold;
@@ -222,9 +425,14 @@ export default {
     transform: translateY(-50%);
   }
 
-  .forget-password {
-    text-align: right;
+  .switch-row {
+    display: flex;
     width: 100%;
+    white-space: nowrap;
+  }
+
+  .link {
+    cursor: pointer;
     text-decoration: none;
     color: @color-text-selected;
     &:hover {
@@ -233,6 +441,12 @@ export default {
     &:active {
       color: @color-text-active;
     }
+  }
+
+  .link__forget-password {
+    width: 100%;
+    text-align: right;
+    margin: 1rem 0rem;
   }
 
   .btn-submit {
@@ -244,39 +458,141 @@ export default {
     right: 0;
   }
 }
+
+.input-box {
+  position: relative;
+  width: 100%;
+  .input-box__inner {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: none;
+    border-radius: 4px;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.5s;
+    &:valid,
+    &:focus {
+      border: 1px solid #50c9c3;
+      & ~ .input-box__tip {
+        color: #50c9c3;
+        transform: translateY(-0.9rem) scale(0.7); /* 变换位置 */
+        padding: 0.5rem;
+        background: #fffaf4;
+        border-radius: 4px;
+        letter-spacing: 0.1rem;
+      }
+    }
+    &:focus {
+      & ~ .validate-list {
+        display: block;
+      }
+    }
+  }
+  .input-box__tip {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #939496;
+    padding: 1rem;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: all ease 0.5s;
+  }
+}
+
+.validate-list {
+  display: none;
+  position: absolute;
+  top: 120%;
+  z-index: 11;
+  text-align: left;
+  width: 100%;
+  font-size: 1.2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 4px;
+  box-shadow: #cfd5d6 10px 10px 10px;
+  line-height: 2rem;
+}
+
+.icon-error {
+  color: #f44234;
+}
+.icon-circle-check {
+  color: #6fc362;
+}
 </style>
 <i18n>
 {
   "zh": {
-     "welcome":"欢迎来到Draw Starts!",
+     "welcome":"欢迎来到绘星!",
+     "noAccount":"没有账号？",
+     "hasAccount":"已有账号，",
      "placeholder":{
          "account":"请输入手机号",
-         "password":"请输入密码"
+         "nickname":"请输入显示昵称",
+         "password":"请输入密码",
+         "passwordAgain":"再次输入密码"
      },
      "btn":{
          "forgetPassword":"忘记密码?",
+         "register":"注册",
+         "registerNow":"立即注册",
          "login":"登录",
+         "signNow":"立即登录",
          "loginOrRegister":"登录/注册"
      },
      "tip":{
        "accountRequired":"账号不能为空",
-       "passwordRequired":"密码不能为空"
+       "passwordRequired":"密码不能为空",
+       "registerSuccess":"注册成功"
+     },
+     "validate":{
+      "passwordStrength":"密码强度太弱",
+      "accountEmpty":"账号不能为空",
+      "nicknameEmpty":"昵称不能为空",
+      "passwordEmpty":"密码不能为空",
+      "passwordInconsistent":"两次密码输入不一致",
+      "passwordLength":"至少8个字符",
+      "passwordUppercase":"至少一个大写字母(A-Z)",
+      "passwordLowercase":"至少一个小写字母(a-z)",
+      "passwordNumber":"至少一个数字(0-9)"
      }
   },
   "en": {
     "welcome":"Welcome to draw starts!",
+    "noAccount":"No account?",
+    "hasAccount":"Existing account,",
      "placeholder":{
          "account":"Please enter your mobile number",
-         "password":"Please input a password"
+         "nickname":"Please enter the display nickname",
+         "password":"Please input a password",
+         "passwordAgain":"Enter password again"
      },
      "btn":{
          "forgetPassword":"Forget Password?",
+         "register":"Register",
+         "registerNow":"Register Now",
          "login":"Login",
+         "signNow":"sign in now",
          "loginOrRegister":"Login/Register"
      },
      "tip":{
        "accountRequired":"Account number cannot be empty",
-       "passwordRequired":"Password cannot be empty"
+       "passwordRequired":"Password cannot be empty",
+       "registerSuccess":"register Successful"
+     },
+     "validate":{
+      "passwordStrength":"Password strength is too weak",
+      "accountEmpty":"The account number cannot be empty",
+      "nicknameEmpty":"Nickname cannot be empty",
+      "passwordEmpty":"Password cannot be empty",
+      "passwordInconsistent":"The two passwords entered are inconsistent",
+      "passwordLength":"At least 8 characters",
+      "passwordUppercase":"At least one uppercase letter (A-Z)",
+      "passwordLowercase":"At least one lowercase letter (a-z)",
+      "passwordNumber":"At least one digit (0-9)"
      }
     
   }
