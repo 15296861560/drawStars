@@ -8,11 +8,12 @@
 -->
 <template>
   <div>
+    <el-button type="primary" @click="showTip = true">开启</el-button>
     <HardTip
       title="提示标题"
       content="提示内容~"
       confirm="关闭"
-      :isShow.sync="showHardTip"
+      :isShow.sync="showTip"
     ></HardTip>
   </div>
 </template>
@@ -20,7 +21,7 @@
 export default {
   data() {
     return {
-      isShow: false,
+      showTip: true,
     };
   },
   methods: {},
