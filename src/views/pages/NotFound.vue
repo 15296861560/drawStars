@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-07 21:19:26
  * @LastEditors: lgy
- * @LastEditTime: 2022-08-07 21:55:50
+ * @LastEditTime: 2022-11-13 14:04:15
 -->
 <template>
   <div class="not-found">
@@ -54,10 +54,10 @@ export default {
 <i18n>
 {
   "en": {
-    "notFoundContent": "The page you visited is still under development. Please find it later."
+    "notFoundContent": "TThe page you visited is still under development. Please come back later"
   },
   "zh": {
-    "notFoundContent": "您访问的页面还在开发中，过段时间再找来吧"
+    "notFoundContent": "您访问的页面还在开发中，过段时间再过来吧"
   }
 }
 </i18n>
