@@ -12,14 +12,17 @@
           <!-- <history></history> -->
         </el-header>
         <el-main class="g-main">
-          <transition name="fade" mode="out-in">
-            <keep-alive>
-              <router-view v-if="$route.meta.keepAlive"></router-view>
-            </keep-alive>
-          </transition>
-          <transition name="fade" mode="out-in">
-            <router-view v-if="!$route.meta.keepAlive"></router-view>
-          </transition>
+          <div style="min-height: calc(100vh - 180px)">
+            <transition name="fade" mode="out-in">
+              <keep-alive>
+                <router-view v-if="$route.meta.keepAlive"></router-view>
+              </keep-alive>
+            </transition>
+            <transition name="fade" mode="out-in">
+              <router-view v-if="!$route.meta.keepAlive"></router-view>
+            </transition>
+          </div>
+
           <el-footer class="g-footer">
             <myfooter></myfooter>
           </el-footer>
