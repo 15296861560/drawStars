@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-11-19 22:55:38
+ */
 /*多媒体模块*/
 export default [{
     path: '/home/multimediaHomePage',
@@ -5,6 +13,7 @@ export default [{
     component: resolve => require(['@/views/homePages/multimediaHomePage.vue'], resolve),
     meta: {
       title: ['首页', '多媒体模块'],
+      keepAlive: true
     },
   },
   {
@@ -37,6 +46,7 @@ export default [{
     component: resolve => require(['@/views/multimedia/pictureEditing'], resolve),
     meta: {
       title: ['首页', '多媒体模块', '图片编辑'],
+      keepAlive: true
     },
     children: [{
       path: '/home/multimediaHomePage/pictureEditing',

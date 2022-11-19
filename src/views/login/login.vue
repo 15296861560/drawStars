@@ -318,7 +318,7 @@ export default {
       });
 
       this.$router.push({
-        path: "/",
+        path: "/home/homepage",
       });
     },
     toRegister() {

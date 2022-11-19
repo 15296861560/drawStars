@@ -1,5 +1,13 @@
 /*工具模块*/
 export default [{
+    path: '/home/toolHomePage',
+    name: "工具模块",
+    component: resolve => require(['@/views/homePages/toolHomePage.vue'], resolve),
+    meta: {
+      title: ['首页', '工具模块'],
+      keepAlive: true
+    },
+  }, {
     path: '/home/toolHomePage/Lodash',
     name: "Lodash",
     component: resolve => require(['@/views/tools/Lodash/Lodash.vue'], resolve),
@@ -18,19 +26,12 @@ export default [{
     }
   },
   {
-    path: '/home/toolHomePage',
-    name: "工具模块",
-    component: resolve => require(['@/views/homePages/toolHomePage.vue'], resolve),
-    meta: {
-      title: ['首页', '工具模块'],
-    },
-  },
-  {
     path: '/home/toolHomePage/utilities',
     name: "工具列表",
     component: resolve => require(['@/views/tools/utilities/ToolList.vue'], resolve),
     meta: {
       title: ['首页', '工具模块', '工具列表'],
+      keepAlive: true
     },
     children: [{
         path: '/home/toolHomePage/utilities/time',
@@ -88,6 +89,7 @@ export default [{
     component: resolve => require(['@/views/tools/pay/pay.vue'], resolve),
     meta: {
       title: ['首页', '工具模块', '支付'],
+      keepAlive: true
     },
     children: [{
       path: '/home/toolHomePage/pay/Alipay',

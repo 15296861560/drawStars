@@ -4,17 +4,14 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-23 23:31:35
+ * @LastEditTime: 2022-11-19 23:02:47
 -->
 <template>
   <div id="app">
     <transition name="all" mode="out-in">
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view></router-view>
       </keep-alive>
-    </transition>
-    <transition name="fade" mode="out-in">
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
   </div>
 </template>

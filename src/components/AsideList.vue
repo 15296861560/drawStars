@@ -12,13 +12,13 @@
           :collapse="websiteInfo.isCollapse"
           :unique-opened="true"
           :router="true"
-          default-active="/"
+          default-active="/home/homepage"
         >
           <el-menu-item @click="collapse" class="m-text-center">
             <i v-show="websiteInfo.isCollapse" class="el-icon-d-arrow-right"></i>
             <span slot="title">Draw Starts</span>
           </el-menu-item>
-          <el-menu-item index="/">
+          <el-menu-item index="/home/homepage">
             <i class="el-icon-s-home"></i>
             <span slot="title">{{ $t("aside.homePage") }}</span>
           </el-menu-item>
@@ -32,7 +32,7 @@
               <el-menu-item
                 :index="item.path"
                 v-for="(item, index) in pathList"
-                :key="index"
+                :key="item.path"
                 >{{ $t(item.name) }}</el-menu-item
               >
             </el-menu-item-group>
@@ -103,10 +103,10 @@ export default {
   },
   methods: {
     levelDown() {
-      this.userData.level--;
+      this.userData.level > 1 && this.userData.level--;
     },
     levelUp() {
-      this.userData.level++;
+      this.userData.level < 9 && this.userData.level++;
     },
     handleOpen(key, keyPath) {
       // 展开

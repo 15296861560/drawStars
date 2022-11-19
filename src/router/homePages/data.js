@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-29 17:14:39
+ * @LastEditTime: 2022-11-19 22:55:14
  */
 /*数据模块*/
 export default [{
@@ -13,6 +13,7 @@ export default [{
     component: resolve => require(['@/views/homePages/dataHomePage.vue'], resolve),
     meta: {
       title: ['首页', '数据传输模块'],
+      keepAlive: true
     }
     // children:[]
   },
@@ -22,6 +23,7 @@ export default [{
     component: resolve => require(['@/views/data/Mock/mock.vue'], resolve),
     meta: {
       title: ['首页', '数据传输模块', 'Mock'],
+      keepAlive: true
     },
     children: [{
       path: '/home/dataHomePage/Mock/dataTemplate',

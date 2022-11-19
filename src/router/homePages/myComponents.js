@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-11-19 22:55:46
+ */
 /*组件模块*/
 export default [{
     path: '/home/componentsHomePage',
@@ -5,6 +13,7 @@ export default [{
     component: resolve => require(['@/views/homePages/componentsHomePage.vue'], resolve),
     meta: {
       title: ['首页', '组件模块'],
+      keepAlive: true
     }
   },
   {
@@ -21,6 +30,7 @@ export default [{
     component: resolve => require(['@/views/myComponents/commonComponents/commonComponents.vue'], resolve),
     meta: {
       title: ['首页', '组件模块', '常用组件'],
+      keepAlive: true
     },
     children: [{
         path: '/home/componentsHomePage/commonComponents/progressBar',

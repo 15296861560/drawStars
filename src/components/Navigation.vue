@@ -122,7 +122,7 @@ export default {
     toFirstPage() {
       this.$router
         .push({
-          path: "/",
+          path: "/home/homepage",
         })
         .catch(() => {});
     },

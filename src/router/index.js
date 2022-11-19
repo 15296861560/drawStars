@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-23 23:43:11
+ * @LastEditTime: 2022-11-19 22:07:38
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -30,9 +30,7 @@ Vue.use(Router)
 export const RouterList = [{
     path: '/home',
     name: "index",
-    alias: "/",
     component: Index,
-    redirect: '/home/homepage',
     children: [{
         path: '/home/homepage',
         name: "首页",

@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-10-07 17:24:28
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-11-19 22:50:19
+ */
 /*特效模块*/
 export default [{
     path: '/home/specialHomePage',
@@ -5,6 +13,7 @@ export default [{
     component: resolve => require(['@/views/homePages/specialHomePage.vue'], resolve),
     meta: {
       title: ['首页', '特效模块'],
+      keepAlive: true
     }
   },
   {

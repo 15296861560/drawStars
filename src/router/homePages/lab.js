@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-19 22:15:08
+ * @LastEditTime: 2022-11-19 22:49:52
  */
 /*实验室*/
 export default [{
@@ -13,6 +13,7 @@ export default [{
     component: resolve => require(['@/views/homePages/labHomePage.vue'], resolve),
     meta: {
       title: ['首页', '实验室'],
+      keepAlive: true
     },
   },
   {

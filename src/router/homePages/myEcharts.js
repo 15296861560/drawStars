@@ -5,6 +5,7 @@ export default [{
     component: resolve => require(['@/views/homePages/echartHomePage.vue'], resolve),
     meta: {
       title: ['首页', '图表模块'],
+      keepAlive: true
     }
     // children:[]
   },
