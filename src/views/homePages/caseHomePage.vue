@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-09-29 23:49:47
+ * @LastEditors: lgy
+ * @LastEditTime: 2022-11-13 14:02:34
+-->
 <template>
   <div>
     <div class="g-home-module">
@@ -20,7 +28,11 @@ export default {
     return {
       homepage: "caseHomePage",
       imgSrc: "case/",
-      routes: [{ name: "board", imgName: "boards" }],
+      routes: [
+        { name: "board", imgName: "boards" },
+        { name: "demo", imgName: "demos" },
+        { name: "game", imgName: "games" },
+      ],
     };
   },
 };
