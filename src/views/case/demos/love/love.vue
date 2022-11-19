@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-13 01:02:46
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-16 00:11:20
+ * @LastEditTime: 2022-11-19 23:09:50
 -->
 <template>
   <div class="love-bg center-flex">
@@ -160,6 +160,6 @@ export default {
   background-color: black;
   border-radius: 4px;
   width: 100%;
-  height: calc(100vh - 180px);
+  height: 70vh;
 }
 </style>
