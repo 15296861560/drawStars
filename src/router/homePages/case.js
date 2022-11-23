@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-18 23:59:01
+ * @LastEditTime: 2022-11-21 22:52:49
  */
 /*例子*/
 export default [{
@@ -50,5 +50,13 @@ export default [{
       title: ['首页', '例子', '游戏'],
       keepAlive: true
     },
+    children: [{
+      path: '/home/caseHomePage/game/2048',
+      name: "2048",
+      component: resolve => require(['@/views/case/games/2048/2048.vue'], resolve),
+      meta: {
+        title: ['首页', '例子', '游戏', '2048'],
+      }
+    }]
   },
 ]
