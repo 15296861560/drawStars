@@ -1,0 +1,13 @@
+// rem方案
+//当分辨率大于1440px时根节点使用vw做单位，保证1920px宽度的屏幕下1rem=16px，1440px到1920px之间1rem按比例缩放，当达到1440px以下时，因为浏览器限制了最小字体为12px，为了保证字体与样式之间取值差异没有太大变化，所以限制分辨率小于1440px时1rem=12px
+@media screen and (max-width: 1440px) and (min-width: 1024px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  html {
+    font-size: 0.833333vw;
+  }
+}
