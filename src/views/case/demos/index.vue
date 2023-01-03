@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-14 00:39:34
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-19 17:32:23
+ * @LastEditTime: 2023-01-03 23:34:20
 -->
 <template>
   <div>
@@ -28,7 +28,10 @@
 export default {
   data() {
     return {
-      demos: [{ name: "爱心", path: "love" }],
+      demos: [
+        { name: "爱心", path: "love" },
+        { name: "星空", path: "skystar" },
+      ],
     };
   },
   methods: {

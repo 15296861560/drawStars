@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-26 23:53:36
+ * @LastEditTime: 2023-01-03 23:34:41
  */
 /*例子*/
 export default [
@@ -37,10 +37,18 @@ export default [
     children: [
       {
         path: "/home/caseHomePage/demo/love",
-        name: "爱心 ",
+        name: "爱心",
         component: () => import("@/views/case/demos/love/love.vue"),
         meta: {
           title: ["首页", "例子", "演示", "爱心"],
+        },
+      },
+      {
+        path: "/home/caseHomePage/demo/skystar",
+        name: "星空",
+        component: () => import("@/views/case/demos/skystar/skystar.vue"),
+        meta: {
+          title: ["首页", "例子", "演示", "星空"],
         },
       },
     ],
