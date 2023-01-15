@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-03 23:34:41
+ * @LastEditTime: 2023-01-03 23:36:12
  */
 /*例子*/
 export default [
@@ -41,6 +41,14 @@ export default [
         component: () => import("@/views/case/demos/love/love.vue"),
         meta: {
           title: ["首页", "例子", "演示", "爱心"],
+        },
+      },
+      {
+        path: "/home/caseHomePage/demo/fireworks",
+        name: "烟花",
+        component: () => import("@/views/case/demos/fireworks/fireworks.vue"),
+        meta: {
+          title: ["首页", "例子", "演示", "烟花"],
         },
       },
       {

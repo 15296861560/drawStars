@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-13 01:02:46
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-19 23:09:50
+ * @LastEditTime: 2023-01-15 22:45:33
 -->
 <template>
   <div class="love-bg center-flex">
@@ -13,6 +13,7 @@
 </template>
 <script>
 import { Point, Particle, ParticlePool } from "./love.js";
+import { animationFrame } from "@/utils/canvas/canvasCompatible.js";
 export default {
   data() {
     return {
@@ -30,35 +31,10 @@ export default {
       image: null,
       time: null,
       loveColor: "#ea80b0",
+      requestId: 0,
     };
   },
   methods: {
-    // requestAnimationFrame不兼容时的降级策略
-    compatible() {
-      let vendors = ["webkit", "moz"];
-      for (let i = 0; i < vendors.length && !window.requestAnimationFrame; i++) {
-        let vp = vendors[i];
-        window.requestAnimationFrame = window[vp + "RequestAnimationFrame"];
-        window.cancelAnimationFrame =
-          window[vp + "CancelAnimationFrame"] ||
-          window[vp + "CancelRequestAnimationFrame"];
-      }
-      if (
-        /iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
-        !window.requestAnimationFrame ||
-        !window.cancelAnimationFrame
-      ) {
-        let lastTime = 0;
-        window.requestAnimationFrame = function (callback) {
-          let now = Date.now();
-          let nextTime = Math.max(lastTime + 16, now);
-          return setTimeout(function () {
-            callback((lastTime = nextTime));
-          }, nextTime - now);
-        };
-        window.cancelAnimationFrame = clearTimeout;
-      }
-    },
     paint() {
       let settings = this.settings;
 
@@ -146,12 +122,15 @@ export default {
 
       particles.draw(this.loveBGContext, this.image);
 
-      requestAnimationFrame(this.render);
+      this.requestId = requestAnimationFrame(this.render);
     },
   },
   mounted() {
-    this.compatible();
+    animationFrame();
     this.paint();
+  },
+  beforeDestroy() {
+    cancelAnimationFrame(this.requestId);
   },
 };
 </script>

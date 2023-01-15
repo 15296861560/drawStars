@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-14 00:39:34
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-03 23:34:20
+ * @LastEditTime: 2023-01-03 23:36:19
 -->
 <template>
   <div>
@@ -30,6 +30,7 @@ export default {
     return {
       demos: [
         { name: "爱心", path: "love" },
+        { name: "烟花", path: "fireworks" },
         { name: "星空", path: "skystar" },
       ],
     };
