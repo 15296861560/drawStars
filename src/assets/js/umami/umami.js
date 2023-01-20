@@ -1,4 +1,16 @@
-const umamiConfig = require('./umami-config') //埋点跟踪代码配置
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-11-24 22:05:22
+ * @LastEditors: lgy
+ * @LastEditTime: 2023-01-20 23:42:39
+ */
+
+//埋点跟踪代码配置
+import {
+  umamiConfig
+} from "./umami-config";
 
 // 根据环境加载埋点跟踪代码信息配置
 let dataWebsiteId = "";
@@ -9,7 +21,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // 加载埋点跟踪代码
-document.write('<script async defer data-website-id="' + dataWebsiteId + '" src="' + umamiConfig.umamiSrc + '"><\/script>');
+let script = document.createElement('script')
+script.setAttribute('async', '')
+script.setAttribute('defer', '')
+script.setAttribute('data-website-id', dataWebsiteId)
+script.setAttribute('src', umamiConfig.umamiSrc)
+document.body.appendChild(script);
 
 
 document.addEventListener("click", event => {

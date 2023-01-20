@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-20 23:09:38
+ * @LastEditTime: 2023-01-20 23:18:06
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -39,6 +39,9 @@ import directives from "@/utils/directives/index.js";
 
 // 使 Pinia 持久化的插件
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
+//配置埋点
+import '@/assets/js/umami/umami.js' 
 
 
 
