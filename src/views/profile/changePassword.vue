@@ -61,7 +61,6 @@ async function comfirm() {
   } else {
     showTips("error", res.msg);
   }
-  console.log("changePassword", res);
 }
 </script>
 
