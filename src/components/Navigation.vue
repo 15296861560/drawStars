@@ -60,7 +60,9 @@
               $t("navigation.profile")
             }}</el-dropdown-item>
             <el-dropdown-item>{{ $t("navigation.setting") }}</el-dropdown-item>
-            <el-dropdown-item>{{ $t("navigation.changePasswork") }}</el-dropdown-item>
+            <el-dropdown-item @click.native="toChangePasswork">{{
+              $t("navigation.changePasswork")
+            }}</el-dropdown-item>
             <el-dropdown-item divided @click.native="logout">{{
               $t("navigation.logOut")
             }}</el-dropdown-item>
@@ -125,8 +127,15 @@ export default {
       });
     },
     toPersonalCenter() {
-      let path = this.$route.path;
       let toPath = "/home/personalCenter/personalProfile";
+      this.toNewPath(toPath);
+    },
+    toChangePasswork() {
+      let toPath = "/home/personalCenter/changePassword";
+      this.toNewPath(toPath);
+    },
+    toNewPath(toPath) {
+      let path = this.$route.path;
 
       if (path === toPath) return;
 

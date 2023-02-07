@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-06-12 22:06:41
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-03 18:05:06
+ * @LastEditTime: 2023-02-06 23:50:42
  */
 /*资料*/
 export default [
@@ -23,6 +23,15 @@ export default [
         component: () => import("@/views/profile/personalProfile.vue"),
         meta: {
           title: ["首页", "个人中心", "个人资料 "],
+          keepAlive: true,
+        },
+      },
+      {
+        path: "/home/personalCenter/changePassword",
+        name: "修改密码 ",
+        component: () => import("@/views/profile/changePassword.vue"),
+        meta: {
+          title: ["首页", "个人中心", "修改密码 "],
           keepAlive: true,
         },
       },

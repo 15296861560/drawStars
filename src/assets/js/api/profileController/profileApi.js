@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-11-24 22:05:22
+ * @LastEditors: lgy
+ * @LastEditTime: 2023-02-07 22:27:51
+ */
 /*个人资料相关接口*/
 import {
   $axios,
@@ -33,10 +41,10 @@ function changePassword(userInfo) {
   let params = {
     id: userInfo.id,
     password: userInfo.password,
-    newPassword: userInfo.newnPassword
+    newPassword: userInfo.newPassword
   }
   return new Promise((resolve, reject) => {
-    $axios(params, "/profileApi/updateUserInfo").then((res) => {
+    $axios(params, "/profileApi/changePassword").then((res) => {
       if (res.status) {
         resolve(res)
       } else {
