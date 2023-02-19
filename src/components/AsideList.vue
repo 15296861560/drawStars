@@ -13,7 +13,8 @@
           :collapse="websiteInfo.isCollapse"
           :unique-opened="true"
           :router="false"
-          default-active="/home/homepage"
+          :default-active="defaultActive"
+          ref="asideMenu"
         >
           <el-menu-item @click="collapse" class="m-text-center">
             <i v-show="websiteInfo.isCollapse" class="el-icon-d-arrow-right"></i>
@@ -93,6 +94,7 @@ export default {
       userData: {
         level: 3,
       },
+      defaultActive: "/home/homepage",
       pathList: [],
     };
   },
@@ -157,6 +159,8 @@ export default {
           name: "homePage." + item.slice(6, i),
         };
       });
+
+      this.defaultActive = this.$route.fullPath;
     },
   },
   mounted() {
