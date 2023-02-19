@@ -23,6 +23,8 @@
 </template>
 <script>
 import { useI18n } from "vue-i18n";
+
+const PERSONAL_PREFIX = "/home/personalCenter/";
 export default {
   data() {
     return {
@@ -39,10 +41,20 @@ export default {
       ];
     },
   },
+
   created() {
-    this.initLocalLang();
+    this.init();
   },
+  activated() {},
   methods: {
+    init() {
+      this.initLocalLang();
+      this.initData();
+    },
+    initData() {
+      let fullPath = this.$route.fullPath;
+      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length);
+    },
     initLocalLang() {
       const { t } = useI18n({
         inheritLocale: true,
@@ -51,7 +63,7 @@ export default {
     },
     toggleMenu(menu) {
       this.curMenu = menu;
-      let nextPath = "/home/personalCenter/" + menu;
+      let nextPath = PERSONAL_PREFIX + menu;
       if (nextPath === this.$route.path) {
         return;
       }
