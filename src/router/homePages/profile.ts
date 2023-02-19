@@ -35,6 +35,15 @@ export default [
           keepAlive: true,
         },
       },
+      {
+        path: "/home/personalCenter/bindPhone",
+        name: "手机设置 ",
+        component: () => import("@/views/profile/bindPhone.vue"),
+        meta: {
+          title: ["首页", "个人中心", "手机设置 "],
+          keepAlive: true,
+        },
+      },
     ],
   },
 ];

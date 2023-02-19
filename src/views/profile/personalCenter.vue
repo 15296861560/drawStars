@@ -35,7 +35,7 @@ export default {
         { name: this.$t("personalProfile"), path: "personalProfile" },
         { name: this.$t("accountSettings"), path: "accountSettings" },
         { name: this.$t("changePassword"), path: "changePassword" },
-        { name: this.$t("changePhone"), path: "changePhone" },
+        { name: this.$t("changePhone"), path: "bindPhone" },
       ];
     },
   },
@@ -111,13 +111,13 @@ export default {
     "personalProfile": "Personal Profile",
     "accountSettings": "Account Settings",
     "changePassword": "Change Password",
-    "changePhone":"Change Phone"
+    "changePhone":"Phone Settings"
   },
   "zh": {
      "personalProfile": "个人资料",
     "accountSettings": "账号设置",
     "changePassword": "修改密码",
-    "changePhone":"更换手机号"
+    "changePhone":"手机设置"
   }
 }
 </i18n>

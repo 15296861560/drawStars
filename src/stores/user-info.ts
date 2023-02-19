@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-27 01:11:05
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-23 23:57:49
+ * @LastEditTime: 2023-02-08 23:31:20
  */
 import { ref,reactive, computed } from "vue";
 import { defineStore } from "pinia";
@@ -13,7 +13,8 @@ export const userInfoStore = defineStore("userInfo", () => {
   
  const userInfo=reactive({
     name: "",
-    userId: 0
+    userId: 0,
+    phone: "",
   }) as UserInfo
   const token=ref('')
   const getUserInfo=computed(()=>userInfo)
@@ -23,6 +24,7 @@ export const userInfoStore = defineStore("userInfo", () => {
   function changeUserInfo(newVal:UserInfo) {
     userInfo.name=newVal.name;
     userInfo.userId=newVal.userId;
+    userInfo.phone=newVal.phone;
   }
 
   function updateToken(newVal:string) {
@@ -38,5 +40,6 @@ export const userInfoStore = defineStore("userInfo", () => {
 
 interface UserInfo{
   name: String,
-  userId: number
+  userId: number,
+  phone: String,
 }
