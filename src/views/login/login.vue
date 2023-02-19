@@ -249,7 +249,7 @@ export default {
         }
       },
       debounceTime,
-      debounceOption,
+      debounceOption
     ),
     // 密码登录
     async passwordLogin() {
@@ -293,7 +293,7 @@ export default {
         this.register();
       },
       debounceTime,
-      debounceOption,
+      debounceOption
     ),
 
     async register() {
@@ -317,7 +317,11 @@ export default {
     afterLogin(userInfoData) {
       const userInfo = userInfoStore();
 
-      userInfo.changeUserInfo({ name: userInfoData.name, userId: userInfoData.id });
+      userInfo.changeUserInfo({
+        name: userInfoData.name,
+        userId: userInfoData.id,
+        phone: userInfoData.phone,
+      });
       userInfo.updateToken(userInfoData.token);
 
       this.$router.push({
