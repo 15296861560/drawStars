@@ -28,6 +28,13 @@
         @click="fullScreen"
         ><FullScreen
       /></el-icon>
+      <!-- 消息 -->
+      <el-icon
+        class="message u-icon"
+        :title="$t('navigation.message')"
+        @click="toSeeMessage"
+        ><Message
+      /></el-icon>
       <!-- 选择语言 -->
       <el-dropdown
         class="selectLang"
@@ -71,12 +78,19 @@
       </el-dropdown>
     </div>
   </div>
+
+  <messageSide
+    id="msgSide"
+    :showMessageBox="showMessageBox"
+    @close="closeMessageBox"
+  ></messageSide>
 </template>
 
 <script>
 import storage from "@/utils/commom/storage";
 import { userInfoStore } from "@/stores/user-info";
 import { settingInfoStore } from "@/stores/setting-info";
+import messageSide from "@/views/message/messageSide.vue";
 
 const settingInfo = settingInfoStore();
 
@@ -87,6 +101,9 @@ export default {
     default: [],
   },
   inject: ["websiteInfo"],
+  components: {
+    messageSide,
+  },
   data() {
     return {
       activeIndex: "1",
@@ -95,6 +112,7 @@ export default {
       screenHeight: document.documentElement.clientHeight, //获取浏览器高度
       screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
       isFullscreen: false, //是否全屏显示
+      showMessageBox: false, //是否显示消息盒子
     };
   },
   computed: {
@@ -107,6 +125,7 @@ export default {
     },
   },
   methods: {
+    initMessage() {},
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       console.log(key);
@@ -178,6 +197,22 @@ export default {
         document.documentElement.webkitRequestFullScreen();
       }
     },
+    // 查看消息
+    toSeeMessage() {
+      if (this.showMessageBox) {
+        this.closeMessageBox();
+      } else {
+        this.showMessageBox = true;
+      }
+    },
+    closeMessageBox() {
+      let msgSide = document.getElementById("msgSide");
+      msgSide.classList.add("slideOutRight");
+      setTimeout(() => {
+        msgSide.classList.remove("slideOutRight");
+        this.showMessageBox = false;
+      }, 500);
+    },
   },
   watch: {},
   mounted() {},
@@ -196,6 +231,10 @@ export default {
     display: flex;
     align-items: center;
     .full-screen {
+      margin-left: 1vw;
+      cursor: pointer;
+    }
+    .message {
       margin-left: 1vw;
       cursor: pointer;
     }

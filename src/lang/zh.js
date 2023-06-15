@@ -87,6 +87,7 @@ export default {
     changePasswork: '修改密码',
     logOut: '退出登录',
     fullScreen: '全屏',
+    message: '消息',
     selectLang: '选择语言',
   },
   dependence: {

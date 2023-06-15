@@ -87,6 +87,7 @@ export default {
     changePasswork: 'Change Password',
     logOut: 'Log Out',
     fullScreen: 'Full Screen',
+    message: 'Message',
     selectLang: 'Select Language',
   },
   dependence: {

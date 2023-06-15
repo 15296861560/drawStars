@@ -41,17 +41,31 @@
 }
 
 //图标
-.u-icon:hover{
+.u-icon:hover {
   color: aqua;
 }
 
 // 链接
-.u-link{
+.u-link {
   color: black;
   cursor: pointer;
   text-decoration: underline;
 }
 
-.u-link:hover{
+.u-link:hover {
   color: aqua;
+}
+
+// 按钮
+.u-btn {
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+
+  &:hover {
+    color: @color-icon-hover;
+  }
+
+  &:active {
+    color: @color-icon-active;
+  }
 }
