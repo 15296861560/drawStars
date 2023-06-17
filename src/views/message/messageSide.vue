@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2023-03-05 17:58:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-15 23:48:59
+ * @LastEditTime: 2023-06-18 00:46:31
 -->
 <template>
   <div class="message-box slideInRight" ref="msgBox" v-show="showMessageBox">
@@ -58,7 +58,6 @@
 import { onMounted, ref, reactive, watch } from "vue";
 import { showTips } from "@/utils/message/showTips.js";
 import formatDate from "@/utils/commom/formatDate.js";
-import { userInfoStore } from "@/stores/user-info";
 import {
   queryNotifyById,
   queryNotifyByType,
@@ -66,6 +65,9 @@ import {
   queryAllNotify,
   queryMyAllNotify,
 } from "@/assets/js/api/notifyController/notifyApi.js";
+import {  WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
+import { userInfoStore } from "@/stores/user-info";
+
 const userInfo = userInfoStore();
 
 const props = defineProps({
@@ -108,6 +110,14 @@ const getMyAllNotify = async () => {
     return;
   }
   notifyList.value = res.data;
+};
+
+const notifyCallback = (data) => {};
+
+const initNotify = () => {
+  this.$notify.addNotifyCallback("websideMsg", WEBSITE_CHANNEL, (data) => {
+    notifyList.push(data);
+  });
 };
 
 const init = async () => {

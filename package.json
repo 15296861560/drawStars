@@ -13,6 +13,7 @@
     "axios": "^1.2.0",
     "baidu-map-vue3": "^0.4.9",
     "default-passive-events": "^2.0.0",
+    "drawstarts-notify": "^0.0.7",
     "echarts": "^5.4.0",
     "element-plus": "^2.2.22",
     "less": "^4.1.3",

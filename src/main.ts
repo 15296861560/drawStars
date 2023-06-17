@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-20 23:18:06
+ * @LastEditTime: 2023-03-05 17:15:39
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -41,8 +41,10 @@ import directives from "@/utils/directives/index.js";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 //配置埋点
-import '@/assets/js/umami/umami.js' 
+import '@/assets/js/umami/umami.js'
 
+//消息通知能力
+import { notifyClient } from 'drawstarts-notify';
 
 
 
@@ -66,11 +68,10 @@ app.use(i18n);
 
 app.use(Particles);
 
-
 directives(app)
 
-
-
 app.config.globalProperties.$echarts = echarts;
+app.config.globalProperties.$notify = notifyClient;
+
 
 app.mount("#app");
