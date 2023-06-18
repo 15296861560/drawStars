@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-19 22:15:21
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-20 23:09:08
+ * @LastEditTime: 2023-06-19 00:13:05
 -->
 <template>
   <div class="g-flex-normal" style="position: realative">
@@ -70,7 +70,7 @@ export default {
     return {
       copyText: "复制内容",
       inputText: "",
-      imgSrc: require("@/assets/img/lab.svg"),
+      imgSrc: require("@/assets/img/svg/lab.svg"),
     };
   },
   created() {
