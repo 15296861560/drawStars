@@ -43,7 +43,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button size="medium" type="primary" @click="pay">
+          <el-button  type="primary" @click="pay">
             <span>支付</span>
           </el-button>
         </el-form-item>

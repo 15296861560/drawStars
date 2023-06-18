@@ -42,21 +42,21 @@
           </el-form-item>
         </el-form>
         <el-button
-          size="medium"
+          
           type="success"
           @click="printGroup(groupAData, 'groupAData')"
         >
           <span>输出GroupA</span>
         </el-button>
         <el-button
-          size="medium"
+          
           type="success"
           @click="printGroup(groupBData, 'groupBData')"
         >
           <span>输出GroupB</span>
         </el-button>
         <el-button
-          size="medium"
+          
           type="success"
           @click="printGroup(groupCData, 'groupCData')"
         >
