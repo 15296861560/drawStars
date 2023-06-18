@@ -17,7 +17,7 @@
           ref="asideMenu"
         >
           <el-menu-item @click="collapse" class="m-text-center">
-            <i v-show="websiteInfo.isCollapse" class="el-icon-d-arrow-right"></i>
+            <el-icon v-show="websiteInfo.isCollapse"><ArrowRight /></el-icon>
             <span slot="title">Draw Starts</span>
           </el-menu-item>
           <el-menu-item index="/home/homepage">
