@@ -13,11 +13,10 @@
         <div class="m-block-title">{{ $t("module.media.audio") }}</div>
         <div class="m-block-content2">
           <el-button size="default" round type="success" @click="playMusic">
-            <i
-              :class="
-                (Music ? 'el-icon-video-pause' : 'el-icon-video-play') + ' fontsize-16'
-              "
-            ></i>
+            <el-icon class="fontsize-16"
+              ><VideoPause v-if="Music" />
+              <VideoPlay v-else />
+            </el-icon>
             <span>{{ Music ? $t("btn.pause") : $t("btn.play") }}</span>
           </el-button>
           <audio width="320" height="240" controls class="ml40" ref="music">
@@ -29,11 +28,10 @@
         <div class="m-block-title">{{ $t("module.media.video") }}</div>
         <div class="m-block-content2">
           <el-button size="default" round type="success" @click="playVideo">
-            <i
-              :class="
-                (Video ? 'el-icon-video-pause' : 'el-icon-video-play') + ' fontsize-16'
-              "
-            ></i>
+            <el-icon class="fontsize-16"
+              ><VideoPause v-if="Video" />
+              <VideoPlay v-else />
+            </el-icon>
             <span>{{ Video ? $t("btn.pause") : $t("btn.play") }}</span>
           </el-button>
           <video width="320" height="240" controls class="ml40" ref="video">

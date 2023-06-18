@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:28:07
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-18 15:53:44
+ * @LastEditTime: 2023-06-18 16:34:17
 -->
 <template>
   <div>
@@ -19,7 +19,7 @@
           </div>
         </div>
       </router-link>
-      <!-- <router-link to="/home/toolHomePage/agora" class="m-router-link">
+      <router-link to="/home/toolHomePage/agora" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
             <img class="m-home-img" src="@/assets/img/png/agora.png" />
@@ -28,7 +28,7 @@
             <p class="m-p">{{ $t("homePage.toolHomePage.agora") }}</p>
           </div>
         </div>
-      </router-link> -->
+      </router-link>
 
       <router-link-normal
         :to="`/home/toolHomePage/${name}`"
