@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:28:07
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-18 16:34:17
+ * @LastEditTime: 2023-06-18 22:30:25
 -->
 <template>
   <div>
@@ -46,7 +46,7 @@ export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["utilities", "practice", "translate", "pay", "compress"],
+      routes: ["chat","utilities", "practice", "translate", "pay", "compress"],
     };
   },
 };

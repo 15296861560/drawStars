@@ -13,6 +13,7 @@
     "@element-plus/icons-vue": "^2.0.10",
     "axios": "^1.2.0",
     "agora-rtc-sdk-ng": "latest",
+    "agora-rtm-sdk": "latest",
     "baidu-map-vue3": "^0.4.9",
     "default-passive-events": "^2.0.0",
     "drawstarts-notify": "^0.0.7",

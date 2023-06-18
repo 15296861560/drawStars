@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-form :inline="true" :model="localUser" class="send-area">
       <el-form-item label="账户">
         <el-input
@@ -17,10 +17,10 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button size="medium" type="success" @click="getRTMToken">
+        <el-button type="success" @click="getRTMToken">
           <span>登录</span>
         </el-button>
-        <el-button size="medium" type="success" @click="logout">
+        <el-button type="success" @click="logout">
           <span>退出</span>
         </el-button>
       </el-form-item>
@@ -40,12 +40,14 @@
   </div>
 </template>
 <script>
-const agoraConfig = require("../Agora/agora-config.js");
-import RtmClient from "./rtm-client";
+import RTMClient from "./rtm-client";
+import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
+import { showTips } from "@/utils/message/showTips.js";
 
 export default {
   data() {
     return {
+      appId: "",
       rtmClient: null,
       localUser: {
         accountName: "",
@@ -54,49 +56,52 @@ export default {
       msg: "",
       msgList: [],
       rtmToken: "",
+      loading: true,
     };
   },
   created() {
     this.init();
   },
   methods: {
-    async init() {},
-    getRTMToken() {
-      this.$axios({ account: this.localUser.accountName }, "/agoraApi/getRTMToken").then(
-        (res) => {
-          if (res.status) {
-            this.rtmToken = res.data;
-            this.initClient();
-          }
-        }
+    async init() {
+      await this.getAppID();
+      this.loading = false;
+    },
+    async getAppID() {
+      let res = await $axiosGet({}, "/agoraApi/getAppID");
+      if (res.status) {
+        this.appId = res.data;
+        this.rtmClient = new RTMClient();
+      } else {
+        showTips("error", "getAppID fail");
+      }
+
+      return this.appId;
+    },
+    async getRTMToken() {
+      this.loading = true;
+      let res = await $axios(
+        { account: this.localUser.accountName },
+        "/agoraApi/getRTMToken"
       );
+      if (res.status) {
+        this.rtmToken = res.data;
+        this.initClient();
+      } else {
+        showTips("error", res.data);
+      }
+      this.loading = false;
     },
     async initClient() {
-      this.rtmClient = new RtmClient();
       let rtm = this.rtmClient;
 
-      const params = {
-        accountName: this.localUser.accountName,
-        appId: agoraConfig.appId,
-        token: this.rtmToken,
-      };
-
       try {
-        rtm.init(params.appId);
-        rtm
-          .login(params.accountName, params.token)
-          .then(() => {
-            rtm._logined = true;
-            console.log("Login: " + params.accountName, " token: ", params.token);
-            this.joinChannel();
-            this.initRTMListen();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        await rtm.login(this.localUser.accountName, this.rtmToken, this.appId);
+        rtm._logined = true;
+        this.initRTMListen();
+        this.joinChannel();
       } catch (err) {
-        Toast.error("Login failed, please open console see more details");
-        console.error(err);
+        showTips("error", err);
       }
     },
     logout() {
@@ -169,22 +174,21 @@ export default {
           this.rtmClient.channels[channelName].joined = true;
         })
         .catch((err) => {
-          console.error("Join channel failed, please open console see more details.");
-          console.error(err);
+          showTips("error", err);
         });
     },
     sendMsg() {
       let rtm = this.rtmClient;
       const channelName = this.localUser.channelName;
       if (!rtm._logined) {
-        console.log("Please Login First");
+        showTips("error", "Please Login First");
         return;
       }
       if (
         !rtm.channels[channelName] ||
         (rtm.channels[channelName] && !rtm.channels[channelName].joined)
       ) {
-        console.log("Please Join first");
+        showTips("error", "Please Join First");
       }
 
       rtm
@@ -199,12 +203,7 @@ export default {
           this.msg = "";
         })
         .catch((err) => {
-          console.log(
-            "Send message to channel " +
-              channelName +
-              " failed, please open console see more details."
-          );
-          console.error(err);
+          showTips("error", err);
         });
     },
   },

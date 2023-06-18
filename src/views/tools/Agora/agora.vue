@@ -143,7 +143,7 @@ export default {
         showTips("error", "getAppID fail");
       }
 
-      return this.rtcToken;
+      return this.appId;
     },
     async getRTCToken(account, channelName, role) {
       let rtcToken = "";
