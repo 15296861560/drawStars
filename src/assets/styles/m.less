@@ -19,9 +19,8 @@
     padding-bottom: 10px;
 
     .m-home-img {
-      width: 50px;
-      display: inherit;
-      margin: 0 auto;
+      max-width: 50px;
+      font-size: 48px;
     }
   }
 
@@ -329,37 +328,80 @@
 .m-btn-simple:hover {
   border-color: aqua;
 }
+
 /* 按钮规范 */
 .m-btn-small {
-  font-size: 0.75rem /* 12/16 */;
-  min-width: 3.75rem /* 60/16 */;
-  height: 1.5rem /* 24/16 */;
+  font-size: 0.75rem
+    /* 12/16 */
+  ;
+  min-width: 3.75rem
+    /* 60/16 */
+  ;
+  height: 1.5rem
+    /* 24/16 */
+  ;
 }
+
 .m-btn-icon-small {
-  font-size: 0.75rem /* 12/16 */;
-  min-width: 7rem /* 112/16 */;
-  height: 1.5rem /* 24/16 */;
+  font-size: 0.75rem
+    /* 12/16 */
+  ;
+  min-width: 7rem
+    /* 112/16 */
+  ;
+  height: 1.5rem
+    /* 24/16 */
+  ;
 }
+
 .m-btn-medium {
-  font-size: 0.875rem /* 14/16 */;
-  min-width: 6rem /* 96/16 */;
-  height: 2rem /* 32/16 */;
+  font-size: 0.875rem
+    /* 14/16 */
+  ;
+  min-width: 6rem
+    /* 96/16 */
+  ;
+  height: 2rem
+    /* 32/16 */
+  ;
 }
+
 .m-btn-icon-medium {
-  font-size: 0.875rem /* 14/16 */;
-  min-width: 8.5rem /* 136/16 */;
-  height: 2rem /* 32/16 */;
+  font-size: 0.875rem
+    /* 14/16 */
+  ;
+  min-width: 8.5rem
+    /* 136/16 */
+  ;
+  height: 2rem
+    /* 32/16 */
+  ;
 }
+
 .m-btn-large {
-  font-size: 1rem /* 16/16 */;
-  min-width: 7.5rem /* 120/16 */;
-  height: 2.5rem /* 40/16 */;
+  font-size: 1rem
+    /* 16/16 */
+  ;
+  min-width: 7.5rem
+    /* 120/16 */
+  ;
+  height: 2.5rem
+    /* 40/16 */
+  ;
 }
+
 .m-btn-icon-large {
-  font-size: 1rem /* 16/16 */;
-  min-width: 10rem /* 160/16 */;
-  height: 2.5rem /* 40/16 */;
+  font-size: 1rem
+    /* 16/16 */
+  ;
+  min-width: 10rem
+    /* 160/16 */
+  ;
+  height: 2.5rem
+    /* 40/16 */
+  ;
 }
+
 .m-btn-standard {
   background: @color-bg;
   border: solid 1px @color-liner-border;
@@ -369,13 +411,16 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .m-btn-standard:hover {
   border-color: @color-border-hover;
 }
+
 .m-btn-standard:active {
   border-color: @color-border-highlight-active;
   color: @color-text-active;
 }
+
 .m-btn-important {
   background: @color-icon-checked;
   color: @color-text-inverse;
@@ -386,9 +431,11 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .m-btn-important:hover {
   background: @color-icon-hover;
 }
+
 .m-btn-important:active {
   background: @color-icon-active;
 }
@@ -405,6 +452,7 @@
   color: #333;
   border-radius: 4px;
   transition: transform ease 0.3s;
+
   &:hover {
     box-shadow: 5px 5px #c0c4cc;
     transform: translateY(-10px);
@@ -532,6 +580,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 // 多行文本
 .m-double-ellipsis {
   overflow: hidden;

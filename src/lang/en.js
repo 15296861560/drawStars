@@ -34,7 +34,7 @@ export default {
       translate: "Translate",
       pay: "Pay",
       payment: {
-        Alipay: "Alipay"
+        alipay: "Alipay"
       },
       compress: "Compressed code",
     },

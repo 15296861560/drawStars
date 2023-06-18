@@ -13,7 +13,11 @@
       <div class="form-container login-form">
         <h2 class="welcome">{{ $t("welcome") }}</h2>
         <el-form-item prop="account" style="width: 100%">
-          <el-input v-model="loginForm.account" :placeholder="$t('placeholder.account')">
+          <el-input
+            v-model="loginForm.account"
+            :placeholder="$t('placeholder.account')"
+            maxlength="20"
+          >
             <template #prepend
               ><el-icon><User /></el-icon
             ></template>
@@ -24,24 +28,20 @@
             v-model="loginForm.password"
             :type="showPassword ? 'text' : 'password'"
             :placeholder="$t('placeholder.password')"
+            maxlength="20"
           >
             <template #prepend
               ><el-icon><Lock /></el-icon
             ></template>
-            <img
-              src="@/assets/img/login/eye-hidden.svg"
-              v-show="!showPassword"
-              class="login-eye"
-              slot="suffix"
-              @click="showPassword = !showPassword"
-            />
-            <img
-              src="@/assets/img/login/eye-show.svg"
-              v-show="showPassword"
-              class="login-eye"
-              slot="suffix"
-              @click="showPassword = !showPassword"
-            />
+            <template #suffix>
+              <div
+                class="login-eye"
+                :class="
+                  showPassword ? 'drawstars-icon-eye-show' : 'drawstars-icon-eye-hidden'
+                "
+                @click="showPassword = !showPassword"
+              ></div>
+            </template>
           </el-input>
         </el-form-item>
 
@@ -429,10 +429,10 @@ export default {
   }
 
   .login-eye {
-    width: 1.25rem;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    cursor: pointer;
   }
 
   .switch-row {

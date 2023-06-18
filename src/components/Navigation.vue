@@ -41,7 +41,7 @@
         :title="$t('navigation.selectLang')"
         @command="handleSetLanguage"
       >
-        <img style="height: 3vh" src="@/assets/img/nav/translate.svg" />
+        <div style="height: 3vh" class="u-icon drawstars-icon-lang"></div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :disabled="language === 'zh'" command="zh">

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:28:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-09-25 23:02:02
+ * @LastEditTime: 2023-06-18 15:53:44
 -->
 <template>
   <div>
@@ -12,7 +12,7 @@
       <router-link to="/home/toolHomePage/Lodash" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/lodash.png" />
+            <img class="m-home-img" src="@/assets/img/png/lodash.png" />
           </div>
           <div>
             <p class="m-p">{{ $t("homePage.toolHomePage.Lodash") }}</p>
@@ -22,7 +22,7 @@
       <!-- <router-link to="/home/toolHomePage/agora" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/agora.png" />
+            <img class="m-home-img" src="@/assets/img/png/agora.png" />
           </div>
           <div>
             <p class="m-p">{{ $t("homePage.toolHomePage.agora") }}</p>
@@ -32,7 +32,6 @@
 
       <router-link-normal
         :to="`/home/toolHomePage/${name}`"
-        imgSrc="tools/"
         :imgName="name"
         :text="$t(`homePage.toolHomePage.${name}`)"
         v-for="(name, index) in routes"

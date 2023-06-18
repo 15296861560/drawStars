@@ -34,7 +34,7 @@ export default {
       translate: "翻译",
       pay: "支付",
       payment: {
-        Alipay: "支付宝"
+        alipay: "支付宝"
       },
       compress: "压缩代码",
     },

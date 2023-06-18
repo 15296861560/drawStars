@@ -4,49 +4,11 @@
       <div class="g-home-module">
         <div class="g-home-block">
           <router-link-normal
-            to="/home/echartHomePage"
-            imgName="bar"
-            :text="$t('homePage.echart')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/toolHomePage"
-            imgName="tool"
-            :text="$t('homePage.tool')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/componentsHomePage"
-            imgName="components"
-            :text="$t('homePage.components')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/specialHomePage"
-            imgName="special"
-            :text="$t('homePage.special')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/dataHomePage"
-            imgName="data"
-            :text="$t('homePage.data')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/multimediaHomePage"
-            imgName="multimedia"
-            :text="$t('homePage.multimedia')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/labHomePage"
-            imgName="lab"
-            :text="$t('homePage.lab')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/caseHomePage"
-            imgName="case"
-            :text="$t('homePage.case')"
-          ></router-link-normal>
-          <router-link-normal
-            to="/home/resourceHomePage"
-            imgName="resource"
-            :text="$t('homePage.resource')"
+            v-for="route in routes"
+            :key="route.name"
+            :to="route.path"
+            :imgName="route.name"
+            :text="$t(`homePage.${route.name}`)"
           ></router-link-normal>
         </div>
         <div class="g-home-block">
@@ -94,6 +56,17 @@ export default {
   data() {
     return {
       dataTimer: null, //定时器
+      routes: [
+        { name: "echart", path: "/home/echartHomePage" },
+        { name: "tool", path: "/home/toolHomePage" },
+        { name: "components", path: "/home/componentsHomePage" },
+        { name: "special", path: "/home/specialHomePage" },
+        { name: "data", path: "/home/dataHomePage" },
+        { name: "multimedia", path: "/home/multimediaHomePage" },
+        { name: "lab", path: "/home/labHomePage" },
+        { name: "case", path: "/home/caseHomePage" },
+        { name: "resource", path: "/home/resourceHomePage" },
+      ],
       areaOption: {},
       lineOption: {},
       pieOption: {},
@@ -119,7 +92,7 @@ export default {
     },
     autoTooltip(option) {
       let pieChart = this.$echarts.getInstanceByDom(
-        document.getElementById("echart-pie"),
+        document.getElementById("echart-pie")
       );
       let currentIndex = 0;
       this.dataTimer = setInterval(function () {

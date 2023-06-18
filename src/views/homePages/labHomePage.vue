@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-19 22:03:22
+ * @LastEditTime: 2023-06-18 16:01:49
 -->
 <template>
   <div>
@@ -20,7 +20,6 @@
 
       <router-link-normal
         :to="`/home/${homepage}/${page.name}`"
-        :imgSrc="imgSrc"
         :imgName="page.imgName"
         :text="$t(`homePage.${homepage}.${page.name}`)"
         v-for="(page, index) in routes"
@@ -36,7 +35,6 @@ export default {
   data() {
     return {
       homepage: "labHomePage",
-      imgSrc: "lab/",
       routes: [
         { name: "vueReactivity", imgName: "bind" },
         { name: "webpack", imgName: "webpack" },

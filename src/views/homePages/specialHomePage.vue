@@ -1,13 +1,20 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-11-26 16:37:23
+ * @LastEditors: lgy
+ * @LastEditTime: 2023-06-18 03:36:59
+-->
 <template>
   <div>
     <div class="g-home-module">
       <router-link-normal
-        :to="`/home/${homepage}/${page.name}`"
-        :imgSrc="imgSrc"
-        :imgName="page.imgName"
-        :text="$t(`homePage.${homepage}.${page.name}`)"
+        :to="`/home/${homepage}/${page}`"
+        :imgName="page"
+        :text="$t(`homePage.${homepage}.${page}`)"
         v-for="(page, index) in routes"
-        :key="page.name"
+        :key="page"
       ></router-link-normal>
     </div>
   </div>
@@ -20,12 +27,7 @@ export default {
     return {
       homepage: "specialHomePage",
       imgSrc: "special/",
-      routes: [
-        { name: "transition", imgName: "transition" },
-        { name: "animation", imgName: "animation" },
-        { name: "words", imgName: "words" },
-        { name: "drag", imgName: "drag" },
-      ],
+      routes: ["transition", "animation", "words", "drag"],
     };
   },
 };
