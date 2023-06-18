@@ -71,9 +71,9 @@ export default {
       directive: "指令",
     },
     caseHomePage: {
-      board: "看板类",
-      demo: "演示类",
-      game: "游戏类",
+      boards: "看板类",
+      demos: "演示类",
+      games: "游戏类",
     },
     resourceHomePage: {
       configure: "配置资料",

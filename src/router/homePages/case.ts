@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-03 23:36:12
+ * @LastEditTime: 2023-06-18 16:17:04
  */
 /*例子*/
 export default [
@@ -18,7 +18,7 @@ export default [
     },
   },
   {
-    path: "/home/caseHomePage/board",
+    path: "/home/caseHomePage/boards",
     name: "看板",
     component: () => import("@/views/case/boards.vue"),
     meta: {
@@ -27,7 +27,7 @@ export default [
     },
   },
   {
-    path: "/home/caseHomePage/demo",
+    path: "/home/caseHomePage/demos",
     name: "演示",
     component: () => import("@/views/case/demos/index.vue"),
     meta: {
@@ -36,7 +36,7 @@ export default [
     },
     children: [
       {
-        path: "/home/caseHomePage/demo/love",
+        path: "/home/caseHomePage/demos/love",
         name: "爱心",
         component: () => import("@/views/case/demos/love/love.vue"),
         meta: {
@@ -44,7 +44,7 @@ export default [
         },
       },
       {
-        path: "/home/caseHomePage/demo/fireworks",
+        path: "/home/caseHomePage/demos/fireworks",
         name: "烟花",
         component: () => import("@/views/case/demos/fireworks/fireworks.vue"),
         meta: {
@@ -52,7 +52,7 @@ export default [
         },
       },
       {
-        path: "/home/caseHomePage/demo/skystar",
+        path: "/home/caseHomePage/demos/skystar",
         name: "星空",
         component: () => import("@/views/case/demos/skystar/skystar.vue"),
         meta: {
@@ -62,7 +62,7 @@ export default [
     ],
   },
   {
-    path: "/home/caseHomePage/game",
+    path: "/home/caseHomePage/games",
     name: "游戏",
     component: () => import("@/views/case/games/index.vue"),
     meta: {

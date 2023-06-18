@@ -71,9 +71,9 @@ export default {
       directive: "Directive",
     },
     caseHomePage: {
-      board: "Board",
-      demo: "Demo",
-      game: "Game",
+      boards: "Board",
+      demos: "Demo",
+      games: "Game",
     },
     resourceHomePage: {
       configure: "Configuration data",
