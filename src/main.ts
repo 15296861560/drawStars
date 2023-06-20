@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-03-05 17:15:39
+ * @LastEditTime: 2023-06-20 23:42:15
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -50,9 +50,7 @@ import { notifyClient } from 'drawstarts-notify';
 
 const app = createApp(App);
 
-app.use(BaiduMapVue3, {
-  apiKey: "fLZT8N8BfIbR2eAyV4gGRE683PCFOZXn",
-});
+app.use(BaiduMapVue3);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
 
