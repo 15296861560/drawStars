@@ -58,7 +58,7 @@
 </template>
 <script>
 import { debounce } from "lodash";
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 
 import {
   queryPovinceList,
@@ -76,6 +76,7 @@ const userInfo = userInfoStore();
 
 const DEBOUNCE_TIME = 1000;
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {
       // 原始数据
@@ -147,7 +148,7 @@ export default {
                       };
                     });
                     resolve(nodes);
-                  },
+                  }
                 );
 
                 break;
@@ -182,16 +183,9 @@ export default {
     };
   },
   created() {
-    this.initLocalLang();
     this.initUserInfo();
   },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     // 初始化个人信息
     async initUserInfo() {
       this.userData = await queryUserInfo(userInfo.getUserId);
@@ -230,7 +224,7 @@ export default {
       {
         leading: true,
         trailing: false,
-      },
+      }
     ),
     // 取消
     cancel() {

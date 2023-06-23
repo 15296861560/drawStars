@@ -131,7 +131,7 @@
 </template>
 <script>
 import * as _ from "lodash";
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 import {
   loginByPassword,
   registerByPhone,
@@ -153,6 +153,7 @@ const debounceOption = {
 const debounceTime = 1000;
 export default {
   name: "Login",
+  mixins: [i18nLabelMixin],
   data() {
     return {
       particles,
@@ -223,25 +224,17 @@ export default {
       return validateArray;
     },
   },
-  created() {
-    this.initLocalLang();
+  mounted() {
+    this.rules = {
+      account: [
+        { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
+      ],
+      password: [
+        { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
+      ],
+    };
   },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-
-      this.rules = {
-        account: [
-          { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
-        ],
-        password: [
-          { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
-        ],
-      };
-    },
     login: _.debounce(
       function () {
         if (this.loginMode === LOGIN_MODE.password) {

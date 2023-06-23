@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 // import "@/utils/directives/index.js";
 // const waterMarker = {
 //   mounted: function (el, binding) {
@@ -65,6 +65,7 @@ import { useI18n } from "vue-i18n";
 //   },
 // };
 export default {
+  mixins: [i18nLabelMixin],
   // directives: { waterMarker },
   data() {
     return {
@@ -73,16 +74,7 @@ export default {
       imgSrc: require("@/assets/img/svg/lab.svg"),
     };
   },
-  created() {
-    this.initLocalLang();
-  },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     longpress() {
       this.$message({
         type: "success",

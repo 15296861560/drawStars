@@ -22,10 +22,11 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 
 const PERSONAL_PREFIX = "/home/personalCenter/";
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {
       curMenu: "personalProfile",
@@ -42,24 +43,17 @@ export default {
     },
   },
 
-  created() {
+  mounted() {
     this.init();
   },
   activated() {},
   methods: {
     init() {
-      this.initLocalLang();
       this.initData();
     },
     initData() {
       let fullPath = this.$route.fullPath;
       this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length);
-    },
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
     },
     toggleMenu(menu) {
       this.curMenu = menu;

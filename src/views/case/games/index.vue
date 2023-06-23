@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-14 21:51:00
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-24 00:55:08
+ * @LastEditTime: 2023-06-24 01:13:06
 -->
 <template>
   <div>
@@ -22,8 +22,9 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {
       games: [
@@ -33,20 +34,11 @@ export default {
     };
   },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     showGame(path) {
       this.$router.push({
         path: `/home/caseHomePage/games/${path}`,
       });
     },
-  },
-  created() {
-    this.initLocalLang();
   },
 };
 </script>

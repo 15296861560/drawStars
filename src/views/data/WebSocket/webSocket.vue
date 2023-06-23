@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-29 17:12:19
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-04 22:56:39
+ * @LastEditTime: 2023-06-24 01:16:43
 -->
 <template>
   <div>
@@ -51,8 +51,9 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {
       formInline: {
@@ -66,12 +67,6 @@ export default {
     };
   },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     connection() {
       this.client = new WebSocket(this.formInline.address);
       this.client.addEventListener("open", () => {
@@ -97,10 +92,7 @@ export default {
       this.client.send(this.formInline.message);
       this.sendMsgList.push(this.formInline.message);
     },
-  },
-  created() {
-    this.initLocalLang();
-  },
+  }
 };
 </script>
 <style lang="less" scoped>
