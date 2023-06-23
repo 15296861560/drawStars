@@ -190,7 +190,6 @@ function drawPanel() {
     boards.push(new Array(gap + 1).fill(""));
   }
   boards.push(new Array(gap + 1).fill(""));
-  console.log(boards);
 }
 
 function init() {
