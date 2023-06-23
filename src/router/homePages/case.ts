@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-18 16:17:04
+ * @LastEditTime: 2023-06-24 00:54:50
  */
 /*例子*/
 export default [
@@ -71,11 +71,19 @@ export default [
     },
     children: [
       {
-        path: "/home/caseHomePage/game/2048",
+        path: "/home/caseHomePage/games/2048",
         name: "2048",
         component: () => import("@/views/case/games/2048/2048.vue"),
         meta: {
           title: ["首页", "例子", "游戏", "2048"],
+        },
+      },
+      {
+        path: "/home/caseHomePage/games/gobang",
+        name: "五子棋",
+        component: () => import("@/views/case/games/gobang/gobang.vue"),
+        meta: {
+          title: ["首页", "例子", "游戏", "五子棋"],
         },
       },
     ],

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-14 21:51:00
  * @LastEditors: lgy
- * @LastEditTime: 2022-08-16 23:43:20
+ * @LastEditTime: 2023-06-24 00:55:08
 -->
 <template>
   <div>
@@ -22,18 +22,31 @@
   </div>
 </template>
 <script>
+import { useI18n } from "vue-i18n";
 export default {
   data() {
     return {
-      games: [{ name: "2048", path: "2048" }],
+      games: [
+        { name: "2048", path: "2048" },
+        { name: "gobang", path: "gobang" },
+      ],
     };
   },
   methods: {
+    initLocalLang() {
+      const { t } = useI18n({
+        inheritLocale: true,
+      });
+      this.$t = t;
+    },
     showGame(path) {
       this.$router.push({
-        path: `/home/caseHomePage/game/${path}`,
+        path: `/home/caseHomePage/games/${path}`,
       });
     },
+  },
+  created() {
+    this.initLocalLang();
   },
 };
 </script>
@@ -52,6 +65,8 @@ export default {
     border-radius: 4px;
     box-sizing: border-box;
     white-space: nowrap;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
     cursor: pointer;
     &:hover {
       opacity: 0.8;
@@ -62,10 +77,12 @@ export default {
 <i18n>
 {
   "en": {
-    "2048":"2048"
+    "2048":"2048",
+    "gobang":"gobang"
   },
   "zh": {
-    "2048":"2048"
+    "2048":"2048",
+    "gobang":"五子棋"
   }
 }
 </i18n>
