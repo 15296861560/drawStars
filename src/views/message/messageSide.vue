@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2023-03-05 17:58:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-18 00:46:31
+ * @LastEditTime: 2023-06-24 17:08:27
 -->
 <template>
   <div class="message-box slideInRight" ref="msgBox" v-show="showMessageBox">
@@ -109,7 +109,7 @@ const getMyAllNotify = async () => {
   if (!res.status || !res.data) {
     return;
   }
-  notifyList.value = res.data;
+  notifyList = res.data;
 };
 
 const notifyCallback = (data) => {};
