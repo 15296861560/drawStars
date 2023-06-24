@@ -224,7 +224,7 @@ export default {
       return validateArray;
     },
   },
-  mounted() {
+  created() {
     this.rules = {
       account: [
         { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
