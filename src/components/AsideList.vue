@@ -16,13 +16,17 @@
           :default-active="defaultActive"
           ref="asideMenu"
         >
-          <el-menu-item @click="collapse" class="m-text-center">
+          <el-menu-item index="collapse" class="m-text-center">
             <el-icon v-show="websiteInfo.isCollapse"><ArrowRight /></el-icon>
-            <span slot="title">Draw Starts</span>
+            <template #title>
+              <span>Draw Starts</span>
+            </template>
           </el-menu-item>
           <el-menu-item index="/home/homepage">
             <el-icon><HomeFilled /></el-icon>
-            <span slot="title">{{ $t("aside.homePage") }}</span>
+            <template #title>
+              <span>{{ $t("aside.homePage") }}</span>
+            </template>
           </el-menu-item>
 
           <el-sub-menu index="1">
@@ -106,6 +110,9 @@ export default {
       this.userData.level < 9 && this.userData.level++;
     },
     handleSelect(path) {
+      if (!path) {
+        return;
+      }
       switch (path) {
         case "levelDown":
           this.levelDown();
@@ -115,6 +122,9 @@ export default {
           break;
         case "outSide":
           this.toOutSide();
+          break;
+        case "collapse":
+          this.collapse();
           break;
 
         default:
