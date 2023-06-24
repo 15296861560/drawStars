@@ -9,6 +9,9 @@
           <div class="relyOn">{{ item.relyOn }}</div>
           <div class="version">{{ item.version }}</div>
         </li>
+        <li class="li-row" v-if="isOverflow">
+          <span class="overflow-ellipsis">...</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -16,18 +19,25 @@
 
 <script>
 import packageMsg from "../../../package.json";
+// 最多显示多少条依赖信息
+const maxShowLength = 10;
 export default {
   name: "Dependence",
   props: {},
   data() {
     return {
       dpList: [],
+      isOverflow: false,
     };
   },
   methods: {
     getDpList() {
       let dpList = [];
       for (let key in packageMsg.dependencies) {
+        if (dpList.length >= maxShowLength) {
+          this.isOverflow = true;
+          break;
+        }
         dpList.push({
           relyOn: key,
           version: packageMsg.dependencies[key],
@@ -86,6 +96,10 @@ export default {
         .version {
           text-align: center;
           width: 50%;
+        }
+        .overflow-ellipsis {
+          text-align: center;
+          width: 100%;
         }
       }
     }
