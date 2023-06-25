@@ -47,10 +47,10 @@
               <span>{{ $t("aside.test") }}</span>
             </template>
             <el-menu-item-group title="权限示例">
-              <el-menu-item v-if="userData.level > 1" disabled>{{
+              <el-menu-item v-if="userData.level > 1" index="/home/test1">{{
                 $t("aside.moreThanOne")
               }}</el-menu-item>
-              <el-menu-item v-if="userData.level > 2" disabled>{{
+              <el-menu-item v-if="userData.level > 2" index="/home/test2">{{
                 $t("aside.moreThanTwo")
               }}</el-menu-item>
             </el-menu-item-group>
@@ -58,12 +58,6 @@
               <el-menu-item index="outSide"
                 ><el-icon><Link /></el-icon>{{ $t("aside.externalLinks") }}</el-menu-item
               >
-              <el-menu-item index="/home/test1">{{
-                $t("aside.testPageOne")
-              }}</el-menu-item>
-              <el-menu-item index="/home/test2">{{
-                $t("aside.testPageTwo")
-              }}</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="3">
@@ -90,6 +84,8 @@
 
 <script>
 import { RouterList } from "@/router/index.ts";
+import Test1 from "@/views/pages/test1.vue";
+import Test2 from "@/views/pages/test2.vue";
 export default {
   name: "Aside",
   inject: ["websiteInfo"],
@@ -105,9 +101,37 @@ export default {
   methods: {
     levelDown() {
       this.userData.level > 1 && this.userData.level--;
+      if (this.userData.level < 3 && this.$router.hasRoute("测试页2")) {
+        this.$router.removeRoute("测试页2");
+      }
+      if (this.userData.level < 2 && this.$router.hasRoute("测试页1")) {
+        this.$router.removeRoute("测试页1");
+      }
     },
     levelUp() {
       this.userData.level < 9 && this.userData.level++;
+      if (this.userData.level > 1) {
+        this.$router.addRoute("home", {
+          path: "/home/test1",
+          name: "测试页1",
+          component: Test1,
+          meta: {
+            title: ["首页", "测试页1"],
+            keepAlive: true,
+          },
+        });
+      }
+      if (this.userData.level > 2) {
+        this.$router.addRoute("home", {
+          path: "/home/test2",
+          name: "测试页2",
+          component: Test2,
+          meta: {
+            title: ["首页", "测试页2"],
+            keepAlive: true,
+          },
+        });
+      }
     },
     handleSelect(path) {
       if (!path) {
@@ -172,9 +196,35 @@ export default {
 
       this.defaultActive = this.$route.fullPath;
     },
+    // 初始化动态路由
+    initDynamicRouter() {
+      if (this.userData.level > 1) {
+        this.$router.addRoute("home", {
+          path: "/home/test1",
+          name: "测试页1",
+          component: Test1,
+          meta: {
+            title: ["首页", "测试页1"],
+            keepAlive: true,
+          },
+        });
+      }
+      if (this.userData.level > 2) {
+        this.$router.addRoute("home", {
+          path: "/home/test2",
+          name: "测试页2",
+          component: Test2,
+          meta: {
+            title: ["首页", "测试页2"],
+            keepAlive: true,
+          },
+        });
+      }
+    },
   },
   mounted() {
     this.getHomePages();
+    this.initDynamicRouter();
   },
 };
 </script>

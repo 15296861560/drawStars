@@ -4,11 +4,9 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-18 20:50:35
+ * @LastEditTime: 2022-12-31 10:28:48
  */
 import { createRouter, createWebHistory } from "vue-router";
-import Test1 from "@/views/pages/test1.vue";
-import Test2 from "@/views/pages/test2.vue";
 import MyEcharts from "@/router/homePages/myEcharts.ts";
 import MyComponents from "@/router/homePages/myComponents.ts";
 import Tools from "@/router/homePages/tools.ts";
@@ -52,24 +50,6 @@ export const RouterList = [
           keepAlive: true,
         },
         component: () => import("@/views/pages/NotFound.vue"),
-      },
-      {
-        path: "/home/test1",
-        name: "测试页1",
-        component: Test1,
-        meta: {
-          title: ["首页", "测试页1"],
-          keepAlive: true,
-        },
-      },
-      {
-        path: "/home/test2",
-        name: "测试页2",
-        component: Test2,
-        meta: {
-          title: ["首页", "测试页2"],
-          keepAlive: true,
-        },
       },
       ...MyEcharts,
       ...MyComponents,
