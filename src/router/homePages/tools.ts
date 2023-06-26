@@ -113,4 +113,12 @@ export default [
       title: ["首页", "工具模块", "压缩代码"],
     },
   },
+  {
+    path: "/home/toolHomePage/networkStrength",
+    name: "网络质量",
+    component: () => import("@/views/tools/networkStrength/index.vue"),
+    meta: {
+      title: ["首页", "工具模块", "网络质量"],
+    },
+  },
 ];

@@ -1,5 +1,4 @@
-@font-face {
-  font-family: "drawstars-icon";
+@font-face {font-family: "drawstars-icon";
   src: url('../font/drawstars-icon.eot?t=1687707433886'); /* IE9*/
   src: url('../font/drawstars-icon.eot?t=1687707433886#iefix') format('embedded-opentype'), /* IE6-IE8 */
   url("../font/drawstars-icon.woff2?t=1687707433886") format("woff2"),
@@ -10,12 +9,11 @@
 
 [class^="drawstars-icon-"], [class*=" drawstars-icon-"] {
   font-family: 'drawstars-icon' !important;
-  font-size:32px;
+  font-size: 32px;
   font-style:normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 .drawstars-icon-alipay:before { content: "\ea01"; }
 .drawstars-icon-animation:before { content: "\ea02"; }
@@ -81,4 +79,69 @@
 .drawstars-icon-webFrame:before { content: "\ea3e"; }
 .drawstars-icon-webpack:before { content: "\ea3f"; }
 .drawstars-icon-words:before { content: "\ea40"; }
+
+$drawstars-icon-alipay: "\ea01";
+$drawstars-icon-animation: "\ea02";
+$drawstars-icon-area: "\ea03";
+$drawstars-icon-bar: "\ea04";
+$drawstars-icon-barLineDrill: "\ea05";
+$drawstars-icon-bind: "\ea06";
+$drawstars-icon-boards: "\ea07";
+$drawstars-icon-camera: "\ea08";
+$drawstars-icon-case: "\ea09";
+$drawstars-icon-chat: "\ea0a";
+$drawstars-icon-common: "\ea0b";
+$drawstars-icon-components: "\ea0c";
+$drawstars-icon-compress: "\ea0d";
+$drawstars-icon-configure: "\ea0e";
+$drawstars-icon-crop: "\ea0f";
+$drawstars-icon-data: "\ea10";
+$drawstars-icon-defaultPic: "\ea11";
+$drawstars-icon-demos: "\ea12";
+$drawstars-icon-directive: "\ea13";
+$drawstars-icon-drag: "\ea14";
+$drawstars-icon-dynamicOrderBar: "\ea15";
+$drawstars-icon-echart: "\ea16";
+$drawstars-icon-eye-hidden: "\ea17";
+$drawstars-icon-eye-show: "\ea18";
+$drawstars-icon-flop: "\ea19";
+$drawstars-icon-frame: "\ea1a";
+$drawstars-icon-games: "\ea1b";
+$drawstars-icon-gauge: "\ea1c";
+$drawstars-icon-lab: "\ea1d";
+$drawstars-icon-lang: "\ea1e";
+$drawstars-icon-line: "\ea1f";
+$drawstars-icon-liquidFill: "\ea20";
+$drawstars-icon-location: "\ea21";
+$drawstars-icon-map: "\ea22";
+$drawstars-icon-mic-off: "\ea23";
+$drawstars-icon-mic-off__hover: "\ea24";
+$drawstars-icon-mic-on: "\ea25";
+$drawstars-icon-mic-on__hover: "\ea26";
+$drawstars-icon-multimedia: "\ea27";
+$drawstars-icon-networkStrength: "\ea28";
+$drawstars-icon-pay: "\ea29";
+$drawstars-icon-pie: "\ea2a";
+$drawstars-icon-polar: "\ea2b";
+$drawstars-icon-position: "\ea2c";
+$drawstars-icon-practice: "\ea2d";
+$drawstars-icon-processVideo: "\ea2e";
+$drawstars-icon-progressBar: "\ea2f";
+$drawstars-icon-promptBox: "\ea30";
+$drawstars-icon-resource: "\ea31";
+$drawstars-icon-shortcutKey: "\ea32";
+$drawstars-icon-simple: "\ea33";
+$drawstars-icon-special: "\ea34";
+$drawstars-icon-stackedBar: "\ea35";
+$drawstars-icon-tool: "\ea36";
+$drawstars-icon-transition: "\ea37";
+$drawstars-icon-translate: "\ea38";
+$drawstars-icon-utilities: "\ea39";
+$drawstars-icon-video-off: "\ea3a";
+$drawstars-icon-video-off__hover: "\ea3b";
+$drawstars-icon-video-on: "\ea3c";
+$drawstars-icon-video-on__hover: "\ea3d";
+$drawstars-icon-webFrame: "\ea3e";
+$drawstars-icon-webpack: "\ea3f";
+$drawstars-icon-words: "\ea40";
 

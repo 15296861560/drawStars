@@ -24,6 +24,7 @@ export default {
       polar: "Polar coordinate system",
       dynamicOrderBar: "Dynamic sort histogram",
       eMap: "Map of China",
+      gauge: "Dashboard",
     },
     toolHomePage: {
       Lodash: "Lodash",
@@ -37,6 +38,7 @@ export default {
         alipay: "Alipay"
       },
       compress: "Compressed code",
+      networkStrength: "Network Strength",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-26 23:13:49
+ * @LastEditTime: 2023-06-25 23:40:04
 -->
 <template>
     <div class="g-home-module">
@@ -39,6 +39,7 @@ export default {
         { name: "polar", imgName: "polar" },
         { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
         { name: "eMap", imgName: "map" },
+        { name: "gauge", imgName: "gauge" },
       ],
     };
   },

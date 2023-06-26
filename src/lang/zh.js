@@ -24,6 +24,7 @@ export default {
       polar: "极坐标系",
       dynamicOrderBar: "动态排序柱状图",
       eMap: "中国地图",
+      gauge: "仪表盘",
     },
     toolHomePage: {
       Lodash: "Lodash",
@@ -37,6 +38,7 @@ export default {
         alipay: "支付宝"
       },
       compress: "压缩代码",
+      networkStrength: "网络质量",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",

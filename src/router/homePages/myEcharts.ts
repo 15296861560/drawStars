@@ -100,4 +100,12 @@ export default [
       title: ["首页", "图表模块", "中国地图"],
     },
   },
+  {
+    path: "/home/echartHomePage/gauge",
+    name: "仪表盘",
+    component: () => import("@/views/echarts/gauge.vue"),
+    meta: {
+      title: ["首页", "图表模块", "仪表盘"],
+    },
+  },
 ];
