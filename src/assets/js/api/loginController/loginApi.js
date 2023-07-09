@@ -1,14 +1,15 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-07-25 00:05:13
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-29 00:35:33
+ * @LastEditTime: 2023-07-09 01:54:34
  */
 /*登录相关接口*/
 import {
-  $axios
+  $axios,
+  $axiosGet
 } from "@/assets/js/axios-api/axios-config.js";
 
 /**
@@ -20,16 +21,9 @@ import {
  * @return {*}
  * @author: lgy
  */
-function loginByPassword(params) {
-  return new Promise((resolve, reject) => {
-    $axios(params, "/loginApi/loginByPassword").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
+async function loginByPassword(params) {
+  const res = await $axios(params, "/loginApi/loginByPassword");
+  return res;
 }
 
 /**
@@ -42,18 +36,30 @@ function loginByPassword(params) {
  * @return {*}
  * @author: lgy
  */
-function registerByPhone(params) {
-  return new Promise((resolve, reject) => {
-    $axios(params, "/loginApi/registerByPhone").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
+async function registerByPhone(params) {
+  const res = await $axios(params, "/loginApi/registerByPhone");
+  return res;
+}
+
+/**
+ * @description: 通过token查询用户信息
+ * @param {
+ * token:String,
+ * } 
+ * @return {*}
+ * @author: lgy
+ */
+async function verifyLogin() {
+  const searchParams = new URLSearchParams(window.location.search);
+  const accessToken = searchParams.get('accessToken');
+
+  const res = await $axiosGet({
+    accessToken
+  }, "/loginApi/verifyLogin");
+  return res;
 }
 export {
   loginByPassword,
-  registerByPhone
+  registerByPhone,
+  verifyLogin
 };

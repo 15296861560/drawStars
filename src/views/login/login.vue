@@ -59,6 +59,17 @@
             {{ $t("btn.registerNow") }}
           </span>
         </div>
+
+        <div class="other-login-area">
+          <div class="other-login-tip">{{ $t("label.otherLoginMethods") }}</div>
+          <div class="other-login-way">
+            <a
+              :title="$t('label.otherLoginMethods', ['Github'])"
+              class="login-github drawstars-icon-gitHub"
+              href="https://github.com/login/oauth/authorize?client_id=3d7825405e2dc8bd6f0a&redirect_uri=http://127.0.0.1:8011/loginApi/oauthLogin/github?scope=user&state=1"
+            ></a>
+          </div>
+        </div>
       </div>
     </el-form>
 
@@ -139,6 +150,7 @@ import {
 import { userInfoStore } from "@/stores/user-info";
 import { particles } from "./particles.js";
 import { loadFull } from "tsparticles";
+import { verifyLogin } from "@/assets/js/api/loginController/loginApi.js";
 
 const LOGIN_MODE = {
   password: "password", //密码登录
@@ -233,6 +245,8 @@ export default {
         { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
       ],
     };
+
+    this.isLogin();
   },
   methods: {
     login: _.debounce(
@@ -339,6 +353,17 @@ export default {
     },
     async particlesInit(engine) {
       await loadFull(engine);
+    },
+    // 判断是否已登录
+    async isLogin() {
+      let res = await verifyLogin();
+      if (!res.status) {
+        return;
+      }
+      if (!res.data?.id) {
+        return;
+      }
+      this.afterLogin(res.data);
     },
   },
 };
@@ -527,6 +552,42 @@ export default {
   color: #6fc362;
   margin-right: 4px;
 }
+.other-login-area {
+  display: flex;
+  flex-direction: column;
+  .other-login-tip {
+    position: relative;
+    margin: 1rem;
+    color: @color-icon-placeholder;
+    &:before {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 6rem;
+      background-color: @color-icon-placeholder;
+      top: 50%;
+      transform: translate(-130%, -50%);
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 6rem;
+      background-color: @color-icon-placeholder;
+      top: 50%;
+      transform: translate(30%, -50%);
+    }
+  }
+  .other-login-way {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .login-github {
+      color: black;
+      text-decoration: unset;
+    }
+  }
+}
 </style>
 <i18n>
 {
@@ -534,6 +595,10 @@ export default {
      "welcome":"欢迎来到绘星!",
      "noAccount":"没有账号？",
      "hasAccount":"已有账号，",
+     "label":{
+         "otherLoginMethods":"其他登录方式",
+         "oauthLoginTitile":"使用{0}账户登录"
+     },
      "placeholder":{
          "account":"请输入手机号",
          "nickname":"请输入显示昵称",
@@ -569,6 +634,10 @@ export default {
     "welcome":"Welcome to draw starts!",
     "noAccount":"No account?",
     "hasAccount":"Existing account,",
+    "label":{
+         "otherLoginMethods":"Other Login Methods",
+         "oauthLoginTitile":"Login using {0} account"
+     },
      "placeholder":{
          "account":"Please enter your mobile number",
          "nickname":"Please enter the display nickname",

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-24 14:30:22
+ * @LastEditTime: 2023-07-05 22:52:08
 -->
 <script setup lang="ts">
 import {
@@ -34,7 +34,7 @@ router.beforeEach((to, from) => {
   NoProgress.start();
   let hasLogin = true;
 
-  if (to.path != "/login" && !userInfo.getUserId) {
+  if (to.path != "/login" && !userInfo.getUserId && !userInfo.getToken.value) {
     hasLogin = false;
   }
 

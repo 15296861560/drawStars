@@ -1,11 +1,11 @@
 @font-face {
   font-family: "drawstars-icon";
-  src: url('../font/drawstars-icon.eot?t=1687707433886'); /* IE9*/
-  src: url('../font/drawstars-icon.eot?t=1687707433886#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("../font/drawstars-icon.woff2?t=1687707433886") format("woff2"),
-  url("../font/drawstars-icon.woff?t=1687707433886") format("woff"),
-  url('../font/drawstars-icon.ttf?t=1687707433886') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../font/drawstars-icon.svg?t=1687707433886#drawstars-icon') format('svg'); /* iOS 4.1- */
+  src: url('../font/drawstars-icon.eot?t=1688283510905'); /* IE9*/
+  src: url('../font/drawstars-icon.eot?t=1688283510905#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("../font/drawstars-icon.woff2?t=1688283510905") format("woff2"),
+  url("../font/drawstars-icon.woff?t=1688283510905") format("woff"),
+  url('../font/drawstars-icon.ttf?t=1688283510905') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../font/drawstars-icon.svg?t=1688283510905#drawstars-icon') format('svg'); /* iOS 4.1- */
 }
 
 [class^="drawstars-icon-"], [class*=" drawstars-icon-"] {
@@ -45,40 +45,41 @@
 .drawstars-icon-frame:before { content: "\ea1a"; }
 .drawstars-icon-games:before { content: "\ea1b"; }
 .drawstars-icon-gauge:before { content: "\ea1c"; }
-.drawstars-icon-lab:before { content: "\ea1d"; }
-.drawstars-icon-lang:before { content: "\ea1e"; }
-.drawstars-icon-line:before { content: "\ea1f"; }
-.drawstars-icon-liquidFill:before { content: "\ea20"; }
-.drawstars-icon-location:before { content: "\ea21"; }
-.drawstars-icon-map:before { content: "\ea22"; }
-.drawstars-icon-mic-off:before { content: "\ea23"; }
-.drawstars-icon-mic-off__hover:before { content: "\ea24"; }
-.drawstars-icon-mic-on:before { content: "\ea25"; }
-.drawstars-icon-mic-on__hover:before { content: "\ea26"; }
-.drawstars-icon-multimedia:before { content: "\ea27"; }
-.drawstars-icon-networkStrength:before { content: "\ea28"; }
-.drawstars-icon-pay:before { content: "\ea29"; }
-.drawstars-icon-pie:before { content: "\ea2a"; }
-.drawstars-icon-polar:before { content: "\ea2b"; }
-.drawstars-icon-position:before { content: "\ea2c"; }
-.drawstars-icon-practice:before { content: "\ea2d"; }
-.drawstars-icon-processVideo:before { content: "\ea2e"; }
-.drawstars-icon-progressBar:before { content: "\ea2f"; }
-.drawstars-icon-promptBox:before { content: "\ea30"; }
-.drawstars-icon-resource:before { content: "\ea31"; }
-.drawstars-icon-shortcutKey:before { content: "\ea32"; }
-.drawstars-icon-simple:before { content: "\ea33"; }
-.drawstars-icon-special:before { content: "\ea34"; }
-.drawstars-icon-stackedBar:before { content: "\ea35"; }
-.drawstars-icon-tool:before { content: "\ea36"; }
-.drawstars-icon-transition:before { content: "\ea37"; }
-.drawstars-icon-translate:before { content: "\ea38"; }
-.drawstars-icon-utilities:before { content: "\ea39"; }
-.drawstars-icon-video-off:before { content: "\ea3a"; }
-.drawstars-icon-video-off__hover:before { content: "\ea3b"; }
-.drawstars-icon-video-on:before { content: "\ea3c"; }
-.drawstars-icon-video-on__hover:before { content: "\ea3d"; }
-.drawstars-icon-webFrame:before { content: "\ea3e"; }
-.drawstars-icon-webpack:before { content: "\ea3f"; }
-.drawstars-icon-words:before { content: "\ea40"; }
+.drawstars-icon-gitHub:before { content: "\ea1d"; }
+.drawstars-icon-lab:before { content: "\ea1e"; }
+.drawstars-icon-lang:before { content: "\ea1f"; }
+.drawstars-icon-line:before { content: "\ea20"; }
+.drawstars-icon-liquidFill:before { content: "\ea21"; }
+.drawstars-icon-location:before { content: "\ea22"; }
+.drawstars-icon-map:before { content: "\ea23"; }
+.drawstars-icon-mic-off:before { content: "\ea24"; }
+.drawstars-icon-mic-off__hover:before { content: "\ea25"; }
+.drawstars-icon-mic-on:before { content: "\ea26"; }
+.drawstars-icon-mic-on__hover:before { content: "\ea27"; }
+.drawstars-icon-multimedia:before { content: "\ea28"; }
+.drawstars-icon-networkStrength:before { content: "\ea29"; }
+.drawstars-icon-pay:before { content: "\ea2a"; }
+.drawstars-icon-pie:before { content: "\ea2b"; }
+.drawstars-icon-polar:before { content: "\ea2c"; }
+.drawstars-icon-position:before { content: "\ea2d"; }
+.drawstars-icon-practice:before { content: "\ea2e"; }
+.drawstars-icon-processVideo:before { content: "\ea2f"; }
+.drawstars-icon-progressBar:before { content: "\ea30"; }
+.drawstars-icon-promptBox:before { content: "\ea31"; }
+.drawstars-icon-resource:before { content: "\ea32"; }
+.drawstars-icon-shortcutKey:before { content: "\ea33"; }
+.drawstars-icon-simple:before { content: "\ea34"; }
+.drawstars-icon-special:before { content: "\ea35"; }
+.drawstars-icon-stackedBar:before { content: "\ea36"; }
+.drawstars-icon-tool:before { content: "\ea37"; }
+.drawstars-icon-transition:before { content: "\ea38"; }
+.drawstars-icon-translate:before { content: "\ea39"; }
+.drawstars-icon-utilities:before { content: "\ea3a"; }
+.drawstars-icon-video-off:before { content: "\ea3b"; }
+.drawstars-icon-video-off__hover:before { content: "\ea3c"; }
+.drawstars-icon-video-on:before { content: "\ea3d"; }
+.drawstars-icon-video-on__hover:before { content: "\ea3e"; }
+.drawstars-icon-webFrame:before { content: "\ea3f"; }
+.drawstars-icon-webpack:before { content: "\ea40"; }
+.drawstars-icon-words:before { content: "\ea41"; }
 
