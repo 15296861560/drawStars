@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:11
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-28 23:40:01
+ * @LastEditTime: 2023-07-14 00:13:18
 -->
 <template>
   <div class="commit">
@@ -26,38 +26,38 @@
   </div>
 </template>
 
-<script>
-import { getCommitInfo } from "@/assets/js/api/commomController/commomApi.js";
-export default {
-  name: "CommitInfo",
-  props: {},
-  data() {
-    return {
-      commitInfoList: [],
-    };
-  },
-  methods: {
-    getCommitInfoList() {
-      getCommitInfo()
-        .then((res) => {
-          if (res.data.length > 15) {
-            this.commitInfoList = res.data.splice(0, 15);
-          } else {
-            this.commitInfoList = res.data;
-          }
-        })
-        .catch((e) => {
-          console.log(e);
+<script setup>
+import axios from "axios";
+import { onMounted, reactive } from "vue";
+import { showTips } from "@/utils/message/showTips.js";
+
+const commitInfoList = reactive([]);
+
+async function getCommitInfoList() {
+  const accout = 15296861560,
+    warehouse = "drawStars";
+  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits`;
+  let res = await axios.get(url).catch((e) => {
+    showTips("error", e.toString());
+  });
+  if (res.status === 200) {
+    res.data.forEach((c) => {
+      let message = c.commit?.message;
+      if (message && message.startsWith("feat")) {
+        commitInfoList.push({
+          date: c.commit?.author?.date,
+          feat: message.slice(5),
         });
-    },
-  },
-  mounted() {
-    // 首页刚加载时$axios里无法访问$store，所以
-    this.$nextTick(() => {
-      this.getCommitInfoList();
+      }
     });
-  },
-};
+  } else {
+    showTips("error", res.toString());
+  }
+}
+
+onMounted(() => {
+  getCommitInfoList();
+});
 </script>
 
 <style lang="less" scoped>
