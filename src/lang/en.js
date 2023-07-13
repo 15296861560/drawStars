@@ -24,6 +24,7 @@ export default {
       polar: "Polar coordinate system",
       dynamicOrderBar: "Dynamic sort histogram",
       eMap: "Map of China",
+      gauge: "Dashboard",
     },
     toolHomePage: {
       Lodash: "Lodash",
@@ -34,9 +35,10 @@ export default {
       translate: "Translate",
       pay: "Pay",
       payment: {
-        Alipay: "Alipay"
+        alipay: "Alipay"
       },
       compress: "Compressed code",
+      networkStrength: "Network Strength",
     },
     componentsHomePage: {
       dragAndDropComponents: "Visual drag and drop component",
@@ -71,9 +73,9 @@ export default {
       directive: "Directive",
     },
     caseHomePage: {
-      board: "Board",
-      demo: "Demo",
-      game: "Game",
+      boards: "Board",
+      demos: "Demo",
+      games: "Game",
     },
     resourceHomePage: {
       configure: "Configuration data",
@@ -87,6 +89,7 @@ export default {
     changePasswork: 'Change Password',
     logOut: 'Log Out',
     fullScreen: 'Full Screen',
+    message: 'Message',
     selectLang: 'Select Language',
   },
   dependence: {

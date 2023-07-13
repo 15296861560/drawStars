@@ -10,7 +10,7 @@
     <div class="g-box-double">
       <div class="g-box-inside" ref="insideBox">
         <div class="mb40" v-show="!showImg">
-          <img class="u-img-standard" src="@/assets/img/multimedia/defaultPic.svg" />
+          <div class=" drawstars-icon-defaultPic" style="font-size:20vw" ></div>
 
           <!-- 隐藏元素 -->
           <input

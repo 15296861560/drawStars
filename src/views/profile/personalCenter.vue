@@ -22,8 +22,11 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+
+const PERSONAL_PREFIX = "/home/personalCenter/";
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {
       curMenu: "personalProfile",
@@ -35,23 +38,26 @@ export default {
         { name: this.$t("personalProfile"), path: "personalProfile" },
         { name: this.$t("accountSettings"), path: "accountSettings" },
         { name: this.$t("changePassword"), path: "changePassword" },
-        { name: this.$t("changePhone"), path: "changePhone" },
+        { name: this.$t("changePhone"), path: "bindPhone" },
       ];
     },
   },
-  created() {
-    this.initLocalLang();
+
+  mounted() {
+    this.init();
   },
+  activated() {},
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
+    init() {
+      this.initData();
+    },
+    initData() {
+      let fullPath = this.$route.fullPath;
+      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length);
     },
     toggleMenu(menu) {
       this.curMenu = menu;
-      let nextPath = "/home/personalCenter/" + menu;
+      let nextPath = PERSONAL_PREFIX + menu;
       if (nextPath === this.$route.path) {
         return;
       }
@@ -111,13 +117,13 @@ export default {
     "personalProfile": "Personal Profile",
     "accountSettings": "Account Settings",
     "changePassword": "Change Password",
-    "changePhone":"Change Phone"
+    "changePhone":"Phone Settings"
   },
   "zh": {
      "personalProfile": "个人资料",
     "accountSettings": "账号设置",
     "changePassword": "修改密码",
-    "changePhone":"更换手机号"
+    "changePhone":"手机设置"
   }
 }
 </i18n>

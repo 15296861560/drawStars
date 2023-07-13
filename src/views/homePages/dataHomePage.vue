@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
  * @LastEditors: lgy
- * @LastEditTime: 2022-10-29 17:15:28
+ * @LastEditTime: 2023-06-18 16:05:50
 -->
 <template>
   <div>
@@ -31,7 +31,6 @@ export default {
   data() {
     return {
       homepage: "dataHomePage",
-      imgSrc: "",
       routes: ["Mock", "axios", "Sqlite", "MySQL", "WebSocket"],
     };
   },

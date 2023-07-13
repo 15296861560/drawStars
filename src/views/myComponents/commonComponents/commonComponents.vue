@@ -4,18 +4,17 @@
  * @Autor: lgy
  * @Date: 2022-11-29 00:16:57
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-22 23:39:12
+ * @LastEditTime: 2023-06-18 16:22:46
 -->
 <template>
   <div>
     <div class="g-home-module">
       <router-link-normal
-        :to="`/home/componentsHomePage/${homepage}/${page.name}`"
-        :imgSrc="imgSrc"
-        :imgName="page.imgName"
-        :text="$t(`homePage.componentsHomePage.common.${page.name}`)"
+        :to="`/home/componentsHomePage/${homepage}/${page}`"
+        :imgName="page"
+        :text="$t(`homePage.componentsHomePage.common.${page}`)"
         v-for="(page, index) in routes"
-        :key="page.name"
+        :key="page"
       ></router-link-normal>
     </div>
     <div class="g-home-module mt10">
@@ -30,11 +29,10 @@ export default {
   data() {
     return {
       homepage: "commonComponents",
-      imgSrc: "myComponents/",
       routes: [
-        { name: "progressBar", imgName: "progressBar" },
-        // { name: "promptBox", imgName: "promptBox" },
-        // { name: "flop", imgName: "flop" },
+        "progressBar",
+        //  "progressBar",
+        //  "flop"
       ],
     };
   },

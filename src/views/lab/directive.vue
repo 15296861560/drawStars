@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-19 22:15:21
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-20 23:09:08
+ * @LastEditTime: 2023-06-19 00:13:05
 -->
 <template>
   <div class="g-flex-normal" style="position: realative">
@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 // import "@/utils/directives/index.js";
 // const waterMarker = {
 //   mounted: function (el, binding) {
@@ -65,24 +65,16 @@ import { useI18n } from "vue-i18n";
 //   },
 // };
 export default {
+  mixins: [i18nLabelMixin],
   // directives: { waterMarker },
   data() {
     return {
       copyText: "复制内容",
       inputText: "",
-      imgSrc: require("@/assets/img/lab.svg"),
+      imgSrc: require("@/assets/img/svg/lab.svg"),
     };
   },
-  created() {
-    this.initLocalLang();
-  },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     longpress() {
       this.$message({
         type: "success",

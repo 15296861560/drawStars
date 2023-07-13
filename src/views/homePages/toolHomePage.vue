@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:28:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-09-25 23:02:02
+ * @LastEditTime: 2023-06-22 17:22:21
 -->
 <template>
   <div>
@@ -12,27 +12,26 @@
       <router-link to="/home/toolHomePage/Lodash" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/lodash.png" />
+            <img class="m-home-img" src="@/assets/img/png/lodash.png" />
           </div>
           <div>
             <p class="m-p">{{ $t("homePage.toolHomePage.Lodash") }}</p>
           </div>
         </div>
       </router-link>
-      <!-- <router-link to="/home/toolHomePage/agora" class="m-router-link">
+      <router-link to="/home/toolHomePage/agora" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <img class="m-home-img" src="@/assets/img/tools/agora.png" />
+            <img class="m-home-img" src="@/assets/img/png/agora.png" />
           </div>
           <div>
             <p class="m-p">{{ $t("homePage.toolHomePage.agora") }}</p>
           </div>
         </div>
-      </router-link> -->
+      </router-link>
 
       <router-link-normal
         :to="`/home/toolHomePage/${name}`"
-        imgSrc="tools/"
         :imgName="name"
         :text="$t(`homePage.toolHomePage.${name}`)"
         v-for="(name, index) in routes"
@@ -47,7 +46,7 @@ export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["utilities", "practice", "translate", "pay", "compress"],
+      routes: ["chat","utilities", "practice", "translate", "pay", "compress","networkStrength"],
     };
   },
 };

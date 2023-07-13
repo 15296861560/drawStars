@@ -4,10 +4,9 @@
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-22 23:28:19
+ * @LastEditTime: 2023-06-25 23:40:04
 -->
 <template>
-  <div>
     <div class="g-home-module">
       <router-link-normal
         :to="`/home/${homepage}/${page.name}`"
@@ -17,7 +16,6 @@
         v-for="(page, index) in routes"
         :key="page.name"
       ></router-link-normal>
-    </div>
   </div>
 </template>
 <script>
@@ -34,13 +32,14 @@ export default {
         { name: "basicLine", imgName: "line" },
         { name: "basicArea", imgName: "area" },
         { name: "basicPie", imgName: "pie" },
-        // { name: "baiduMap", imgName: "location" },
+        { name: "baiduMap", imgName: "location" },
         { name: "bar", imgName: "bar" },
         { name: "stackedBar", imgName: "stackedBar" },
         { name: "barLineDrill", imgName: "barLineDrill" },
         { name: "polar", imgName: "polar" },
         { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
         { name: "eMap", imgName: "map" },
+        { name: "gauge", imgName: "gauge" },
       ],
     };
   },

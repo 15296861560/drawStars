@@ -9,16 +9,18 @@
       <div class="dialog-main">
         <div class="dialog-camera">
           <video class="video-window" ref="video" id="video" autoplay></video>
-          <i v-show="!isOpenViveo" class="el-icon-user-solid video-user"></i>
+          <el-icon v-show="!isOpenViveo" class="video-user"><User /></el-icon>
           <div class="debug-btns">
             <div
-              class="icon icon-mic"
-              :class="isMicrophoneTesting ? 'icon-mic' : 'icon-mic-off'"
+              class="icon"
+              :class="
+                isMicrophoneTesting ? 'drawstars-icon-mic-on' : 'drawstars-icon-mic-off'
+              "
               @click="testMicrophone"
             ></div>
             <div
               class="icon"
-              :class="isOpenViveo ? 'icon-video' : 'icon-video-off'"
+              :class="isOpenViveo ? 'drawstars-icon-video' : 'drawstars-icon-video-off'"
               @click="debugCamera"
             ></div>
           </div>
@@ -69,20 +71,14 @@
               </audio>
             </div>
             <div class="setting-row">
-              <i
-                class="mr10 pointer"
-                :class="
-                  isMicrophoneTesting
-                    ? 'el-icon-microphone'
-                    : 'el-icon-turn-off-microphone'
-                "
-                @click="testMicrophone"
-              ></i>
+              <el-icon class="mr10 pointer" @click="testMicrophone"
+                ><Microphone v-if="isMicrophoneTesting" /> <Mute v-else
+              /></el-icon>
               <div class="progress-bg">
                 <div class="progress" :style="{ width: volumeLevel + '%' }"></div>
               </div>
             </div>
-            <el-button size="medium" type="success" @click="confirm">
+            <el-button type="success" @click="confirm">
               <span>确定</span>
             </el-button>
           </div>
@@ -189,7 +185,7 @@ export default {
               this.volumeLevel = 0;
             }
           }, 500);
-        },
+        }
       );
     },
     cancel() {
@@ -357,32 +353,12 @@ export default {
   cursor: pointer;
   width: 1rem /* 16/16 */;
   height: 1rem; /* 16/16 */
+  font-size: 1rem; /* 16/16 */
   background-size: 100%;
   background-repeat: no-repeat;
-}
-
-.icon-mic {
-  background-image: url("../../../assets/img/tools/agora/mic-on.svg");
+  color: white;
   &:hover {
-    background-image: url("../../../assets/img/tools/agora/mic-on__hover.svg");
-  }
-}
-.icon-mic-off {
-  background-image: url("../../../assets/img/tools/agora/mic-off.svg");
-  &:hover {
-    background-image: url("../../../assets/img/tools/agora/mic-off__hover.svg");
-  }
-}
-.icon-video {
-  background-image: url("../../../assets/img/tools/agora/video-on.svg");
-  &:hover {
-    background-image: url("../../../assets/img/tools/agora/video-on__hover.svg");
-  }
-}
-.icon-video-off {
-  background-image: url("../../../assets/img/tools/agora/video-off.svg");
-  &:hover {
-    background-image: url("../../../assets/img/tools/agora/video-off__hover.svg");
+    color: aqua;
   }
 }
 </style>

@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-form :inline="true" :model="localUser">
       <el-form-item label="账户">
         <el-input
           v-model="localUser.account"
           placeholder="请输入账户"
           ref="account"
+          readonly
         ></el-input>
       </el-form-item>
       <el-form-item label="频道">
@@ -17,37 +18,37 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button size="medium" type="success" @click="join">
+        <el-button type="success" @click="join">
           <span>加入</span>
         </el-button>
-        <el-button size="medium" type="success" @click="exit">
+        <el-button type="success" @click="exit">
           <span>退出</span>
         </el-button>
       </el-form-item>
     </el-form>
     <div>
-      <el-button size="medium" type="success" @click="openVideo">
+      <el-button type="success" @click="openVideo">
         <span>打开视频</span>
       </el-button>
-      <el-button size="medium" type="success" @click="closeVideo">
+      <el-button type="success" @click="closeVideo">
         <span>关闭视频</span>
       </el-button>
-      <el-button size="medium" type="success" @click="openAudio">
+      <el-button type="success" @click="openAudio">
         <span>打开麦克风</span>
       </el-button>
-      <el-button size="medium" type="success" @click="closeAudio">
+      <el-button type="success" @click="closeAudio">
         <span>关闭麦克风</span>
       </el-button>
-      <el-button size="medium" type="success" @click="shareScreen">
+      <el-button type="success" @click="shareScreen">
         <span>共享屏幕</span>
       </el-button>
-      <el-button size="medium" type="success" @click="closeShare">
+      <el-button type="success" @click="closeShare">
         <span>关闭屏幕共享</span>
       </el-button>
-      <el-button size="medium" type="success" @click="showSetting = true">
+      <el-button type="success" @click="showSetting = true">
         <span> 音视频设备测试 </span>
       </el-button>
-      <el-button size="medium" type="success" @click="">
+      <el-button type="success" @click="">
         <span> 调整通话音量 </span>
       </el-button>
     </div>
@@ -80,15 +81,20 @@
   </div>
 </template>
 <script>
-const agoraConfig = require("./agora-config.js");
 import AgoraRTC from "agora-rtc-sdk-ng";
 import mediaSettings from "./mediaSettings.vue";
+import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
+import { showTips } from "@/utils/message/showTips.js";
+import { userInfoStore } from "@/stores/user-info";
+const userInfo = userInfoStore();
+
 export default {
   components: {
     mediaSettings,
   },
   data() {
     return {
+      appId: "",
       rtc: {
         localAudioTrack: null,
         localVideoTrack: null,
@@ -97,13 +103,12 @@ export default {
       },
       options: null,
       localUser: {
-        account: "",
+        account: userInfo.getUserId,
         channelName: "",
         role: "PUBLISHER",
       },
       users: {},
 
-      client: null,
       showSetting: false,
       deviceObj: {
         cameraId: "",
@@ -111,6 +116,7 @@ export default {
         playbackDeviceId: "",
       },
       rtcToken: "",
+      loading: true,
     };
   },
   computed: {
@@ -123,30 +129,40 @@ export default {
   },
   methods: {
     async init() {
+      this.loading = true;
       this.rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
       this.bindEvent();
+      await this.getAppID();
+      this.loading = false;
+    },
+    async getAppID() {
+      let res = await $axiosGet({}, "/agoraApi/getAppID");
+      if (res.status) {
+        this.appId = res.data;
+      } else {
+        showTips("error", "getAppID fail");
+      }
+
+      return this.appId;
     },
     async getRTCToken(account, channelName, role) {
       let rtcToken = "";
-      await this.$axios(
+      let res = await $axios(
         { user: account, channelName, role },
         "/agoraApi/getRTCToken"
-      ).then((res) => {
-        if (res.status) {
-          rtcToken = res.data;
-          this.rtcToken = res.data;
-        } else {
-          throw new Error("getRTCToken fail");
-        }
-      });
+      );
+      if (res.status) {
+        this.rtcToken = res.data;
+      } else {
+        showTips("error", "getRTCToken fail");
+      }
 
-      return rtcToken;
+      return this.rtcToken;
     },
     bindEvent() {
       this.rtc.client.on("user-published", async (user, mediaType) => {
         if (user.uid.indexOf(this.options.uid) > -1) return;
         await this.rtc.client.subscribe(user, mediaType);
-        console.log("发布成功");
         this.$set(this.users, user.uid, user);
         if (mediaType === "video") {
           const remoteVideoTrack = user.videoTrack;
@@ -168,18 +184,22 @@ export default {
     async join() {
       const { account, channelName, role } = this.localUser;
       this.options = {
-        appId: agoraConfig.appId,
+        appId: this.appId,
         channel: channelName,
         token: await this.getRTCToken(account, channelName, role),
         uid: account,
       };
       const { appId, channel, token, uid } = this.options;
-      await this.rtc.client.join(appId, channel, token, uid);
+      this.rtc.client.join(appId, channel, token, uid);
     },
     exit() {
       this.rtc.client.leave();
     },
     async openVideo() {
+      if (!this.rtc.client?._joinAndNotLeaveYet) {
+        showTips("error", "请先加入房间");
+        return;
+      }
       if (this.rtc.localVideoTrack) {
         // 恢复摄像头采集
         this.rtc.localVideoTrack.setEnabled(true);
@@ -194,10 +214,14 @@ export default {
       this.rtc.localVideoTrack.play(localPlayerContainer);
     },
     async openAudio() {
+      if (!this.rtc.client?._joinAndNotLeaveYet) {
+        showTips("error", "请先加入房间");
+        return;
+      }
       this.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
         microphoneId: this.deviceObj.microphoneId,
       });
-      await this.rtc.client.publish([this.rtc.localAudioTrack]);
+      this.rtc.client.publish([this.rtc.localAudioTrack]);
     },
     closeVideo() {
       // this.rtc.localVideoTrack.close();
@@ -207,6 +231,10 @@ export default {
       this.rtc.localAudioTrack.close();
     },
     async shareScreen() {
+      if (!this.rtc.client?._joinAndNotLeaveYet) {
+        showTips("error", "请先加入房间");
+        return;
+      }
       if (!this.rtc.screenClient) {
         const { appId, channel, uid } = this.options;
 

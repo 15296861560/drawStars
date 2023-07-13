@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-08-14 00:39:34
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-03 23:36:19
+ * @LastEditTime: 2023-06-18 16:19:24
 -->
 <template>
   <div>
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     toPage(path) {
-      let realPath = "/home/caseHomePage/demo/" + path;
+      let realPath = "/home/caseHomePage/demos/" + path;
       this.$router.push(realPath).catch((error) => error);
     },
   },

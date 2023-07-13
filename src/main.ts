@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-01-20 23:18:06
+ * @LastEditTime: 2023-06-24 17:02:21
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -41,16 +41,16 @@ import directives from "@/utils/directives/index.js";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 //配置埋点
-import '@/assets/js/umami/umami.js' 
+import '@/assets/js/umami/umami.js'
 
+//消息通知能力
+import { notifyClient } from 'drawstarts-notify';
 
 
 
 const app = createApp(App);
 
-app.use(BaiduMapVue3, {
-  apiKey: "fLZT8N8BfIbR2eAyV4gGRE683PCFOZXn",
-});
+app.use(BaiduMapVue3);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
 
@@ -66,11 +66,10 @@ app.use(i18n);
 
 app.use(Particles);
 
-
 directives(app)
 
-
-
 app.config.globalProperties.$echarts = echarts;
+app.config.globalProperties.$notify = notifyClient;
+
 
 app.mount("#app");

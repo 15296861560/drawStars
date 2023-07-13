@@ -96,9 +96,9 @@ export default [
     },
     children: [
       {
-        path: "/home/toolHomePage/pay/Alipay",
+        path: "/home/toolHomePage/pay/alipay",
         name: "支付宝 ",
-        component: () => import("@/views/tools/pay/Alipay.vue"),
+        component: () => import("@/views/tools/pay/alipay.vue"),
         meta: {
           title: ["首页", "工具模块", "支付", "支付宝 "],
         },
@@ -111,6 +111,14 @@ export default [
     component: () => import("@/views/tools/compress/index.vue"),
     meta: {
       title: ["首页", "工具模块", "压缩代码"],
+    },
+  },
+  {
+    path: "/home/toolHomePage/networkStrength",
+    name: "网络质量",
+    component: () => import("@/views/tools/networkStrength/index.vue"),
+    meta: {
+      title: ["首页", "工具模块", "网络质量"],
     },
   },
 ];

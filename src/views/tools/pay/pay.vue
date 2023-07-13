@@ -1,13 +1,20 @@
+<!--
+ * @Description: 
+ * @Version: 2.0
+ * @Autor: lgy
+ * @Date: 2022-11-26 16:37:22
+ * @LastEditors: lgy
+ * @LastEditTime: 2023-06-18 03:34:22
+-->
 <template>
   <div>
     <div class="g-home-module">
       <router-link-normal
-        :to="`/home/toolHomePage/${homepage}/${page.name}`"
-        :imgSrc="imgSrc"
-        :imgName="page.imgName"
-        :text="$t(`homePage.toolHomePage.payment.${page.name}`)"
+        :to="`/home/toolHomePage/${homepage}/${page}`"
+        :imgName="page"
+        :text="$t(`homePage.toolHomePage.payment.${page}`)"
         v-for="(page, index) in routes"
-        :key="page.name"
+        :key="page"
       ></router-link-normal>
     </div>
     <div class="g-home-module mt10">
@@ -23,7 +30,7 @@ export default {
     return {
       homepage: "pay",
       imgSrc: "tools/pay/",
-      routes: [{ name: "Alipay", imgName: "Alipay" }],
+      routes: ["alipay"],
     };
   },
   methods: {},

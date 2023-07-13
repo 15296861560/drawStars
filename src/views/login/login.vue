@@ -13,7 +13,11 @@
       <div class="form-container login-form">
         <h2 class="welcome">{{ $t("welcome") }}</h2>
         <el-form-item prop="account" style="width: 100%">
-          <el-input v-model="loginForm.account" :placeholder="$t('placeholder.account')">
+          <el-input
+            v-model="loginForm.account"
+            :placeholder="$t('placeholder.account')"
+            maxlength="20"
+          >
             <template #prepend
               ><el-icon><User /></el-icon
             ></template>
@@ -24,24 +28,20 @@
             v-model="loginForm.password"
             :type="showPassword ? 'text' : 'password'"
             :placeholder="$t('placeholder.password')"
+            maxlength="20"
           >
             <template #prepend
               ><el-icon><Lock /></el-icon
             ></template>
-            <img
-              src="@/assets/img/login/eye-hidden.svg"
-              v-show="!showPassword"
-              class="login-eye"
-              slot="suffix"
-              @click="showPassword = !showPassword"
-            />
-            <img
-              src="@/assets/img/login/eye-show.svg"
-              v-show="showPassword"
-              class="login-eye"
-              slot="suffix"
-              @click="showPassword = !showPassword"
-            />
+            <template #suffix>
+              <div
+                class="login-eye"
+                :class="
+                  showPassword ? 'drawstars-icon-eye-show' : 'drawstars-icon-eye-hidden'
+                "
+                @click="showPassword = !showPassword"
+              ></div>
+            </template>
           </el-input>
         </el-form-item>
 
@@ -58,6 +58,17 @@
           <span @click="toRegister" class="link">
             {{ $t("btn.registerNow") }}
           </span>
+        </div>
+
+        <div class="other-login-area">
+          <div class="other-login-tip">{{ $t("label.otherLoginMethods") }}</div>
+          <div class="other-login-way">
+            <a
+              :title="$t('label.otherLoginMethods', ['Github'])"
+              class="login-github drawstars-icon-gitHub"
+              href="https://github.com/login/oauth/authorize?client_id=3d7825405e2dc8bd6f0a&redirect_uri=http://127.0.0.1:8011/loginApi/oauthLogin/github?scope=user&state=1"
+            ></a>
+          </div>
         </div>
       </div>
     </el-form>
@@ -131,7 +142,7 @@
 </template>
 <script>
 import * as _ from "lodash";
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 import {
   loginByPassword,
   registerByPhone,
@@ -139,6 +150,7 @@ import {
 import { userInfoStore } from "@/stores/user-info";
 import { particles } from "./particles.js";
 import { loadFull } from "tsparticles";
+import { verifyLogin } from "@/assets/js/api/loginController/loginApi.js";
 
 const LOGIN_MODE = {
   password: "password", //密码登录
@@ -153,6 +165,7 @@ const debounceOption = {
 const debounceTime = 1000;
 export default {
   name: "Login",
+  mixins: [i18nLabelMixin],
   data() {
     return {
       particles,
@@ -224,24 +237,18 @@ export default {
     },
   },
   created() {
-    this.initLocalLang();
+    this.rules = {
+      account: [
+        { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
+      ],
+      password: [
+        { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
+      ],
+    };
+
+    this.isLogin();
   },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-
-      this.rules = {
-        account: [
-          { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
-        ],
-        password: [
-          { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
-        ],
-      };
-    },
     login: _.debounce(
       function () {
         if (this.loginMode === LOGIN_MODE.password) {
@@ -249,7 +256,7 @@ export default {
         }
       },
       debounceTime,
-      debounceOption,
+      debounceOption
     ),
     // 密码登录
     async passwordLogin() {
@@ -293,7 +300,7 @@ export default {
         this.register();
       },
       debounceTime,
-      debounceOption,
+      debounceOption
     ),
 
     async register() {
@@ -317,7 +324,11 @@ export default {
     afterLogin(userInfoData) {
       const userInfo = userInfoStore();
 
-      userInfo.changeUserInfo({ name: userInfoData.name, userId: userInfoData.id });
+      userInfo.changeUserInfo({
+        name: userInfoData.name,
+        userId: userInfoData.id,
+        phone: userInfoData.phone,
+      });
       userInfo.updateToken(userInfoData.token);
 
       this.$router.push({
@@ -342,6 +353,17 @@ export default {
     },
     async particlesInit(engine) {
       await loadFull(engine);
+    },
+    // 判断是否已登录
+    async isLogin() {
+      let res = await verifyLogin();
+      if (!res.status) {
+        return;
+      }
+      if (!res.data?.id) {
+        return;
+      }
+      this.afterLogin(res.data);
     },
   },
 };
@@ -425,10 +447,10 @@ export default {
   }
 
   .login-eye {
-    width: 1.25rem;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    cursor: pointer;
   }
 
   .switch-row {
@@ -530,6 +552,42 @@ export default {
   color: #6fc362;
   margin-right: 4px;
 }
+.other-login-area {
+  display: flex;
+  flex-direction: column;
+  .other-login-tip {
+    position: relative;
+    margin: 1rem;
+    color: @color-icon-placeholder;
+    &:before {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 6rem;
+      background-color: @color-icon-placeholder;
+      top: 50%;
+      transform: translate(-130%, -50%);
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      width: 6rem;
+      background-color: @color-icon-placeholder;
+      top: 50%;
+      transform: translate(30%, -50%);
+    }
+  }
+  .other-login-way {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    .login-github {
+      color: black;
+      text-decoration: unset;
+    }
+  }
+}
 </style>
 <i18n>
 {
@@ -537,6 +595,10 @@ export default {
      "welcome":"欢迎来到绘星!",
      "noAccount":"没有账号？",
      "hasAccount":"已有账号，",
+     "label":{
+         "otherLoginMethods":"其他登录方式",
+         "oauthLoginTitile":"使用{0}账户登录"
+     },
      "placeholder":{
          "account":"请输入手机号",
          "nickname":"请输入显示昵称",
@@ -572,6 +634,10 @@ export default {
     "welcome":"Welcome to draw starts!",
     "noAccount":"No account?",
     "hasAccount":"Existing account,",
+    "label":{
+         "otherLoginMethods":"Other Login Methods",
+         "oauthLoginTitile":"Login using {0} account"
+     },
      "placeholder":{
          "account":"Please enter your mobile number",
          "nickname":"Please enter the display nickname",

@@ -24,6 +24,7 @@ export default {
       polar: "极坐标系",
       dynamicOrderBar: "动态排序柱状图",
       eMap: "中国地图",
+      gauge: "仪表盘",
     },
     toolHomePage: {
       Lodash: "Lodash",
@@ -34,9 +35,10 @@ export default {
       translate: "翻译",
       pay: "支付",
       payment: {
-        Alipay: "支付宝"
+        alipay: "支付宝"
       },
       compress: "压缩代码",
+      networkStrength: "网络质量",
     },
     componentsHomePage: {
       dragAndDropComponents: "可视化拖拽组件",
@@ -71,9 +73,9 @@ export default {
       directive: "指令",
     },
     caseHomePage: {
-      board: "看板类",
-      demo: "演示类",
-      game: "游戏类",
+      boards: "看板类",
+      demos: "演示类",
+      games: "游戏类",
     },
     resourceHomePage: {
       configure: "配置资料",
@@ -87,6 +89,7 @@ export default {
     changePasswork: '修改密码',
     logOut: '退出登录',
     fullScreen: '全屏',
+    message: '消息',
     selectLang: '选择语言',
   },
   dependence: {

@@ -44,8 +44,9 @@
   </div>
 </template>
 <script>
-import { useI18n } from "vue-i18n";
+import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 export default {
+  mixins: [i18nLabelMixin],
   data() {
     return {};
   },
@@ -79,16 +80,7 @@ export default {
       ];
     },
   },
-  created() {
-    this.initLocalLang();
-  },
   methods: {
-    initLocalLang() {
-      const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
     handleSelect(key, keyPath) {
       this.toPage(key);
     },

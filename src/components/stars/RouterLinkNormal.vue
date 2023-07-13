@@ -4,14 +4,14 @@
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:16
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-27 23:39:22
+ * @LastEditTime: 2023-06-18 03:28:39
 -->
 <template>
   <div>
     <router-link :to="to" class="m-router-link">
       <div class="m-home-button">
         <div class="m-img">
-          <img class="m-home-img" :src="src" :alt="text" />
+          <span class="m-home-img" :class="`drawstars-icon-${imgName}`"></span>
         </div>
         <div>
           <p class="m-p">{{ text }}</p>
@@ -33,10 +33,6 @@ export default {
       type: String,
       default: "",
     },
-    imgSrc: {
-      type: String,
-      default: "",
-    },
     text: {
       type: String,
       default: "",
@@ -44,12 +40,6 @@ export default {
     format: {
       type: String,
       default: "svg",
-    },
-  },
-  computed: {
-    src() {
-      let url = `/src/assets/img/${this.imgSrc}${this.imgName}.svg`;
-      return new URL(url, import.meta.url).href;
     },
   },
 };
