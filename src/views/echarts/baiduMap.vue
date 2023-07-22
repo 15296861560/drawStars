@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-20 23:54:59
+ * @LastEditTime: 2023-07-22 23:55:07
 -->
 <template>
   <div>
@@ -33,11 +33,11 @@
     <baidu-map
       class="map"
       ref="map"
-      :apiKey="apiKey"
       :center="point"
       :zoom="13"
       :enableMapClick="true"
       :enableWheelZoom="true"
+      v-if="mapReady"
     >
       <!--点标注-->
       <bm-marker :point="markerPo" :show="true">
@@ -80,11 +80,13 @@
   </div>
 </template>
 <script setup>
+import BaiduMapVue3 from "baidu-map-vue3";
 import { BaiduMap } from "baidu-map-vue3";
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, onBeforeMount, ref, reactive, getCurrentInstance } from "vue";
 import { showTips } from "@/utils/message/showTips.js";
 import { $axiosGet } from "@/assets/js/axios-api/axios-config.js";
 const apiKey = ref("");
+const mapReady = ref(false);
 
 // 中心点
 const point = ref({
@@ -107,17 +109,25 @@ const showMorePanel = ref(true);
 
 // 初始化
 async function init() {
+  const app = getCurrentInstance().appContext.app;
+
   const res = await $axiosGet({}, "/baiduApi/getMapApiKey");
   if (res.status) {
     apiKey.value = res.data;
+    app.use(BaiduMapVue3, {
+      apiKey: apiKey.value,
+    });
+    mapReady.value = true;
   } else {
     showTips("error", "getApiKey fail");
   }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
   init();
 });
+
+onMounted(async () => {});
 </script>
 
 <style lang="less" scoped>

@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-24 17:02:21
+ * @LastEditTime: 2023-07-22 23:44:28
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -31,9 +31,6 @@ import Particles from 'particles.vue3'
 // 消除新特性的告警信息
 import 'default-passive-events'
 
-// 百度地图
-import BaiduMapVue3 from 'baidu-map-vue3'
-
 // 自定义指令
 import directives from "@/utils/directives/index.js";
 
@@ -50,7 +47,6 @@ import { notifyClient } from 'drawstarts-notify';
 
 const app = createApp(App);
 
-app.use(BaiduMapVue3);
 
 app.use(createPinia().use(piniaPluginPersistedstate));
 
