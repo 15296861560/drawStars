@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:07
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-04 01:11:05
+ * @LastEditTime: 2023-07-22 23:11:09
  */
 import axios from 'axios'
 
@@ -27,14 +27,26 @@ import reqCache from './cache.js'
 
 const apiInfo = apiInfoStore()
 const userInfo = userInfoStore()
-let requestURL = apiInfo.getURL.value;
+
+const DEFAULT_TIMEOUT = 1000 * 60 * 2;
 
 
+let api_base_url = '';
 
-axios.defaults.timeout = 30000
-axios.interceptors.request.use(
+if (process.env.NODE_ENV === 'production') {
+  api_base_url = 'http://127.0.0.1:8010/';
+  apiInfo.changeApi('');
+}
+
+const requests = axios.create({
+  baseURL: api_base_url,
+});
+
+
+requests.defaults.timeout = DEFAULT_TIMEOUT
+requests.interceptors.request.use(
   config => {
-    // console.log('请求拦截器',config)      
+    // console.log('请求拦截器', config)
     let token = userInfo.getToken.value;
     if (token) {
       //将token放到请求头发送给服务器,将tokenkey放在请求头中
@@ -43,7 +55,7 @@ axios.interceptors.request.use(
     return config
   }
 )
-axios.interceptors.response.use(
+requests.interceptors.response.use(
   response => {
     // console.log('回复拦截器', response)
     if (response.data && response.data.code && response.data.code === 'TOKEN-FAIL') {
@@ -69,10 +81,10 @@ let showError = function (errorMessage) {
 
 const $axios = function (params, methodURL) {
   let promise = new Promise(function (resolve, reject) {
-    let url = requestURL;
+    let url = apiInfo.getURL.value;
     if (methodURL) url += methodURL;
 
-    axios.post(url, params, {
+    requests.post(url, params, {
       timeout: params.timeout || 30000
     }).then(res => {
       if (!res.data.status) {
@@ -113,7 +125,7 @@ let apiObj = reqCache();
 
 const $axiosGet = function (params = {}, methodURL = "", options = {}) {
   let promise = new Promise(async function (resolve, reject) {
-    let reqURL = requestURL;
+    let reqURL = apiInfo.getURL.value;
     methodURL && (reqURL += methodURL);
     let realURL = reqURL + "?";
 
@@ -130,7 +142,7 @@ const $axiosGet = function (params = {}, methodURL = "", options = {}) {
       return;
     }
 
-    axios.get(reqURL, {
+    requests.get(reqURL, {
       params
     }, {
       timeout: params.timeout || 300000

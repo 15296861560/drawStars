@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-24 13:55:28
+ * @LastEditTime: 2023-07-22 23:08:29
  */
 import { fileURLToPath, URL } from "node:url";
 
@@ -23,7 +23,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8010",
+        target: "http://127.0.0.1:8010",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
