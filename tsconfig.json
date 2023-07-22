@@ -15,8 +15,11 @@
     },
     "lib": [
       "esnext",
+      "dom"
     ],
-    "types": ["baidu-map-vue3/typings/global"]
+    "types": [
+      "baidu-map-vue3/typings/global"
+    ]
   },
   "references": [
     {
