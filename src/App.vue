@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-05 22:52:08
+ * @LastEditTime: 2023-07-23 00:13:39
 -->
 <script setup lang="ts">
 import {
@@ -18,6 +18,7 @@ import {
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
 
+// @ts-ignore
 import NoProgress from "nprogress";
 import "nprogress/nprogress.css";
 NoProgress.configure({

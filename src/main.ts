@@ -14,7 +14,6 @@ import router from "./router";
 
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // echarts图表
@@ -24,6 +23,7 @@ import * as echarts from "echarts";
 import * as _ from 'lodash';
 
 //多语言
+// @ts-ignore
 import i18n from "./lang/index.js";
 
 import Particles from 'particles.vue3'
@@ -32,6 +32,7 @@ import Particles from 'particles.vue3'
 import 'default-passive-events'
 
 // 自定义指令
+// @ts-ignore
 import directives from "@/utils/directives/index.js";
 
 // 使 Pinia 持久化的插件
@@ -41,6 +42,7 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import '@/assets/js/umami/umami.js'
 
 //消息通知能力
+// @ts-ignore
 import { notifyClient } from 'drawstarts-notify';
 
 
