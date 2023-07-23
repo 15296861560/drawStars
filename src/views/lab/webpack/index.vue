@@ -28,4 +28,5 @@
   "add.js": `exportsObj.default = function(a,b){return a + b}`,
   "print.js": `exportsObj.default=function(item){console.log(item)}`,
 });
+export default {};
 </script>
