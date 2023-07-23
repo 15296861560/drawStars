@@ -11,6 +11,7 @@
     "noImplicitAny": false, //控制是否在没有显式指定类型的情况下将隐式的 any 类型视为错误
     "allowImportingTsExtensions": true, //允许导入路径以 .ts 扩展名结尾
     "noEmit": true, //编译过程中不会生成JavaScript文件或声明文件（.d.ts文件），并且不会对源代码进行实际的编译和转换操作
+    "allowJs": true, //允许使用 JavaScript 文件。
     "baseUrl": ".",
     "paths": {
       "@/*": [
