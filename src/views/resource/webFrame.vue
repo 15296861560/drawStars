@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:22
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-29 00:07:28
+ * @LastEditTime: 2023-07-23 19:08:32
 -->
 <template>
   <div class="g-list-vertical">
@@ -49,7 +49,7 @@ export default {
     open(openObj) {
       switch (openObj.open_way) {
         case "newTab":
-          window.open(openObj.href);
+          window.open(openObj.address);
           break;
         default:
           break;
