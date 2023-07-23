@@ -12,25 +12,25 @@
           ></router-link-normal>
         </div>
         <div class="g-home-block">
-          <div class="g-module-item">
+          <div class="chart-container-double">
             <BasicEchart
               v-if="!isHidden"
               :chartData="areaOption"
               echartId="echart-area"
-              class="m-echart-small"
+              class="echart-small"
             ></BasicEchart>
           </div>
-          <div class="g-module-item">
+          <div class="chart-container-double">
             <BasicEchart
               v-if="!isHidden"
               :chartData="pieOption"
               echartId="echart-pie"
-              class="m-echart-small"
+              class="echart-small"
             ></BasicEchart>
           </div>
         </div>
 
-        <div class="g-flex-between w-per100">
+        <div class="g-flex-between w-per100" style="padding: 10px">
           <dependence></dependence>
           <commitInfo></commitInfo>
         </div>
@@ -138,4 +138,20 @@ export default {
   },
 };
 </script>
-<style></style>
+<style scoped lang="less">
+.chart-container-double {
+  border-radius: 5px;
+  padding: 10px;
+  border-color: transparent;
+  overflow: hidden;
+  width: 50%;
+  margin: 20px 0px;
+}
+.echart-small {
+  min-width: 35vw;
+  height: 35vh;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: #cfd5d6 0px 0px 10px;
+}
+</style>
