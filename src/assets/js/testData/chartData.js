@@ -4,9 +4,13 @@ var echarts = require("echarts");
 export default {
   // 基础面积图测试数据
   areaOption: {
+    grid: {
+      top: '20%', // 调整上边距
+      bottom: '10%' // 调整下边距
+    },
     title: {
-      top:'10',
-      left:'center',
+      top: '5%',
+      left: 'center',
       text: '访问量',
       subtext: 'Mock数据'
     },
@@ -60,11 +64,15 @@ export default {
 
   //基础饼图测试数据
   pieOption: {
+    grid: {
+      top: '30%', // 调整上边距
+      bottom: '10%' // 调整下边距
+    },
     title: {
-      text: "某站点用户访问来源",
-      subtext: "纯属虚构",
+      text: "用户访问来源",
+      subtext: "Mock数据",
       left: "center",
-      top: "20",
+      top: "5%",
     },
     tooltip: {
       trigger: "item",
@@ -72,8 +80,8 @@ export default {
     },
     legend: {
       orient: "vertical",
-      left: "20",
-      top: "20",
+      left: '5%',
+      top: '10%',
     },
     series: [{
       name: "访问来源",
