@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 22:05:22
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-29 00:30:44
+ * @LastEditTime: 2023-07-26 23:52:05
  */
 /*配置资料相关接口*/
 import {
@@ -51,14 +51,32 @@ function deleteWebsite(id) {
   })
 }
 
+function batchDeleteWebsite(ids) {
+  return new Promise((resolve, reject) => {
+    let sql = {
+      sql: `DELETE  FROM web_adress WHERE id in (${ids})`
+    };
+    $axios(sql, "/mysqlApi/sql").then((res) => {
+      if (res.status) {
+        resolve(res)
+      } else {
+        reject(res)
+      }
+    });
+  })
+}
+
 function updateWebsite(websiteInfo) {
   return new Promise((resolve, reject) => {
+    let fields = '';
+    const websiteInfoId = websiteInfo.id;
+    delete websiteInfo.id;
     for (let k in websiteInfo) {
-      fields += k + "=" + websiteInfo[k] + ",";
+      fields += `${k}='${websiteInfo[k]}',`;
     }
     fields = fields.slice(0, -1);
     let sql = {
-      sql: "UPDATE web_adress SET " + fields + " WHERE id=" + websiteInfo.id
+      sql: "UPDATE web_adress SET " + fields + " WHERE id=" + websiteInfoId
     };
     $axios(sql, "/mysqlApi/sql").then((res) => {
       if (res.status) {
@@ -90,5 +108,6 @@ export {
   createWebsite,
   deleteWebsite,
   updateWebsite,
-  queryWebsite
+  queryWebsite,
+  batchDeleteWebsite
 };

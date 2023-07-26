@@ -3,13 +3,12 @@
     <el-row class="mb40">
       <el-button type="primary" @click="query">{{ $t("btn.query") }}</el-button>
       <el-button type="primary" @click="insert">{{ $t("btn.create") }}</el-button>
-
-      <el-button type="warning" @click="updateDatas">{{
-        $t("btn.batchUpdate")
-      }}</el-button>
       <el-button type="danger" @click="batchDelete">{{
         $t("btn.batchDelete")
       }}</el-button>
+      <el-button type="warning" v-show="formInline.id" @click="confirmUpdate"
+        >确认修改</el-button
+      >
     </el-row>
 
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
@@ -40,7 +39,7 @@
       </el-form-item>
       <el-form-item :label="'打开方式'">
         <el-select
-          v-model="formInline.openWay"
+          v-model="formInline.open_way"
           :placeholder="$t('placeholder.inputOpenWay')"
         >
           <el-option
@@ -66,7 +65,12 @@
       </el-form-item>
     </el-form>
 
-    <el-table :data="tableData" style="width: 100%" max-height="700">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      max-height="700"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" width="55"> </el-table-column>
 
       <el-table-column sortable prop="name" label="名称" width="300"> </el-table-column>
@@ -86,147 +90,181 @@
           <el-button @click.native.prevent="deleteRow(scope.$index)" size="small">
             移除
           </el-button>
+          <el-button @click.native.prevent="updateRow(scope.$index)" size="small">
+            修改
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
-<script>
+<script setup>
+import { onMounted, ref, reactive } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
-
-export default {
-  data() {
-    return {
-      formInline: {
-        name: "",
-        type: "",
-        icon: "",
-        address: "",
-        openWay: "",
-      },
-      tableData: [],
-      openWayOptions: [
-        {
-          label: "新tab页签打开",
-          value: "newTab",
-        },
-        {
-          label: "当前窗口打开",
-          value: "curWindow",
-        },
-      ],
-      typeOptions: [
-        {
-          label: "框架",
-          value: "frame",
-        },
-        {
-          label: "工具",
-          value: "tool",
-        },
-        {
-          label: "资源",
-          value: "resource",
-        },
-      ],
-    };
-  },
-  methods: {
-    // 查询
-    query() {
-      webAdressApi
-        .queryWebsite()
-        .then((result) => {
-          if (result.status) {
-            this.tableData = result.data.map((item) => {
-              item.create_time = new Date(item.create_time).toLocaleString();
-              item.update_time = new Date(item.update_time).toLocaleString();
-              return item;
-            });
-          } else {
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-          }
-        })
-        .catch((err) => {});
-    },
-    // 删除
-    deleteRow(index) {
-      let id = this.tableData[index].id;
-      webAdressApi
-        .deleteWebsite(id)
-        .then((result) => {
-          if (result.status) {
-            this.$message({
-              type: "error",
-              message: "删除成功",
-            });
-            this.query();
-          } else {
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-          }
-        })
-        .catch((err) => {});
-    },
-    // 创建
-    insert() {
-      let nowDate = new Date().getTime();
-      let websiteInfo = {
-        name: this.formInline.name,
-        type: this.formInline.type,
-        icon: this.formInline.icon,
-        address: this.formInline.address,
-        open_way: this.formInline.openWay,
-        create_time: nowDate,
-        update_time: nowDate,
-      };
-      webAdressApi
-        .createWebsite(websiteInfo)
-        .then((result) => {
-          if (result.status) this.query();
-          else
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-        })
-        .catch((err) => {});
-    },
-    updateDatas() {},
-    batchDelete() {},
-    handleAvatarSuccess(res, file) {
-      console.log(file);
-      // this.formInline.icon = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      console.log(file.type);
-      let isImg = false;
-      if (
-        file.type === "image/jpeg" ||
-        file.type === "image/svg+xml" ||
-        file.type === "image/png"
-      )
-        isImg = true;
-      let isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isImg) {
-        this.$message.error("上传头像图片只能是 jpg、svg和png 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isImg && isLt2M;
-    },
-  },
-  created() {
-    this.query();
-  },
+import { showTips } from "@/utils/message/showTips.js";
+import { ElMessageBox } from "element-plus";
+const formInline = reactive({
+  id: "",
+  name: "",
+  type: "",
+  icon: "",
+  address: "",
+  open_way: "",
+});
+const tableData = ref([]);
+const checkList = ref([]);
+const handleSelectionChange = (val) => {
+  checkList.value = val.map((v) => v.id);
 };
+const openWayOptions = ref([
+  {
+    label: "新tab页签打开",
+    value: "newTab",
+  },
+  {
+    label: "当前窗口打开",
+    value: "curWindow",
+  },
+  {
+    label: "进入模块",
+    value: "module",
+  },
+]);
+const typeOptions = ref([
+  {
+    label: "框架",
+    value: "frame",
+  },
+  {
+    label: "工具",
+    value: "tool",
+  },
+  {
+    label: "资源",
+    value: "resource",
+  },
+  {
+    label: "模块",
+    value: "module",
+  },
+]);
+
+// 查询
+async function query() {
+  const result = await webAdressApi.queryWebsite();
+  if (result.status) {
+    tableData.value = result.data.map((item) => {
+      item.create_time = new Date(item.create_time).toLocaleString();
+      item.update_time = new Date(item.update_time).toLocaleString();
+      return item;
+    });
+  } else {
+    showTips("error", result.msg);
+  }
+}
+// 删除
+async function deleteRow(index) {
+  const id = tableData.value[index].id;
+  const result = await webAdressApi.deleteWebsite(id);
+  if (result.status) {
+    showTips("success", "删除成功");
+    query();
+  } else {
+    showTips("error", result.msg);
+  }
+}
+//修改
+async function updateRow(index) {
+  Object.assign(formInline, tableData.value[index]);
+}
+// 创建
+async function insert() {
+  const nowDate = new Date().getTime();
+  const websiteInfo = {
+    name: formInline.name,
+    type: formInline.type,
+    icon: formInline.icon,
+    address: formInline.address,
+    open_way: formInline.open_way,
+    create_time: nowDate,
+    update_time: nowDate,
+  };
+  const result = await webAdressApi.createWebsite(websiteInfo);
+  if (result.status) {
+    showTips("success", "创建成功");
+    query();
+  } else {
+    showTips("error", result.msg);
+  }
+}
+async function confirmUpdate() {
+  const nowDate = new Date().getTime();
+  const websiteInfo = {
+    id: formInline.id,
+    name: formInline.name,
+    type: formInline.type,
+    icon: formInline.icon,
+    address: formInline.address,
+    open_way: formInline.open_way,
+    update_time: nowDate,
+  };
+  const result = await webAdressApi.updateWebsite(websiteInfo);
+  if (result.status) {
+    showTips("success", "修改成功");
+    formInline.id = "";
+    query();
+  } else {
+    showTips("error", result.msg);
+  }
+}
+function batchDelete() {
+  ElMessageBox.confirm("此操作将永久删除选中, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      //构造sql
+      let ids = checkList.value;
+      const result = await webAdressApi.batchDeleteWebsite(ids);
+      if (result.status) {
+        // 删除成功后操作
+        checkList.value = [];
+        query();
+        showTips("success", "删除成功");
+      }
+    })
+    .catch(() => {
+      showTips("info", "已取消删除");
+    });
+}
+function handleAvatarSuccess(res, file) {
+  console.log(file);
+  // formInline.icon = URL.createObjectURL(file.raw);
+}
+async function beforeAvatarUpload(file) {
+  console.log(file.type);
+  let isImg = false;
+  if (
+    file.type === "image/jpeg" ||
+    file.type === "image/svg+xml" ||
+    file.type === "image/png"
+  )
+    isImg = true;
+  let isLt2M = file.size / 1024 / 1024 < 2;
+
+  if (!isImg) {
+    this.$message.error("上传头像图片只能是 jpg、svg和png 格式!");
+  }
+  if (!isLt2M) {
+    this.$message.error("上传头像图片大小不能超过 2MB!");
+  }
+  return isImg && isLt2M;
+}
+
+onMounted(() => {
+  query();
+});
 </script>
 <style>
 .avatar-uploader .el-upload {
