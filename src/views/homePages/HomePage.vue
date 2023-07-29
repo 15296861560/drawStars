@@ -2,7 +2,7 @@
   <div>
     <div class="g-home">
       <div class="g-home-module">
-        <div class="g-home-block">
+        <el-row class="g-home-module">
           <router-link-normal
             v-for="route in routes"
             :key="route.name"
@@ -10,30 +10,39 @@
             :imgName="route.name"
             :text="$t(`homePage.${route.name}`)"
           ></router-link-normal>
-        </div>
-        <div class="g-home-block">
-          <div class="chart-container-double">
-            <BasicEchart
-              v-if="!isHidden"
-              :chartData="areaOption"
-              echartId="echart-area"
-              class="echart-small"
-            ></BasicEchart>
-          </div>
-          <div class="chart-container-double">
-            <BasicEchart
-              v-if="!isHidden"
-              :chartData="pieOption"
-              echartId="echart-pie"
-              class="echart-small"
-            ></BasicEchart>
-          </div>
-        </div>
+        </el-row>
 
-        <div class="g-flex-between w-per100" style="padding: 10px">
-          <dependence></dependence>
-          <commitInfo></commitInfo>
-        </div>
+        <el-row class="w-per100">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+            <div class="home-echart-container">
+              <BasicEchart
+                v-if="!isHidden"
+                :chartData="areaOption"
+                echartId="echart-area"
+                class="home-echart"
+              ></BasicEchart>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+            <div class="home-echart-container">
+              <BasicEchart
+                v-if="!isHidden"
+                :chartData="pieOption"
+                echartId="echart-pie"
+                class="home-echart"
+              ></BasicEchart>
+            </div>
+          </el-col>
+        </el-row>
+
+        <el-row gutter="20" class="w-per100">
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+            <dependence></dependence>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+            <commitInfo></commitInfo>
+          </el-col>
+        </el-row>
       </div>
     </div>
   </div>
@@ -139,16 +148,16 @@ export default {
 };
 </script>
 <style scoped lang="less">
-.chart-container-double {
+.home-echart-container {
   border-radius: 5px;
   padding: 10px;
   border-color: transparent;
   overflow: hidden;
-  width: 50%;
+  width: 100%;
   margin: 20px 0px;
 }
-.echart-small {
-  min-width: 35vw;
+.home-echart {
+  width: 100%;
   height: 35vh;
   background-color: white;
   border-radius: 15px;

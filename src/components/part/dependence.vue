@@ -56,7 +56,7 @@ export default {
 <style lang="less" scoped>
 .dependence {
   display: flex;
-  width: 49%;
+  width: 100%;
   background-color: white;
   flex-direction: column;
   border-radius: 5px;

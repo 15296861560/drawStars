@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:11
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-14 00:13:18
+ * @LastEditTime: 2023-07-30 02:19:58
 -->
 <template>
   <div class="commit">
@@ -63,7 +63,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .commit {
   display: flex;
-  width: 49%;
+  width: 100%;
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
