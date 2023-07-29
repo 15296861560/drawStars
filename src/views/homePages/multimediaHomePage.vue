@@ -23,6 +23,7 @@ export default {
         { name: "camera", imgName: "camera" },
         { name: "pictureEditing", imgName: "crop" },
         { name: "processVideo", imgName: "processVideo" },
+        { name: "video", imgName: "video" },
       ],
     };
   },

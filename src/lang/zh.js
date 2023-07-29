@@ -64,6 +64,7 @@ export default {
       camera: "捕捉摄像头画面",
       processVideo: "处理视频",
       pictureEditing: "图片编辑",
+      video: "视频播放器",
     },
     labHomePage: {
       vueReactivity: "Vue响应式原理",

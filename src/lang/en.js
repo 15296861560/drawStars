@@ -64,6 +64,7 @@ export default {
       camera: "Capture camera image",
       processVideo: "Process Video",
       pictureEditing: "Picture editing",
+      video: "Video",
     },
     labHomePage: {
       vueReactivity: "Vue Reactivity ",

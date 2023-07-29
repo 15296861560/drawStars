@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-10-07 17:24:28
  * @LastEditors: lgy
- * @LastEditTime: 2022-12-04 22:05:29
+ * @LastEditTime: 2023-07-27 23:22:43
  */
 /*多媒体模块*/
 export default [
@@ -39,6 +39,14 @@ export default [
     component: () => import("@/views/multimedia/processVideo.vue"),
     meta: {
       title: ["首页", "多媒体模块", "处理视频"],
+    },
+  },
+  {
+    path: "/home/multimediaHomePage/video",
+    name: "视频播放器",
+    component: () => import("@/views/multimedia/video.vue"),
+    meta: {
+      title: ["首页", "多媒体模块", "视频播放器"],
     },
   },
   {
