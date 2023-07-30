@@ -4,16 +4,28 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-23 00:13:39
+ * @LastEditTime: 2023-07-30 23:43:15
 -->
-<script setup lang="ts">
-import {
-  RouterLink,
-  RouterView,
-  useRouter,
-  onBeforeRouteLeave,
-  onBeforeRouteUpdate,
-} from "vue-router";
+<script setup>
+// 错误拦截
+import { getCurrentInstance, nextTick } from "vue";
+import { errorLogStore } from "@/stores/error-log";
+const errorLog = errorLogStore();
+const instance = getCurrentInstance();
+const app = instance?.appContext.app;
+app.config.errorHandler = (err, vm, info) => {
+  const url = window.location.href;
+  nextTick(() => {
+    errorLog.addErrorLog({
+      err,
+      vm,
+      info,
+      url,
+    });
+  });
+};
+
+import { RouterView, useRouter } from "vue-router";
 
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
@@ -39,12 +51,8 @@ router.beforeEach((to, from) => {
     hasLogin = false;
   }
 
-  if (hasLogin) {
-    return true;
-  } else {
-    return { path: "/login" };
-  }
   NoProgress.done();
+  return hasLogin ? true : { path: "/login" };
 });
 
 router.afterEach(() => {

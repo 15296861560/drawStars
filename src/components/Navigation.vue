@@ -21,6 +21,8 @@
     </el-breadcrumb>
 
     <div class="right-part">
+      <!-- 错误日志记录 -->
+      <errorLog></errorLog>
       <!-- 全屏 -->
       <el-icon
         class="full-screen u-icon"
@@ -91,6 +93,7 @@ import storage from "@/utils/commom/storage";
 import { userInfoStore } from "@/stores/user-info";
 import { settingInfoStore } from "@/stores/setting-info";
 import messageSide from "@/views/message/messageSide.vue";
+import errorLog from "@/components/part/errorLog.vue";
 
 const settingInfo = settingInfoStore();
 
@@ -103,6 +106,7 @@ export default {
   inject: ["websiteInfo"],
   components: {
     messageSide,
+    errorLog,
   },
   data() {
     return {

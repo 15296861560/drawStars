@@ -59,6 +59,9 @@
                 ><el-icon><Link /></el-icon>{{ $t("aside.externalLinks") }}</el-menu-item
               >
             </el-menu-item-group>
+            <el-menu-item-group title="模拟错误">
+              <el-menu-item index="undefinedError">未定义错误模拟</el-menu-item>
+            </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="3">
             <template #title>
@@ -147,6 +150,9 @@ export default {
         case "outSide":
           this.toOutSide();
           break;
+        case "undefinedError":
+          this.mockError("undefined");
+          break;
         case "collapse":
           this.collapse();
           break;
@@ -167,6 +173,12 @@ export default {
 
     toOutSide() {
       window.open("https://cn.bing.com/");
+    },
+    // 模拟错误
+    mockError(errType) {
+      if (errType === "undefined") {
+        abcd = efgh;
+      }
     },
     // 收缩侧边栏
     collapse() {
