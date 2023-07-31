@@ -96,6 +96,7 @@ import messageSide from "@/views/message/messageSide.vue";
 import errorLog from "@/components/part/errorLog.vue";
 
 const settingInfo = settingInfoStore();
+const userInfo = userInfoStore();
 
 export default {
   name: "Navigation",
@@ -124,7 +125,6 @@ export default {
       return settingInfo.getLanguage;
     },
     userName() {
-      const userInfo = userInfoStore();
       return userInfo.getUserName;
     },
   },
@@ -167,8 +167,8 @@ export default {
       });
     },
     logout() {
-      const userInfo = userInfoStore();
       userInfo.changeUserInfo({});
+      userInfo.updateToken("");
 
       this.$router.push({
         path: "/login",
