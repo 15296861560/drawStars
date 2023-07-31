@@ -43,7 +43,7 @@
         :title="$t('navigation.selectLang')"
         @command="handleSetLanguage"
       >
-        <div style="height: 3vh" class="u-icon drawstars-icon-lang"></div>
+        <div class="u-icon drawstars-icon-lang language"></div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :disabled="language === 'zh'" command="zh">
@@ -244,10 +244,17 @@ export default {
     }
     .selectLang {
       margin-left: 1vw;
+      .language {
+        height: 3vh;
+        outline: none;
+      }
     }
 
     .profile {
       margin-left: 2vw;
+      .el-dropdown-link {
+        outline: none;
+      }
     }
   }
 }
