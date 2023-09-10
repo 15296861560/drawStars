@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-22 23:44:28
+ * @LastEditTime: 2023-09-03 21:09:33
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -15,6 +15,8 @@ import router from "./router";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+
+import DrawStartsUI from "draw-stars-ui";
 
 // echarts图表
 import * as echarts from "echarts";
@@ -56,6 +58,7 @@ app.use(createPinia().use(piniaPluginPersistedstate));
 app.use(router);
 
 app.use(ElementPlus);
+app.use(DrawStartsUI);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
