@@ -12,7 +12,7 @@
     <el-form :rules="rules" :model="loginForm" v-show="!isRegister">
       <div class="form-container login-form">
         <h2 class="welcome">{{ $t("welcome") }}</h2>
-        <el-form-item prop="account" style="width: 100%">
+        <el-form-item prop="account">
           <el-input
             v-model="loginForm.account"
             :placeholder="$t('placeholder.account')"
@@ -23,7 +23,7 @@
             ></template>
           </el-input>
         </el-form-item>
-        <el-form-item prop="password" style="width: 100%">
+        <el-form-item v-if="loginMode === 'password'" prop="password">
           <el-input
             v-model="loginForm.password"
             :type="showPassword ? 'text' : 'password'"
@@ -45,6 +45,24 @@
           </el-input>
         </el-form-item>
 
+        <el-form-item v-if="loginMode === 'captcha'" prop="captcha">
+          <el-input
+            v-model="loginForm.captcha"
+            type="text"
+            :placeholder="$t('placeholder.captcha')"
+            maxlength="4"
+          >
+            <template #suffix>
+              <span class="btn-captcha" @click="sendCaptcha"
+                ><span v-show="retryTime <= 0">{{ $t("btn.getCaptcha") }}</span>
+                <span v-show="retryTime > 0" style="cursor: not-allowed">{{
+                  $t("btn.sent", [this.retryTime])
+                }}</span></span
+              >
+            </template>
+          </el-input>
+        </el-form-item>
+
         <router-link to="/forgetPassword" class="link link__forget-password">
           {{ $t("btn.forgetPassword") }}
         </router-link>
@@ -54,10 +72,14 @@
         }}</el-button>
 
         <div class="switch-row">
-          <span>{{ $t("noAccount") }}</span>
-          <span @click="toRegister" class="link">
-            {{ $t("btn.registerNow") }}
-          </span>
+          <div>
+            <span>{{ $t("noAccount") }}</span>
+            <span @click="toRegister" class="link">
+              {{ $t("btn.registerNow") }}
+            </span>
+          </div>
+
+          <div class="link" @click="toPhoneLogin">{{ $t("phoneLogin") }}</div>
         </div>
 
         <div class="other-login-area">
@@ -146,6 +168,8 @@ import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 import {
   loginByPassword,
   registerByPhone,
+  getCaptcha,
+  loginBySMS,
 } from "@/assets/js/api/loginController/loginApi.js";
 import { userInfoStore } from "@/stores/user-info";
 import { particles } from "./particles.js";
@@ -153,9 +177,10 @@ import { loadFull } from "tsparticles";
 import { verifyLogin } from "@/assets/js/api/loginController/loginApi.js";
 
 const LOGIN_MODE = {
-  password: "password", //密码登录
-  passwordFree: "passwordFree", //免密登录
-  authorize: "authorize", //授权登录
+  password: "password", // 密码登录
+  passwordFree: "passwordFree", // 免密登录
+  authorize: "authorize", // 授权登录
+  captcha: "captcha", // 验证码登录
 };
 
 const debounceOption = {
@@ -201,6 +226,7 @@ export default {
       showPassword: false,
       userInfo: {},
       isRegister: false,
+      retryTime: 0,
     };
   },
   computed: {
@@ -254,6 +280,9 @@ export default {
         if (this.loginMode === LOGIN_MODE.password) {
           this.passwordLogin();
         }
+        if (this.loginMode === LOGIN_MODE.captcha) {
+          this.loginBySMS();
+        }
       },
       debounceTime,
       debounceOption
@@ -265,6 +294,20 @@ export default {
         password: this.loginForm.password,
       };
       let res = await loginByPassword(params);
+      if (res.status) {
+        this.userInfo = res.data;
+        this.afterLogin(this.userInfo);
+      } else {
+        this.$message.error(res.msg);
+      }
+    },
+    // 验证码登录
+    async loginBySMS() {
+      let params = {
+        phone: this.loginForm.account,
+        captcha: this.loginForm.captcha,
+      };
+      let res = await loginBySMS(params);
       if (res.status) {
         this.userInfo = res.data;
         this.afterLogin(this.userInfo);
@@ -341,6 +384,9 @@ export default {
     toLogin() {
       this.isRegister = false;
     },
+    toPhoneLogin() {
+      this.loginMode = LOGIN_MODE.captcha;
+    },
     // 离开表单
     leaveForm(e) {
       console.log("leave");
@@ -364,6 +410,34 @@ export default {
         return;
       }
       this.afterLogin(res.data);
+    },
+
+    // 发送验证码
+    async sendCaptcha() {
+      if (this.retryTime > 0) {
+        return;
+      }
+      const params = {
+        type: "login",
+        account: this.loginForm.account,
+      };
+      const res = await getCaptcha(params);
+      if (res.status) {
+        this.$message({
+          type: "success",
+          message: this.$t("tip.sendSuccess"),
+        });
+        this.retryTime = 2 * 60;
+        const retryTimer = setInterval(() => {
+          if (this.retryTime > 0) {
+            this.retryTime--;
+          } else {
+            clearInterval(retryTimer);
+          }
+        }, 1000);
+      } else {
+        this.$message.error(res.msg);
+      }
     },
   },
 };
@@ -453,8 +527,16 @@ export default {
     cursor: pointer;
   }
 
+  .btn-captcha {
+    cursor: pointer;
+    border-left: solid 1px rgb(227, 233, 255);
+    font-size: 0.75rem /* 12/16 */;
+    padding-left: 0.75rem /* 12/16 */;
+  }
+
   .switch-row {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     white-space: nowrap;
   }
@@ -588,6 +670,10 @@ export default {
     }
   }
 }
+
+.el-form-item {
+  width: 100%;
+}
 </style>
 <i18n>
 {
@@ -595,6 +681,7 @@ export default {
      "welcome":"欢迎来到绘星!",
      "noAccount":"没有账号？",
      "hasAccount":"已有账号，",
+     "phoneLogin":"手机号登录",
      "label":{
          "otherLoginMethods":"其他登录方式",
          "oauthLoginTitile":"使用{0}账户登录"
@@ -602,11 +689,14 @@ export default {
      "placeholder":{
          "account":"请输入手机号",
          "nickname":"请输入显示昵称",
+         "captcha":"请输入验证码",
          "password":"请输入密码",
          "passwordAgain":"再次输入密码"
      },
      "btn":{
          "forgetPassword":"忘记密码?",
+         "getCaptcha":"获取验证码",
+         "sent":"已发送({0}s)",
          "register":"注册",
          "registerNow":"立即注册",
          "login":"登录",
@@ -616,6 +706,7 @@ export default {
      "tip":{
        "accountRequired":"账号不能为空",
        "passwordRequired":"密码不能为空",
+       "sendSuccess":"发送成功",
        "registerSuccess":"注册成功"
      },
      "validate":{
@@ -634,6 +725,7 @@ export default {
     "welcome":"Welcome to draw starts!",
     "noAccount":"No account?",
     "hasAccount":"Existing account,",
+    "phoneLogin":"Login with phone",
     "label":{
          "otherLoginMethods":"Other Login Methods",
          "oauthLoginTitile":"Login using {0} account"
@@ -641,11 +733,14 @@ export default {
      "placeholder":{
          "account":"Please enter your mobile number",
          "nickname":"Please enter the display nickname",
+         "captcha":"Please enter the captcha",
          "password":"Please input a password",
          "passwordAgain":"Enter password again"
      },
      "btn":{
          "forgetPassword":"Forget Password?",
+         "getCaptcha":"Get Code",
+         "sent":"Sent({0}s)",
          "register":"Register",
          "registerNow":"Register Now",
          "login":"Login",
@@ -655,6 +750,7 @@ export default {
      "tip":{
        "accountRequired":"Account number cannot be empty",
        "passwordRequired":"Password cannot be empty",
+       "sendSuccess":"Successfully sent",
        "registerSuccess":"register Successful"
      },
      "validate":{

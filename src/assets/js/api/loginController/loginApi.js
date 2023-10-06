@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-07-25 00:05:13
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-09 01:54:34
+ * @LastEditTime: 2023-10-06 22:10:49
  */
 /*登录相关接口*/
 import {
@@ -23,6 +23,20 @@ import {
  */
 async function loginByPassword(params) {
   const res = await $axios(params, "/loginApi/loginByPassword");
+  return res;
+}
+
+/**
+ * @description: 通过验证码登录
+ * @param {
+ * phone:String,
+ * captcha:String
+ * } params
+ * @return {*}
+ * @author: lgy
+ */
+async function loginBySMS(params) {
+  const res = await $axios(params, "/loginApi/loginBySMS");
   return res;
 }
 
@@ -58,8 +72,24 @@ async function verifyLogin() {
   }, "/loginApi/verifyLogin");
   return res;
 }
+
+/**
+ * @description: 获取验证码
+ * @param {
+ * type:String,
+ * account:String,
+ * } 
+ * @return {*}
+ * @author: lgy
+ */
+async function getCaptcha(param) {
+  const res = await $axiosGet(param, "/loginApi/getCaptcha");
+  return res;
+}
 export {
   loginByPassword,
   registerByPhone,
-  verifyLogin
+  verifyLogin,
+  getCaptcha,
+  loginBySMS
 };
