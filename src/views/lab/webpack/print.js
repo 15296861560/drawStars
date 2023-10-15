@@ -1,1 +1,1 @@
-export default (item)=>console.log(item)
+export default item => console.log(item);

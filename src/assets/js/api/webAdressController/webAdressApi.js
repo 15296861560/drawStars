@@ -1,15 +1,15 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-24 22:05:22
  * @LastEditors: lgy
  * @LastEditTime: 2023-07-26 23:52:05
  */
-/*配置资料相关接口*/
+/* 配置资料相关接口 */
 import {
   $axios
-} from "@/assets/js/axios-api/axios-config.js";
+} from '@/assets/js/axios-api/axios-config.js';
 
 function createWebsite(websiteInfo) {
   return new Promise((resolve, reject) => {
@@ -17,38 +17,38 @@ function createWebsite(websiteInfo) {
     let values = '';
     for (let k in websiteInfo) {
       fields += k + ',';
-      values = values + "'" + websiteInfo[k] + "',"
+      values = values + '\'' + websiteInfo[k] + '\',';
     }
     fields = fields.slice(0, -1);
     values = values.slice(0, -1);
     let sql = {
-      sql: "INSERT INTO web_adress" + '(' + fields + ') VALUES(' + values + ')'
+      sql: 'INSERT INTO web_adress' + '(' + fields + ') VALUES(' + values + ')'
     };
-    $axios(sql, "/mysqlApi/sql").then((res) => {
+    $axios(sql, '/mysqlApi/sql').then(res => {
       if (res.status) {
-        resolve(res)
+        resolve(res);
       } else {
-        reject(res)
+        reject(res);
       }
     });
 
 
-  })
+  });
 }
 
 function deleteWebsite(id) {
   return new Promise((resolve, reject) => {
     let sql = {
-      sql: "DELETE  FROM web_adress WHERE id=" + id
+      sql: 'DELETE  FROM web_adress WHERE id=' + id
     };
-    $axios(sql, "/mysqlApi/sql").then((res) => {
+    $axios(sql, '/mysqlApi/sql').then(res => {
       if (res.status) {
-        resolve(res)
+        resolve(res);
       } else {
-        reject(res)
+        reject(res);
       }
     });
-  })
+  });
 }
 
 function batchDeleteWebsite(ids) {
@@ -56,14 +56,14 @@ function batchDeleteWebsite(ids) {
     let sql = {
       sql: `DELETE  FROM web_adress WHERE id in (${ids})`
     };
-    $axios(sql, "/mysqlApi/sql").then((res) => {
+    $axios(sql, '/mysqlApi/sql').then(res => {
       if (res.status) {
-        resolve(res)
+        resolve(res);
       } else {
-        reject(res)
+        reject(res);
       }
     });
-  })
+  });
 }
 
 function updateWebsite(websiteInfo) {
@@ -76,33 +76,33 @@ function updateWebsite(websiteInfo) {
     }
     fields = fields.slice(0, -1);
     let sql = {
-      sql: "UPDATE web_adress SET " + fields + " WHERE id=" + websiteInfoId
+      sql: 'UPDATE web_adress SET ' + fields + ' WHERE id=' + websiteInfoId
     };
-    $axios(sql, "/mysqlApi/sql").then((res) => {
+    $axios(sql, '/mysqlApi/sql').then(res => {
       if (res.status) {
-        resolve(res)
+        resolve(res);
       } else {
-        reject(res)
+        reject(res);
       }
     });
 
 
-  })
+  });
 }
 
 function queryWebsite(id) {
   return new Promise((resolve, reject) => {
     let sql = {
-      sql: "SELECT * FROM web_adress"
+      sql: 'SELECT * FROM web_adress'
     };
-    $axios(sql, "/mysqlApi/sql").then((res) => {
+    $axios(sql, '/mysqlApi/sql').then(res => {
       if (res.status) {
-        resolve(res)
+        resolve(res);
       } else {
-        reject(res)
+        reject(res);
       }
     });
-  })
+  });
 }
 export {
   createWebsite,

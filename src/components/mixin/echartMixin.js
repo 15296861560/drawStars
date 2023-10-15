@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:02
@@ -8,7 +8,7 @@
  */
 import {
   markRaw
-} from 'vue'
+} from 'vue';
 
 export const echartMixin = {
   props: {
@@ -21,26 +21,28 @@ export const echartMixin = {
     },
     width: {
       type: String,
-      default: "",
+      default: '',
     },
     height: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   data() {
     return {
       myChart: null,
       option: {},
-    }
+    };
   },
   methods: {
-    //初始化图表
+    // 初始化图表
     paint() {
-      if (this.chartData) this.initData(this.chartData);
+      if (this.chartData) {
+        this.initData(this.chartData);
+      }
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = markRaw(this.$echarts.init(document.getElementById(this.echartId)))
-      //setOption使用方式:
+      this.myChart = markRaw(this.$echarts.init(document.getElementById(this.echartId)));
+      // setOption使用方式:
       // chart.setOption(option, notMerge, lazyUpdate); ||
       // chart.setOption(option, {
       //   notMerge: ...,
@@ -79,20 +81,24 @@ export const echartMixin = {
   watch: {
     chartData: {
       handler(newVal) {
-        if (newVal) this.repaint(newVal);
+        if (newVal) {
+          this.repaint(newVal);
+        }
       },
-      deep: true, //打开深度监听
+      deep: true, // 打开深度监听
     },
   },
   mounted() {
     this.paint();
     // 监听窗口发生变化，resize组件
-    window.addEventListener("resize", this.resizeChart);
+    window.addEventListener('resize', this.resizeChart);
   },
   beforeDestroy() {
-    //释放myChart实例
-    if (this.myChart) this.myChart.clear();
+    // 释放myChart实例
+    if (this.myChart) {
+      this.myChart.clear();
+    }
     // 并取消监听事件
-    window.removeEventListener("resize", this.resizeChart);
+    window.removeEventListener('resize', this.resizeChart);
   },
-}
+};

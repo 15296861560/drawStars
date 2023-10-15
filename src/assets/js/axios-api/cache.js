@@ -1,16 +1,16 @@
 function reqCache() {
   // 缓存类型
   const cacheFrom = {
-    local: "fromLocalCache",
-    session: "fromSessionCache",
-    page: "fromPageCache",
-  }
+    local: 'fromLocalCache',
+    session: 'fromSessionCache',
+    page: 'fromPageCache',
+  };
   class API {
     constructor() {
       this.pageCache = {};
       this.fetchDeferredObj = {};
-      this.LOCAL_STORAGE_CACHE_KEY = "DRAW_STARS_CACHE";
-      this.SESSION_STORAGE_CACHE_KEY = "DRAW_STARS_CACHE";
+      this.LOCAL_STORAGE_CACHE_KEY = 'DRAW_STARS_CACHE';
+      this.SESSION_STORAGE_CACHE_KEY = 'DRAW_STARS_CACHE';
     }
 
     async beforeFetch(url, opt) {
@@ -34,9 +34,9 @@ function reqCache() {
 
       if (cache && cache.resp && (!opt.cacheDuration || new Date().getTime() - cache.timestamp <= opt.cacheDuration)) {
         return cache.resp;
-      } else {
-        return null;
       }
+      return null;
+
     }
 
     async setCache(resp, url, opt) {
@@ -112,6 +112,6 @@ function reqCache() {
   }
 
   return new API();
-};
+}
 
-export default reqCache
+export default reqCache;

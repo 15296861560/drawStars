@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2023-06-24 01:09:58
@@ -8,7 +8,7 @@
  */
 import {
   useI18n
-} from "vue-i18n";
+} from 'vue-i18n';
 export const i18nLabelMixin = {
   methods: {
     initLocalLang() {
@@ -23,4 +23,4 @@ export const i18nLabelMixin = {
   created() {
     this.initLocalLang();
   },
-}
+};

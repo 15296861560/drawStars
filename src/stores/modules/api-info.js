@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-27 01:09:58
@@ -8,19 +8,19 @@
  */
 export default {
   state: {
-    url: "/api"
+    url: '/api'
   },
   mutations: {
     changeApi(state, {
       attr,
       val
     }) {
-      state[attr] = val
+      state[attr] = val;
     }
   },
   getters: {
     getUrl(state) {
-      return state.url
+      return state.url;
     },
   },
   actions: {
@@ -31,7 +31,7 @@ export default {
       context.commit('changeApi', {
         attr,
         val
-      })
+      });
     }
   }
-}
+};

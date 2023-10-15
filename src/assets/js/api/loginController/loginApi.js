@@ -6,11 +6,11 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-10-06 22:10:49
  */
-/*登录相关接口*/
+/* 登录相关接口 */
 import {
   $axios,
   $axiosGet
-} from "@/assets/js/axios-api/axios-config.js";
+} from '@/assets/js/axios-api/axios-config.js';
 
 /**
  * @description: 通过密码登录
@@ -22,7 +22,7 @@ import {
  * @author: lgy
  */
 async function loginByPassword(params) {
-  const res = await $axios(params, "/loginApi/loginByPassword");
+  const res = await $axios(params, '/loginApi/loginByPassword');
   return res;
 }
 
@@ -36,7 +36,7 @@ async function loginByPassword(params) {
  * @author: lgy
  */
 async function loginBySMS(params) {
-  const res = await $axios(params, "/loginApi/loginBySMS");
+  const res = await $axios(params, '/loginApi/loginBySMS');
   return res;
 }
 
@@ -51,7 +51,7 @@ async function loginBySMS(params) {
  * @author: lgy
  */
 async function registerByPhone(params) {
-  const res = await $axios(params, "/loginApi/registerByPhone");
+  const res = await $axios(params, '/loginApi/registerByPhone');
   return res;
 }
 
@@ -59,7 +59,7 @@ async function registerByPhone(params) {
  * @description: 通过token查询用户信息
  * @param {
  * token:String,
- * } 
+ * }
  * @return {*}
  * @author: lgy
  */
@@ -69,7 +69,7 @@ async function verifyLogin() {
 
   const res = await $axiosGet({
     accessToken
-  }, "/loginApi/verifyLogin");
+  }, '/loginApi/verifyLogin');
   return res;
 }
 
@@ -78,12 +78,12 @@ async function verifyLogin() {
  * @param {
  * type:String,
  * account:String,
- * } 
+ * }
  * @return {*}
  * @author: lgy
  */
 async function getCaptcha(param) {
-  const res = await $axiosGet(param, "/loginApi/getCaptcha");
+  const res = await $axiosGet(param, '/loginApi/getCaptcha');
   return res;
 }
 export {

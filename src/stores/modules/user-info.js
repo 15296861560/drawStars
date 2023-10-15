@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
@@ -9,31 +9,31 @@
 export default {
   state: {
     userInfo: {
-      name: "",
+      name: '',
       userId: 0
     },
-    token: ""
+    token: ''
   },
   mutations: {
     changeUserInfo(state, {
       attr,
       val
     }) {
-      state[attr] = val
+      state[attr] = val;
     }
   },
   getters: {
     getUserInfo(state) {
-      return state.userInfo
+      return state.userInfo;
     },
     getUserId(state) {
-      return state.userInfo.id
+      return state.userInfo.id;
     },
     getUserName(state) {
-      return state.userInfo.name || '未登录'
+      return state.userInfo.name || '未登录';
     },
     getToken(state) {
-      return state.token
+      return state.token;
     },
   },
   actions: {
@@ -44,9 +44,9 @@ export default {
       context.commit('changeUserInfo', {
         attr,
         val
-      })
+      });
     }
   }
 
 
-}
+};

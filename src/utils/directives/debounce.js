@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-10-13 22:45:54
@@ -8,16 +8,16 @@
  */
 const debounce = {
   mounted(el, binding) {
-    let timer
+    let timer;
     el.addEventListener('click', () => {
       if (timer) {
-        clearTimeout(timer)
+        clearTimeout(timer);
       }
       timer = setTimeout(() => {
-        binding.value()
-      }, 1000)
-    })
+        binding.value();
+      }, 1000);
+    });
   },
-}
+};
 
-export default debounce
+export default debounce;
