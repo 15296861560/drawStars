@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-09-03 21:09:33
+ * @LastEditTime: 2024-03-04 23:51:38
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -16,13 +16,13 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
-import DrawStartsUI from "draw-stars-ui";
+const DrawStartsUI = require("draw-stars-ui");
 
 // echarts图表
 import * as echarts from "echarts";
 
 //lodash工具库
-import * as _ from 'lodash';
+const _ = require('lodash');
 
 //多语言
 // @ts-ignore

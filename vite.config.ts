@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
  * @LastEditors: lgy
- * @LastEditTime: 2023-07-22 23:08:29
+ * @LastEditTime: 2024-03-04 23:53:12
  */
 import { fileURLToPath, URL } from "node:url";
 
@@ -13,7 +13,8 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import vueI18n from '@intlify/vite-plugin-vue-i18n'
 
-import requireTransform from "vite-plugin-require-transform";
+import commonjs from '@rollup/plugin-commonjs';// 引入commojs
+import requireTransform from "vite-plugin-require-transform";// 引入require
 
 import path from "node:path";
 
@@ -32,6 +33,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    commonjs(),
     requireTransform({
       fileRegex: /.ts$|.tsx$|js$|.jsx$|.vue$/,
     }),
