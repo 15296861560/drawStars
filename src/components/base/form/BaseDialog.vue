@@ -1,0 +1,129 @@
+<!--
+ * @Author: “lgy lgy-lgy@qq.com
+ * @Date: 2024-03-25 23:20:53
+ * @LastEditors: “lgy lgy-lgy@qq.com
+ * @LastEditTime: 2024-04-05 23:13:00
+ * @FilePath: \drawStars-Vue3\src\components\base\form\dialog.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<template>
+  <el-dialog v-model="dialogVisible" v-bind="$attrs" draggable overflow>
+    <el-form
+      v-if="dialogVisible"
+      ref="formRef"
+      :model="formInfo"
+      label-width="auto"
+      :rules="rules"
+      :label-position="options.labelPosition || 'left'"
+    >
+      <el-form-item
+        v-for="field in fieldList"
+        :label="field.label"
+        :prop="field.fieldName"
+      >
+        <base-form-item
+          v-model:field="formInfo[field.fieldName]"
+          :type="field.type"
+          :rule="field.rule"
+          :placeholder="field.placeholder"
+          :readonly="options.readonly"
+          :disabled="options.disabled"
+          :options="field.options"
+        />
+      </el-form-item>
+    </el-form>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="confirm"> 确认 </el-button>
+      </div>
+    </template>
+  </el-dialog>
+</template>
+<script lang="ts" setup>
+import { ref, reactive, defineAsyncComponent, watch, toRefs } from "vue";
+import { useVModels } from "@vueuse/core";
+import type { AnyObject, Field, DialogOption } from "@/types/global";
+import { showTips } from "@/utils/message/showTips.js";
+const BaseFormItem = defineAsyncComponent(() => import("./BaseFormItem.vue"));
+
+const emit = defineEmits<{
+  (e: "confirm"): void;
+}>();
+
+const dialogVisible = ref(false);
+
+const props = defineProps<{
+  options: DialogOption;
+}>();
+
+const { options } = toRefs(props);
+
+const { fieldList } = useVModels(props.options, emit);
+
+const formInfo = reactive<AnyObject>({});
+
+const rules = reactive<AnyObject>({});
+fieldList.value.forEach((field) => {
+  if (field.rule) {
+    rules[field.fieldName] = field.rule;
+  }
+});
+
+const formRef = ref();
+
+const cancel = () => {
+  const formEl = formRef.value;
+  if (!formEl) {
+    return;
+  }
+  formEl.resetFields();
+  dialogVisible.value = false;
+  fieldList.value.forEach((element) => {
+    formInfo[element.fieldName] = element.defaultVal || "";
+  });
+};
+
+const confirm = async () => {
+  const formEl = formRef.value;
+  if (!formEl) {
+    return;
+  }
+  formEl.validate(async (valid: any) => {
+    if (valid) {
+      if (options.value.confirmMethod) {
+        const params = Object.assign(formInfo, options.value.confirmParams);
+
+        const res = await options.value.confirmMethod(params);
+        if (!res.status) {
+          showTips("error", res.msg);
+        }
+      }
+
+      emit("confirm");
+      cancel();
+    }
+  });
+};
+
+const init = () => {
+  fieldList.value.forEach((element) => {
+    formInfo[element.fieldName] = element.defaultVal || "";
+  });
+};
+
+const opentDialog = () => {
+  dialogVisible.value = true;
+};
+
+watch(dialogVisible, (v) => {
+  if (v) {
+    init();
+  }
+});
+
+defineExpose({
+  opentDialog,
+});
+</script>
