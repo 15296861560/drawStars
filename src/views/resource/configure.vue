@@ -2,7 +2,7 @@
   <div class="g-list-vertical">
     <el-row class="mb40">
       <el-button type="primary" @click="query">{{ $t("btn.query") }}</el-button>
-      <el-button type="primary" @click="insert">{{ $t("btn.create") }}</el-button>
+      <el-button type="primary" @click="create">{{ $t("btn.create") }}</el-button>
       <el-button type="danger" @click="batchDelete">{{
         $t("btn.batchDelete")
       }}</el-button>
@@ -60,7 +60,9 @@
           :before-upload="beforeAvatarUpload"
         >
           <img v-if="formInline.icon" :src="formInline.icon" class="avatar" />
-          <el-icon class="avatar-uploader-icon" v-else><Plus /></el-icon>
+          <el-icon class="avatar-uploader-icon" v-else>
+            <Plus />
+          </el-icon>
         </el-upload>
       </el-form-item>
     </el-form>
@@ -97,12 +99,48 @@
       </el-table-column>
     </el-table>
   </div>
+
+  <base-dialog
+    ref="dialogRef"
+    :options="dialogOptions"
+    :title="'新增'"
+    @confirm="query"
+  ></base-dialog>
 </template>
 <script setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
+import { dialogFields } from "./schema/configureSchema";
+
+const BaseDialog = defineAsyncComponent(() =>
+  import("@/components/base/form/BaseDialog.vue")
+);
+
+const confirmMethod = async (newData) => {
+  const nowDate = new Date().getTime();
+  const websiteInfo = {
+    name: newData.name,
+    type: newData.type,
+    icon: newData.icon,
+    address: newData.address,
+    open_way: newData.open_way,
+    create_time: nowDate,
+    update_time: nowDate,
+  };
+  const result = await webAdressApi.createWebsite(websiteInfo);
+  return result;
+};
+
+const dialogOptions = reactive({
+  fieldList: dialogFields,
+  confirmMethod,
+  confirmParams: {},
+});
+
+const dialogRef = ref();
+
 const formInline = reactive({
   id: "",
   name: "",
@@ -178,6 +216,9 @@ async function updateRow(index) {
   Object.assign(formInline, tableData.value[index]);
 }
 // 创建
+function create() {
+  dialogRef.value?.opentDialog();
+}
 async function insert() {
   const nowDate = new Date().getTime();
   const websiteInfo = {
@@ -274,9 +315,11 @@ onMounted(() => {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -285,6 +328,7 @@ onMounted(() => {
   line-height: 40px;
   text-align: center;
 }
+
 .avatar {
   width: 40px;
   height: 40px;
