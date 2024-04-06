@@ -2,7 +2,7 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-03-25 23:20:53
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-04-05 23:13:00
+ * @LastEditTime: 2024-04-06 17:06:13
  * @FilePath: \drawStars-Vue3\src\components\base\form\dialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -107,10 +107,31 @@ const confirm = async () => {
   });
 };
 
-const init = () => {
+const init = async () => {
   fieldList.value.forEach((element) => {
     formInfo[element.fieldName] = element.defaultVal || "";
   });
+
+  if (options.value.initMethod && options.value.initParams?.id) {
+    const params = Object.assign(formInfo, options.value.initParams);
+    const res = await options.value.initMethod(params);
+    if (!res.status) {
+      showTips("error", res.msg);
+      return;
+    }
+
+    const data = res.data[0];
+    if (!data) {
+      return;
+    }
+    fieldList.value.forEach((element) => {
+      if (element.fieldName.endsWith("time")) {
+        formInfo[element.fieldName] = new Date(data[element.fieldName]).toLocaleString();
+      } else {
+        formInfo[element.fieldName] = data[element.fieldName] || "";
+      }
+    });
+  }
 };
 
 const opentDialog = () => {

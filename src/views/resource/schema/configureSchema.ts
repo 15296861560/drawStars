@@ -17,6 +17,7 @@ export const allFields = [
     fieldName: 'type',
     label: '类型',
     type: 'select',
+    rule:[{ required: true, message: '请选择类型', trigger: 'blur' }],
     placeholder:'请选择',
     config:{
       valueKey:'value',
@@ -39,6 +40,10 @@ export const allFields = [
         label: "模块",
         value: "module",
       },
+      {
+        label: "其他",
+        value: "other",
+      },
     ]
   },
   {
@@ -55,6 +60,7 @@ export const allFields = [
     fieldName: 'open_way',
     label: '打开方式',
     type: 'select',
+    rule:[{ required: true, message: '请选择打开方式', trigger: 'blur' }],
     placeholder:'请选择',
     options: [
       {
@@ -68,6 +74,10 @@ export const allFields = [
       {
         label: "进入模块",
         value: "module",
+      },
+      {
+        label: "其他",
+        value: "other",
       },
     ]
   },

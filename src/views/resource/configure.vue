@@ -7,7 +7,7 @@
         $t("btn.batchDelete")
       }}</el-button>
       <el-button type="warning" v-show="formInline.id" @click="confirmUpdate"
-        >确认修改</el-button
+        >确认 编辑</el-button
       >
     </el-row>
 
@@ -85,15 +85,18 @@
       </el-table-column>
       <el-table-column sortable prop="create_time" label="创建时间" width="300">
       </el-table-column>
-      <el-table-column sortable prop="update_time" label="修改时间" width="300">
+      <el-table-column sortable prop="update_time" label=" 编辑时间" width="300">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
+      <el-table-column fixed="right" label="操作" width="200">
         <template #default="scope">
-          <el-button @click.native.prevent="deleteRow(scope.$index)" size="small">
-            移除
+          <el-button @click.native.prevent="getDetail(scope.row)" size="small"
+            >查看</el-button
+          >
+          <el-button @click.native.prevent="deleteRow(scope.row)" size="small">
+            删除
           </el-button>
-          <el-button @click.native.prevent="updateRow(scope.$index)" size="small">
-            修改
+          <el-button @click.native.prevent="updateRow(scope.row)" size="small">
+            编辑
           </el-button>
         </template>
       </el-table-column>
@@ -103,7 +106,7 @@
   <base-dialog
     ref="dialogRef"
     :options="dialogOptions"
-    :title="'新增'"
+    :title="dialogTitle"
     @confirm="query"
   ></base-dialog>
 </template>
@@ -129,7 +132,26 @@ const confirmMethod = async (newData) => {
     create_time: nowDate,
     update_time: nowDate,
   };
-  const result = await webAdressApi.createWebsite(websiteInfo);
+  let confirmFun = webAdressApi.createWebsite;
+  let successTips = "创建成功";
+  if (newData.id) {
+    websiteInfo.id = newData.id;
+    confirmFun = webAdressApi.updateWebsite;
+    successTips = "编辑成功";
+  }
+  const result = await confirmFun(websiteInfo);
+  if (result.status) {
+    showTips("success", successTips);
+    query();
+  } else {
+    showTips("error", result.msg);
+  }
+  return result;
+};
+
+const initMethod = async (params) => {
+  const { id } = params;
+  const result = await webAdressApi.getWebsiteDetailById(id);
   return result;
 };
 
@@ -137,9 +159,14 @@ const dialogOptions = reactive({
   fieldList: dialogFields,
   confirmMethod,
   confirmParams: {},
+  initMethod,
+  initParams: {},
+  disabled: false,
 });
 
 const dialogRef = ref();
+
+const dialogTitle = ref("新增");
 
 const formInline = reactive({
   id: "",
@@ -201,8 +228,15 @@ async function query() {
   }
 }
 // 删除
-async function deleteRow(index) {
-  const id = tableData.value[index].id;
+async function deleteRow(row) {
+  const id = row.id;
+  await ElMessageBox.confirm("是否确认删除该数据", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).catch(() => {
+    showTips("info", "已取消删除操作");
+  });
   const result = await webAdressApi.deleteWebsite(id);
   if (result.status) {
     showTips("success", "删除成功");
@@ -211,33 +245,26 @@ async function deleteRow(index) {
     showTips("error", result.msg);
   }
 }
-//修改
-async function updateRow(index) {
-  Object.assign(formInline, tableData.value[index]);
+// 编辑
+async function updateRow(row) {
+  dialogTitle.value = "编辑";
+  dialogOptions.disabled = false;
+  dialogOptions.initParams = { id: row.id };
+  dialogRef.value?.opentDialog();
 }
 // 创建
 function create() {
+  dialogTitle.value = "新增";
+  dialogOptions.disabled = false;
   dialogRef.value?.opentDialog();
 }
-async function insert() {
-  const nowDate = new Date().getTime();
-  const websiteInfo = {
-    name: formInline.name,
-    type: formInline.type,
-    icon: formInline.icon,
-    address: formInline.address,
-    open_way: formInline.open_way,
-    create_time: nowDate,
-    update_time: nowDate,
-  };
-  const result = await webAdressApi.createWebsite(websiteInfo);
-  if (result.status) {
-    showTips("success", "创建成功");
-    query();
-  } else {
-    showTips("error", result.msg);
-  }
-}
+const getDetail = (row) => {
+  dialogTitle.value = "查看";
+  dialogOptions.disabled = true;
+  dialogOptions.initParams = { id: row.id };
+  dialogRef.value?.opentDialog();
+};
+
 async function confirmUpdate() {
   const nowDate = new Date().getTime();
   const websiteInfo = {
@@ -251,7 +278,7 @@ async function confirmUpdate() {
   };
   const result = await webAdressApi.updateWebsite(websiteInfo);
   if (result.status) {
-    showTips("success", "修改成功");
+    showTips("success", " 编辑成功");
     formInline.id = "";
     query();
   } else {
