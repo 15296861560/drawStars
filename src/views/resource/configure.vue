@@ -101,14 +101,14 @@
         </template>
       </el-table-column>
     </el-table>
-  </div>
 
-  <base-dialog
-    ref="dialogRef"
-    :options="dialogOptions"
-    :title="dialogTitle"
-    @confirm="query"
-  ></base-dialog>
+    <base-dialog
+      ref="dialogRef"
+      :options="dialogOptions"
+      :title="dialogTitle"
+      @confirm="query"
+    ></base-dialog>
+  </div>
 </template>
 <script setup>
 import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
