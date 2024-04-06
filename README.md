@@ -66,6 +66,7 @@ add:添加小组件、小功能、例子等
 [axios](http://axios-js.com/)
 [webpack](https://www.webpackjs.com/guides/installation/)
 [Less](http://lesscss.cn/)
+[Tailwind](https://www.tailwindcss.cn/docs)
 
 ### 参考
 
@@ -80,5 +81,5 @@ add:添加小组件、小功能、例子等
 [umami 埋点](https://umami.is/docs/features)
 [nprogress 进度条插件](https://madewith.cn/23)
 [Mock 生成随机数据](http://mockjs.com/)
-[lodashjs](https://www.lodashjs.com/)
-[nssm](https://nssm.cc/commands)
+[lodashjs 工具库](https://www.lodashjs.com/)
+[nssm 进程守护](https://nssm.cc/commands)

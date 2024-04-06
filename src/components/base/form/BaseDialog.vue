@@ -2,7 +2,7 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-03-25 23:20:53
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-04-06 17:06:13
+ * @LastEditTime: 2024-04-06 21:34:57
  * @FilePath: \drawStars-Vue3\src\components\base\form\dialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,6 +29,7 @@
           :readonly="options.readonly"
           :disabled="options.disabled"
           :options="field.options"
+          class="w-full"
         />
       </el-form-item>
     </el-form>
