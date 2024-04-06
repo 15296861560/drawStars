@@ -230,13 +230,17 @@ async function query() {
 // 删除
 async function deleteRow(row) {
   const id = row.id;
-  await ElMessageBox.confirm("是否确认删除该数据", "提示", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).catch(() => {
+  try {
+    await ElMessageBox.confirm("是否确认删除该数据", "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    });
+  } catch (e) {
     showTips("info", "已取消删除操作");
-  });
+    return;
+  }
+
   const result = await webAdressApi.deleteWebsite(id);
   if (result.status) {
     showTips("success", "删除成功");
