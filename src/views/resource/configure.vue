@@ -67,40 +67,14 @@
       </el-form-item>
     </el-form>
 
-    <el-table
-      :data="tableData"
-      style="width: 100%"
+    <base-table
+      ref="tableRef"
+      :options="tableOptions"
+      :page="false"
       max-height="700"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55"> </el-table-column>
-
-      <el-table-column sortable prop="name" label="名称" width="300"> </el-table-column>
-      <el-table-column prop="address" label="地址" width="300"> </el-table-column>
-      <el-table-column prop="type" label="类型" width="120"> </el-table-column>
-      <el-table-column prop="icon" label="图标" width="200">
-        <template #default="scope">
-          <img class="icon" :src="scope.row.date" />
-        </template>
-      </el-table-column>
-      <el-table-column sortable prop="create_time" label="创建时间" width="300">
-      </el-table-column>
-      <el-table-column sortable prop="update_time" label=" 编辑时间" width="300">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
-        <template #default="scope">
-          <el-button @click.native.prevent="getDetail(scope.row)" size="small"
-            >查看</el-button
-          >
-          <el-button @click.native.prevent="deleteRow(scope.row)" size="small">
-            删除
-          </el-button>
-          <el-button @click.native.prevent="updateRow(scope.row)" size="small">
-            编辑
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    </base-table>
 
     <base-dialog
       ref="dialogRef"
@@ -115,10 +89,13 @@ import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
-import { dialogFields } from "./schema/configureSchema";
+import { dialogFields, tableFields } from "./schema/configureSchema";
 
 const BaseDialog = defineAsyncComponent(() =>
   import("@/components/base/form/BaseDialog.vue")
+);
+const BaseTable = defineAsyncComponent(() =>
+  import("@/components/base/form/BaseTable.vue")
 );
 
 const confirmMethod = async (newData) => {
@@ -176,6 +153,7 @@ const formInline = reactive({
   address: "",
   open_way: "",
 });
+
 const tableData = ref([]);
 const checkList = ref([]);
 const handleSelectionChange = (val) => {
@@ -262,6 +240,7 @@ function create() {
   dialogOptions.disabled = false;
   dialogRef.value?.opentDialog();
 }
+// 查看
 const getDetail = (row) => {
   dialogTitle.value = "查看";
   dialogOptions.disabled = true;
@@ -333,6 +312,33 @@ async function beforeAvatarUpload(file) {
   }
   return isImg && isLt2M;
 }
+
+const pageTableOperate = [
+  {
+    label: "查看",
+    type: "primary",
+    action: getDetail,
+  },
+  {
+    label: "编辑",
+    type: "warning",
+    action: updateRow,
+  },
+  {
+    label: "删除",
+    type: "danger",
+    action: deleteRow,
+  },
+];
+
+const tableOptions = reactive({
+  tableData,
+  tableFields,
+  showIndex: false,
+  showSelection: true,
+  pageTableOperate,
+  tableOperateWidth: "200",
+});
 
 onMounted(() => {
   query();
