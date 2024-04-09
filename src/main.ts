@@ -3,8 +3,8 @@
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
- * @LastEditors: lgy
- * @LastEditTime: 2024-03-04 23:51:38
+ * @LastEditors: “lgy lgy-lgy@qq.com
+ * @LastEditTime: 2024-04-09 23:06:39
  */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -15,6 +15,7 @@ import router from "./router";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 const DrawStartsUI = require("draw-stars-ui");
 
@@ -57,7 +58,9 @@ app.use(createPinia().use(piniaPluginPersistedstate));
 
 app.use(router);
 
-app.use(ElementPlus);
+app.use(ElementPlus,{
+  locale: zhCn, 
+});
 app.use(DrawStartsUI);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
