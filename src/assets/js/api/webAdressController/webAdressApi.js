@@ -4,7 +4,7 @@
  * @Autor: lgy
  * @Date: 2022-11-24 22:05:22
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-04-06 16:59:28
+ * @LastEditTime: 2024-04-14 19:50:30
  */
 /* 配置资料相关接口 */
 import {
@@ -74,10 +74,25 @@ function updateWebsite(websiteInfo) {
   });
 }
 
-function queryWebsite() {
+function queryWebsite(param) {
+  const pageSize = param.pageSize || 10;
+  const limit = (param.curPage - 1) * pageSize
   return new Promise((resolve, reject) => {
     const params = {
-      sql: 'SELECT * FROM web_adress order by update_time desc'
+      sql: "SELECT * FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%') order by update_time desc limit ?,?",
+      values: [param.name,param.type,param.address,param.open_way, limit, pageSize]
+    };
+    $axios(params, '/mysqlApi/sql').then(res => {
+      resolve(res);
+    }).catch(e => reject(e));
+  });
+}
+
+function getWebsiteCount(param) {
+  return new Promise((resolve, reject) => {
+    const params = {
+      sql: `SELECT COUNT(*) FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%')`,
+      values: [param.name,param.type,param.address,param.open_way]
     };
     $axios(params, '/mysqlApi/sql').then(res => {
       resolve(res);
@@ -104,5 +119,6 @@ export {
   updateWebsite,
   queryWebsite,
   batchDeleteWebsite,
-  getWebsiteDetailById
+  getWebsiteDetailById,
+  getWebsiteCount
 };

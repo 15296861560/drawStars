@@ -6,9 +6,6 @@
       <el-button type="danger" @click="batchDelete">{{
         $t("btn.batchDelete")
       }}</el-button>
-      <el-button type="warning" v-show="formInline.id" @click="confirmUpdate"
-        >确认 编辑</el-button
-      >
     </el-row>
 
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
@@ -17,6 +14,7 @@
           v-model="formInline.name"
           :placeholder="$t('placeholder.inputName')"
           ref="name"
+          @change="query"
         ></el-input>
       </el-form-item>
       <el-form-item :label="'地址'">
@@ -24,10 +22,11 @@
           v-model="formInline.address"
           :placeholder="$t('placeholder.inputAdress')"
           ref="address"
+          @change="query"
         ></el-input>
       </el-form-item>
       <el-form-item :label="'类型'">
-        <el-select v-model="formInline.type" :placeholder="$t('placeholder.inputType')">
+        <el-select v-model="formInline.type" :placeholder="$t('placeholder.inputType')" clearable @change="query">
           <el-option
             v-for="item in typeOptions"
             :key="item.value"
@@ -41,6 +40,8 @@
         <el-select
           v-model="formInline.open_way"
           :placeholder="$t('placeholder.inputOpenWay')"
+          clearable
+          @change="query"
         >
           <el-option
             v-for="item in openWayOptions"
@@ -51,7 +52,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="图标">
+      <!-- <el-form-item label="图标">
         <el-upload
           class="avatar-uploader"
           action="#"
@@ -64,13 +65,13 @@
             <Plus />
           </el-icon>
         </el-upload>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <base-table
       ref="tableRef"
       :options="tableOptions"
-      :page="false"
+      :page="pageInfo"
       max-height="700"
       @selection-change="handleSelectionChange"
     >
@@ -146,7 +147,6 @@ const dialogRef = ref();
 const dialogTitle = ref("新增");
 
 const formInline = reactive({
-  id: "",
   name: "",
   type: "",
   icon: "",
@@ -194,13 +194,30 @@ const typeOptions = ref([
 
 // 查询
 async function query() {
-  const result = await webAdressApi.queryWebsite();
+  const params = {
+    curPage: pageInfo.curPage,
+    pageSize: pageInfo.pageSize,
+    ...formInline,
+  };
+
+  getTotal(params);
+
+  const result = await webAdressApi.queryWebsite(params);
   if (result.status) {
     tableData.value = result.data.map((item) => {
       item.create_time = new Date(item.create_time).toLocaleString();
       item.update_time = new Date(item.update_time).toLocaleString();
       return item;
     });
+  } else {
+    showTips("error", result.msg);
+  }
+}
+
+async function getTotal(params) {
+  const result = await webAdressApi.getWebsiteCount(params);
+  if (result.status) {
+    pageInfo.total = result.data[0]?.["COUNT(*)"] || 0;
   } else {
     showTips("error", result.msg);
   }
@@ -248,26 +265,6 @@ const getDetail = (row) => {
   dialogRef.value?.opentDialog();
 };
 
-async function confirmUpdate() {
-  const nowDate = new Date().getTime();
-  const websiteInfo = {
-    id: formInline.id,
-    name: formInline.name,
-    type: formInline.type,
-    icon: formInline.icon,
-    address: formInline.address,
-    open_way: formInline.open_way,
-    update_time: nowDate,
-  };
-  const result = await webAdressApi.updateWebsite(websiteInfo);
-  if (result.status) {
-    showTips("success", " 编辑成功");
-    formInline.id = "";
-    query();
-  } else {
-    showTips("error", result.msg);
-  }
-}
 function batchDelete() {
   ElMessageBox.confirm("此操作将永久删除选中, 是否继续?", "提示", {
     confirmButtonText: "确定",
@@ -338,6 +335,13 @@ const tableOptions = reactive({
   showSelection: true,
   pageTableOperate,
   tableOperateWidth: "200",
+});
+
+const pageInfo = reactive({
+  curPage: 1,
+  pageSize: 10,
+  total: 100,
+  curPageChange: query,
 });
 
 onMounted(() => {
