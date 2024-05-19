@@ -145,7 +145,8 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
     }
 
     requests.get(reqURL, {
-      params
+      params,
+      ...options.extOption
     }, {
       timeout: params.timeout || 300000
     }).then(res => {

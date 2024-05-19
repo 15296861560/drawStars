@@ -26,7 +26,12 @@
         ></el-input>
       </el-form-item>
       <el-form-item :label="'类型'">
-        <el-select v-model="formInline.type" :placeholder="$t('placeholder.inputType')" clearable @change="query">
+        <el-select
+          v-model="formInline.type"
+          :placeholder="$t('placeholder.inputType')"
+          clearable
+          @change="query"
+        >
           <el-option
             v-for="item in typeOptions"
             :key="item.value"
@@ -52,20 +57,23 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="图标">
+      <el-form-item label="图标">
         <el-upload
           class="avatar-uploader"
-          action="#"
           :show-file-list="false"
-          :on-success="handleAvatarSuccess"
+          :auto-upload="false"
+          :on-change="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
+          accept="image/jpg, image/jpeg, image/png, image/PNG"
         >
           <img v-if="formInline.icon" :src="formInline.icon" class="avatar" />
           <el-icon class="avatar-uploader-icon" v-else>
             <Plus />
           </el-icon>
         </el-upload>
-      </el-form-item> -->
+      </el-form-item>
+
+      <el-button @click="downLoad(formInline.name)">下载</el-button>
     </el-form>
 
     <base-table
@@ -88,6 +96,7 @@
 <script setup>
 import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
+import { uploadFile, downloadFile } from "@/assets/js/api/commomController/commomApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
 import { dialogFields, tableFields } from "./schema/configureSchema";
@@ -286,10 +295,24 @@ function batchDelete() {
       showTips("info", "已取消删除");
     });
 }
-function handleAvatarSuccess(res, file) {
-  console.log(file);
-  // formInline.icon = URL.createObjectURL(file.raw);
+async function handleAvatarSuccess(file) {
+  let formData = new FormData();
+  formData.append("file", file.raw);
+  formData.append("filename", file.name);
+  const result = await uploadFile(formData);
+  if (result.status) {
+    showTips("success", "上传成功");
+  }
 }
+
+const downLoad = async (filename) => {
+  const res = await downloadFile({ filename });
+  console.log('downLoad',res)
+  if (res.status) {
+    showTips("success", "下载成功");
+  }
+};
+
 async function beforeAvatarUpload(file) {
   console.log(file.type);
   let isImg = false;
