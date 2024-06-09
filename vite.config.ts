@@ -28,6 +28,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
+      "/uploadImg": {
+        target: "http://127.0.0.1:8010",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/uploadImg/, ""),
+      },
     },
   },
   plugins: [

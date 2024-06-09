@@ -57,23 +57,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="图标">
-        <el-upload
-          class="avatar-uploader"
-          :show-file-list="false"
-          :auto-upload="false"
-          :on-change="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-          accept="image/jpg, image/jpeg, image/png, image/PNG"
-        >
-          <img v-if="formInline.icon" :src="formInline.icon" class="avatar" />
-          <el-icon class="avatar-uploader-icon" v-else>
-            <Plus />
-          </el-icon>
-        </el-upload>
-      </el-form-item>
-
-      <el-button @click="downLoad(formInline.name)">下载</el-button>
     </el-form>
 
     <base-table
@@ -96,7 +79,6 @@
 <script setup>
 import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
-import { uploadFile, downloadFile } from "@/assets/js/api/commomController/commomApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
 import { dialogFields, tableFields } from "./schema/configureSchema";
@@ -295,43 +277,6 @@ function batchDelete() {
       showTips("info", "已取消删除");
     });
 }
-async function handleAvatarSuccess(file) {
-  let formData = new FormData();
-  formData.append("file", file.raw);
-  formData.append("filename", file.name);
-  const result = await uploadFile(formData);
-  if (result.status) {
-    showTips("success", "上传成功");
-  }
-}
-
-const downLoad = async (filename) => {
-  const res = await downloadFile({ filename });
-  console.log('downLoad',res)
-  if (res.status) {
-    showTips("success", "下载成功");
-  }
-};
-
-async function beforeAvatarUpload(file) {
-  console.log(file.type);
-  let isImg = false;
-  if (
-    file.type === "image/jpeg" ||
-    file.type === "image/svg+xml" ||
-    file.type === "image/png"
-  )
-    isImg = true;
-  let isLt2M = file.size / 1024 / 1024 < 2;
-
-  if (!isImg) {
-    this.$message.error("上传头像图片只能是 jpg、svg和png 格式!");
-  }
-  if (!isLt2M) {
-    this.$message.error("上传头像图片大小不能超过 2MB!");
-  }
-  return isImg && isLt2M;
-}
 
 const pageTableOperate = [
   {
@@ -372,27 +317,6 @@ onMounted(() => {
 });
 </script>
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-}
-
 .avatar {
   width: 40px;
   height: 40px;
