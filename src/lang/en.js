@@ -180,6 +180,7 @@ export default {
     create: 'Create',
     insert: 'Insert',
     query: 'Query',
+    Search: 'Search',
     batchDelete: 'Batch Delete',
     batchInsert: 'Batch Insert',
     batchUpdate: 'Batch Update',

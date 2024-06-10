@@ -1,63 +1,30 @@
 <template>
   <div class="g-list-vertical">
-    <el-row class="mb40">
-      <el-button type="primary" @click="query">{{ $t("btn.query") }}</el-button>
-      <el-button type="primary" @click="create">{{ $t("btn.create") }}</el-button>
-      <el-button type="danger" @click="batchDelete">{{
-        $t("btn.batchDelete")
-      }}</el-button>
+    <el-row class="mb40" :gutter="20">
+      <el-col :span="16">
+        <div class="flex">
+          <search-item
+            v-for="item in searchItems"
+            :key="item.field"
+            v-model:field="formInline[item.field]"
+            :label="item.label"
+            :type="item.type"
+            :placeholder="item.placeholder"
+            :options="item.options"
+            clearable
+            :class="`w-1/${searchItems.length}`"
+          ></search-item>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
+        <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
+        <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
+        <el-button type="danger" @click="batchDelete">{{
+          $t("btn.batchDelete")
+        }}</el-button>
+      </el-col>
     </el-row>
-
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item :label="'名称'">
-        <el-input
-          v-model="formInline.name"
-          :placeholder="$t('placeholder.inputName')"
-          ref="name"
-          @change="query"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="'地址'">
-        <el-input
-          v-model="formInline.address"
-          :placeholder="$t('placeholder.inputAdress')"
-          ref="address"
-          @change="query"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="'类型'">
-        <el-select
-          v-model="formInline.type"
-          :placeholder="$t('placeholder.inputType')"
-          clearable
-          @change="query"
-        >
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="'打开方式'">
-        <el-select
-          v-model="formInline.open_way"
-          :placeholder="$t('placeholder.inputOpenWay')"
-          clearable
-          @change="query"
-        >
-          <el-option
-            v-for="item in openWayOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-    </el-form>
 
     <base-table
       ref="tableRef"
@@ -77,17 +44,23 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, reactive, defineAsyncComponent } from "vue";
+import { onMounted, ref, reactive, defineAsyncComponent, computed } from "vue";
 import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
 import { dialogFields, tableFields } from "./schema/configureSchema";
+import i18n from "@/lang/index.js";
+
+const $t = i18n.global.t;
 
 const BaseDialog = defineAsyncComponent(() =>
   import("@/components/base/form/BaseDialog.vue")
 );
 const BaseTable = defineAsyncComponent(() =>
   import("@/components/base/form/BaseTable.vue")
+);
+const SearchItem = defineAsyncComponent(() =>
+  import("@/components/base/SearchItem/index.vue")
 );
 
 const confirmMethod = async (newData) => {
@@ -182,6 +155,42 @@ const typeOptions = ref([
     value: "module",
   },
 ]);
+
+const searchItems = computed(() => [
+  {
+    field: "name",
+    label: "名称",
+    placeholder: $t("placeholder.inputName"),
+    type: "input",
+  },
+  {
+    field: "address",
+    label: "地址",
+    placeholder: $t("placeholder.inputAdress"),
+    type: "input",
+  },
+  {
+    field: "type",
+    label: "类型",
+    placeholder: $t("placeholder.inputType"),
+    type: "select",
+    options: typeOptions.value,
+  },
+  {
+    field: "open_way",
+    label: "打开方式",
+    placeholder: $t("placeholder.inputOpenWay"),
+    type: "select",
+    options: openWayOptions.value,
+  },
+]);
+
+const reset = () => {
+  Object.keys(formInline).forEach((key) => {
+    formInline[key] = "";
+  });
+  query();
+};
 
 // 查询
 async function query() {
