@@ -2,7 +2,7 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-04-06 21:41:22
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-04-09 23:04:30
+ * @LastEditTime: 2024-06-10 16:56:01
  * @FilePath: \drawStars-Vue3\src\components\base\form\BaseTable.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -108,7 +108,7 @@ import type { AnyObject, Field, TableOption, PageInfo } from "@/types/global";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const BaseFormItem = defineAsyncComponent(() => import("./BaseFormItem.vue"));
+const BaseFormItem = defineAsyncComponent(() => import("./BaseFormItem/index.vue"));
 
 const props = defineProps<{
   options: TableOption;
