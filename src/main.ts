@@ -6,45 +6,45 @@
  * @LastEditors: “lgy lgy-lgy@qq.com
  * @LastEditTime: 2024-04-09 23:06:39
  */
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from "./App.vue";
-import router from "./router";
+import App from './App.vue';
+import router from './router';
 
-import ElementPlus from "element-plus";
-import "element-plus/dist/index.css";
-import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
+import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 
-const DrawStartsUI = require("draw-stars-ui");
+const DrawStartsUI = require('draw-stars-ui');
 
 // echarts图表
-import * as echarts from "echarts";
+import * as echarts from 'echarts';
 
-//lodash工具库
+// lodash工具库
 const _ = require('lodash');
 
-//多语言
+// 多语言
 // @ts-ignore
-import i18n from "./lang/index.js";
+import i18n from './lang/index.js';
 
-import Particles from 'particles.vue3'
+import Particles from 'particles.vue3';
 
 // 消除新特性的告警信息
-import 'default-passive-events'
+import 'default-passive-events';
 
 // 自定义指令
 // @ts-ignore
-import directives from "@/utils/directives/index.js";
+import directives from '@/utils/directives/index.js';
 
 // 使 Pinia 持久化的插件
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
-//配置埋点
-import '@/assets/js/umami/umami.js'
+// 配置埋点
+import '@/assets/js/umami/umami.js';
 
-//消息通知能力
+// 消息通知能力
 // @ts-ignore
 import { notifyClient } from 'drawstarts-notify';
 
@@ -58,8 +58,8 @@ app.use(createPinia().use(piniaPluginPersistedstate));
 
 app.use(router);
 
-app.use(ElementPlus,{
-  locale: zhCn, 
+app.use(ElementPlus, {
+  locale: zhCn,
 });
 app.use(DrawStartsUI);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -70,10 +70,10 @@ app.use(i18n);
 
 app.use(Particles);
 
-directives(app)
+directives(app);
 
 app.config.globalProperties.$echarts = echarts;
 app.config.globalProperties.$notify = notifyClient;
 
 
-app.mount("#app");
+app.mount('#app');

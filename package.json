@@ -10,6 +10,7 @@
     "svgtofont": "node ./src/assets/js/svgtofont/svgtofont.js",
     "lint": "eslint src",
     "fix": "eslint src  --fix",
+    "lint:fix": "eslint src --ext .vue,.js,.ts,.jsx,.tsx --fix",
     "update-css": "npx tailwindcss -i ./src/assets/styles/input.css -o ./src/assets/styles/output.css --watch"
   },
   "dependencies": {
@@ -27,7 +28,7 @@
     "element-plus": "^2.2.22",
     "less": "^4.1.3",
     "less-loader": "^11.1.0",
-    "lint": "^0.8.19",
+    "lint": "^1.1.2",
     "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
@@ -64,5 +65,8 @@
   },
   "parserOptions": {
     "requireConfigFile": false
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint"
   }
 }

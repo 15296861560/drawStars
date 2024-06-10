@@ -65,7 +65,7 @@ import {
   queryAllNotify,
   queryMyAllNotify,
 } from "@/assets/js/api/notifyController/notifyApi.js";
-import {  WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
+import { WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
 import { userInfoStore } from "@/stores/user-info";
 
 const userInfo = userInfoStore();
@@ -174,6 +174,7 @@ onMounted(() => {
     .message-box__body__select {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 12px;
     }
     .message-btn__all-read {

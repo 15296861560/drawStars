@@ -485,7 +485,7 @@ export default {
 }
 
 .login-form-bg {
-  height: 40vh;
+  min-height: 40vh;
 }
 .register-form-bg {
   height: 50vh;
@@ -493,7 +493,7 @@ export default {
 
 .login-form {
   width: 30vw;
-  height: 40vh;
+  min-height: 40vh;
 }
 .register-form {
   width: 30vw;
@@ -536,7 +536,6 @@ export default {
 
   .switch-row {
     display: flex;
-    justify-content: space-between;
     width: 100%;
     white-space: nowrap;
   }

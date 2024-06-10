@@ -76,11 +76,11 @@ function updateWebsite(websiteInfo) {
 
 function queryWebsite(param) {
   const pageSize = param.pageSize || 10;
-  const limit = (param.curPage - 1) * pageSize
+  const limit = (param.curPage - 1) * pageSize;
   return new Promise((resolve, reject) => {
     const params = {
-      sql: "SELECT * FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%') order by update_time desc limit ?,?",
-      values: [param.name,param.type,param.address,param.open_way, limit, pageSize]
+      sql: 'SELECT * FROM web_adress where name like concat(\'%\',?,\'%\') and type like concat(\'%\',?,\'%\') and address like concat(\'%\',?,\'%\') and open_way like concat(\'%\',?,\'%\') order by update_time desc limit ?,?',
+      values: [param.name, param.type, param.address, param.open_way, limit, pageSize]
     };
     $axios(params, '/mysqlApi/sql').then(res => {
       resolve(res);
@@ -91,8 +91,8 @@ function queryWebsite(param) {
 function getWebsiteCount(param) {
   return new Promise((resolve, reject) => {
     const params = {
-      sql: `SELECT COUNT(*) FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%')`,
-      values: [param.name,param.type,param.address,param.open_way]
+      sql: 'SELECT COUNT(*) FROM web_adress where name like concat(\'%\',?,\'%\') and type like concat(\'%\',?,\'%\') and address like concat(\'%\',?,\'%\') and open_way like concat(\'%\',?,\'%\')',
+      values: [param.name, param.type, param.address, param.open_way]
     };
     $axios(params, '/mysqlApi/sql').then(res => {
       resolve(res);

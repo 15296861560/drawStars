@@ -91,6 +91,7 @@ export default {
       line-height: 3rem /* 48/16 */;
       text-align: center;
       color: @color-text-secondary;
+      cursor: pointer;
       &:hover {
         background-color: @color-icon-hover;
       }
