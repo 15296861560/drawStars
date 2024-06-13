@@ -538,6 +538,7 @@ export default {
     display: flex;
     width: 100%;
     white-space: nowrap;
+    justify-content: space-between;
   }
 
   .link {
