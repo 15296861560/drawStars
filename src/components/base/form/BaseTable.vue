@@ -2,12 +2,28 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-04-06 21:41:22
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-10 16:56:01
+ * @LastEditTime: 2024-06-16 20:26:01
  * @FilePath: \drawStars-Vue3\src\components\base\form\BaseTable.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div>
+  <div class="base-table">
+    <div class="table-header">
+      <div class="table-name" v-if="tableName">{{ tableName }}</div>
+      <div class="table-operation" v-show="tableOperate?.length">
+        <el-button
+          v-for="operate in tableOperate"
+          :key="operate.label"
+          :color="operate.color"
+          :type="operate.type"
+          @click="operate.action"
+          v-loading="operate.loading"
+        >
+          {{ operate.label }}
+        </el-button>
+      </div>
+    </div>
+
     <!-- 表格内容 -->
     <el-table
       ref="tableRef"
@@ -52,7 +68,7 @@
         </el-table-column>
       </slot>
       <el-table-column
-        v-if="pageTableOperate.length"
+        v-if="pageTableOperate?.length"
         label="操作"
         fixed="right"
         :width="tableOperateWidth"
@@ -127,6 +143,8 @@ const {
   pageTableOperate,
   tableOperateWidth,
   rowKey,
+  tableName,
+  tableOperate,
 } = toRefs(<TableOption>props.options);
 
 //是否展示按钮
@@ -141,5 +159,26 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
 <style scoped lang="less">
 .el-pagination {
   justify-content: flex-end;
+}
+
+.base-table {
+  background-color: white;
+  min-height: 60vh;
+  max-height: 75vh;
+  border-radius: 8px;
+  padding: 1rem /* 16/16 */ ;
+  .table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem /* 12/16 */;
+    .table-name {
+      font-weight: bold;
+      font-size: 1.75rem /* 28/16 */;
+    }
+  }
+  .table-operation {
+    display: flex;
+  }
 }
 </style>

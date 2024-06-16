@@ -6,7 +6,7 @@
           <search-item
             v-for="item in searchItems"
             :key="item.field"
-            v-model:field="formInline[item.field]"
+            v-model:field="searchInfo[item.field]"
             :label="item.label"
             :type="item.type"
             :placeholder="item.placeholder"
@@ -18,11 +18,8 @@
       </el-col>
       <el-col :span="8">
         <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
-        <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
         <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
-        <el-button type="danger" @click="batchDelete">{{
-          $t("btn.batchDelete")
-        }}</el-button>
+        <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
       </el-col>
     </el-row>
 
@@ -50,6 +47,7 @@ import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
 import { dialogFields, tableFields } from "./schema/configureSchema";
 import i18n from "@/lang/index.js";
+import { exportFile } from "@/utils/commom/importAndExport.ts";
 
 const $t = i18n.global.t;
 
@@ -110,7 +108,7 @@ const dialogRef = ref();
 
 const dialogTitle = ref("新增");
 
-const formInline = reactive({
+const searchInfo = reactive({
   name: "",
   type: "",
   icon: "",
@@ -186,8 +184,8 @@ const searchItems = computed(() => [
 ]);
 
 const reset = () => {
-  Object.keys(formInline).forEach((key) => {
-    formInline[key] = "";
+  Object.keys(searchInfo).forEach((key) => {
+    searchInfo[key] = "";
   });
   query();
 };
@@ -197,7 +195,7 @@ async function query() {
   const params = {
     curPage: pageInfo.curPage,
     pageSize: pageInfo.pageSize,
-    ...formInline,
+    ...searchInfo,
   };
 
   getTotal(params);
@@ -213,6 +211,28 @@ async function query() {
     showTips("error", result.msg);
   }
 }
+
+const getAllData = async () => {
+  let dataList = [];
+  const params = {
+    curPage: 1,
+    pageSize: 999,
+    ...searchInfo,
+  };
+
+  const result = await webAdressApi.queryWebsite(params);
+  if (result.status) {
+    dataList = result.data.map((item) => {
+      item.create_time = new Date(item.create_time).toLocaleString();
+      item.update_time = new Date(item.update_time).toLocaleString();
+      return item;
+    });
+  } else {
+    showTips("error", result.msg);
+  }
+
+  return dataList;
+};
 
 async function getTotal(params) {
   const result = await webAdressApi.getWebsiteCount(params);
@@ -273,7 +293,7 @@ function batchDelete() {
   })
     .then(async () => {
       //构造sql
-      let ids = checkList.value;
+      const ids = checkList.value;
       const result = await webAdressApi.batchDeleteWebsite(ids);
       if (result.status) {
         // 删除成功后操作
@@ -286,6 +306,18 @@ function batchDelete() {
       showTips("info", "已取消删除");
     });
 }
+
+const exportSelected = () => {
+  const dataList =
+    tableData.value?.filter((item) => checkList.value?.includes(item.id)) || [];
+  exportFile(dataList);
+};
+const exportAll = async () => {
+  exportAllLoading.value = true;
+  const dataList = await getAllData();
+  exportAllLoading.value = false;
+  exportFile(dataList);
+};
 
 const pageTableOperate = [
   {
@@ -305,12 +337,35 @@ const pageTableOperate = [
   },
 ];
 
+const exportAllLoading = ref(false);
+
+const tableOperate = [
+  {
+    label: "导出选中",
+    type: "primary",
+    action: exportSelected,
+  },
+  {
+    label: "导出全部",
+    type: "warning",
+    loading: exportAllLoading,
+    action: exportAll,
+  },
+  {
+    label: $t("btn.batchDelete"),
+    type: "danger",
+    action: batchDelete,
+  },
+];
+
 const tableOptions = reactive({
   tableData,
   tableFields,
+  tableName: "资料列表",
   showIndex: false,
   showSelection: true,
   pageTableOperate,
+  tableOperate,
   tableOperateWidth: "200",
 });
 
