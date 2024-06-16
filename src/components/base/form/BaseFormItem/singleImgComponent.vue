@@ -9,6 +9,7 @@
       :on-change="imgOnChange"
       :before-upload="beforeUpload"
       :on-exceed="handleExceed"
+      :disabled="disabled"
       accept="image/jpg, image/jpeg, image/png, image/PNG"
       list-type="picture-card"
       v-bind="$attrs"
@@ -85,12 +86,14 @@ const dialogImgVisible = ref(false);
 const imgFileList = ref<Array<AnyObject>>([]);
 
 const initFileList = () => {
-  imgFileList.value = [
-    {
-      name: field.value?.replace("/uploadImg/", ""),
-      url: field.value,
-    },
-  ];
+  if (field.value) {
+    imgFileList.value = [
+      {
+        name: field.value?.replace("/uploadImg/", ""),
+        url: field.value,
+      },
+    ];
+  }
 };
 
 const imgOnChange = async (file: AnyObject) => {

@@ -2,7 +2,7 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-03-28 23:12:16
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-04-07 23:41:23
+ * @LastEditTime: 2024-06-16 21:04:44
  * @FilePath: \drawStars-Vue3\src\views\resource\schema\configureSchema.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -56,7 +56,7 @@ export const allFields = [
   {
     fieldName: 'address',
     label: '地址',
-    type: 'input',
+    type: 'link',
     width: 300,
   },
   {

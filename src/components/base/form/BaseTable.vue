@@ -2,7 +2,7 @@
  * @Author: “lgy lgy-lgy@qq.com
  * @Date: 2024-04-06 21:41:22
  * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-16 20:26:01
+ * @LastEditTime: 2024-06-16 20:46:55
  * @FilePath: \drawStars-Vue3\src\components\base\form\BaseTable.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,6 +29,7 @@
       ref="tableRef"
       class="mb-10 custom-table"
       tooltip-effect="dark"
+      stripe
       v-bind="$attrs"
       :data="tableData"
       :row-key="rowKey || 'id'"
@@ -57,13 +58,12 @@
           :min-width="fields.minWidth || '100px'"
         >
           <template #default="{ row }">
-            <base-form-item
+            <base-table-item
               v-model:field="row[fields.fieldName]"
               readonly
-              tableViewMode
               :type="fields.type"
               :options="fields.options"
-            ></base-form-item>
+            ></base-table-item>
           </template>
         </el-table-column>
       </slot>
@@ -124,7 +124,7 @@ import type { AnyObject, Field, TableOption, PageInfo } from "@/types/global";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const BaseFormItem = defineAsyncComponent(() => import("./BaseFormItem/index.vue"));
+const BaseTableItem = defineAsyncComponent(() => import("./BaseTableItem/index.vue"));
 
 const props = defineProps<{
   options: TableOption;
@@ -166,7 +166,7 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   min-height: 60vh;
   max-height: 75vh;
   border-radius: 8px;
-  padding: 1rem /* 16/16 */ ;
+  padding: 1rem /* 16/16 */;
   .table-header {
     display: flex;
     align-items: center;

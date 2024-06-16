@@ -676,6 +676,10 @@ video {
   min-width: 3rem;
 }
 
+.max-w-12 {
+  max-width: 3rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
