@@ -632,6 +632,10 @@ video {
   display: flex;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 .table {
   display: table;
 }

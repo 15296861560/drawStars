@@ -17,9 +17,11 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
-        <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
-        <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
+        <div class="flex justify-end">
+          <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
+          <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
+          <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
+        </div>
       </el-col>
     </el-row>
 
