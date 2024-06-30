@@ -96,7 +96,7 @@
     </el-table>
 
     <!-- 分页 （自定义内容时还需判断是否需要分页）-->
-    <div v-if="page" class="__pagination">
+    <div v-if="page" class="base-table__pagination">
       <el-pagination
         v-model:current-page="page.curPage"
         v-model:page-size="page.pageSize"
@@ -167,6 +167,7 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   max-height: 75vh;
   border-radius: 8px;
   padding: 1rem /* 16/16 */;
+  position: relative;
   .table-header {
     display: flex;
     align-items: center;
@@ -179,6 +180,12 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   }
   .table-operation {
     display: flex;
+  }
+
+  &__pagination {
+    position: absolute;
+    bottom: 1rem /* 16/16 */;
+    right: 1rem; /* 16/16 */;
   }
 }
 </style>
