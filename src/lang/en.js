@@ -24,6 +24,7 @@ export default {
       polar: 'Polar coordinate system',
       dynamicOrderBar: 'Dynamic sort histogram',
       eMap: 'Map of China',
+      aMap: 'Gaode Map',
       gauge: 'Dashboard',
     },
     toolHomePage: {

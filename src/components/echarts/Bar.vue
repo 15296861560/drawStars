@@ -25,7 +25,7 @@ export default {
           // 副标题文本
           subtext: newVal.title.subtext,
           //副标题样式
-          textStyle: {
+          subtextStyle: {
             //字体大小
             fontSize: 24,
           },
@@ -120,6 +120,7 @@ export default {
         yAxis: [
           {
             type: "value",
+            name: newVal.yName || '',
             axisLine: {
               show: true,
               lineStyle: {

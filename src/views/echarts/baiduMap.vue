@@ -134,6 +134,11 @@ onMounted(async () => {});
 .map {
   width: 100%;
   height: 80vh;
+  :v-deep {
+    .anchorBL {
+      display: none;
+    }
+  }
 }
 
 .more_panel {

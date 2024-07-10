@@ -53,6 +53,14 @@ export default [
     },
   },
   {
+    path: "/home/echartHomePage/AMap",
+    name: "高德地图",
+    component: () => import("@/views/echarts/AMap.vue"),
+    meta: {
+      title: ["首页", "图表模块", "高德地图"],
+    },
+  },
+  {
     path: "/home/echartHomePage/bar",
     name: "柱状图",
     component: () => import("@/views/echarts/bar.vue"),

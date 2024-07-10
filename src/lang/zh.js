@@ -24,6 +24,7 @@ export default {
       polar: '极坐标系',
       dynamicOrderBar: '动态排序柱状图',
       eMap: '中国地图',
+      aMap: '高德地图',
       gauge: '仪表盘',
     },
     toolHomePage: {

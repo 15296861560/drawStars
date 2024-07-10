@@ -44,6 +44,9 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 // 配置埋点
 import '@/assets/js/umami/umami.js';
 
+// 加载高德地图
+import '@/assets/js/amap/index.js';
+
 // 消息通知能力
 // @ts-ignore
 import { notifyClient } from 'drawstarts-notify';

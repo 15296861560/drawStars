@@ -40,6 +40,7 @@ export default {
         { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
         { name: "eMap", imgName: "map" },
         { name: "gauge", imgName: "gauge" },
+        { name: "aMap", imgName: "location" },
       ],
     };
   },
