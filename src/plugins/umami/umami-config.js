@@ -1,11 +1,3 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Autor: lgy
- * @Date: 2022-11-24 22:05:22
- * @LastEditors: lgy
- * @LastEditTime: 2023-01-20 23:20:23
- */
 /**
  * @description 导出umami埋点跟踪代码配置
  */
