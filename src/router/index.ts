@@ -7,16 +7,13 @@
  * @LastEditTime: 2022-12-31 10:28:48
  */
 import { createRouter, createWebHistory } from "vue-router";
-import MyEcharts from "@/router/homePages/myEcharts.ts";
-import MyComponents from "@/router/homePages/myComponents.ts";
-import Tools from "@/router/homePages/tools.ts";
-import Special from "@/router/homePages/special.ts";
-import Data from "@/router/homePages/data.ts";
-import Multimedia from "@/router/homePages/multimedia.ts";
-import Case from "@/router/homePages/case.ts";
-import Lab from "@/router/homePages/lab.ts";
-import Resource from "@/router/homePages/resource.ts";
-import Profile from "@/router/homePages/profile.ts";
+
+const routeFiles = import.meta.glob("@/router/homePages/*.ts", { eager: true });
+
+const homePages: Array<any> = [];
+Object.keys(routeFiles).forEach((path) => {
+  homePages.push(...(routeFiles[path] as any).default);
+});
 
 export const RouterList = [
   {
@@ -51,22 +48,13 @@ export const RouterList = [
         },
         component: () => import("@/views/pages/NotFound.vue"),
       },
-      ...MyEcharts,
-      ...MyComponents,
-      ...Tools,
-      ...Special,
-      ...Data,
-      ...Multimedia,
-      ...Case,
-      ...Lab,
-      ...Resource,
-      ...Profile,
+      ...homePages,
     ],
   },
   // 所有未定义路由，全部重定向到404页
   {
-    path: '/:pathMatch(.*)*',
-    redirect: '/404'
+    path: "/:pathMatch(.*)*",
+    redirect: "/404",
   },
 ];
 
