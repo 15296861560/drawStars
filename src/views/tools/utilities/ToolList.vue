@@ -7,7 +7,11 @@
         mode="horizontal"
         @select="handleSelect"
       >
-        <el-sub-menu :index="item.index" v-for="(item, index) in titleArray" :key="index">
+        <el-sub-menu
+          :index="item.index"
+          v-for="(item, index) in titleArray"
+          :key="index"
+        >
           <!-- 一级标题 -->
           <template #title>{{ item.title }}</template>
           <!-- 二级标题（无三级标题） -->

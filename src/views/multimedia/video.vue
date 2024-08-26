@@ -9,7 +9,11 @@
 <template>
   <el-row :gutter="20">
     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-      <video id="videoPlayer" ref="videoPlayer" class="video-js video-container"></video>
+      <video
+        id="videoPlayer"
+        ref="videoPlayer"
+        class="video-js video-container"
+      ></video>
     </el-col>
   </el-row>
 </template>

@@ -43,7 +43,8 @@ export default {
       this.loveBGContext = this.loveBG.getContext("2d");
 
       this.particles = new ParticlePool(settings.particles.length);
-      this.particleRate = settings.particles.length / settings.particles.duration;
+      this.particleRate =
+        settings.particles.length / settings.particles.duration;
 
       let littleLoveCanvas = document.createElement("canvas");
       let littleLoveContext = littleLoveCanvas.getContext("2d");
@@ -85,14 +86,16 @@ export default {
           50 * Math.cos(2 * t) -
           20 * Math.cos(3 * t) -
           10 * Math.cos(4 * t) +
-          25
+          25,
       );
     },
     to(t) {
       let settings = this.settings;
       let point = this.pointOnHeart(t);
-      point.x = settings.particles.size / 2 + (point.x * settings.particles.size) / 350;
-      point.y = settings.particles.size / 2 - (point.y * settings.particles.size) / 350;
+      point.x =
+        settings.particles.size / 2 + (point.x * settings.particles.size) / 350;
+      point.y =
+        settings.particles.size / 2 - (point.y * settings.particles.size) / 350;
       return point;
     },
     render() {
@@ -114,7 +117,7 @@ export default {
           this.loveBG.width / 2 + pos.x,
           this.loveBG.height / 2 - pos.y,
           dir.x,
-          -dir.y
+          -dir.y,
         );
       }
 

@@ -13,7 +13,13 @@
         <div class="m-block-title">{{ $t("module.media.video") }}</div>
         <div class="m-block-content2">
           <div>
-            <video ref="video" id="video" width="640" height="480" autoplay></video>
+            <video
+              ref="video"
+              id="video"
+              width="640"
+              height="480"
+              autoplay
+            ></video>
           </div>
           <div style="display: flex; justify-content: center">
             <el-button size="default" id="snap" v-on:click="capture()">{{
@@ -43,7 +49,9 @@ export default {
   methods: {
     capture() {
       this.canvas = this.$refs.canvas;
-      var context = this.canvas.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
+      var context = this.canvas
+        .getContext("2d")
+        .drawImage(this.video, 0, 0, 640, 480);
       this.captures.push(canvas.toDataURL("image/png"));
     },
   },

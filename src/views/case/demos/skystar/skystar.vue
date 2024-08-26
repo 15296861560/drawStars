@@ -181,7 +181,13 @@ onMounted(() => {
     font-size: 36px;
     font-family: "楷体";
     font-weight: bold;
-    background-image: -webkit-linear-gradient(45deg, red, yellow, aqua, #ea80b0);
+    background-image: -webkit-linear-gradient(
+      45deg,
+      red,
+      yellow,
+      aqua,
+      #ea80b0
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-animation: com-linear 6s infinite linear;

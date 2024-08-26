@@ -53,7 +53,13 @@ function loop() {
   // 产生一个烟花，我们也需要一个时间计数timerTick，在每次帧更新的时候加1，记下帧更新的次数。
   if (timerTick >= timerTotal) {
     fireworks.push(
-      new Firework(clientw / 2, clienth, random(0, clientw), random(0, clienth), hue)
+      new Firework(
+        clientw / 2,
+        clienth,
+        random(0, clientw),
+        random(0, clienth),
+        hue,
+      ),
     );
     timerTick = 0;
   } else {

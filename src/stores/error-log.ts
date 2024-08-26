@@ -9,18 +9,15 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-export const errorLogStore = defineStore(
-  "errorLog",
-  () => {
-    const errorLogs = ref([]);
-    const getErrorLogs = computed(() => errorLogs.value);
-    function addErrorLog(errorLog: never) {
-      errorLogs.value.push(errorLog);
-    }
-    function clearErrorLog() {
-      errorLogs.value.splice(0);
-    }
-
-    return { getErrorLogs, addErrorLog, clearErrorLog };
+export const errorLogStore = defineStore("errorLog", () => {
+  const errorLogs = ref([]);
+  const getErrorLogs = computed(() => errorLogs.value);
+  function addErrorLog(errorLog: never) {
+    errorLogs.value.push(errorLog);
   }
-);
+  function clearErrorLog() {
+    errorLogs.value.splice(0);
+  }
+
+  return { getErrorLogs, addErrorLog, clearErrorLog };
+});

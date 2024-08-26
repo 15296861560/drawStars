@@ -3,14 +3,16 @@
     <h2>{{ $t("module.media.cropPic") }}</h2>
     <el-row class="mb40">
       <!-- <el-button type="primary">{{$t("btn.originalImg")}}</el-button> -->
-      <el-button type="primary" @click="reLoad">{{ $t("btn.reLoad") }}</el-button>
+      <el-button type="primary" @click="reLoad">{{
+        $t("btn.reLoad")
+      }}</el-button>
       <el-button type="primary" @click="crop">{{ $t("btn.crop") }}</el-button>
     </el-row>
 
     <div class="g-box-double">
       <div class="g-box-inside" ref="insideBox">
         <div class="mb40" v-show="!showImg">
-          <div class=" drawstars-icon-defaultPic" style="font-size:20vw" ></div>
+          <div class="drawstars-icon-defaultPic" style="font-size: 20vw"></div>
 
           <!-- 隐藏元素 -->
           <input
@@ -25,9 +27,14 @@
           <div class="u-tip-normal">{{ $t("tips.addImgSuccess") }}</div>
         </div>
 
-        <el-button class="mb20" v-show="!showImg" type="primary" round @click="addImg">{{
-          $t("btn.addImg")
-        }}</el-button>
+        <el-button
+          class="mb20"
+          v-show="!showImg"
+          type="primary"
+          round
+          @click="addImg"
+          >{{ $t("btn.addImg") }}</el-button
+        >
 
         <div v-show="showImg">
           <!-- <img class="u-img-normal" ref="originalPic" :src="imaItem.src" /> -->
@@ -80,11 +87,15 @@ export default {
       this.$refs.file.click();
     },
     reLoad() {
-      this.$confirm(this.$t("tips.confirmUpload"), this.$t("tipsTitle.warmTip"), {
-        confirmButtonText: this.$t("btn.continue"),
-        cancelButtonText: this.$t("btn.return"),
-        type: "warning",
-      })
+      this.$confirm(
+        this.$t("tips.confirmUpload"),
+        this.$t("tipsTitle.warmTip"),
+        {
+          confirmButtonText: this.$t("btn.continue"),
+          cancelButtonText: this.$t("btn.return"),
+          type: "warning",
+        },
+      )
         .then(() => {
           this.addImg();
         })
@@ -143,7 +154,10 @@ export default {
       img.src = url;
       img.onload = function () {
         //等比例缩放图片(如果图片宽高都比容器小，则绘制的图片宽高 = 原图片的宽高。)
-        if (img.width < insideBox.offsetWidth && img.height < insideBox.offsetHeight) {
+        if (
+          img.width < insideBox.offsetWidth &&
+          img.height < insideBox.offsetHeight
+        ) {
           imgWidth = img.width;
           imgHeight = img.height;
         } else {
@@ -324,11 +338,15 @@ export default {
     },
 
     download(src) {
-      this.$confirm(this.$t("tips.comfirmDownloadImg"), this.$t("tipsTitle.tip"), {
-        confirmButtonText: this.$t("btn.confirm"),
-        cancelButtonText: this.$t("btn.cancel"),
-        type: "info",
-      })
+      this.$confirm(
+        this.$t("tips.comfirmDownloadImg"),
+        this.$t("tipsTitle.tip"),
+        {
+          confirmButtonText: this.$t("btn.confirm"),
+          cancelButtonText: this.$t("btn.cancel"),
+          type: "info",
+        },
+      )
         .then(() => {
           this.picDownload(src);
           this.$message({

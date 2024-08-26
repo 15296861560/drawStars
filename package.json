@@ -11,7 +11,8 @@
     "lint": "eslint src",
     "fix": "eslint src  --fix",
     "lint:fix": "eslint src --ext .vue,.js,.ts,.jsx,.tsx --fix",
-    "update-css": "npx tailwindcss -i ./src/assets/styles/input.css -o ./src/assets/styles/output.css --watch"
+    "update-css": "npx tailwindcss -i ./src/assets/styles/input.css -o ./src/assets/styles/output.css --watch",
+    "prettier": "npx prettier . --write"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.22.15",
@@ -55,6 +56,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^8.51.0",
     "npm-run-all": "^4.1.5",
+    "prettier": "3.3.3",
     "svgtofont": "^3.25.4",
     "tailwindcss": "^3.4.3",
     "typescript": "~4.7.4",
@@ -68,5 +70,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint"
+  },
+  "prettier": {
+    "eslintIntegration": true,
+    "semi": true
   }
 }

@@ -8,18 +8,18 @@
  */
 // requestAnimationFrame不兼容时的降级策略
 function animationFrame() {
-  const vendors = ['webkit', 'moz'];
+  const vendors = ["webkit", "moz"];
   for (let i = 0; i < vendors.length && !window.requestAnimationFrame; i++) {
     let vp = vendors[i];
-    window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
-    window.cancelAnimationFrame
-      = window[vp + 'CancelAnimationFrame']
-      || window[vp + 'CancelRequestAnimationFrame'];
+    window.requestAnimationFrame = window[vp + "RequestAnimationFrame"];
+    window.cancelAnimationFrame =
+      window[vp + "CancelAnimationFrame"] ||
+      window[vp + "CancelRequestAnimationFrame"];
   }
   if (
-    /iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) // iOS6 is buggy
-    || !window.requestAnimationFrame
-    || !window.cancelAnimationFrame
+    /iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || // iOS6 is buggy
+    !window.requestAnimationFrame ||
+    !window.cancelAnimationFrame
   ) {
     let lastTime = 0;
     window.requestAnimationFrame = function (callback) {
@@ -33,6 +33,4 @@ function animationFrame() {
   }
 }
 
-export {
-  animationFrame
-};
+export { animationFrame };

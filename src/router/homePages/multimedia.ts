@@ -61,7 +61,8 @@ export default [
       {
         path: "/home/multimediaHomePage/pictureEditing",
         name: "裁剪图片",
-        component: () => import("@/views/multimedia/pictureEditing/crop/index.vue"),
+        component: () =>
+          import("@/views/multimedia/pictureEditing/crop/index.vue"),
         meta: {
           title: ["首页", "多媒体模块", "图片编辑", "裁剪图片"],
         },

@@ -8,7 +8,11 @@
 -->
 <template>
   <div>
-    <bar echartId="echart-bar" :chartData="barData" class="m-echart-standard"></bar>
+    <bar
+      echartId="echart-bar"
+      :chartData="barData"
+      class="m-echart-standard"
+    ></bar>
   </div>
 </template>
 

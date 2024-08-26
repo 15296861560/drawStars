@@ -51,13 +51,22 @@
       <bm-scale-control :show="true" :offset="[100, 800]"></bm-scale-control>
 
       <!-- 地图类型控件 -->
-      <bm-map-type-control :show="true" :offset="[100, 30]"></bm-map-type-control>
+      <bm-map-type-control
+        :show="true"
+        :offset="[100, 30]"
+      ></bm-map-type-control>
 
       <!-- 定位控件 -->
-      <bm-location-control :show="true" :offset="[1000, 800]"></bm-location-control>
+      <bm-location-control
+        :show="true"
+        :offset="[1000, 800]"
+      ></bm-location-control>
 
       <!-- 城市列表控件 -->
-      <bm-city-list-control :show="true" :offset="[1000, 30]"></bm-city-list-control>
+      <bm-city-list-control
+        :show="true"
+        :offset="[1000, 30]"
+      ></bm-city-list-control>
 
       <!-- 自定义控件 -->
       <bm-custom-control :show="true" :offset="[600, 800]">
@@ -82,7 +91,13 @@
 <script setup>
 import BaiduMapVue3 from "baidu-map-vue3";
 import { BaiduMap } from "baidu-map-vue3";
-import { onMounted, onBeforeMount, ref, reactive, getCurrentInstance } from "vue";
+import {
+  onMounted,
+  onBeforeMount,
+  ref,
+  reactive,
+  getCurrentInstance,
+} from "vue";
 import { showTips } from "@/utils/message/showTips.js";
 import { $axiosGet } from "@/assets/js/axios-api/axios-config.js";
 const apiKey = ref("");

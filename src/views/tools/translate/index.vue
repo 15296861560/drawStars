@@ -26,7 +26,9 @@
           >
           </el-option>
         </el-select>
-        <el-button type="primary" @click="translate" class="translate">翻译</el-button>
+        <el-button type="primary" @click="translate" class="translate"
+          >翻译</el-button
+        >
       </div>
       <div class="translate-part">
         <div class="original-lang">
@@ -75,7 +77,10 @@
             <span class="msg" @click="toTranslate(msg.src)">
               {{ msg.src }}
             </span>
-            <el-icon class="delete" v-show="isEdit" @click="deleteHistory(index)"
+            <el-icon
+              class="delete"
+              v-show="isEdit"
+              @click="deleteHistory(index)"
               ><RemoveFilled
             /></el-icon>
           </div>

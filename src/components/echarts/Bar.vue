@@ -120,7 +120,7 @@ export default {
         yAxis: [
           {
             type: "value",
-            name: newVal.yName || '',
+            name: newVal.yName || "",
             axisLine: {
               show: true,
               lineStyle: {

@@ -19,7 +19,8 @@
       <div class="size">
         <span>大小：</span>
         <el-select v-model="boundary" placeholder="请选择大小">
-          <el-option v-for="n in sizes" :key="n" :label="n" :value="n"> </el-option>
+          <el-option v-for="n in sizes" :key="n" :label="n" :value="n">
+          </el-option>
         </el-select>
       </div>
 
@@ -162,7 +163,8 @@ export default {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && i !== 0) {
             // 上边有空位或者上边方块数值等于当前方块数值则视为可移动
-            if (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j]) return true;
+            if (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j])
+              return true;
           }
         }
       }
@@ -176,7 +178,8 @@ export default {
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && i < boundary - 1) {
-            if (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j]) return true;
+            if (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j])
+              return true;
           }
         }
       }
@@ -190,7 +193,8 @@ export default {
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && j !== 0) {
-            if (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j]) return true;
+            if (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j])
+              return true;
           }
         }
       }
@@ -204,7 +208,8 @@ export default {
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && j < boundary - 1) {
-            if (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j]) return true;
+            if (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j])
+              return true;
           }
         }
       }

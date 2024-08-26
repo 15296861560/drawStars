@@ -6,7 +6,11 @@
       ]
     }}</span>
 
-    <img v-else-if="type === TABLE_ITEM_TYPE.img" :src="field" class="max-w-12" />
+    <img
+      v-else-if="type === TABLE_ITEM_TYPE.img"
+      :src="field"
+      class="max-w-12"
+    />
 
     <el-link
       v-else-if="type === TABLE_ITEM_TYPE.link"
@@ -42,5 +46,6 @@ const props = defineProps<{
   options?: Array<AnyObject>;
 }>();
 
-const { type, apiMethod, apiParams, config, disabled, readonly, options } = toRefs(props);
+const { type, apiMethod, apiParams, config, disabled, readonly, options } =
+  toRefs(props);
 </script>

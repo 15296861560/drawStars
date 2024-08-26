@@ -25,7 +25,9 @@
               <span class="m-badge">Result</span>
 
               {
-              <div class="u-strong-red">&emsp;"string": "{{ data.string }}"</div>
+              <div class="u-strong-red">
+                &emsp;"string": "{{ data.string }}"
+              </div>
               }
 
               <div class="m-refresh">
@@ -47,7 +49,9 @@
               <span class="m-badge">Result</span>
 
               {
-              <div class="u-strong-red">&emsp;"string": "{{ data.string }}"</div>
+              <div class="u-strong-red">
+                &emsp;"string": "{{ data.string }}"
+              </div>
               }
 
               <div class="m-refresh">

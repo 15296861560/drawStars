@@ -1,15 +1,12 @@
 export default {
   state: {
     // 语言
-    language: 'zh',
+    language: "zh",
   },
   mutations: {
-    changeSettingInfo(state, {
-      attr,
-      val
-    }) {
+    changeSettingInfo(state, { attr, val }) {
       state[attr] = val;
-    }
+    },
   },
   getters: {
     getLanguage(state) {
@@ -17,16 +14,11 @@ export default {
     },
   },
   actions: {
-    changeSettingInfo(context, {
-      attr,
-      val
-    }) {
-      context.commit('changeSettingInfo', {
+    changeSettingInfo(context, { attr, val }) {
+      context.commit("changeSettingInfo", {
         attr,
-        val
+        val,
       });
-    }
-  }
-
-
+    },
+  },
 };

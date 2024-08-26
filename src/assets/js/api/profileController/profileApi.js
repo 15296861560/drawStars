@@ -7,29 +7,28 @@
  * @LastEditTime: 2023-02-17 00:04:20
  */
 /* 个人资料相关接口 */
-import {
-  $axios,
-  $axiosGet
-} from '@/assets/js/axios-api/axios-config.js';
+import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
 
 // 通过id查询个人信息
 function queryUserInfo(id) {
   return new Promise((resolve, reject) => {
     let params = {
-      id
+      id,
     };
-    $axiosGet(params, '/profileApi/queryUserInfo').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/profileApi/queryUserInfo")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
 
 // 修改个人信息
 function updateUserInfo(userInfo) {
   return new Promise((resolve, reject) => {
-    $axios(userInfo, '/profileApi/updateUserInfo').then(res => {
+    $axios(userInfo, "/profileApi/updateUserInfo").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -44,10 +43,10 @@ function changePassword(userInfo) {
   let params = {
     id: userInfo.id,
     password: userInfo.password,
-    newPassword: userInfo.newPassword
+    newPassword: userInfo.newPassword,
   };
   return new Promise((resolve, reject) => {
-    $axios(params, '/profileApi/changePassword').then(res => {
+    $axios(params, "/profileApi/changePassword").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -64,7 +63,7 @@ function changePhone(userInfo) {
     phone: userInfo.phone,
   };
   return new Promise((resolve, reject) => {
-    $axios(params, '/profileApi/updateUserInfo').then(res => {
+    $axios(params, "/profileApi/updateUserInfo").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -77,7 +76,7 @@ function changePhone(userInfo) {
 // 获取验证码
 function getCaptcha(param) {
   return new Promise((resolve, reject) => {
-    $axios(param, '/profileApi/getCaptcha').then(res => {
+    $axios(param, "/profileApi/getCaptcha").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -90,7 +89,7 @@ function getCaptcha(param) {
 // 验证验证码
 function verifyCaptcha(param) {
   return new Promise((resolve, reject) => {
-    $axios(param, '/profileApi/verifyCaptcha').then(res => {
+    $axios(param, "/profileApi/verifyCaptcha").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -106,5 +105,5 @@ export {
   changePassword,
   changePhone,
   getCaptcha,
-  verifyCaptcha
+  verifyCaptcha,
 };

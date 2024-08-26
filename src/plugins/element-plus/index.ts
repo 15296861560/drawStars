@@ -12,6 +12,6 @@ export default (app: App<Element>) => {
     locale: zhCn,
   });
   for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-    app.component(key, component)
+    app.component(key, component);
   }
-}
+};

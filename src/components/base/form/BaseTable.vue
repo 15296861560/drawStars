@@ -124,7 +124,9 @@ import type { AnyObject, Field, TableOption, PageInfo } from "@/types/global";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const BaseTableItem = defineAsyncComponent(() => import("./BaseTableItem/index.vue"));
+const BaseTableItem = defineAsyncComponent(
+  () => import("./BaseTableItem/index.vue"),
+);
 
 const props = defineProps<{
   options: TableOption;
@@ -185,7 +187,7 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   &__pagination {
     position: absolute;
     bottom: 1rem /* 16/16 */;
-    right: 1rem; /* 16/16 */;
+    right: 1rem; /* 16/16 */
   }
 }
 </style>

@@ -18,7 +18,14 @@ export default {
   data() {
     return {
       stackedBarData: {
-        color: ["#03E4F6", "#2E86F2", "#E99936", "#FF8A79", "#D9221A", "#A8DE96"],
+        color: [
+          "#03E4F6",
+          "#2E86F2",
+          "#E99936",
+          "#FF8A79",
+          "#D9221A",
+          "#A8DE96",
+        ],
         legend: [
           {
             name: "访问方式一",

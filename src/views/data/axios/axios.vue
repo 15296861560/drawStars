@@ -12,13 +12,16 @@
       <div class="m-block">
         <div class="m-block-title">示例</div>
         <div class="m-block-content">
-          <div class="m-content-title">代理(服务器是本地发布在另一个端口的后台服务)</div>
+          <div class="m-content-title">
+            代理(服务器是本地发布在另一个端口的后台服务)
+          </div>
           <div class="m-content-area">
             <div class="m-template">代理实现GET请求 实例</div>
             <div class="m-example-area">
               <div class="m-example-code">
-                axios <br />.get('/api/testApi/test/getTest') <br />.then(response =>
-                (this.info = response)) <br />.catch(function (error) {<br />
+                axios <br />.get('/api/testApi/test/getTest')
+                <br />.then(response => (this.info = response))
+                <br />.catch(function (error) {<br />
                 // 请求失败处理<br />
                 alert(error);<br />
                 });
@@ -41,8 +44,9 @@
             <div class="m-template">代理实现POST请求 实例</div>
             <div class="m-example-area">
               <div class="m-example-code">
-                axios <br />.post('/api/testApi/test/postTest') <br />.then(response =>
-                (this.info = response)) <br />.catch(function (error) {<br />
+                axios <br />.post('/api/testApi/test/postTest')
+                <br />.then(response => (this.info = response))
+                <br />.catch(function (error) {<br />
                 // 请求失败处理<br />
                 alert(error);<br />
                 });

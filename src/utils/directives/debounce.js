@@ -9,7 +9,7 @@
 const debounce = {
   mounted(el, binding) {
     let timer;
-    el.addEventListener('click', () => {
+    el.addEventListener("click", () => {
       if (timer) {
         clearTimeout(timer);
       }

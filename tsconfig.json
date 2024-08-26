@@ -1,11 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": [
-    "env.d.ts",
-    "src/**/*",
-    "src/**/*.vue",
-    "types/*"
-  ],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "types/*"],
   "compilerOptions": {
     "ignoreDeprecations": "5.0", //忽略 TypeScript 编译器中以 5.0 版本为基准的废弃警告。
     "noImplicitAny": false, //控制是否在没有显式指定类型的情况下将隐式的 any 类型视为错误
@@ -14,17 +9,10 @@
     "allowJs": true, //允许使用 JavaScript 文件。
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "types": [
-      "baidu-map-vue3/typings/global"
-    ]
+    "lib": ["esnext", "dom"],
+    "types": ["baidu-map-vue3/typings/global"]
   },
   "references": [
     {

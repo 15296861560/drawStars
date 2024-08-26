@@ -28,7 +28,9 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="insert">{{ $t("btn.create") }}</el-button>
+        <el-button type="primary" @click="insert">{{
+          $t("btn.create")
+        }}</el-button>
       </el-form-item>
     </el-form>
     <div class="g-table-normal">

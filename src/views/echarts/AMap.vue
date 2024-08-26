@@ -106,7 +106,7 @@ const handleInitMap = (): void => {
       state.gLayGroups = refreshLayer(state.AMap, state.gLayGroups);
       state.highlightLayGroups = refreshLayer(
         state.AMap,
-        state.highlightLayGroups
+        state.highlightLayGroups,
       );
       polyEditorTool();
     });
@@ -118,7 +118,7 @@ const handleInitMap = (): void => {
 const handleAddMarker = (
   lng: number,
   lat: number,
-  geocoder?: boolean
+  geocoder?: boolean,
 ): void => {
   if (state.marker) {
     state.marker.setMap(null);
@@ -170,7 +170,7 @@ const handleGeocoderLocation = (): void => {
       } else {
         console.error("根据地址查询位置失败");
       }
-    }
+    },
   );
 };
 //重新进入有值需要处理
@@ -200,7 +200,7 @@ watch(
       }
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 /**绘制多边形 */
@@ -291,7 +291,7 @@ const polyEditorTool = () => {
         true,
         {},
         selectPolygon,
-        editPolygon
+        editPolygon,
       );
 
       drawToolInfo.polyEditor?.addAdsorbPolygons(polygon);

@@ -7,7 +7,10 @@
       :particlesInit="particlesInit"
       :options="particles"
     />
-    <div class="form-bg" :class="isRegister ? 'register-form-bg' : 'login-form-bg'"></div>
+    <div
+      class="form-bg"
+      :class="isRegister ? 'register-form-bg' : 'login-form-bg'"
+    ></div>
     <!-- 登录框 -->
     <el-form :rules="rules" :model="loginForm" v-show="!isRegister">
       <div class="form-container login-form">
@@ -37,7 +40,9 @@
               <div
                 class="login-eye"
                 :class="
-                  showPassword ? 'drawstars-icon-eye-show' : 'drawstars-icon-eye-hidden'
+                  showPassword
+                    ? 'drawstars-icon-eye-show'
+                    : 'drawstars-icon-eye-hidden'
                 "
                 @click="showPassword = !showPassword"
               ></div>
@@ -146,12 +151,17 @@
           v-model="registerForm.rePassword"
           autocomplete="off"
         />
-        <span class="input-box__tip">{{ $t("placeholder.passwordAgain") }}</span>
+        <span class="input-box__tip">{{
+          $t("placeholder.passwordAgain")
+        }}</span>
       </div>
 
-      <el-button type="primary" class="btn-submit mb20" @click="beforeRegister">{{
-        $t("btn.register")
-      }}</el-button>
+      <el-button
+        type="primary"
+        class="btn-submit mb20"
+        @click="beforeRegister"
+        >{{ $t("btn.register") }}</el-button
+      >
 
       <div class="switch-row">
         <span>{{ $t("hasAccount") }}</span>
@@ -265,10 +275,18 @@ export default {
   created() {
     this.rules = {
       account: [
-        { required: true, message: this.$t("tip.accountRequired"), trigger: "blur" },
+        {
+          required: true,
+          message: this.$t("tip.accountRequired"),
+          trigger: "blur",
+        },
       ],
       password: [
-        { required: true, message: this.$t("tip.passwordRequired"), trigger: "blur" },
+        {
+          required: true,
+          message: this.$t("tip.passwordRequired"),
+          trigger: "blur",
+        },
       ],
     };
 
@@ -285,7 +303,7 @@ export default {
         }
       },
       debounceTime,
-      debounceOption
+      debounceOption,
     ),
     // 密码登录
     async passwordLogin() {
@@ -331,7 +349,9 @@ export default {
           if (this.registerForm.password !== this.registerForm.rePassword) {
             throw this.$t("validate.passwordInconsistent");
           }
-          let flagIndex = this.validatePasswordArray.findIndex((item) => item.flag);
+          let flagIndex = this.validatePasswordArray.findIndex(
+            (item) => item.flag,
+          );
           if (flagIndex > -1) {
             throw this.$t("validate.passwordStrength");
           }
@@ -343,7 +363,7 @@ export default {
         this.register();
       },
       debounceTime,
-      debounceOption
+      debounceOption,
     ),
 
     async register() {

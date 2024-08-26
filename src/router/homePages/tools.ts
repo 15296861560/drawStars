@@ -55,7 +55,8 @@ export default [
       {
         path: "/home/toolHomePage/utilities/importAndExport",
         name: "导入与导出",
-        component: () => import("@/views/tools/utilities/importAndExport/index.vue"),
+        component: () =>
+          import("@/views/tools/utilities/importAndExport/index.vue"),
         meta: {
           title: ["首页", "工具模块", "工具列表", "导入与导出"],
         },

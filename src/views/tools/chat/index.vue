@@ -82,7 +82,7 @@ export default {
       this.loading = true;
       let res = await $axios(
         { account: this.localUser.accountName },
-        "/agoraApi/getRTMToken"
+        "/agoraApi/getRTMToken",
       );
       if (res.status) {
         this.rtmToken = res.data;
@@ -141,7 +141,7 @@ export default {
           ", messsage: ",
           message.text,
           ", memberId: ",
-          memberId
+          memberId,
         );
 
         if (message.messageType === "IMAGE") {

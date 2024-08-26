@@ -6,7 +6,12 @@
       </el-button>
     </el-badge>
 
-    <el-dialog v-model="dialogTableVisible" append-to-body title="异常捕获" width="70%">
+    <el-dialog
+      v-model="dialogTableVisible"
+      append-to-body
+      title="异常捕获"
+      width="70%"
+    >
       <el-table :data="errorLogs">
         <el-table-column label="报错路由">
           <template #default="scope">

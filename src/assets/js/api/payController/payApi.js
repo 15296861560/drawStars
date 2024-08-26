@@ -7,9 +7,7 @@
  * @LastEditTime: 2022-12-17 15:30:07
  */
 /* 支付相关接口 */
-import {
-  $axios
-} from '@/assets/js/axios-api/axios-config.js';
+import { $axios } from "@/assets/js/axios-api/axios-config.js";
 
 /**
  * @description: 付款
@@ -19,12 +17,10 @@ import {
  */
 function toPay(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/payApi/toPay').then(res => {
+    $axios(params, "/payApi/toPay").then((res) => {
       resolve(res);
     });
   });
 }
 
-export {
-  toPay
-};
+export { toPay };

@@ -18,14 +18,22 @@
       </el-col>
       <el-col :span="8">
         <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
-          <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
+          <el-button type="primary" @click="query">{{
+            $t("btn.search")
+          }}</el-button>
+          <el-button type="warning" @click="reset">{{
+            $t("btn.reset")
+          }}</el-button>
         </div>
       </el-col>
     </el-row>
 
     <div class="card-list">
-      <el-card class="web-card" v-for="(item, index) in webFrameAddress" :key="item.id">
+      <el-card
+        class="web-card"
+        v-for="(item, index) in webFrameAddress"
+        :key="item.id"
+      >
         <div class="image-container">
           <img :src="item.icon" class="web-image" :title="item.name" />
         </div>
@@ -67,7 +75,7 @@ import i18n from "@/lang/index.js";
 const $t = i18n.global.t;
 
 const SearchItem = defineAsyncComponent(
-  () => import("@/components/base/SearchItem/index.vue")
+  () => import("@/components/base/SearchItem/index.vue"),
 );
 
 interface WebObj {

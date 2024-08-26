@@ -9,18 +9,15 @@
 export default {
   state: {
     userInfo: {
-      name: '',
-      userId: 0
+      name: "",
+      userId: 0,
     },
-    token: ''
+    token: "",
   },
   mutations: {
-    changeUserInfo(state, {
-      attr,
-      val
-    }) {
+    changeUserInfo(state, { attr, val }) {
       state[attr] = val;
-    }
+    },
   },
   getters: {
     getUserInfo(state) {
@@ -30,23 +27,18 @@ export default {
       return state.userInfo.id;
     },
     getUserName(state) {
-      return state.userInfo.name || '未登录';
+      return state.userInfo.name || "未登录";
     },
     getToken(state) {
       return state.token;
     },
   },
   actions: {
-    changeUserInfo(context, {
-      attr,
-      val
-    }) {
-      context.commit('changeUserInfo', {
+    changeUserInfo(context, { attr, val }) {
+      context.commit("changeUserInfo", {
         attr,
-        val
+        val,
       });
-    }
-  }
-
-
+    },
+  },
 };

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="g-module-normal">
-       <!-- 导航栏 -->
+      <!-- 导航栏 -->
       <!-- 功能列表（图标） -->
       <router-view></router-view>
     </div>
@@ -10,15 +10,10 @@
 <script>
 export default {
   data() {
-    return {
-    };
+    return {};
   },
-  methods: {
-  
-  },
-  mounted() {
-   
-  },
+  methods: {},
+  mounted() {},
 };
 </script>
 <style></style>

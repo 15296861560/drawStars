@@ -29,8 +29,6 @@ function bloom(ctx, particles) {
   }
 }
 
-
-
 // 烟花对象
 class Firework {
   constructor(sx, sy, tx, ty, hue) {
@@ -91,11 +89,14 @@ class Firework {
   draw(ctx) {
     ctx.beginPath();
     // 轨迹的起点
-    ctx.moveTo(this.guiji[this.guiji.length - 1][0], this.guiji[this.guiji.length - 1][1]);
+    ctx.moveTo(
+      this.guiji[this.guiji.length - 1][0],
+      this.guiji[this.guiji.length - 1][1],
+    );
     // 绘制线条到目标点
     ctx.lineTo(this.x, this.y);
     // 画出不同颜色的烟花
-    ctx.strokeStyle = 'hsl(' + this.hue + ',100%,' + this.brightness + '%)';
+    ctx.strokeStyle = "hsl(" + this.hue + ",100%," + this.brightness + "%)";
     ctx.stroke(); // 绘制烟花轨迹
     // 画出目标小圆
     ctx.beginPath();
@@ -112,10 +113,7 @@ class Firework {
       particles.push(new Particle(x, y, hue));
     }
   }
-
-
 }
-
 
 // 烟花碎屑方法
 class Particle {
@@ -155,17 +153,15 @@ class Particle {
   // 烟花碎屑轨迹
   draw(ctx) {
     ctx.beginPath();
-    ctx.moveTo(this.guiji[this.guiji.length - 1][0], this.guiji[this.guiji.length - 1][1]);
+    ctx.moveTo(
+      this.guiji[this.guiji.length - 1][0],
+      this.guiji[this.guiji.length - 1][1],
+    );
     ctx.lineTo(this.x, this.y);
     // 画出不同颜色的烟花利用HSL
-    ctx.strokeStyle = 'hsl(' + this.hue + ',100%,' + this.brightness + '%)';
+    ctx.strokeStyle = "hsl(" + this.hue + ",100%," + this.brightness + "%)";
     ctx.stroke();
   }
 }
 
-export {
-  random,
-  bloom,
-  Firework,
-  Particle
-};
+export { random, bloom, Firework, Particle };

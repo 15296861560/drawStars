@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-24 23:56:05
@@ -8,33 +8,33 @@
  */
 const storage = {
   local: {
-    save(key:string, value:string) {
-      localStorage.setItem(key, JSON.stringify(value))
+    save(key: string, value: string) {
+      localStorage.setItem(key, JSON.stringify(value));
     },
-    get(key:string, defaultValue:string = '') {
-      return JSON.parse(localStorage.getItem(key)) || defaultValue
+    get(key: string, defaultValue: string = "") {
+      return JSON.parse(localStorage.getItem(key)) || defaultValue;
     },
-    remove(key:string) {
-      localStorage.removeItem(key)
+    remove(key: string) {
+      localStorage.removeItem(key);
     },
     clear() {
-      localStorage.clear()
-    }
+      localStorage.clear();
+    },
   },
   session: {
-    save(key:string, value:string) {
-      sessionStorage.setItem(key, JSON.stringify(value))
+    save(key: string, value: string) {
+      sessionStorage.setItem(key, JSON.stringify(value));
     },
-    get(key:string, defaultValue:string = '') {
-      return JSON.parse(sessionStorage.getItem(key)) || defaultValue
+    get(key: string, defaultValue: string = "") {
+      return JSON.parse(sessionStorage.getItem(key)) || defaultValue;
     },
-    remove(key:string) {
-      sessionStorage.removeItem(key)
+    remove(key: string) {
+      sessionStorage.removeItem(key);
     },
     clear() {
-      sessionStorage.clear()
-    }
-  }
-}
+      sessionStorage.clear();
+    },
+  },
+};
 
-export default storage
+export default storage;

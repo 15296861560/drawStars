@@ -149,7 +149,7 @@ export default {
       let rtcToken = "";
       let res = await $axios(
         { user: account, channelName, role },
-        "/agoraApi/getRTCToken"
+        "/agoraApi/getRTCToken",
       );
       if (res.status) {
         this.rtcToken = res.data;
@@ -242,10 +242,13 @@ export default {
         this.options.token = await this.getRTCToken(
           account,
           channel,
-          this.localUser.role
+          this.localUser.role,
         );
         const token = this.options.token;
-        this.rtc.screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+        this.rtc.screenClient = AgoraRTC.createClient({
+          mode: "rtc",
+          codec: "vp8",
+        });
         await this.rtc.screenClient.join(appId, channel, token, account);
       }
 

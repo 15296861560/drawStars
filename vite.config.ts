@@ -11,25 +11,26 @@ import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import vueI18n from '@intlify/vite-plugin-vue-i18n'
+import vueI18n from "@intlify/vite-plugin-vue-i18n";
 
-import commonjs from '@rollup/plugin-commonjs';// 引入commojs
-import requireTransform from "vite-plugin-require-transform";// 引入require
+import commonjs from "@rollup/plugin-commonjs"; // 引入commojs
+import requireTransform from "vite-plugin-require-transform"; // 引入require
 
 import path from "node:path";
-
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8010",
+        // target: "http://127.0.0.1:8010",
+        target: "http://127.0.0.1:8011",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
       "/uploadImg": {
-        target: "http://127.0.0.1:8010",
+        // target: "http://127.0.0.1:8010",
+        target: "http://127.0.0.1:8011",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/uploadImg/, ""),
       },
@@ -47,8 +48,8 @@ export default defineConfig({
       // compositionOnly: false,
 
       // you need to set i18n resource including paths !
-      include: path.resolve(__dirname, './src/lang/languange/**')
-    })
+      include: path.resolve(__dirname, "./src/lang/languange/**"),
+    }),
   ],
   resolve: {
     alias: {
@@ -60,7 +61,7 @@ export default defineConfig({
       less: {
         modifyVars: {
           hack: `true; @import (reference) "${path.resolve(
-            "src/assets/styles/global.less"
+            "src/assets/styles/global.less",
           )}";`,
         },
         javascriptEnabled: true,

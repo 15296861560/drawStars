@@ -110,7 +110,10 @@ export default {
     },
     exportFile() {
       let sheet = XLSX.utils.json_to_sheet(this.tableTdData);
-      this.openDownloadDialog(this.sheet2blob(sheet, "sheet"), "exportdata.xlsx");
+      this.openDownloadDialog(
+        this.sheet2blob(sheet, "sheet"),
+        "exportdata.xlsx",
+      );
     },
     selectFile() {
       this.$refs.file.click();
@@ -198,7 +201,9 @@ export default {
         type: "binary",
       };
       let wbout = XLSX.write(workbook, wopts);
-      let blob = new Blob([this.sToBuffer(wbout)], { type: "application/octet-stream" });
+      let blob = new Blob([this.sToBuffer(wbout)], {
+        type: "application/octet-stream",
+      });
       return blob;
     },
     // 字符串转ArrayBuffer

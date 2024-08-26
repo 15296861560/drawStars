@@ -28,7 +28,9 @@
       />
     </li>
 
-    <li class="pass-row"><el-button type="primary" @click="comfirm">确认</el-button></li>
+    <li class="pass-row">
+      <el-button type="primary" @click="comfirm">确认</el-button>
+    </li>
   </ul>
 </template>
 

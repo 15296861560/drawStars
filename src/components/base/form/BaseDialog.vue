@@ -47,7 +47,9 @@ import { ref, reactive, defineAsyncComponent, watch, toRefs } from "vue";
 import { useVModels } from "@vueuse/core";
 import type { AnyObject, Field, DialogOption } from "@/types/global";
 import { showTips } from "@/utils/message/showTips.js";
-const BaseFormItem = defineAsyncComponent(() => import("./BaseFormItem/index.vue"));
+const BaseFormItem = defineAsyncComponent(
+  () => import("./BaseFormItem/index.vue"),
+);
 
 const emit = defineEmits<{
   (e: "confirm"): void;
@@ -127,7 +129,9 @@ const init = async () => {
     }
     fieldList.value.forEach((element) => {
       if (element.fieldName.endsWith("time")) {
-        formInfo[element.fieldName] = new Date(data[element.fieldName]).toLocaleString();
+        formInfo[element.fieldName] = new Date(
+          data[element.fieldName],
+        ).toLocaleString();
       } else {
         formInfo[element.fieldName] = data[element.fieldName] || "";
       }

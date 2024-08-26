@@ -9,17 +9,17 @@
 const lazyload = {
   // 初始化
   init(el, val, def) {
-    el.setAttribute('data-src', val);
-    el.setAttribute('src', def);
+    el.setAttribute("data-src", val);
+    el.setAttribute("src", def);
   },
   // 利用IntersectionObserver监听el
   observe(el) {
-    let io = new IntersectionObserver(entries => {
+    let io = new IntersectionObserver((entries) => {
       const realSrc = el.dataset.src;
       if (entries[0].isIntersecting) {
         if (realSrc) {
           el.src = realSrc;
-          el.removeAttribute('data-src');
+          el.removeAttribute("data-src");
         }
       }
     });
@@ -29,7 +29,7 @@ const lazyload = {
   listenerScroll(el) {
     const handler = lazyload.throttle(lazyload.load, 300);
     lazyload.load(el);
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       handler(el);
     });
   },
@@ -42,7 +42,7 @@ const lazyload = {
     if (elTop - windowHeight < 0 && elBtm > 0) {
       if (realSrc) {
         el.src = realSrc;
-        el.removeAttribute('data-srcdata-src');
+        el.removeAttribute("data-srcdata-src");
       }
     }
   },
@@ -61,14 +61,12 @@ const lazyload = {
         return fn.apply(_this, args);
       }
     };
-
   },
 };
 
-
 const lazy = {
   mounted(el, binding) {
-    const defaultSrc = require('@/assets/img/commom/loading.gif');
+    const defaultSrc = require("@/assets/img/commom/loading.gif");
     lazyload.init(el, binding.value, defaultSrc);
   },
   beforeMount(el) {

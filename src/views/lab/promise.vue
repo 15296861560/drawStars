@@ -3,9 +3,9 @@
     <h2>Promise 对象用于表示一个异步操作的最终完成 (或失败)及其结果值。</h2>
     <!-- Promise其实是一个构造函数，它有resolve，reject，race等静态方法;它的原型（prototype）上有then，catch方法，因此只要作为Promise的实例，都可以共享并调用Promise.prototype上面的方法(then,catch) -->
     <h3>
-      Promise的几种状态： <br/>
-      pending: 初始状态，成功或失败状态。 <br/>
-      fulfilled:意味着操作成功完成。 <br/>
+      Promise的几种状态： <br />
+      pending: 初始状态，成功或失败状态。 <br />
+      fulfilled:意味着操作成功完成。 <br />
       rejected: 意味着操作失败。
     </h3>
 

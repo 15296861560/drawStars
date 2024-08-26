@@ -14,15 +14,23 @@
           <div class="m-box-title">
             <div>
               <el-button type="primary" size="small" @click="clear"
-                ><el-icon><RefreshRight /></el-icon>>{{ $t("btn.clear") }}</el-button
+                ><el-icon><RefreshRight /></el-icon>>{{
+                  $t("btn.clear")
+                }}</el-button
               >
               <el-button type="primary" size="small" @click="running"
-                ><el-icon><VideoPlay /></el-icon>{{ $t("btn.clickRun") }}</el-button
+                ><el-icon><VideoPlay /></el-icon
+                >{{ $t("btn.clickRun") }}</el-button
               >
             </div>
           </div>
           <div class="m-box-main">
-            <textarea v-model="content" class="form-control" rows="" cols=""></textarea>
+            <textarea
+              v-model="content"
+              class="form-control"
+              rows=""
+              cols=""
+            ></textarea>
           </div>
         </div>
       </el-col>

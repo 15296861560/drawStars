@@ -39,11 +39,15 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="购买数量">
-          <el-input v-model="goods.qty" placeholder="请输入购买数量" ref="qty"></el-input>
+          <el-input
+            v-model="goods.qty"
+            placeholder="请输入购买数量"
+            ref="qty"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button  type="primary" @click="pay">
+          <el-button type="primary" @click="pay">
             <span>支付</span>
           </el-button>
         </el-form-item>

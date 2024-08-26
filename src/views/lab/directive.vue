@@ -9,8 +9,12 @@
 <template>
   <div class="g-flex-normal" style="position: realative">
     <div class="m-card-normal mr10" v-copy="copyText">{{ $t("copy") }}</div>
-    <div class="m-card-normal mr10" v-longpress="longpress">{{ $t("longpress") }}</div>
-    <div class="m-card-normal mr10" v-debounce="debounceClick">{{ $t("debounce") }}</div>
+    <div class="m-card-normal mr10" v-longpress="longpress">
+      {{ $t("longpress") }}
+    </div>
+    <div class="m-card-normal mr10" v-debounce="debounceClick">
+      {{ $t("debounce") }}
+    </div>
     <div
       class="m-card-normal mr10"
       v-waterMarker="{ text: '水印~', textColor: 'rgba(180, 180, 180, 0.4)' }"
@@ -19,7 +23,9 @@
     </div>
 
     <div class="draggable-area mb10">
-      <div class="m-card-normal draggable-el" v-draggable>{{ $t("draggable") }}</div>
+      <div class="m-card-normal draggable-el" v-draggable>
+        {{ $t("draggable") }}
+      </div>
     </div>
 
     <br class="mb10" />

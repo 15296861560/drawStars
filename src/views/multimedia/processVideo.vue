@@ -43,7 +43,9 @@
             ></video>
           </div>
           <div class="video-part">
-            <div class="video-title">复制原视频的画布(可点击该画布选择处理的颜色)</div>
+            <div class="video-title">
+              复制原视频的画布(可点击该画布选择处理的颜色)
+            </div>
             <canvas
               ref="copyCanvas"
               width="320"

@@ -199,7 +199,7 @@ export default {
 }
 
 .slide-rotate:hover {
-  transform: translateY(-60px) rotateY(180deg);;
+  transform: translateY(-60px) rotateY(180deg);
 }
 
 .slide-skew {
@@ -207,6 +207,6 @@ export default {
 }
 
 .slide-skew:hover {
-  transform: translateY(-60px) skewX(180deg);;
+  transform: translateY(-60px) skewX(180deg);
 }
 </style>

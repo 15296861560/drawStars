@@ -8,7 +8,11 @@
 -->
 <template>
   <div>
-    <gauge echartId="gauge" :chartData="gaugeData" class="m-echart-standard"></gauge>
+    <gauge
+      echartId="gauge"
+      :chartData="gaugeData"
+      class="m-echart-standard"
+    ></gauge>
 
     <div class="network-info">
       <h2>网络：{{ effectiveType }}</h2>
@@ -46,7 +50,9 @@ const gaugeData = computed(() => {
 
 onMounted(() => {
   const conn =
-    navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection;
   connection.effectiveType = conn.effectiveType;
   connection.rtt = conn.rtt;
   connection.downlink = conn.downlink;

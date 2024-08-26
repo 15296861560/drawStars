@@ -9,17 +9,20 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-export const apiInfoStore = defineStore("apiInfo", () => {
+export const apiInfoStore = defineStore(
+  "apiInfo",
+  () => {
+    const url = ref("/api");
+    const getURL = computed(() => url);
+    function changeApi(newVal: string) {
+      url.value = newVal;
+    }
 
-  const url = ref('/api')
-  const getURL = computed(() => url)
-  function changeApi(newVal: string) {
-    url.value = newVal;
-  }
-
-  return { url, getURL, changeApi }
-}, {
-  persist: {
-    storage: sessionStorage
-  }
-});
+    return { url, getURL, changeApi };
+  },
+  {
+    persist: {
+      storage: sessionStorage,
+    },
+  },
+);

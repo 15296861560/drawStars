@@ -168,7 +168,8 @@ export default {
               formatter: (params) => {
                 let showValue = "";
                 // console.log(params)
-                showValue = params.dataIndex + 1 + "," + params.name + " " + params.value;
+                showValue =
+                  params.dataIndex + 1 + "," + params.name + " " + params.value;
 
                 return showValue;
               },

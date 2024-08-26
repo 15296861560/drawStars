@@ -9,7 +9,9 @@
 <template>
   <div class="bind-phone-container">
     <div class="bind-phone-captcha" v-if="curStep === 'captcha'">
-      <div class="bind-phone-row">验证码将发送到手机{{ userInfo.getUserInfo.phone }}</div>
+      <div class="bind-phone-row">
+        验证码将发送到手机{{ userInfo.getUserInfo.phone }}
+      </div>
       <div class="bind-phone-row">
         <el-input v-model="captcha" placeholder="请输入验证码">
           <template #prepend>
@@ -18,7 +20,9 @@
           <template #append>
             <label class="btn-captcha" @click="sendCaptcha"
               ><span v-show="!countDown">获取验证码</span
-              ><span v-show="countDown > 0">{{ `${countDown}s后重试` }}</span></label
+              ><span v-show="countDown > 0">{{
+                `${countDown}s后重试`
+              }}</span></label
             >
           </template>
         </el-input>
@@ -49,7 +53,9 @@
           <template #append>
             <label class="btn-captcha" @click="sendCaptcha"
               ><span v-show="!countDown">获取验证码</span
-              ><span v-show="countDown > 0">{{ `${countDown}s后重试` }}</span></label
+              ><span v-show="countDown > 0">{{
+                `${countDown}s后重试`
+              }}</span></label
             >
           </template>
         </el-input>

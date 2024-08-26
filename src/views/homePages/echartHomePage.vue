@@ -7,15 +7,15 @@
  * @LastEditTime: 2023-06-25 23:40:04
 -->
 <template>
-    <div class="g-home-module">
-      <router-link-normal
-        :to="`/home/${homepage}/${page.name}`"
-        :imgSrc="imgSrc"
-        :imgName="page.imgName"
-        :text="$t(`homePage.${homepage}.${page.name}`)"
-        v-for="(page, index) in routes"
-        :key="page.name"
-      ></router-link-normal>
+  <div class="g-home-module">
+    <router-link-normal
+      :to="`/home/${homepage}/${page.name}`"
+      :imgSrc="imgSrc"
+      :imgName="page.imgName"
+      :text="$t(`homePage.${homepage}.${page.name}`)"
+      v-for="(page, index) in routes"
+      :key="page.name"
+    ></router-link-normal>
   </div>
 </template>
 <script>

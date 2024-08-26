@@ -6,9 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-06-26 22:43:25
  */
-import {
-  markRaw
-} from 'vue';
+import { markRaw } from "vue";
 
 export const echartMixin = {
   props: {
@@ -21,11 +19,11 @@ export const echartMixin = {
     },
     width: {
       type: String,
-      default: '',
+      default: "",
     },
     height: {
       type: String,
-      default: '',
+      default: "",
     },
   },
   data() {
@@ -41,7 +39,9 @@ export const echartMixin = {
         this.initData(this.chartData);
       }
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = markRaw(this.$echarts.init(document.getElementById(this.echartId)));
+      this.myChart = markRaw(
+        this.$echarts.init(document.getElementById(this.echartId)),
+      );
       // setOption使用方式:
       // chart.setOption(option, notMerge, lazyUpdate); ||
       // chart.setOption(option, {
@@ -91,7 +91,7 @@ export const echartMixin = {
   mounted() {
     this.paint();
     // 监听窗口发生变化，resize组件
-    window.addEventListener('resize', this.resizeChart);
+    window.addEventListener("resize", this.resizeChart);
   },
   beforeDestroy() {
     // 释放myChart实例
@@ -99,6 +99,6 @@ export const echartMixin = {
       this.myChart.clear();
     }
     // 并取消监听事件
-    window.removeEventListener('resize', this.resizeChart);
+    window.removeEventListener("resize", this.resizeChart);
   },
 };

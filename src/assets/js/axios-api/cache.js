@@ -1,16 +1,16 @@
 function reqCache() {
   // 缓存类型
   const cacheFrom = {
-    local: 'fromLocalCache',
-    session: 'fromSessionCache',
-    page: 'fromPageCache',
+    local: "fromLocalCache",
+    session: "fromSessionCache",
+    page: "fromPageCache",
   };
   class API {
     constructor() {
       this.pageCache = {};
       this.fetchDeferredObj = {};
-      this.LOCAL_STORAGE_CACHE_KEY = 'DRAW_STARS_CACHE';
-      this.SESSION_STORAGE_CACHE_KEY = 'DRAW_STARS_CACHE';
+      this.LOCAL_STORAGE_CACHE_KEY = "DRAW_STARS_CACHE";
+      this.SESSION_STORAGE_CACHE_KEY = "DRAW_STARS_CACHE";
     }
 
     async beforeFetch(url, opt) {
@@ -22,7 +22,6 @@ function reqCache() {
     }
 
     async checkCache(url, opt) {
-
       let cache;
       if (opt.cacheFrom === cacheFrom.local) {
         cache = await this.getLocalCache(url, opt);
@@ -32,15 +31,18 @@ function reqCache() {
         cache = await this.getPageCache(url, opt);
       }
 
-      if (cache && cache.resp && (!opt.cacheDuration || new Date().getTime() - cache.timestamp <= opt.cacheDuration)) {
+      if (
+        cache &&
+        cache.resp &&
+        (!opt.cacheDuration ||
+          new Date().getTime() - cache.timestamp <= opt.cacheDuration)
+      ) {
         return cache.resp;
       }
       return null;
-
     }
 
     async setCache(resp, url, opt) {
-
       switch (opt.cacheFrom) {
         case cacheFrom.local: {
           await this.setLocalCache(resp, url, opt);
@@ -54,28 +56,41 @@ function reqCache() {
         }
         default:
           break;
-
       }
     }
 
     async getLocalCache(url, opt) {
-      const localCache = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_CACHE_KEY) || '{}');
+      const localCache = JSON.parse(
+        localStorage.getItem(this.LOCAL_STORAGE_CACHE_KEY) || "{}",
+      );
       return await this.getCacheFromObj(localCache, url, opt, true);
     }
     async setLocalCache(resp, url, opt) {
-      const localCache = JSON.parse(localStorage.getItem(this.LOCAL_STORAGE_CACHE_KEY) || '{}');
+      const localCache = JSON.parse(
+        localStorage.getItem(this.LOCAL_STORAGE_CACHE_KEY) || "{}",
+      );
       await this.setCacheObj(resp, localCache, url, opt, true);
-      localStorage.setItem(this.LOCAL_STORAGE_CACHE_KEY, JSON.stringify(localCache));
+      localStorage.setItem(
+        this.LOCAL_STORAGE_CACHE_KEY,
+        JSON.stringify(localCache),
+      );
     }
     async getSessionCache(url, opt) {
-      const sessionCache = JSON.parse(sessionStorage.getItem(this.SESSION_STORAGE_CACHE_KEY) || '{}');
+      const sessionCache = JSON.parse(
+        sessionStorage.getItem(this.SESSION_STORAGE_CACHE_KEY) || "{}",
+      );
       return await this.getCacheFromObj(sessionCache, url, opt, true);
     }
 
     async setSessionCache(resp, url, opt) {
-      const sessionCache = JSON.parse(sessionStorage.getItem(this.SESSION_STORAGE_CACHE_KEY) || '{}');
+      const sessionCache = JSON.parse(
+        sessionStorage.getItem(this.SESSION_STORAGE_CACHE_KEY) || "{}",
+      );
       await this.setCacheObj(resp, sessionCache, url, opt, true);
-      sessionStorage.setItem(this.SESSION_STORAGE_CACHE_KEY, JSON.stringify(sessionCache));
+      sessionStorage.setItem(
+        this.SESSION_STORAGE_CACHE_KEY,
+        JSON.stringify(sessionCache),
+      );
     }
     async getPageCache(url, opt) {
       return await this.getCacheFromObj(this.pageCache, url, opt);
@@ -91,15 +106,15 @@ function reqCache() {
     async setCacheObj(resp, obj, url) {
       obj[url] = {
         resp: resp,
-        timestamp: new Date().getTime()
+        timestamp: new Date().getTime(),
       };
     }
 
     clearLocalCache() {
-      localStorage.setItem(this.LOCAL_STORAGE_CACHE_KEY, '{}');
+      localStorage.setItem(this.LOCAL_STORAGE_CACHE_KEY, "{}");
     }
     clearSessionCache() {
-      sessionStorage.setItem(this.SESSION_STORAGE_CACHE_KEY, '{}');
+      sessionStorage.setItem(this.SESSION_STORAGE_CACHE_KEY, "{}");
     }
     clearPageCache() {
       this.pageCache = {};

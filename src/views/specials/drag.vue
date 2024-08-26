@@ -6,7 +6,11 @@
         <div class="box-row">
           <div class="group-title">groupA</div>
           <div class="group" ref="groupA">
-            <div class="card card1" v-for="(item, index) in groupAData" :key="index">
+            <div
+              class="card card1"
+              v-for="(item, index) in groupAData"
+              :key="index"
+            >
               {{ item.text }}
             </div>
           </div>
@@ -14,7 +18,11 @@
         <div class="box-row">
           <div class="group-title">groupB</div>
           <div class="group" ref="groupB">
-            <div class="card card2" v-for="(item, index) in groupBData" :key="index">
+            <div
+              class="card card2"
+              v-for="(item, index) in groupBData"
+              :key="index"
+            >
               {{ item.text }}
             </div>
           </div>
@@ -22,7 +30,11 @@
         <div class="box-row">
           <div class="group-title">groupC</div>
           <div class="group" ref="groupC">
-            <div class="card card3" v-for="(item, index) in groupCData" :key="index">
+            <div
+              class="card card3"
+              v-for="(item, index) in groupCData"
+              :key="index"
+            >
               {{ item.text }}
             </div>
           </div>
@@ -41,32 +53,24 @@
             <el-input v-model="groupTexts" disabled></el-input>
           </el-form-item>
         </el-form>
-        <el-button
-          
-          type="success"
-          @click="printGroup(groupAData, 'groupAData')"
-        >
+        <el-button type="success" @click="printGroup(groupAData, 'groupAData')">
           <span>输出GroupA</span>
         </el-button>
-        <el-button
-          
-          type="success"
-          @click="printGroup(groupBData, 'groupBData')"
-        >
+        <el-button type="success" @click="printGroup(groupBData, 'groupBData')">
           <span>输出GroupB</span>
         </el-button>
-        <el-button
-          
-          type="success"
-          @click="printGroup(groupCData, 'groupCData')"
-        >
+        <el-button type="success" @click="printGroup(groupCData, 'groupCData')">
           <span>输出GroupC</span>
         </el-button>
 
         <div class="box-row">
           <div class="group-title">groupA(刷新数据方式)</div>
           <div class="group" ref="groupARefresh">
-            <div class="card card1" v-for="(item, index) in groupAData" :key="index">
+            <div
+              class="card card1"
+              v-for="(item, index) in groupAData"
+              :key="index"
+            >
               {{ item.text }}
             </div>
           </div>
@@ -199,7 +203,11 @@ export default {
 
       // 组间移动
       if (evt.to === evt.from) {
-        this.groupAData.splice(newIndex, 0, ...this.groupAData.splice(oldIndex, 1));
+        this.groupAData.splice(
+          newIndex,
+          0,
+          ...this.groupAData.splice(oldIndex, 1),
+        );
 
         let oldNode = group.children[oldIndex];
         group.removeChild(newNode);
@@ -209,7 +217,11 @@ export default {
           group.insertBefore(newNode, oldNode.nextSibling);
         }
       } else {
-        this.groupBData.splice(newIndex, 0, ...this.groupAData.splice(oldIndex, 1));
+        this.groupBData.splice(
+          newIndex,
+          0,
+          ...this.groupAData.splice(oldIndex, 1),
+        );
 
         group.removeChild(newNode);
         // 还原删除的节点
@@ -227,7 +239,11 @@ export default {
 
       // 组间移动
       if (evt.to === evt.from) {
-        this.groupBData.splice(newIndex, 0, ...this.groupBData.splice(oldIndex, 1));
+        this.groupBData.splice(
+          newIndex,
+          0,
+          ...this.groupBData.splice(oldIndex, 1),
+        );
 
         let oldNode = group.children[oldIndex];
         group.removeChild(newNode);
@@ -237,7 +253,11 @@ export default {
           group.insertBefore(newNode, oldNode.nextSibling);
         }
       } else {
-        this.groupAData.splice(newIndex, 0, ...this.groupBData.splice(oldIndex, 1));
+        this.groupAData.splice(
+          newIndex,
+          0,
+          ...this.groupBData.splice(oldIndex, 1),
+        );
 
         group.removeChild(newNode);
         // 还原删除的节点

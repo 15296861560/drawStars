@@ -15,7 +15,10 @@
           </el-form-item>
 
           <el-form-item :label="$t('personalData.introduction')">
-            <el-input type="textarea" v-model="personalData.introduction"></el-input>
+            <el-input
+              type="textarea"
+              v-model="personalData.introduction"
+            ></el-input>
           </el-form-item>
 
           <el-form-item :label="$t('personalData.birthday')">
@@ -35,7 +38,10 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item :label="$t('personalData.region')" label-position="left">
+          <el-form-item
+            :label="$t('personalData.region')"
+            label-position="left"
+          >
             <el-cascader
               :placeholder="$t('placeholder.region')"
               v-model="personalData.region"
@@ -138,18 +144,19 @@ export default {
 
                 break;
               case 2:
-                queryAreaList({ province: node.parent.value, city: node.value }).then(
-                  (result) => {
-                    let nodes = result.map((region) => {
-                      return {
-                        value: region.area,
-                        label: region.name,
-                        leaf: false,
-                      };
-                    });
-                    resolve(nodes);
-                  }
-                );
+                queryAreaList({
+                  province: node.parent.value,
+                  city: node.value,
+                }).then((result) => {
+                  let nodes = result.map((region) => {
+                    return {
+                      value: region.area,
+                      label: region.name,
+                      leaf: false,
+                    };
+                  });
+                  resolve(nodes);
+                });
 
                 break;
               case 3:
@@ -190,7 +197,8 @@ export default {
     async initUserInfo() {
       this.userData = await queryUserInfo(userInfo.getUserId);
 
-      let { name, introduction, birthday, region, gender, phone } = this.userData;
+      let { name, introduction, birthday, region, gender, phone } =
+        this.userData;
 
       this.personalData = {
         nickname: name,
@@ -224,11 +232,12 @@ export default {
       {
         leading: true,
         trailing: false,
-      }
+      },
     ),
     // 取消
     cancel() {
-      let { name, introduction, birthday, region, gender, phone } = this.userData;
+      let { name, introduction, birthday, region, gender, phone } =
+        this.userData;
       this.personalData = {
         nickname: name,
         gender: gender,

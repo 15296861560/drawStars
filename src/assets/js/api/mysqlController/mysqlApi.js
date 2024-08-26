@@ -7,9 +7,7 @@
  * @LastEditTime: 2022-12-17 23:09:28
  */
 /* mysql数据库操作相关接口 */
-import {
-  $axios
-} from '@/assets/js/axios-api/axios-config.js';
+import { $axios } from "@/assets/js/axios-api/axios-config.js";
 
 /**
  * @description: 查询
@@ -19,7 +17,7 @@ import {
  */
 function query(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/mysqlApi/query').then(res => {
+    $axios(params, "/mysqlApi/query").then((res) => {
       resolve(res);
     });
   });
@@ -33,7 +31,7 @@ function query(params) {
  */
 function register(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/mysqlApi/register').then(res => {
+    $axios(params, "/mysqlApi/register").then((res) => {
       resolve(res);
     });
   });
@@ -47,7 +45,7 @@ function register(params) {
  */
 function cancel(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/mysqlApi/cancel').then(res => {
+    $axios(params, "/mysqlApi/cancel").then((res) => {
       resolve(res);
     });
   });
@@ -61,15 +59,10 @@ function cancel(params) {
  */
 function excuteSQL(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/mysqlApi/sql').then(res => {
+    $axios(params, "/mysqlApi/sql").then((res) => {
       resolve(res);
     });
   });
 }
 
-export {
-  query,
-  register,
-  cancel,
-  excuteSQL
-};
+export { query, register, cancel, excuteSQL };

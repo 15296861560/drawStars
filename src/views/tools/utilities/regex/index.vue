@@ -152,7 +152,11 @@
               </div>
             </div>
 
-            <div class="m-example-code" v-for="(item, index) in exampleList" :key="index">
+            <div
+              class="m-example-code"
+              v-for="(item, index) in exampleList"
+              :key="index"
+            >
               <div class="u-strong-blue">{{ item.explain }}</div>
               <div class="u-strong-red">{{ item.regExp }}</div>
             </div>

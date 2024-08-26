@@ -6,9 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-18 00:31:33
  */
-import {
-  ElMessage
-} from 'element-plus';
+import { ElMessage } from "element-plus";
 
 let showTips = function (type, msg) {
   ElMessage({
@@ -17,7 +15,4 @@ let showTips = function (type, msg) {
   });
 };
 
-
-export {
-  showTips
-};
+export { showTips };

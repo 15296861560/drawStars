@@ -14,13 +14,19 @@
             <div
               class="icon"
               :class="
-                isMicrophoneTesting ? 'drawstars-icon-mic-on' : 'drawstars-icon-mic-off'
+                isMicrophoneTesting
+                  ? 'drawstars-icon-mic-on'
+                  : 'drawstars-icon-mic-off'
               "
               @click="testMicrophone"
             ></div>
             <div
               class="icon"
-              :class="isOpenViveo ? 'drawstars-icon-video' : 'drawstars-icon-video-off'"
+              :class="
+                isOpenViveo
+                  ? 'drawstars-icon-video'
+                  : 'drawstars-icon-video-off'
+              "
               @click="debugCamera"
             ></div>
           </div>
@@ -75,7 +81,10 @@
                 ><Microphone v-if="isMicrophoneTesting" /> <Mute v-else
               /></el-icon>
               <div class="progress-bg">
-                <div class="progress" :style="{ width: volumeLevel + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: volumeLevel + '%' }"
+                ></div>
               </div>
             </div>
             <el-button type="success" @click="confirm">
@@ -150,11 +159,13 @@ export default {
     playVideo() {
       let video = this.$refs.video;
 
-      AgoraRTC.createCameraVideoTrack({ cameraId: this.cameraId }).then((videoTrack) => {
-        this.mediaStreamTrack = videoTrack.getMediaStreamTrack();
-        video.srcObject = new MediaStream([this.mediaStreamTrack]);
-        video.play();
-      });
+      AgoraRTC.createCameraVideoTrack({ cameraId: this.cameraId }).then(
+        (videoTrack) => {
+          this.mediaStreamTrack = videoTrack.getMediaStreamTrack();
+          video.srcObject = new MediaStream([this.mediaStreamTrack]);
+          video.play();
+        },
+      );
     },
     // 停止播放
     stopVideo() {
@@ -176,17 +187,17 @@ export default {
       if (!this.isMicrophoneTesting) {
         return;
       }
-      AgoraRTC.createMicrophoneAudioTrack({ microphoneId: this.microphoneId }).then(
-        (audioTrack) => {
-          setInterval(() => {
-            this.volumeLevel = audioTrack.getVolumeLevel() * 100;
-            if (!this.isMicrophoneTesting) {
-              audioTrack.stop();
-              this.volumeLevel = 0;
-            }
-          }, 500);
-        }
-      );
+      AgoraRTC.createMicrophoneAudioTrack({
+        microphoneId: this.microphoneId,
+      }).then((audioTrack) => {
+        setInterval(() => {
+          this.volumeLevel = audioTrack.getVolumeLevel() * 100;
+          if (!this.isMicrophoneTesting) {
+            audioTrack.stop();
+            this.volumeLevel = 0;
+          }
+        }, 500);
+      });
     },
     cancel() {
       this.$parent.showSetting = false;

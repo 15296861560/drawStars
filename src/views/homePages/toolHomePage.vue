@@ -46,7 +46,15 @@ export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["chat","utilities", "practice", "translate", "pay", "compress","networkStrength"],
+      routes: [
+        "chat",
+        "utilities",
+        "practice",
+        "translate",
+        "pay",
+        "compress",
+        "networkStrength",
+      ],
     };
   },
 };

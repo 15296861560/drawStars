@@ -1,6 +1,11 @@
 <template>
   <div>
-    <canvas class="checkerboard" id="gobang" ref="gobang" @click="playingChess"></canvas>
+    <canvas
+      class="checkerboard"
+      id="gobang"
+      ref="gobang"
+      @click="playingChess"
+    ></canvas>
 
     <div class="control-part">
       <el-button type="primary" @click="startGame">开始游戏</el-button>

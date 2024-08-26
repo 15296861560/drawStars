@@ -8,15 +8,12 @@
  */
 export default {
   state: {
-    url: '/api'
+    url: "/api",
   },
   mutations: {
-    changeApi(state, {
-      attr,
-      val
-    }) {
+    changeApi(state, { attr, val }) {
       state[attr] = val;
-    }
+    },
   },
   getters: {
     getUrl(state) {
@@ -24,14 +21,11 @@ export default {
     },
   },
   actions: {
-    changeApi(context, {
-      attr,
-      val
-    }) {
-      context.commit('changeApi', {
+    changeApi(context, { attr, val }) {
+      context.commit("changeApi", {
         attr,
-        val
+        val,
       });
-    }
-  }
+    },
+  },
 };

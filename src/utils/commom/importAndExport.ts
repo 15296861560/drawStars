@@ -8,7 +8,7 @@
  */
 import * as XLSX from "xlsx";
 
-const importFile=(f)=> {
+const importFile = (f) => {
   const promise = new Promise((resolve, reject) => {
     let reader = new FileReader();
 
@@ -19,7 +19,7 @@ const importFile=(f)=> {
     let outdata;
 
     reader.onload = function (e) {
-      let bytes = new Uint8Array((reader.result as ArrayBuffer ));
+      let bytes = new Uint8Array(reader.result as ArrayBuffer);
 
       let length = bytes.byteLength;
 
@@ -44,14 +44,14 @@ const importFile=(f)=> {
   });
 
   return promise;
-}
+};
 
-const exportFile=(tableTdData=[],fileName='导出文件') =>{
+const exportFile = (tableTdData = [], fileName = "导出文件") => {
   let sheet = XLSX.utils.json_to_sheet(tableTdData);
   openDownloadDialog(sheet2blob(sheet, "sheet"), `${fileName}.xlsx`);
-}
+};
 
-const openDownloadDialog=(url, saveName) =>{
+const openDownloadDialog = (url, saveName) => {
   if (typeof url == "object" && url instanceof Blob) {
     url = URL.createObjectURL(url); // 创建blob地址
   }
@@ -81,8 +81,8 @@ const openDownloadDialog=(url, saveName) =>{
     );
   }
   aLink.dispatchEvent(event);
-}
-const sheet2blob=(sheet, sheetName)=> {
+};
+const sheet2blob = (sheet, sheetName) => {
   sheetName = sheetName || "默认名";
   const workbook = {
     SheetNames: [sheetName],
@@ -90,26 +90,24 @@ const sheet2blob=(sheet, sheetName)=> {
   };
   workbook.Sheets[sheetName] = sheet;
   // 生成excel的配置项
-  const wopts:XLSX.WritingOptions = {
+  const wopts: XLSX.WritingOptions = {
     bookType: "xlsx", // 要生成的文件类型
     bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
     type: "binary",
   };
   const wbout = XLSX.write(workbook, wopts);
-  const blob = new Blob([sToBuffer(wbout)], { type: "application/octet-stream" });
+  const blob = new Blob([sToBuffer(wbout)], {
+    type: "application/octet-stream",
+  });
   return blob;
-}
-
+};
 
 // 字符串转ArrayBuffer
-const sToBuffer=(s:string)=> {
+const sToBuffer = (s: string) => {
   let buf = new ArrayBuffer(s.length);
   let view = new Uint8Array(buf);
   for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
   return buf;
-}
+};
 
-export {
-  importFile,
-  exportFile
-}
+export { importFile, exportFile };

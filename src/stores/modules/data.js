@@ -1,13 +1,11 @@
 export default {
   state: {
     data: {},
-    str: '',
+    str: "",
     dataList: [],
     routeList: [],
   },
-  mutations: {
-
-  },
+  mutations: {},
   getters: {
     getData(state) {
       return state.data;
@@ -23,16 +21,11 @@ export default {
     },
   },
   actions: {
-    changeData(context, {
-      attr,
-      val
-    }) {
-      context.commit('changeData', {
+    changeData(context, { attr, val }) {
+      context.commit("changeData", {
         attr,
-        val
+        val,
       });
-    }
-  }
-
-
+    },
+  },
 };

@@ -10,7 +10,9 @@
         <span @click="toFirstPage" v-if="index === 0" class="firstPage"
           ><el-icon class="mr4"><Menu /></el-icon>{{ item }}</span
         >
-        <span v-if="index !== 0" @click="goPage(index)" class="title">{{ item }}</span>
+        <span v-if="index !== 0" @click="goPage(index)" class="title">{{
+          item
+        }}</span>
       </el-breadcrumb-item>
 
       <el-breadcrumb-item v-show="!websiteInfo.isPC">

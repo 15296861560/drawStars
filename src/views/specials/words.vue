@@ -7,7 +7,11 @@
           <div class="m-block-content">
             <div class="m-content-title">基本</div>
             <div class="g-flex-normal m-font30-b">
-              <div v-for="(item, index) in basicList" :key="index" class="m-font-area">
+              <div
+                v-for="(item, index) in basicList"
+                :key="index"
+                class="m-font-area"
+              >
                 <div :class="item.class">{{ item.name }}</div>
               </div>
             </div>
@@ -57,7 +61,11 @@ export default {
 
 .shine1 {
   color: white;
-  text-shadow: 0 0 10px aqua, 0 0 20px aqua, 0 0 30px aqua, 0 0 40px aqua;
+  text-shadow:
+    0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 30px aqua,
+    0 0 40px aqua;
 }
 
 .shadow {
@@ -83,18 +91,36 @@ export default {
 
 .com-shine {
   color: white;
-  text-shadow: 0 0 10px aqua, 0 0 20px aqua, 0 0 30px aqua, 0 0 40px aqua;
+  text-shadow:
+    0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 30px aqua,
+    0 0 40px aqua;
   animation: Glow 0.5s ease infinite alternate;
 }
 
 @keyframes Glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px orange,
-      0 0 70px orange, 0 0 80px orange, 0 0 100px orange, 0 0 120px orange;
+    text-shadow:
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 30px #fff,
+      0 0 40px orange,
+      0 0 70px orange,
+      0 0 80px orange,
+      0 0 100px orange,
+      0 0 120px orange;
   }
   to {
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px orange,
-      0 0 35px orange, 0 0 40px orange, 0 0 50px orange, 0 0 75px orange;
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 15px #fff,
+      0 0 20px orange,
+      0 0 35px orange,
+      0 0 40px orange,
+      0 0 50px orange,
+      0 0 75px orange;
   }
 }
 </style>

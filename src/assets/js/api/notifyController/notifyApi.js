@@ -7,10 +7,7 @@
  * @LastEditTime: 2023-06-15 23:48:10
  */
 /* 通知相关接口 */
-import {
-  $axios,
-  $axiosGet
-} from '@/assets/js/axios-api/axios-config.js';
+import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
 
 /**
  * @description: 发送通知
@@ -21,7 +18,7 @@ import {
  */
 function sendNotify(params) {
   return new Promise((resolve, reject) => {
-    $axios(params, '/notifyApi/sendNotify').then(res => {
+    $axios(params, "/notifyApi/sendNotify").then((res) => {
       if (res.status) {
         resolve(res);
       } else {
@@ -31,18 +28,19 @@ function sendNotify(params) {
   });
 }
 
-
 // 通过id查询通知详情
 function queryNotifyById(id) {
   return new Promise((resolve, reject) => {
     const params = {
-      id
+      id,
     };
-    $axiosGet(params, '/notifyApi/queryNotifyById').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/notifyApi/queryNotifyById")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
 
@@ -56,14 +54,15 @@ function queryNotifyById(id) {
  */
 function queryNotifyByType(params) {
   return new Promise((resolve, reject) => {
-    $axiosGet(params, '/notifyApi/queryNotifyByType').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/notifyApi/queryNotifyByType")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
-
 
 /**
  * @description: 查询所有通知
@@ -74,11 +73,13 @@ function queryNotifyByType(params) {
  */
 function queryAllNotify(params) {
   return new Promise((resolve, reject) => {
-    $axiosGet(params, '/notifyApi/queryAllNotify').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/notifyApi/queryAllNotify")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
 
@@ -91,11 +92,13 @@ function queryAllNotify(params) {
  */
 function queryMyAllNotify(params) {
   return new Promise((resolve, reject) => {
-    $axiosGet(params, '/notifyApi/queryMyAllNotify').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/notifyApi/queryMyAllNotify")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
 
@@ -109,11 +112,13 @@ function queryMyAllNotify(params) {
  */
 function queryMyNotifyByType(params) {
   return new Promise((resolve, reject) => {
-    $axiosGet(params, '/notifyApi/queryMyNotifyByType').then(res => {
-      resolve(res);
-    }).catch(e => {
-      reject(e);
-    });
+    $axiosGet(params, "/notifyApi/queryMyNotifyByType")
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((e) => {
+        reject(e);
+      });
   });
 }
 
@@ -123,5 +128,5 @@ export {
   queryNotifyByType,
   queryMyNotifyByType,
   queryAllNotify,
-  queryMyAllNotify
+  queryMyAllNotify,
 };

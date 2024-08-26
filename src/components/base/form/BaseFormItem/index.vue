@@ -27,7 +27,12 @@
       :disabled="disabled"
     />
 
-    <el-select v-else-if="isSelect" v-bind="$attrs" v-model="field" :disabled="disabled">
+    <el-select
+      v-else-if="isSelect"
+      v-bind="$attrs"
+      v-model="field"
+      :disabled="disabled"
+    >
       <el-option
         v-for="(item, index) in options"
         :key="item[config?.valueKey] || index"
@@ -84,7 +89,11 @@
       />
     </el-checkbox-group>
 
-    <single-img-component v-else-if="isImg" v-model:field="field" :disabled="disabled" />
+    <single-img-component
+      v-else-if="isImg"
+      v-model:field="field"
+      :disabled="disabled"
+    />
 
     <el-input
       v-else
@@ -105,7 +114,9 @@ import type { AnyObject } from "@/types/global";
 import { useVModels } from "@vueuse/core";
 import { showTips } from "@/utils/message/showTips.js";
 
-const singleImgComponent = defineAsyncComponent(() => import("./singleImgComponent.vue"));
+const singleImgComponent = defineAsyncComponent(
+  () => import("./singleImgComponent.vue"),
+);
 
 const props = defineProps<{
   field: string | number | boolean | string[] | any;
@@ -122,7 +133,8 @@ const emit = defineEmits<{
   (e: "update:field", value: string | number | boolean | string[] | any): void;
 }>();
 
-const { type, apiMethod, apiParams, config, disabled, readonly, options } = toRefs(props);
+const { type, apiMethod, apiParams, config, disabled, readonly, options } =
+  toRefs(props);
 const { field } = useVModels(props, emit);
 
 const isInput = computed(() => type?.value === "input");

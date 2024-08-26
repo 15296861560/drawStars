@@ -14,7 +14,6 @@ let particles = {
   // size: 30,
 };
 
-
 class Point {
   constructor(x = 0, y = 0) {
     this.x = x;
@@ -26,7 +25,7 @@ class Point {
   }
 
   length(length) {
-    if (typeof length === 'undefined') {
+    if (typeof length === "undefined") {
       return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     this.normalize();
@@ -42,7 +41,6 @@ class Point {
     return this;
   }
 }
-
 
 class Particle {
   constructor() {
@@ -69,16 +67,19 @@ class Particle {
   }
   draw(context, image) {
     function ease(t) {
-      return (--t) * t * t + 1;
+      return --t * t * t + 1;
     }
     let size = image.width * ease(this.age / particles.duration);
     context.globalAlpha = 1 - this.age / particles.duration;
-    context.drawImage(image, this.position.x - size / 2, this.position.y - size / 2, size, size);
+    context.drawImage(
+      image,
+      this.position.x - size / 2,
+      this.position.y - size / 2,
+      size,
+      size,
+    );
   }
 }
-
-
-
 
 class ParticlePool {
   constructor(length) {
@@ -88,7 +89,6 @@ class ParticlePool {
     this.particles = new Array(length);
     for (let i = 0; i < this.particles.length; i++) {
       this.particles[i] = new Particle();
-
     }
   }
 
@@ -123,14 +123,15 @@ class ParticlePool {
       }
     }
 
-    while (this.particles[this.firstActive].age >= this.duration && this.firstActive != this.firstFree) {
+    while (
+      this.particles[this.firstActive].age >= this.duration &&
+      this.firstActive != this.firstFree
+    ) {
       this.firstActive++;
       if (this.firstActive == this.particles.length) {
         this.firstActive = 0;
       }
     }
-
-
   }
   draw(context, image) {
     let i;
@@ -151,10 +152,4 @@ class ParticlePool {
   }
 }
 
-
-
-export {
-  Point,
-  Particle,
-  ParticlePool
-};
+export { Point, Particle, ParticlePool };

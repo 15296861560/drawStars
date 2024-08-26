@@ -9,15 +9,18 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 
-export const settingInfoStore = defineStore("settingInfo", () => {
-  
-  const language=ref("zh")
-  const getLanguage=computed(()=>language)
-  function changeSettingInfo(newVal:string) {
-    language.value=newVal;
-  }
+export const settingInfoStore = defineStore(
+  "settingInfo",
+  () => {
+    const language = ref("zh");
+    const getLanguage = computed(() => language);
+    function changeSettingInfo(newVal: string) {
+      language.value = newVal;
+    }
 
-  return { language, getLanguage,changeSettingInfo }
-}, {
-  persist: true
-});
+    return { language, getLanguage, changeSettingInfo };
+  },
+  {
+    persist: true,
+  },
+);

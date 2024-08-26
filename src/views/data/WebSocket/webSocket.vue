@@ -39,7 +39,9 @@
     <div class="msg-area">
       <div>
         <h3>{{ $t("tip.sendMsgList") }}</h3>
-        <div class="msg" v-for="(msg, index) in sendMsgList" :key="index">{{ msg }}</div>
+        <div class="msg" v-for="(msg, index) in sendMsgList" :key="index">
+          {{ msg }}
+        </div>
       </div>
       <div>
         <h3>{{ $t("tip.receiveMsgList") }}</h3>
@@ -92,7 +94,7 @@ export default {
       this.client.send(this.formInline.message);
       this.sendMsgList.push(this.formInline.message);
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

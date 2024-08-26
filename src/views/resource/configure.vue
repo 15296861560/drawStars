@@ -18,9 +18,15 @@
       </el-col>
       <el-col :span="8">
         <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{ $t("btn.search") }}</el-button>
-          <el-button type="warning" @click="reset">{{ $t("btn.reset") }}</el-button>
-          <el-button type="success" @click="create">{{ $t("btn.create") }}</el-button>
+          <el-button type="primary" @click="query">{{
+            $t("btn.search")
+          }}</el-button>
+          <el-button type="warning" @click="reset">{{
+            $t("btn.reset")
+          }}</el-button>
+          <el-button type="success" @click="create">{{
+            $t("btn.create")
+          }}</el-button>
         </div>
       </el-col>
     </el-row>
@@ -53,14 +59,14 @@ import { exportFile } from "@/utils/commom/importAndExport.ts";
 
 const $t = i18n.global.t;
 
-const BaseDialog = defineAsyncComponent(() =>
-  import("@/components/base/form/BaseDialog.vue")
+const BaseDialog = defineAsyncComponent(
+  () => import("@/components/base/form/BaseDialog.vue"),
 );
-const BaseTable = defineAsyncComponent(() =>
-  import("@/components/base/form/BaseTable.vue")
+const BaseTable = defineAsyncComponent(
+  () => import("@/components/base/form/BaseTable.vue"),
 );
-const SearchItem = defineAsyncComponent(() =>
-  import("@/components/base/SearchItem/index.vue")
+const SearchItem = defineAsyncComponent(
+  () => import("@/components/base/SearchItem/index.vue"),
 );
 
 const confirmMethod = async (newData) => {

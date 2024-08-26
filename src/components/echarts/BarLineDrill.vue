@@ -1,6 +1,6 @@
 <!-- 头部 -->
 <template>
-  <div  :id="echartId" :style="{ width: width, height: height }"></div>
+  <div :id="echartId" :style="{ width: width, height: height }"></div>
 </template>
 
 <script>
@@ -22,7 +22,10 @@ export default {
                 {
                   name: newVal.legend[i].name,
                   icon: "", //'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
-                  textStyle: { fontWeight: "bold", color: newVal.legend[i].textColor },
+                  textStyle: {
+                    fontWeight: "bold",
+                    color: newVal.legend[i].textColor,
+                  },
                 },
               ],
               // data: ["量率", "入库面积"],
@@ -42,7 +45,10 @@ export default {
                 {
                   name: newVal.legend[i].name,
                   icon: "rect", //'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
-                  textStyle: { fontWeight: "bold", color: newVal.legend[i].textColor },
+                  textStyle: {
+                    fontWeight: "bold",
+                    color: newVal.legend[i].textColor,
+                  },
                 },
               ],
               top: "2%",
@@ -108,9 +114,13 @@ export default {
       // let chart = document.getElementById(this.echartId);
       // this.myChart = this.$echarts.init(chart);
 
-      let chart = this.$echarts.getInstanceByDom(document.getElementById(this.echartId));
+      let chart = this.$echarts.getInstanceByDom(
+        document.getElementById(this.echartId),
+      );
       if (chart === undefined) {
-        this.myChart = this.$echarts.init(document.getElementById(this.echartId));
+        this.myChart = this.$echarts.init(
+          document.getElementById(this.echartId),
+        );
       } else {
         this.myChart = chart;
       }

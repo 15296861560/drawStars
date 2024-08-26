@@ -2,7 +2,9 @@
   <div>
     <el-row class="mb40">
       <!-- <el-button type="primary">{{$t("btn.originalImg")}}</el-button> -->
-      <el-button type="primary" @click="createDB">{{ $t("btn.create") }}</el-button>
+      <el-button type="primary" @click="createDB">{{
+        $t("btn.create")
+      }}</el-button>
       <!-- <el-button type="primary" @click="insert">{{ $t("btn.insert") }}</el-button> -->
       <el-button type="primary" @click="query">{{ $t("btn.query") }}</el-button>
       <el-button type="primary" @click="batchInsertBefore">{{
@@ -40,7 +42,9 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button type="primary" @click="insert">{{ $t("btn.insert") }}</el-button>
+        <el-button type="primary" @click="insert">{{
+          $t("btn.insert")
+        }}</el-button>
       </el-form-item>
     </el-form>
     <div class="g-table-normal">
@@ -76,7 +80,11 @@
   </div>
 </template>
 <script>
-import { transaction, executeSql, dbTransaction } from "@/assets/js/db/sqlite.js";
+import {
+  transaction,
+  executeSql,
+  dbTransaction,
+} from "@/assets/js/db/sqlite.js";
 export default {
   data() {
     return {

@@ -7,7 +7,10 @@
       <el-container>
         <el-header>
           <!-- 导航栏 -->
-          <navigation :titleData="$route.meta.title" ref="navigation"></navigation>
+          <navigation
+            :titleData="$route.meta.title"
+            ref="navigation"
+          ></navigation>
         </el-header>
         <el-main class="g-main">
           <div style="min-height: calc(100vh - 180px)">
@@ -35,7 +38,10 @@ import AsideList from "@/components/AsideList.vue";
 import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";
 import { useRouter, useRoute } from "vue-router";
-import { NOTIFY_URL, WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
+import {
+  NOTIFY_URL,
+  WEBSITE_CHANNEL,
+} from "@/assets/js/notify/notify-config.js";
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
 
@@ -72,7 +78,9 @@ export default {
     isComputer() {
       let userAgent = navigator.userAgent;
       let phoneList = ["Android", "iPhone", "SymbianOS"];
-      this.websiteInfo.isPC = phoneList.every((item) => userAgent.indexOf(item) == -1); //不包含手机型号则视为PC
+      this.websiteInfo.isPC = phoneList.every(
+        (item) => userAgent.indexOf(item) == -1,
+      ); //不包含手机型号则视为PC
     },
     async initNotify() {
       await this.$notify.createInstance(NOTIFY_URL);

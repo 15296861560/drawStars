@@ -33,7 +33,11 @@
         </div>
       </div>
 
-      <ul class="message-box__body__list" v-for="notify in notifyList" :key="notify.id">
+      <ul
+        class="message-box__body__list"
+        v-for="notify in notifyList"
+        :key="notify.id"
+      >
         <li class="message-card">
           <div class="message-card__notify">
             {{ notify.content }}

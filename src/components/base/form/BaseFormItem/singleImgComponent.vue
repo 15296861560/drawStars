@@ -20,7 +20,11 @@
 
       <template #file="{ file }">
         <div>
-          <img class="el-upload-list__item-thumbnail" :src="file.url" :alt="file.name" />
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url"
+            :alt="file.name"
+          />
           <span class="el-upload-list__item-actions">
             <span
               class="el-upload-list__item-preview"
@@ -57,7 +61,10 @@ import { onMounted, toRefs, ref } from "vue";
 import type { AnyObject } from "@/types/global";
 import { useVModels } from "@vueuse/core";
 import { showTips } from "@/utils/message/showTips.js";
-import { uploadFile, downloadFile } from "@/assets/js/api/commomController/commomApi.js";
+import {
+  uploadFile,
+  downloadFile,
+} from "@/assets/js/api/commomController/commomApi.js";
 import { Delete, Download, Plus, ZoomIn } from "@element-plus/icons-vue";
 import { genFileId } from "element-plus";
 import type {
@@ -141,7 +148,9 @@ const handlePictureCardPreview = (file: UploadFile) => {
 };
 
 const handleDownload = async (file: UploadFile) => {
-  const res = await downloadFile({ filename: field.value?.replace("/uploadImg/", "") });
+  const res = await downloadFile({
+    filename: field.value?.replace("/uploadImg/", ""),
+  });
   if (res.status) {
     showTips("success", "下载成功");
   }

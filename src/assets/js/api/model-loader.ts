@@ -12,7 +12,7 @@ export const modelLoader = () => {
   // 获取文件
   const files = import.meta.glob(
     ["@/assets/js/api/**/*.js", "@/assets/js/api/**/*.ts"],
-    { eager: true }
+    { eager: true },
   );
 
   Object.keys(files)

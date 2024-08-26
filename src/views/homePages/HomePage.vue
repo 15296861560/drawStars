@@ -101,7 +101,7 @@ export default {
     },
     autoTooltip(option) {
       let pieChart = this.$echarts.getInstanceByDom(
-        document.getElementById("echart-pie")
+        document.getElementById("echart-pie"),
       );
       let currentIndex = 0;
       this.dataTimer = setInterval(function () {
