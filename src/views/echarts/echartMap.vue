@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
@@ -64,7 +64,7 @@ export default {
           { name: "台湾", value: Math.round(Math.random() * 210000) },
           { name: "香港", value: Math.round(Math.random() * 210000) },
           { name: "澳门", value: Math.round(Math.random() * 210000) },
-        ], //数据
+        ], // 数据
       },
     };
   },

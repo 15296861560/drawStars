@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-11-26 23:59:09
  */
-/*登录相关*/
+/* 登录相关 */
 export default [
   {
     path: "/login",

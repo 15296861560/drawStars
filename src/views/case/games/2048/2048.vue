@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-08-14 22:34:45
@@ -91,16 +91,16 @@ export default {
     addKeyDownListen() {
       document.onkeydown = (event) => {
         switch (event.keyCode) {
-          case 37: //left
+          case 37: // left
             this.toLeft();
             break;
-          case 38: //up
+          case 38: // up
             this.toUp();
             break;
-          case 39: //right
+          case 39: // right
             this.toRight();
             break;
-          case 40: //down
+          case 40: // down
             this.toDown();
             break;
         }
@@ -125,19 +125,23 @@ export default {
     // 生成新数字
     generateNewNumber() {
       let board = this.board;
-      if (this.nospace(board)) return false;
+      if (this.nospace(board)) {
+        return false;
+      }
 
-      //随机一个位置
+      // 随机一个位置
       let randx = this.randomLocation();
       let randy = this.randomLocation();
       while (true) {
-        if (board[randx][randy] === 0) break;
+        if (board[randx][randy] === 0) {
+          break;
+        }
         randx = this.randomLocation();
         randy = this.randomLocation();
       }
-      //随机一个数字
+      // 随机一个数字
       let randNumber = Math.random() < 0.5 ? 2 : 4;
-      //在随机位置显示随机数字
+      // 在随机位置显示随机数字
       board[randx][randy] = randNumber;
       this.$forceUpdate();
     },
@@ -149,7 +153,9 @@ export default {
     nospace(board) {
       for (let i = 0; i < this.boundary; i++) {
         for (let j = 0; j < this.boundary; j++) {
-          if (board[i][j] === 0) return false;
+          if (board[i][j] === 0) {
+            return false;
+          }
         }
       }
       return true;
@@ -158,13 +164,14 @@ export default {
     canMoveUp() {
       let board = this.board;
       let boundary = this.boundary;
-      //判断能否上移
+      // 判断能否上移
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && i !== 0) {
             // 上边有空位或者上边方块数值等于当前方块数值则视为可移动
-            if (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j])
+            if (board[i - 1][j] === 0 || board[i - 1][j] === board[i][j]) {
               return true;
+            }
           }
         }
       }
@@ -174,12 +181,13 @@ export default {
     canMoveDown() {
       let board = this.board;
       let boundary = this.boundary;
-      //判断能否下移
+      // 判断能否下移
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && i < boundary - 1) {
-            if (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j])
+            if (board[i + 1][j] === 0 || board[i + 1][j] === board[i][j]) {
               return true;
+            }
           }
         }
       }
@@ -189,12 +197,13 @@ export default {
     canMoveLeft() {
       let board = this.board;
       let boundary = this.boundary;
-      //判断能否左移
+      // 判断能否左移
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && j !== 0) {
-            if (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j])
+            if (board[i][j - 1] === 0 || board[i][j - 1] === board[i][j]) {
               return true;
+            }
           }
         }
       }
@@ -204,12 +213,13 @@ export default {
     canMoveRight() {
       let board = this.board;
       let boundary = this.boundary;
-      //判断能否左移
+      // 判断能否左移
       for (let i = 0; i < boundary; i++) {
         for (let j = 0; j < boundary; j++) {
           if (board[i][j] !== 0 && j < boundary - 1) {
-            if (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j])
+            if (board[i][j + 1] === 0 || board[i][j + 1] === board[i][j]) {
               return true;
+            }
           }
         }
       }
@@ -225,13 +235,12 @@ export default {
         this.canMoveRight()
       ) {
         return false;
-      } else {
-        this.$message({
-          message: `游戏结束,您的最终得分是${this.score}`,
-          type: "error",
-        });
-        return true;
       }
+      this.$message({
+        message: `游戏结束,您的最终得分是${this.score}`,
+        type: "error",
+      });
+      return true;
     },
     // 往某个方向移动
     toUp() {

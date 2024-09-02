@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-13 01:02:46
@@ -21,9 +21,9 @@ export default {
         particles: {
           length: 500,
           duration: 2,
-          velocity: 100, //速度
+          velocity: 100, // 速度
           // effect: -0.75,
-          size: 30, //小爱心尺寸
+          size: 30, // 小爱心尺寸
         },
       },
       loveBG: null,
@@ -103,8 +103,8 @@ export default {
       let particles = this.particles;
       let particleRate = this.particleRate;
 
-      let newTime = new Date().getTime() / 1000,
-        deltaTime = newTime - (this.time || newTime);
+      let newTime = new Date().getTime() / 1000;
+      let deltaTime = newTime - (this.time || newTime);
       this.time = newTime;
 
       this.loveBGContext.clearRect(0, 0, this.loveBG.width, this.loveBG.height);

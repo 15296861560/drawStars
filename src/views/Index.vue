@@ -59,10 +59,10 @@ export default {
   data() {
     return {
       width: "width:200px;",
-      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
-      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
       websiteInfo: {
-        isPC: true, //判断是否是电脑
+        isPC: true, // 判断是否是电脑
         isCollapse: false, // 侧边栏是否收缩
       },
     };
@@ -80,7 +80,7 @@ export default {
       let phoneList = ["Android", "iPhone", "SymbianOS"];
       this.websiteInfo.isPC = phoneList.every(
         (item) => userAgent.indexOf(item) == -1,
-      ); //不包含手机型号则视为PC
+      ); // 不包含手机型号则视为PC
     },
     async initNotify() {
       await this.$notify.createInstance(NOTIFY_URL);
@@ -101,7 +101,9 @@ export default {
     let that = this;
     this.isComputer();
     window.addEventListener("resize", this.isComputer);
-    if (this.websiteInfo.isCollapse) this.width = "width:50px;";
+    if (this.websiteInfo.isCollapse) {
+      this.width = "width:50px;";
+    }
 
     this.initNotify();
   },

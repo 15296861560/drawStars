@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:11
@@ -34,8 +34,8 @@ import { showTips } from "@/utils/message/showTips.js";
 const commitInfoList = reactive([]);
 
 async function getCommitInfoList() {
-  const accout = 15296861560,
-    warehouse = "drawStars";
+  const accout = 15296861560;
+  const warehouse = "drawStars";
   const url = `https://api.github.com/repos/${accout}/${warehouse}/commits`;
   let res = await axios.get(url).catch((e) => {
     showTips("error", e.toString());

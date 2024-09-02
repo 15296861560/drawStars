@@ -8,12 +8,12 @@ export default {
   },
   methods: {},
   mounted() {
-    var Person = {
+    let Person = {
       name: "lgy",
       action: "eat",
     };
     console.log(Person);
-    //Object.defineProperty
+    // Object.defineProperty
     // let myReactive = function (obj, key, val) {
     //   Object.defineProperty(Person, key, {
     //     enumerable: true,
@@ -39,9 +39,9 @@ export default {
 
     // 监听器 Observer
     function defineReactive(data, key, value) {
-      //递归调用，监听所有属性
+      // 递归调用，监听所有属性
       observer(value);
-      var dep = new Dep();
+      let dep = new Dep();
       Object.defineProperty(data, key, {
         get: function () {
           console.log("访问" + key);
@@ -55,7 +55,7 @@ export default {
           if (value !== newVal) {
             console.log(key + "有变化");
             value = newVal;
-            dep.notify(); //通知订阅器
+            dep.notify(); // 通知订阅器
           }
         },
       });
@@ -65,7 +65,7 @@ export default {
       if (!data || typeof data !== "object") {
         return;
       }
-      //如果data是对象递归调用
+      // 如果data是对象递归调用
       Object.keys(data).forEach((key) => {
         defineReactive(data, key, data[key]);
       });

@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2023-01-01 00:06:26
@@ -115,7 +115,7 @@ const words = [
 ];
 
 function randomNum(min, max) {
-  var num = (Math.random() * (max - min + 1) + min).toFixed(2);
+  let num = (Math.random() * (max - min + 1) + min).toFixed(2);
   return num;
 }
 

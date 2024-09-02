@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-02-06 23:50:42
  */
-/*资料*/
+/* 资料 */
 export default [
   {
     path: "/home/personalCenter",

@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-22 23:42:58
  */
-/*实验室*/
+/* 实验室 */
 export default [
   {
     path: "/home/labHomePage",

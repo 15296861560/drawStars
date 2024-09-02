@@ -116,10 +116,10 @@ export default {
       activeIndex: "1",
       activeIndex2: "1",
       search: "",
-      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
-      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
-      isFullscreen: false, //是否全屏显示
-      showMessageBox: false, //是否显示消息盒子
+      screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
+      isFullscreen: false, // 是否全屏显示
+      showMessageBox: false, // 是否显示消息盒子
     };
   },
   computed: {
@@ -145,8 +145,10 @@ export default {
       for (let i = 1; i <= index + 1; i++) {
         toPath += "/" + paths[i];
       }
-      //当前路径不跳转
-      if (toPath == path) return;
+      // 当前路径不跳转
+      if (toPath == path) {
+        return;
+      }
       this.$router.push({
         path: toPath,
       });
@@ -162,7 +164,9 @@ export default {
     toNewPath(toPath) {
       let path = this.$route.path;
 
-      if (path === toPath) return;
+      if (path === toPath) {
+        return;
+      }
 
       this.$router.push({
         path: toPath,
@@ -192,9 +196,9 @@ export default {
         type: "success",
       });
     },
-    //全屏
+    // 全屏
     fullScreen() {
-      //该方法进入全屏的方式与f11有差异
+      // 该方法进入全屏的方式与f11有差异
       if (this.isFullscreen) {
         this.isFullscreen = false;
         document.webkitCancelFullScreen();

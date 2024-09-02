@@ -308,7 +308,7 @@ export default {
       "updateSuccess":"Update Success",
       "updateFail":"Update Fail"
     }
-    
+
   },
   "zh": {
      "baseInfo": "基本信息",

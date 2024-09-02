@@ -173,7 +173,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          //构造sql
+          // 构造sql
           let ids = this.getCheckListIds();
           let sql = { sql: "delete from user where id in (" + ids + ")" };
           this.$axios(sql, "/mysqlApi/sql").then((res) => {

@@ -205,21 +205,21 @@ export default {
     return {
       particles,
       particlesOptiion: {
-        color: "#def5cd", //String	#dedede	粒子颜色
-        particleOpacity: 0.7, //Number	0.7	粒子不透明度
-        particlesNumber: 100, //Number	80	颗粒数量
-        shapeType: "star", //String	"circle"	可用的形状类型: "circle","edge","triangle", "polygon","star"
-        particleSize: 8, //Number	4	单颗粒大小
-        linesColor: "#f2f2f2", //String	#dedede	线条颜色
-        linesWidth: 1, //Number	1	线宽
-        lineLinked: true, //Boolean	true	启用线路
-        lineOpacity: 0.4, //Number	0.4	线条不透明度
-        linesDistance: 150, //Number	150	线距
-        moveSpeed: 3, //Number	3	粒子速度
-        hoverEffect: true, //Boolean	true	启用悬停效果
-        hoverMode: "grab", //String	grab	可用的悬停模式: "grab", "repulse", "bubble"
-        clickEffect: true, //Boolean	true	启用点击效果
-        clickMode: "push", //String	push	可用的点击模式: "push", "remove", "repulse", "bubble"
+        color: "#def5cd", // String	#dedede	粒子颜色
+        particleOpacity: 0.7, // Number	0.7	粒子不透明度
+        particlesNumber: 100, // Number	80	颗粒数量
+        shapeType: "star", // String	"circle"	可用的形状类型: "circle","edge","triangle", "polygon","star"
+        particleSize: 8, // Number	4	单颗粒大小
+        linesColor: "#f2f2f2", // String	#dedede	线条颜色
+        linesWidth: 1, // Number	1	线宽
+        lineLinked: true, // Boolean	true	启用线路
+        lineOpacity: 0.4, // Number	0.4	线条不透明度
+        linesDistance: 150, // Number	150	线距
+        moveSpeed: 3, // Number	3	粒子速度
+        hoverEffect: true, // Boolean	true	启用悬停效果
+        hoverMode: "grab", // String	grab	可用的悬停模式: "grab", "repulse", "bubble"
+        clickEffect: true, // Boolean	true	启用点击效果
+        clickMode: "push", // String	push	可用的点击模式: "push", "remove", "repulse", "bubble"
       },
       loginForm: {
         account: "",
@@ -784,8 +784,8 @@ export default {
       "passwordLowercase":"At least one lowercase letter (a-z)",
       "passwordNumber":"At least one digit (0-9)"
      }
-    
+
   }
- 
+
 }
 </i18n>

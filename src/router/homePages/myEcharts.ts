@@ -1,4 +1,4 @@
-/*图表模块*/
+/* 图表模块 */
 export default [
   {
     path: "/home/echartHomePage",

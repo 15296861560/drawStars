@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2023-07-27 23:16:59
@@ -44,7 +44,7 @@ const option = reactive({
   preload: "auto", // 预加载
   controls: true, // 显示播放的控件
   fluid: true, // 自适应宽高
-  playbackRates: [0.5, 1, 1.5, 2, 3, 4], //倍速播放
+  playbackRates: [0.5, 1, 1.5, 2, 3, 4], // 倍速播放
   controlBar: {
     // 设置控制条组件
     currentTimeDisplay: true,
@@ -101,93 +101,93 @@ const option = reactive({
 });
 
 const onPlayerReady = function () {
-  //在回调函数中，this代表当前播放器，
-  //可以调用方法，也可以绑定事件。
+  // 在回调函数中，this代表当前播放器，
+  // 可以调用方法，也可以绑定事件。
   /**
    * 事件events    绑定事件用on    移除事件用off
    */
   this.on("suspend", function () {
-    //延迟下载
+    // 延迟下载
     console.log("延迟下载");
   });
   this.on("loadstart", function () {
-    //客户端开始请求数据
+    // 客户端开始请求数据
     console.log("客户端开始请求数据");
   });
   this.on("progress", function () {
-    //客户端正在请求数据
+    // 客户端正在请求数据
     console.log("客户端正在请求数据");
   });
   this.on("abort", function () {
-    //客户端主动终止下载（不是因为错误引起）
+    // 客户端主动终止下载（不是因为错误引起）
     console.log("客户端主动终止下载");
   });
   this.on("error", function () {
-    //请求数据时遇到错误
+    // 请求数据时遇到错误
     console.log("请求数据时遇到错误");
   });
   this.on("stalled", function () {
-    //网速失速
+    // 网速失速
     console.log("网速失速");
   });
   this.on("play", function () {
-    //开始播放
+    // 开始播放
     console.log("开始播放");
   });
   this.on("pause", function () {
-    //暂停
+    // 暂停
     console.log("暂停");
   });
   this.on("loadedmetadata", function () {
-    //成功获取资源长度
+    // 成功获取资源长度
     console.log("成功获取资源长度");
   });
   this.on("loadeddata", function () {
-    //渲染播放画面
+    // 渲染播放画面
     console.log("渲染播放画面");
   });
   this.on("waiting", function () {
-    //等待数据，并非错误
+    // 等待数据，并非错误
     console.log("等待数据");
   });
   this.on("playing", function () {
-    //开始回放
+    // 开始回放
     console.log("开始回放");
   });
   this.on("canplay", function () {
-    //可以播放，但中途可能因为加载而暂停
+    // 可以播放，但中途可能因为加载而暂停
     console.log("可以播放，但中途可能因为加载而暂停");
   });
   this.on("canplaythrough", function () {
-    //可以播放，歌曲全部加载完毕
+    // 可以播放，歌曲全部加载完毕
     console.log("可以播放，歌曲全部加载完毕");
   });
   this.on("seeking", function () {
-    //寻找中
+    // 寻找中
     console.log("寻找中");
   });
   this.on("seeked", function () {
-    //寻找完毕
+    // 寻找完毕
     console.log("寻找完毕");
   });
   this.on("timeupdate", function () {
-    //播放时间改变
+    // 播放时间改变
     console.log("播放时间改变");
   });
   this.on("ended", function () {
-    //播放结束
+    // 播放结束
     console.log("播放结束");
   });
   this.on("ratechange", function () {
-    //播放速率改变
+    // 播放速率改变
     console.log("播放速率改变");
   });
   this.on("durationchange", function () {
-    //资源长度改变
+    // 资源长度改变
     console.log("资源长度改变");
   });
   this.on("volumechange", function () {
-    //音量改变
+    // 音量改变
     console.log("音量改变");
   });
 };

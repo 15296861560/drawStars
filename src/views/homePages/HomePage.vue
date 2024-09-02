@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      dataTimer: null, //定时器
+      dataTimer: null, // 定时器
       routes: [
         { name: "echart", path: "/home/echartHomePage" },
         { name: "tool", path: "/home/toolHomePage" },
@@ -88,7 +88,7 @@ export default {
       this.lineOption = chartData.lineOption;
       this.pieOption = chartData.pieOption;
     },
-    //模拟更新数据
+    // 模拟更新数据
     updateChartData() {
       let data = this.areaOption.series[0].data;
       data.forEach((element, index, arr) => {
@@ -138,11 +138,11 @@ export default {
   mounted() {},
   deactivated() {
     this.isHidden = true;
-    //销毁定时器
+    // 销毁定时器
     clearInterval(this.dataTimer);
   },
   beforeDestroy() {
-    //销毁定时器
+    // 销毁定时器
     clearInterval(this.dataTimer);
   },
 };

@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-12-24 14:01:34
@@ -25,8 +25,8 @@
     var print = requireFun('print.js').default
   console.log(add(1, 2))
   print("lgy")`,
-  "add.js": `exportsObj.default = function(a,b){return a + b}`,
-  "print.js": `exportsObj.default=function(item){console.log(item)}`,
+  "add.js": "exportsObj.default = function(a,b){return a + b}",
+  "print.js": "exportsObj.default=function(item){console.log(item)}",
 });
 export default {};
 </script>

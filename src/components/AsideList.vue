@@ -193,13 +193,15 @@ export default {
     },
     // 获取主页列表数据
     getHomePages() {
-      //获取HomePage列表
+      // 获取HomePage列表
       let paths = [];
       let homeRouter = RouterList.filter((item) => item.name == "home")[0];
       homeRouter.children.forEach((route) => {
         let i = route.path.indexOf("HomePage");
         let path = route.path.slice(0, i + 8);
-        if (i != -1 && !paths.includes(path)) paths.push(path);
+        if (i != -1 && !paths.includes(path)) {
+          paths.push(path);
+        }
       });
       this.pathList = paths.map((item) => {
         let i = item.indexOf("HomePage");

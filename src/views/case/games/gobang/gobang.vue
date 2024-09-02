@@ -111,10 +111,10 @@ function isWin(x, y) {
 function lineCount(x, y, direction) {
   const v = boards[x][y];
   let count = 1;
-  let nx = x,
-    ny = y,
-    lx = x,
-    ly = y;
+  let nx = x;
+  let ny = y;
+  let lx = x;
+  let ly = y;
 
   for (let i = 1; i < 5; i++) {
     switch (direction) {

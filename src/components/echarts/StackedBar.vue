@@ -10,13 +10,13 @@ export default {
   methods: {
     initData(newVal) {
       newVal.series.forEach((item) => {
-        //柱样式
+        // 柱样式
         if (!item.itemStyle) {
           item.itemStyle = {
             barBorderRadius: 0,
           };
         }
-        //柱宽度
+        // 柱宽度
         if (!item.barWidth) {
           item.barWidth = "15px";
         }
@@ -46,7 +46,7 @@ export default {
           {
             type: "category",
             data: newVal.xAxis,
-            //坐标轴轴线相关设置
+            // 坐标轴轴线相关设置
             axisLine: {
               show: false,
             },
@@ -58,7 +58,7 @@ export default {
             axisLabel: {
               show: true,
               textStyle: {
-                color: "aqua", //X轴文字颜色
+                color: "aqua", // X轴文字颜色
                 fontSize: 11,
               },
             },
@@ -70,10 +70,10 @@ export default {
             axisLine: {
               lineStyle: {
                 color: "aqua",
-                width: 0, //不显示y轴
+                width: 0, // 不显示y轴
               },
             },
-            //坐标轴在 grid 区域中的分隔线。
+            // 坐标轴在 grid 区域中的分隔线。
             splitLine: {
               show: true,
             },

@@ -300,7 +300,7 @@ function batchDelete() {
     type: "warning",
   })
     .then(async () => {
-      //构造sql
+      // 构造sql
       const ids = checkList.value;
       const result = await webAdressApi.batchDeleteWebsite(ids);
       if (result.status) {

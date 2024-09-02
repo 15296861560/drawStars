@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-24 21:55:05
@@ -43,7 +43,9 @@ NoProgress.configure({
 const router = useRouter();
 
 router.beforeEach((to, from) => {
-  if (to.path === from.path) return;
+  if (to.path === from.path) {
+    return;
+  }
   NoProgress.start();
   let hasLogin = true;
 

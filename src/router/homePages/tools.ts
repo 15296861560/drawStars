@@ -1,4 +1,4 @@
-/*工具模块*/
+/* 工具模块 */
 export default [
   {
     path: "/home/toolHomePage",

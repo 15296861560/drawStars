@@ -161,7 +161,9 @@ export default {
     },
     bindEvent() {
       this.rtc.client.on("user-published", async (user, mediaType) => {
-        if (user.uid.indexOf(this.options.uid) > -1) return;
+        if (user.uid.indexOf(this.options.uid) > -1) {
+          return;
+        }
         await this.rtc.client.subscribe(user, mediaType);
         this.$set(this.users, user.uid, user);
         if (mediaType === "video") {

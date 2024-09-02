@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-11-27 00:13:41
  */
-/*特效模块*/
+/* 特效模块 */
 export default [
   {
     path: "/home/specialHomePage",

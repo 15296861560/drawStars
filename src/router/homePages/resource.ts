@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-07-25 00:32:20
  */
-/*资料库*/
+/* 资料库 */
 export default [
   {
     path: "/home/resourceHomePage",

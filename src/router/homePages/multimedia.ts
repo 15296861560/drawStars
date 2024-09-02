@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-07-27 23:22:43
  */
-/*多媒体模块*/
+/* 多媒体模块 */
 export default [
   {
     path: "/home/multimediaHomePage",

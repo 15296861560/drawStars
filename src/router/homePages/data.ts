@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-11-27 22:58:46
  */
-/*数据模块*/
+/* 数据模块 */
 export default [
   {
     path: "/home/dataHomePage",

@@ -9,7 +9,7 @@ export default {
   mixins: [echartMixin],
   methods: {
     initData(newVal) {
-      //是否开启legend
+      // 是否开启legend
       let showLegend = false;
       let legend = [];
       if (newVal.openLegend) {
@@ -21,7 +21,7 @@ export default {
               data: [
                 {
                   name: newVal.legend[i].name,
-                  icon: "", //'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
+                  icon: "", // 'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
                   textStyle: {
                     fontWeight: "bold",
                     color: newVal.legend[i].textColor,
@@ -44,7 +44,7 @@ export default {
               data: [
                 {
                   name: newVal.legend[i].name,
-                  icon: "rect", //'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
+                  icon: "rect", // 'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
                   textStyle: {
                     fontWeight: "bold",
                     color: newVal.legend[i].textColor,
@@ -70,11 +70,11 @@ export default {
             name: newVal.series[i].name,
             type: newVal.series[i].type,
 
-            showAllSymbol: true, //显示所有图形。
-            symbol: "circle", //标记的图形为实心圆
-            symbolSize: 10, //标记的大小
+            showAllSymbol: true, // 显示所有图形。
+            symbol: "circle", // 标记的图形为实心圆
+            symbolSize: 10, // 标记的大小
             itemStyle: {
-              //折线拐点标志的样式
+              // 折线拐点标志的样式
               color: newVal.series[i].color,
               borderColor: "#fff",
               borderWidth: 2,
@@ -98,7 +98,7 @@ export default {
             barWidth: newVal.barWidth ? newVal.barWidth : 15,
             itemStyle: {
               normal: {
-                //条形颜色
+                // 条形颜色
                 color: newVal.series[i].color,
                 barBorderRadius: [30, 30, 30, 30],
                 // shadowColor: 'rgba(0,160,221,1)',
@@ -127,13 +127,13 @@ export default {
 
       let axisLabel = {};
       if (newVal.biasText) {
-        //开启了文字倾斜
+        // 开启了文字倾斜
         axisLabel = {
           interval: 0,
           rotate: 20,
           margin: 10,
           textStyle: {
-            color: "black", //X轴文字颜色
+            color: "black", // X轴文字颜色
             fontSize: 11,
           },
         };
@@ -141,7 +141,7 @@ export default {
         axisLabel = {
           show: true,
           textStyle: {
-            color: "black", //X轴文字颜色
+            color: "black", // X轴文字颜色
             fontSize: 11,
           },
         };
@@ -173,14 +173,14 @@ export default {
         xAxis: {
           data: newVal.xAxis,
           axisLine: {
-            show: true, //隐藏X轴轴线
+            show: true, // 隐藏X轴轴线
             lineStyle: {
               color: "aqua",
               width: 2,
             },
           },
           axisTick: {
-            show: false, //隐藏X轴刻度
+            show: false, // 隐藏X轴刻度
           },
           axisLabel: axisLabel,
         },
@@ -206,7 +206,7 @@ export default {
             },
             axisLabel: {
               show: true,
-              formatter: "{value} ", //左侧Y轴文字显示
+              formatter: "{value} ", // 左侧Y轴文字显示
               textStyle: {
                 color: "black",
                 fontSize: 11,
@@ -217,14 +217,14 @@ export default {
         series: seriesData,
       };
       // 使用刚指定的配置项和数据显示图表。
-      this.myChart.off("click"); //使点击事件只触发一次
+      this.myChart.off("click"); // 使点击事件只触发一次
       this.myChart.on("click", (object) => {
         this.drill(object);
       });
     },
     drill(object) {
       alert(object.name);
-      //调用父组件重绘方法
+      // 调用父组件重绘方法
       this.$emit("rp", object);
     },
   },

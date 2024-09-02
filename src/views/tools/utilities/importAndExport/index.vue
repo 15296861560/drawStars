@@ -84,7 +84,7 @@ export default {
     };
   },
   computed: {
-    //总条数
+    // 总条数
     totalCount() {
       return this.tableTdData.length;
     },
@@ -104,7 +104,7 @@ export default {
 
       this.getFile(file).then((res) => {
         this.tableTdData = res;
-        //显示第一页数据
+        // 显示第一页数据
         this.singelTableTdData = this.tableTdData.slice(0, this.pageSize);
       });
     },
@@ -124,7 +124,7 @@ export default {
 
         let binary = "";
 
-        let wb; //读取完成的数据
+        let wb; // 读取完成的数据
 
         let outdata;
 
@@ -157,15 +157,16 @@ export default {
     },
 
     openDownloadDialog(url, saveName) {
-      if (typeof url == "object" && url instanceof Blob) {
+      if (typeof url === "object" && url instanceof Blob) {
         url = URL.createObjectURL(url); // 创建blob地址
       }
       let aLink = document.createElement("a");
       aLink.href = url;
       aLink.download = saveName || "默认文件名.xlsx"; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
       let event;
-      if (window.MouseEvent) event = new MouseEvent("click");
-      else {
+      if (window.MouseEvent) {
+        event = new MouseEvent("click");
+      } else {
         event = document.createEvent("MouseEvents");
         event.initMouseEvent(
           "click",
@@ -211,30 +212,32 @@ export default {
     sToBuffer(s) {
       let buf = new ArrayBuffer(s.length);
       let view = new Uint8Array(buf);
-      for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
+      for (let i = 0; i != s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xff;
+      }
       return buf;
     },
 
     printPage() {
-      var el = this.$refs.printcontent;
+      let el = this.$refs.printcontent;
       let iframe = document.createElement("IFRAME");
-      var doc = null;
+      let doc = null;
       iframe.setAttribute("id", "print-iframe");
-      //设置样式，可视区域不可见
+      // 设置样式，可视区域不可见
       iframe.setAttribute(
         "style",
         "position:absolute;width:0px;height:0px;left:-100vw;top:-100vh;",
       );
       document.body.appendChild(iframe);
       doc = iframe.contentWindow.document;
-      //写入打印内容
+      // 写入打印内容
       doc.write("<div>" + el.innerHTML + "</div>");
       doc.close();
       iframe.contentWindow.focus();
-      //调用打印功能
+      // 调用打印功能
       iframe.contentWindow.print();
       document.body.removeChild(iframe);
-      //调用打印功能
+      // 调用打印功能
       // window.print();
     },
     handleCurrentChange(currentPage) {},

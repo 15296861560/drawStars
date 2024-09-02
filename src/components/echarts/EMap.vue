@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     initData(newVal) {
-      //显示前10具体数据
+      // 显示前10具体数据
       this.mapData = JSON.parse(JSON.stringify(newVal.data));
       let datas = this.mapData
         .sort(function (a, b) {
@@ -80,12 +80,12 @@ export default {
         keys.push(item.name);
       });
 
-      //lines的数据
+      // lines的数据
       let linesData = [];
       let linesEndCoords = this.linesEndCoords;
       let geoCoordMap = this.geoCoordMap;
 
-      //显示的值
+      // 显示的值
       let showValue = {};
       datas.forEach((item) => {
         showValue[item.name] = item.value + "m³";
@@ -95,9 +95,9 @@ export default {
         toLocation[1] = 40 - index * 2;
         linesData.push({
           name: item,
-          value: showValue[item], //显示值
-          coords: [geoCoordMap[item], toLocation], //起点坐标和终点坐标
-          //每条线的样式
+          value: showValue[item], // 显示值
+          coords: [geoCoordMap[item], toLocation], // 起点坐标和终点坐标
+          // 每条线的样式
           lineStyle: {
             show: true,
             type: "dashed",
@@ -118,7 +118,7 @@ export default {
           trigger: "item",
         },
 
-        //左侧小导航图标
+        // 左侧小导航图标
         visualMap: {
           show: true,
           left: 20,
@@ -136,15 +136,15 @@ export default {
           textStyle: { color: "black" },
         },
 
-        //配置属性
+        // 配置属性
         series: [
           {
             name: "数据",
             type: "map",
             map: "china",
-            roam: true, //是否开启鼠标缩放和平移漫游
+            roam: true, // 是否开启鼠标缩放和平移漫游
             label: {
-              show: true, //省份信息
+              show: true, // 省份信息
               color: "aqua",
 
               // formatter: (params) => {
@@ -155,7 +155,7 @@ export default {
               //   return label;
               // },
             },
-            data: newVal.data, //数据
+            data: newVal.data, // 数据
           },
           {
             // 含引导线的省份，用lines实现
@@ -196,14 +196,16 @@ export default {
       });
     },
     getProvince(params) {
-      //调用父组件设置的点击事件
+      // 调用父组件设置的点击事件
       this.$emit("getProvince", params);
     },
     paint() {
       this.$echarts.registerMap("china", china);
       this.myChart = this.$echarts.init(document.getElementById(this.echartId));
-      if (this.chartData) this.initData(this.chartData);
-      //不重新渲染下排名信息第一次渲染不出来
+      if (this.chartData) {
+        this.initData(this.chartData);
+      }
+      // 不重新渲染下排名信息第一次渲染不出来
       this.$nextTick(() => {
         this.resizeChart();
       });

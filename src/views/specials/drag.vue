@@ -125,21 +125,21 @@ export default {
       const groupELRefreshA = this.$refs.groupARefresh;
       const optionA = {
         group: "sameGroup",
-        //是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
+        // 是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
         sort: true,
-        //动画效果
+        // 动画效果
         animation: 500,
         // Easing 动画
         easing: "ease",
-        //停靠位置的自定义样式
+        // 停靠位置的自定义样式
         ghostClass: "ghost",
-        //选中元素的自定义样式
+        // 选中元素的自定义样式
         chosenClass: "chosen",
-        //拖拽时的自定义样式
+        // 拖拽时的自定义样式
         dragClass: "drag",
-        //忽略HTML5原生拖拽行为
+        // 忽略HTML5原生拖拽行为
         forceFallback: true,
-        //拖动结束
+        // 拖动结束
         onEnd: this.onEndA,
         //  拖拽完后添加元素事件
         onAdd: this.onAddA,
@@ -148,9 +148,9 @@ export default {
         group: "sameGroup",
         sort: true,
         ghostClass: "ghost",
-        //忽略HTML5原生拖拽行为
+        // 忽略HTML5原生拖拽行为
         forceFallback: true,
-        //拖动结束
+        // 拖动结束
         onEnd: this.onEndB,
       };
       const optionC = {
@@ -159,21 +159,21 @@ export default {
         filter: ".group-title",
       };
       const optionRefreshA = {
-        //是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
+        // 是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
         sort: true,
-        //动画效果
+        // 动画效果
         animation: 500,
         // Easing 动画
         easing: "ease",
-        //停靠位置的自定义样式
+        // 停靠位置的自定义样式
         ghostClass: "ghost",
-        //选中元素的自定义样式
+        // 选中元素的自定义样式
         chosenClass: "chosen",
-        //拖拽时的自定义样式
+        // 拖拽时的自定义样式
         dragClass: "drag",
-        //忽略HTML5原生拖拽行为
+        // 忽略HTML5原生拖拽行为
         forceFallback: true,
-        //拖动结束
+        // 拖动结束
         onEnd: this.onEndRefreshA,
       };
       let sortable1 = new Sortable(groupElA, optionA);
@@ -197,7 +197,9 @@ export default {
     onEndA(evt) {
       let newIndex = evt.newIndex;
       let oldIndex = evt.oldIndex;
-      if (newIndex === oldIndex) return;
+      if (newIndex === oldIndex) {
+        return;
+      }
       let newNode = evt.item;
       let group = evt.to;
 
@@ -233,7 +235,9 @@ export default {
     onEndB(evt) {
       let newIndex = evt.newIndex;
       let oldIndex = evt.oldIndex;
-      if (newIndex === oldIndex) return;
+      if (newIndex === oldIndex) {
+        return;
+      }
       let newNode = evt.item;
       let group = evt.to;
 
@@ -272,7 +276,9 @@ export default {
     onEndRefreshA(evt) {
       let newIndex = evt.newIndex;
       let oldIndex = evt.oldIndex;
-      if (newIndex === oldIndex) return;
+      if (newIndex === oldIndex) {
+        return;
+      }
       let newNode = evt.item;
       let group = evt.to;
       let groupData = cloneDeep(this.groupAData);

@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       activeIndex: "1",
-      //标题列表
+      // 标题列表
       titleArray: [
         {
           title: "数据模板定义",

@@ -99,7 +99,7 @@ export default {
     };
   },
   methods: {
-    //创建数据库和数据表
+    // 创建数据库和数据表
     createDB() {
       // let tableName = "DrawstartsDB"; //数据库名称
       // let version = "1.0"; //版本
@@ -107,7 +107,7 @@ export default {
       // let size = 1024 * 1024 * 1024; //大小
       // this.db== openDatabase(tableName, version, des, size);
       let sql =
-        "CREATE TABLE IF NOT EXISTS USERTABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, name,balance)"; //建表
+        "CREATE TABLE IF NOT EXISTS USERTABLE (id INTEGER PRIMARY KEY AUTOINCREMENT, name,balance)"; // 建表
       transaction(sql);
     },
     // 插入
@@ -173,7 +173,7 @@ export default {
         this.tableData = [];
       });
     },
-    //清除表数据
+    // 清除表数据
     clearTableBefore() {
       this.$confirm("是否确认删除表数据", "提示", {
         confirmButtonText: "确定",
@@ -190,7 +190,7 @@ export default {
           });
         });
     },
-    //清除表数据
+    // 清除表数据
     clearTable(tableName) {
       let sql = "DELETE FROM " + tableName;
       transaction(sql).then(() => {
@@ -201,7 +201,7 @@ export default {
         });
       });
     },
-    //更新数据
+    // 更新数据
     update(columnName, columnValue, id) {
       let sql =
         "UPDATE processStorage SET " +
@@ -256,7 +256,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          //构造sql
+          // 构造sql
           let ids = this.getCheckListIds();
           let sql = "DELETE FROM USERTABLE WHERE Id in (" + ids + ")";
           transaction(sql).then(() => {

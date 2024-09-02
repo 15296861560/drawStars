@@ -16,7 +16,7 @@ export default {
           trigger: "item",
           formatter: newVal.tooltip + "<br/>{a}：{c}%",
         },
-        //标题
+        // 标题
         title: {
           text: newVal.data + "%",
           subtext: newVal.tooltip,

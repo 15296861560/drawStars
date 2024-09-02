@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:22
@@ -69,7 +69,7 @@ export default {
       let page = this.$refs.showPage;
       let doc = page.contentDocument || page.contentWindow.document; // W3C || IE
       // doc.designMode = "on";//控制整个文档是否可编辑
-      //当一个HTML元素的contenteditable属性被设置为true时，document.execCommand() 方法便可使用。
+      // 当一个HTML元素的contenteditable属性被设置为true时，document.execCommand() 方法便可使用。
       // doc.contentEditable = true;//让iframe可编辑
       doc.open();
       doc.write(this.content);

@@ -49,7 +49,9 @@ export default {
         let y = Math.random();
 
         let flag = true;
-        if (y > 0.5) flag = false;
+        if (y > 0.5) {
+          flag = false;
+        }
 
         setTimeout(() => {
           if (flag) {

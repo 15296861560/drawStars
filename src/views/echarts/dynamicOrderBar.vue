@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
@@ -34,8 +34,8 @@ export default {
         },
         series: [{ data: [120, 200, 150, 110, 130] }],
       },
-      dataTimer: null, //更新数据定时器
-      updateTimes: 10, //更新频率
+      dataTimer: null, // 更新数据定时器
+      updateTimes: 10, // 更新频率
     };
   },
   methods: {
@@ -47,7 +47,7 @@ export default {
         this.updateData();
       }, this.updateTimes * 1000);
     },
-    //模拟更新数据
+    // 模拟更新数据
     updateData() {
       let data = this.barData.series[0].data;
       data.forEach((element, index, arr) => {

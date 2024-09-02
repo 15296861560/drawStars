@@ -99,7 +99,7 @@ export default {
     return {
       originalText: "",
       postText: "",
-      //语言列表
+      // 语言列表
       language: [
         {
           value: "auto",
@@ -158,7 +158,7 @@ export default {
       // 发送翻译请求
       const url = "http://api.fanyi.baidu.com/api/trans/vip/translate";
       const params = {
-        q: contents, //翻译内容
+        q: contents, // 翻译内容
         from: this.from,
         to: this.to,
         appid: appID,

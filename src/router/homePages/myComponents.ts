@@ -6,7 +6,7 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-06 00:00:10
  */
-/*组件模块*/
+/* 组件模块 */
 export default [
   {
     path: "/home/componentsHomePage",
