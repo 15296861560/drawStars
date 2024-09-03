@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { getContent } from "@/assets/js/api/commomController/commomApi.js";
+import { findReq } from "@/assets/js/api";
 export default {
   data() {
     return {
@@ -57,13 +57,12 @@ export default {
     };
   },
   methods: {
-    getTemplate() {
-      let _this = this;
-      getContent().then((res) => {
-        if (res.status) {
-          this.content = res.data;
-        }
-      });
+    async getTemplate() {
+      const req = findReq("commomController", "getContent");
+      const res = await req();
+      if (res.status) {
+        this.content = res.data;
+      }
     },
     running() {
       let page = this.$refs.showPage;

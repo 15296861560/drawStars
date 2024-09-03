@@ -69,15 +69,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { showTips } from "@/utils/message/showTips.js";
-import {
-  getCaptcha,
-  changePhone,
-  verifyCaptcha,
-} from "@/assets/js/api/profileController/profileApi.js";
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
+
+import { findReq } from "@/assets/js/api";
+const getCaptcha = findReq("profileController", "getCaptcha");
+const verifyCaptcha = findReq("profileController", "verifyCaptcha");
 
 // 验证码
 const captcha = ref("");

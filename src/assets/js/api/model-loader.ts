@@ -19,7 +19,7 @@ export const modelLoader = () => {
     .filter((path) => !excludeAPIFiles.includes(path))
     .forEach((path) => {
       const name = path.split("/").at(-2) || "";
-      const model = files[path];
+      const model = (files[path] as any).default || files[path];
       modelApi[name] = model;
     });
 

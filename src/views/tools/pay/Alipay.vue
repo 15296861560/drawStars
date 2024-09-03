@@ -56,7 +56,9 @@
   </div>
 </template>
 <script>
-import { toPay } from "@/assets/js/api/payController/payApi.js";
+import { findReq } from "@/assets/js/api";
+const toPay = findReq("payController", "toPay");
+
 export default {
   data() {
     return {
@@ -72,9 +74,8 @@ export default {
   methods: {
     init() {},
     async pay() {
-      toPay({ goods: this.goods }).then((res) => {
-        window.open(res.data);
-      });
+      const res = await toPay({ goods: this.goods });
+      window.open(res.data);
     },
   },
 };

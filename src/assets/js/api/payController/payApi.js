@@ -9,18 +9,12 @@
 /* 支付相关接口 */
 import { $axios } from "@/assets/js/axios-api/axios-config.js";
 
-/**
- * @description: 付款
- * @param {} params
- * @return {*}
- * @author: lgy
- */
-function toPay(params) {
-  return new Promise((resolve, reject) => {
-    $axios(params, "/payApi/toPay").then((res) => {
-      resolve(res);
-    });
-  });
-}
-
-export { toPay };
+export default {
+  /**
+   * @description: 付款
+   * @param {} params
+   * @return {*}
+   * @author: lgy
+   */
+  toPay: (params) => $axios(params, "/payApi/toPay"),
+};

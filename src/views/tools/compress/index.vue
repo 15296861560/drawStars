@@ -54,7 +54,7 @@
   </div>
 </template>
 <script>
-import { compressCode } from "@/assets/js/api/commomController/commomApi.js";
+import { findReq } from "@/assets/js/api";
 export default {
   data() {
     return {
@@ -66,7 +66,8 @@ export default {
   methods: {
     async running() {
       this.fullscreenLoading = true;
-      let res = await compressCode({ content: this.content });
+      const req = findReq("commomController", "compressCode");
+      const res = await req({ content: this.content });
       this.fullscreenLoading = false;
       if (res.status) {
         this.compressCode = res.data;

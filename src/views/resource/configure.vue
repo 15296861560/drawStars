@@ -50,12 +50,14 @@
 </template>
 <script setup>
 import { onMounted, ref, reactive, defineAsyncComponent, computed } from "vue";
-import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
+import webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
 import { dialogFields, tableFields } from "./schema/configureSchema";
 import i18n from "@/lang/index.js";
 import { exportFile } from "@/utils/commom/importAndExport.ts";
+
+console.log("webAdressApi", webAdressApi);
 
 const $t = i18n.global.t;
 

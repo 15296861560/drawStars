@@ -66,10 +66,7 @@
 import { onMounted, ref, reactive, computed, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import { showTips } from "@/utils/message/showTips.js";
-import {
-  queryWebsite,
-  getWebsiteCount,
-} from "@/assets/js/api/webAdressController/webAdressApi.js";
+import webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
 import i18n from "@/lang/index.js";
 
 const $t = i18n.global.t;
@@ -183,7 +180,7 @@ const searchInfo = reactive({
 });
 
 async function getTotal(params) {
-  const result = await getWebsiteCount(params);
+  const result = await webAdressApi.getWebsiteCount(params);
   if (result.status) {
     pageInfo.total = result.data[0]?.["COUNT(*)"] || 0;
   } else {
@@ -200,7 +197,7 @@ async function query() {
 
   getTotal(params);
 
-  const result = await queryWebsite(params);
+  const result = await webAdressApi.queryWebsite(params);
   const DEFAULT_IMG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect fill='%23cccccc' width='200' height='150'%3E%3C/rect%3E%3Ctext fill='%23000000' font-family='Verdana' font-size='20' dy='0.35em' x='50%25' y='50%25' text-anchor='middle'%3E无图片%3C/text%3E%3C/svg%3E`;
   if (result.status) {
     webFrameAddress.value = result.data.map((item: WebObj) => {

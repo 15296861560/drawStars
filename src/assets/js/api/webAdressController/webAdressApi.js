@@ -9,8 +9,8 @@
 /* 配置资料相关接口 */
 import { $axios } from "@/assets/js/axios-api/axios-config.js";
 
-function createWebsite(websiteInfo) {
-  return new Promise((resolve, reject) => {
+export default {
+  createWebsite: (websiteInfo) => {
     let fields = "";
     let values = "";
     for (let k in websiteInfo) {
@@ -22,42 +22,26 @@ function createWebsite(websiteInfo) {
     let sql = {
       sql: "INSERT INTO web_adress" + "(" + fields + ") VALUES(" + values + ")",
     };
-    $axios(sql, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
+    return $axios(sql, "/mysqlApi/sql");
+  },
 
-function deleteWebsite(id) {
-  return new Promise((resolve, reject) => {
-    let sql = {
-      sql: "DELETE  FROM web_adress WHERE id=" + id,
-    };
-    $axios(sql, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
+  deleteWebsite: (id) =>
+    $axios(
+      {
+        sql: "DELETE  FROM web_adress WHERE id=" + id,
+      },
+      "/mysqlApi/sql",
+    ),
 
-function batchDeleteWebsite(ids) {
-  return new Promise((resolve, reject) => {
-    let sql = {
-      sql: `DELETE  FROM web_adress WHERE id in (${ids})`,
-    };
-    $axios(sql, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
+  batchDeleteWebsite: (ids) =>
+    $axios(
+      {
+        sql: `DELETE  FROM web_adress WHERE id in (${ids})`,
+      },
+      "/mysqlApi/sql",
+    ),
 
-function updateWebsite(websiteInfo) {
-  return new Promise((resolve, reject) => {
+  updateWebsite: (websiteInfo) => {
     let fields = "";
     const websiteInfoId = websiteInfo.id;
     delete websiteInfo.id;
@@ -68,18 +52,12 @@ function updateWebsite(websiteInfo) {
     let sql = {
       sql: "UPDATE web_adress SET " + fields + " WHERE id=" + websiteInfoId,
     };
-    $axios(sql, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
+    return $axios(sql, "/mysqlApi/sql");
+  },
 
-function queryWebsite(param) {
-  const pageSize = param.pageSize || 10;
-  const limit = (param.curPage - 1) * pageSize;
-  return new Promise((resolve, reject) => {
+  queryWebsite: (param) => {
+    const pageSize = param.pageSize || 10;
+    const limit = (param.curPage - 1) * pageSize;
     const params = {
       sql: "SELECT * FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%') order by update_time desc limit ?,?",
       values: [
@@ -91,48 +69,21 @@ function queryWebsite(param) {
         pageSize,
       ],
     };
-    $axios(params, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
+    return $axios(params, "/mysqlApi/sql");
+  },
 
-function getWebsiteCount(param) {
-  return new Promise((resolve, reject) => {
+  getWebsiteCount: (param) => {
     const params = {
       sql: "SELECT COUNT(*) FROM web_adress where name like concat('%',?,'%') and type like concat('%',?,'%') and address like concat('%',?,'%') and open_way like concat('%',?,'%')",
       values: [param.name, param.type, param.address, param.open_way],
     };
-    $axios(params, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
-
-function getWebsiteDetailById(id) {
-  return new Promise((resolve, reject) => {
+    return $axios(params, "/mysqlApi/sql");
+  },
+  getWebsiteDetailById: (id) => {
     const params = {
       sql: "SELECT * FROM web_adress where id = ?",
       values: [id],
     };
-    $axios(params, "/mysqlApi/sql")
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => reject(e));
-  });
-}
-
-export {
-  createWebsite,
-  deleteWebsite,
-  updateWebsite,
-  queryWebsite,
-  batchDeleteWebsite,
-  getWebsiteDetailById,
-  getWebsiteCount,
+    return $axios(params, "/mysqlApi/sql");
+  },
 };

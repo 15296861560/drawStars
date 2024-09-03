@@ -65,20 +65,18 @@
 <script>
 import { debounce } from "lodash";
 import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
-
-import {
-  queryPovinceList,
-  queryCityList,
-  queryAreaList,
-  queryTownList,
-} from "@/assets/js/api/resourceController/regionApi.js";
-import {
-  queryUserInfo,
-  updateUserInfo,
-} from "@/assets/js/api/profileController/profileApi.js";
+import { findReq } from "@/assets/js/api";
 
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
+
+const queryPovinceList = findReq("resourceController", "queryPovinceList");
+const queryCityList = findReq("resourceController", "queryCityList");
+const queryAreaList = findReq("resourceController", "queryAreaList");
+const queryTownList = findReq("resourceController", "queryTownList");
+
+const queryUserInfo = findReq("profileController", "queryUserInfo");
+const updateUserInfo = findReq("profileController", "updateUserInfo");
 
 const DEBOUNCE_TIME = 1000;
 export default {

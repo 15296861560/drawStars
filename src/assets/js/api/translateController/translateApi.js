@@ -9,12 +9,4 @@
 /* 翻译相关接口 */
 import { $axios } from "@/assets/js/axios-api/axios-config.js";
 
-function getSign(params) {
-  return new Promise((resolve, reject) => {
-    $axios(params, "/translateApi/getSign").then((res) => {
-      resolve(res);
-    });
-  });
-}
-
-export { getSign };
+export default { getSign: (params) => $axios(params, "/translateApi/getSign") };

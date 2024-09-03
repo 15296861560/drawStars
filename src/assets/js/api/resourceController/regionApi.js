@@ -14,57 +14,49 @@ const cacheOption = {
   cacheDuration: 1000 * 60 * 60 * 24,
 };
 
-function queryPovinceList() {
-  return new Promise((resolve, reject) => {
-    $axiosGet({}, "/resourceApi/getPovinceList", cacheOption)
-      .then((res) => {
-        setTimeout(() => {
-          resolve(res);
-        }, 500);
-      })
-      .catch((e) => {
-        reject(e);
-      });
-  });
-}
+export default {
+  queryPovinceList: () => {
+    return new Promise((resolve, reject) => {
+      $axiosGet({}, "/resourceApi/getPovinceList", cacheOption)
+        .then((res) => {
+          setTimeout(() => {
+            resolve(res);
+          }, 500);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
 
-function queryCityList(params) {
-  return new Promise((resolve, reject) => {
-    $axiosGet(params, "/resourceApi/getCityList", cacheOption)
-      .then((res) => {
-        setTimeout(() => {
-          resolve(res);
-        }, 500);
-      })
-      .catch((e) => {
-        reject(e);
-      });
-  });
-}
+  queryCityList: (params) => {
+    return new Promise((resolve, reject) => {
+      $axiosGet(params, "/resourceApi/getCityList", cacheOption)
+        .then((res) => {
+          setTimeout(() => {
+            resolve(res);
+          }, 500);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
 
-function queryAreaList(params) {
-  return new Promise((resolve, reject) => {
-    $axiosGet(params, "/resourceApi/getAreaList", cacheOption)
-      .then((res) => {
-        setTimeout(() => {
-          resolve(res);
-        }, 500);
-      })
-      .catch((e) => {
-        reject(e);
-      });
-  });
-}
+  queryAreaList: (params) => {
+    return new Promise((resolve, reject) => {
+      $axiosGet(params, "/resourceApi/getAreaList", cacheOption)
+        .then((res) => {
+          setTimeout(() => {
+            resolve(res);
+          }, 500);
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
+  },
 
-function queryTownList(params) {
-  return new Promise((resolve, reject) => {
-    $axiosGet(params, "/resourceApi/getTownList", cacheOption)
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((e) => {
-        reject(e);
-      });
-  });
-}
-export { queryPovinceList, queryCityList, queryAreaList, queryTownList };
+  queryTownList: (params) =>
+    $axiosGet(params, "/resourceApi/getTownList", cacheOption),
+};

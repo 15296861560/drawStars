@@ -61,10 +61,7 @@ import { onMounted, toRefs, ref } from "vue";
 import type { AnyObject } from "@/types/global";
 import { useVModels } from "@vueuse/core";
 import { showTips } from "@/utils/message/showTips.js";
-import {
-  uploadFile,
-  downloadFile,
-} from "@/assets/js/api/commomController/commomApi.js";
+import { findReq } from "@/assets/js/api";
 import { Delete, Download, Plus, ZoomIn } from "@element-plus/icons-vue";
 import { genFileId } from "element-plus";
 import type {
@@ -107,9 +104,10 @@ const imgOnChange = async (file: AnyObject) => {
   let formData = new FormData();
   formData.append("file", file.raw);
   formData.append("filename", file.name);
-  const result = await uploadFile(formData);
-  if (result.status) {
-    field.value = `/uploadImg${result.data?.url}`;
+  const req = findReq("commomController", "uploadFile");
+  const res = await req(formData);
+  if (res.status) {
+    field.value = `/uploadImg${res.data?.url}`;
   }
 };
 
@@ -148,7 +146,8 @@ const handlePictureCardPreview = (file: UploadFile) => {
 };
 
 const handleDownload = async (file: UploadFile) => {
-  const res = await downloadFile({
+  const req = findReq("commomController", "downloadFile");
+  const res = await req({
     filename: field.value?.replace("/uploadImg/", ""),
   });
   if (res.status) {

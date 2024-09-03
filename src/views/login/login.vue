@@ -175,16 +175,10 @@
 <script>
 import * as _ from "lodash";
 import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
-import {
-  loginByPassword,
-  registerByPhone,
-  getCaptcha,
-  loginBySMS,
-} from "@/assets/js/api/loginController/loginApi.js";
+import { findReq } from "@/assets/js/api";
 import { userInfoStore } from "@/stores/user-info";
 import { particles } from "./particles.js";
 import { loadFull } from "tsparticles";
-import { verifyLogin } from "@/assets/js/api/loginController/loginApi.js";
 
 const LOGIN_MODE = {
   password: "password", // 密码登录
@@ -311,7 +305,8 @@ export default {
         phone: this.loginForm.account,
         password: this.loginForm.password,
       };
-      let res = await loginByPassword(params);
+      const req = findReq("loginController", "loginByPassword");
+      const res = await req(params);
       if (res.status) {
         this.userInfo = res.data;
         this.afterLogin(this.userInfo);
@@ -325,7 +320,8 @@ export default {
         phone: this.loginForm.account,
         captcha: this.loginForm.captcha,
       };
-      let res = await loginBySMS(params);
+      const req = findReq("loginController", "loginBySMS");
+      const res = await req(params);
       if (res.status) {
         this.userInfo = res.data;
         this.afterLogin(this.userInfo);
@@ -372,7 +368,8 @@ export default {
         name: this.registerForm.nickname,
         password: this.registerForm.password,
       };
-      let res = await registerByPhone(params);
+      const req = findReq("loginController", "registerByPhone");
+      const res = await req(params);
       if (res.status) {
         this.userInfo = res.data;
         this.$message({
@@ -422,7 +419,8 @@ export default {
     },
     // 判断是否已登录
     async isLogin() {
-      let res = await verifyLogin();
+      const verifyLogin = findReq("loginController", "verifyLogin");
+      const res = await verifyLogin();
       if (!res.status) {
         return;
       }
@@ -441,7 +439,8 @@ export default {
         type: "login",
         account: this.loginForm.account,
       };
-      const res = await getCaptcha(params);
+      const req = findReq("loginController", "getCaptcha");
+      const res = await req(params);
       if (res.status) {
         this.$message({
           type: "success",

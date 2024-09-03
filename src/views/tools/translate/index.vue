@@ -92,7 +92,7 @@
 <script>
 import storage from "@/utils/commom/storage.ts";
 import { jsonp } from "vue-jsonp";
-import { getSign } from "@/assets/js/api/translateController/translateApi.js";
+import { findReq } from "@/assets/js/api";
 
 export default {
   data() {
@@ -149,7 +149,8 @@ export default {
       const salt = parseInt(Math.random() * 10000);
 
       // 获取appid和签名
-      let res = await getSign({ contents, salt }, "/translateApi/getSign");
+      const getSign = findReq("translateController", "getSign");
+      const res = await getSign({ contents, salt }, "/translateApi/getSign");
       if (res.status) {
         appID = res.data && res.data.appID;
         sign = res.data && res.data.sign;

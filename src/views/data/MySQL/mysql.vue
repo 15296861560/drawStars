@@ -70,12 +70,7 @@
   </div>
 </template>
 <script>
-import {
-  query,
-  register,
-  cancel,
-  excuteSQL,
-} from "@/assets/js/api/mysqlController/mysqlApi.js";
+import { findReq } from "@/assets/js/api";
 export default {
   data() {
     return {
@@ -91,7 +86,7 @@ export default {
   },
   methods: {
     // 插入
-    insert() {
+    async insert() {
       let rowData = this.formInline;
       let data = {
         name: rowData.name,
@@ -99,38 +94,38 @@ export default {
         phone: rowData.phone,
       };
 
-      register(data).then((res) => {
-        if (res.status) {
-          this.$message({
-            type: "success",
-            message: "创建成功!",
-          });
-          this.query();
-          this.formInline.name = "";
-          this.formInline.phone = "";
-          this.$refs.name.select();
-        }
-      });
+      const req = findReq("mysqlController", "register");
+      const res = await req(data);
+      if (res.status) {
+        this.$message({
+          type: "success",
+          message: "创建成功!",
+        });
+        this.query();
+        this.formInline.name = "";
+        this.formInline.phone = "";
+        this.$refs.name.select();
+      }
     },
     // 查询
-    query() {
-      query({}).then((res) => {
-        if (res.status) {
-          this.tableData = res.data;
-        }
-      });
+    async query() {
+      const req = findReq("mysqlController", "query");
+      const res = await req({});
+      if (res.status) {
+        this.tableData = res.data;
+      }
     },
     // 删除
-    deleteRow(phone) {
-      cancel({ phone: phone }).then((res) => {
-        if (res.status) {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          this.query();
-        }
-      });
+    async deleteRow(phone) {
+      const req = findReq("mysqlController", "cancel");
+      const res = await req({ phone: phone });
+      if (res.status) {
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+        });
+        this.query();
+      }
     },
     // 更新多条数据
     updateDatas() {
@@ -148,6 +143,7 @@ export default {
             "' WHERE Id in (" +
             ids +
             ")";
+          const excuteSQL = findReq("mysqlController", "cancel");
           excuteSQL({ sql: sql }).then(() => {
             // 更新成功后操作
             this.checkList = [];
@@ -172,18 +168,19 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
+        .then(async () => {
           // 构造sql
           let ids = this.getCheckListIds();
           let sql = { sql: "delete from user where id in (" + ids + ")" };
-          this.$axios(sql, "/mysqlApi/sql").then((res) => {
-            // 删除成功后操作
-            this.checkList = [];
-            this.query();
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
+
+          const excuteSQL = findReq("mysqlController", "cancel");
+          await excuteSQL();
+          // 删除成功后操作
+          this.checkList = [];
+          this.query();
+          this.$message({
+            type: "success",
+            message: "删除成功!",
           });
         })
         .catch(() => {

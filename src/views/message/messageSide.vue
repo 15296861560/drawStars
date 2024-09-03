@@ -62,13 +62,7 @@
 import { onMounted, ref, reactive, watch } from "vue";
 import { showTips } from "@/utils/message/showTips.js";
 import formatDate from "@/utils/commom/formatDate.js";
-import {
-  queryNotifyById,
-  queryNotifyByType,
-  queryMyNotifyByType,
-  queryAllNotify,
-  queryMyAllNotify,
-} from "@/assets/js/api/notifyController/notifyApi.js";
+import { findReq } from "@/assets/js/api";
 import { WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
 import { userInfoStore } from "@/stores/user-info";
 
@@ -109,7 +103,8 @@ const close = () => {
 let notifyList = reactive([]);
 
 const getMyAllNotify = async () => {
-  let res = await queryMyAllNotify();
+  const queryMyAllNotify = findReq("notifyController", "queryMyAllNotify");
+  const res = await queryMyAllNotify();
   if (!res.status || !res.data) {
     return;
   }

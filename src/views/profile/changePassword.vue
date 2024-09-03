@@ -35,11 +35,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { showTips } from "@/utils/message/showTips.js";
-import { changePassword } from "@/assets/js/api/profileController/profileApi.js";
 import { userInfoStore } from "@/stores/user-info";
 const userInfo = userInfoStore();
+
+import { findReq } from "@/assets/js/api";
+const changePassword = findReq("profileController", "changePassword");
 
 const oldPassword = ref("");
 const password = ref("");
