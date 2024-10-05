@@ -26,6 +26,7 @@ export default {
       eMap: "中国地图",
       aMap: "高德地图",
       gauge: "仪表盘",
+      leafletMap: "leaflet地图",
     },
     toolHomePage: {
       Lodash: "Lodash",

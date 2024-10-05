@@ -61,6 +61,14 @@ export default [
     },
   },
   {
+    path: "/home/echartHomePage/leafletMap",
+    name: "leaflet地图",
+    component: () => import("@/views/echarts/leafletMap.vue"),
+    meta: {
+      title: ["首页", "图表模块", "leaflet地图"],
+    },
+  },
+  {
     path: "/home/echartHomePage/bar",
     name: "柱状图",
     component: () => import("@/views/echarts/bar.vue"),

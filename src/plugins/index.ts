@@ -8,6 +8,7 @@ import installElementPlus from "@/plugins/element-plus";
 import installDrawStartsUI from "@/plugins/draw-stars-ui";
 import installNotify from "@/plugins/drawstarts-notify";
 import installEcharts from "@/plugins/echarts";
+import installLeaflet from '@/plugins/leaflet'
 // @ts-ignore
 import i18n from "@/lang/index.js";
 import Particles from "particles.vue3";
@@ -32,5 +33,6 @@ export default (app: App<Element>) => {
   installDrawStartsUI(app);
   installNotify(app);
   installEcharts(app);
+  installLeaflet(app);
   installDirectives(app);
 };

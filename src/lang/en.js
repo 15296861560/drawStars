@@ -26,6 +26,7 @@ export default {
       eMap: "Map of China",
       aMap: "Gaode Map",
       gauge: "Dashboard",
+      leafletMap: "Leaflet Map",
     },
     toolHomePage: {
       Lodash: "Lodash",

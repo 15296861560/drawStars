@@ -136,7 +136,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_rk.png", import.meta.url).href,
+    image: new URL("@/assets/img/map/icon_point_rk.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
@@ -146,7 +146,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_fr.png", import.meta.url).href,
+    image: new URL("@/assets/img/map/icon_point_fr.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
@@ -156,7 +156,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_fw.png", import.meta.url).href,
+    image: new URL("@/assets/img/map/icon_point_fw.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
@@ -166,7 +166,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_jzw.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_jzw.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
@@ -177,7 +177,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_wgy.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_wgy.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
@@ -188,7 +188,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_sjzs.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_sjzs.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
@@ -199,7 +199,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_ryzs.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_ryzs.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
@@ -210,7 +210,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_ynsj.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_ynsj.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
@@ -221,29 +221,29 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_point_zdqy.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_point_zdqy.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
     imageOffset: new AMap.Pixel(0, 0),
   }),
-  dotPicturePointSymbol: new AMap.Icon({
+  dotGreenSymbol: new AMap.Icon({
     // 图标尺寸
     size: new AMap.Size(33, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_dot_green.png", import.meta.url)
+    image: new URL("@/assets/img/map/icon_dot_green.png", import.meta.url)
       .href,
     // 图标所用图片大小
     imageSize: new AMap.Size(33, 33),
     // 图标取图偏移量
     imageOffset: new AMap.Pixel(0, 0),
   }),
-  dotPictureActivePointSymbol: new AMap.Icon({
+  dotRedSymbol: new AMap.Icon({
     // 图标尺寸
     size: new AMap.Size(33, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/grid/icon_dot_red.png", import.meta.url).href,
+    image: new URL("@/assets/img/map/icon_dot_red.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(33, 33),
     // 图标取图偏移量
@@ -288,8 +288,8 @@ export const useCreateMarker = (
         map,
         data,
         layGroups,
-        "dotPicturePointSymbol",
-        "dotPictureActivePointSymbol",
+        "dotGreenSymbol",
+        "dotRedSymbol",
       );
     });
   }
