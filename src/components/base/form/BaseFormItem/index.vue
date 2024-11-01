@@ -95,6 +95,12 @@
       :disabled="disabled"
     />
 
+    <location-component
+      v-else-if="isLocation"
+      v-model:field="field"
+      :disabled="disabled"
+    />
+
     <el-input
       v-else
       v-model="field"
@@ -113,9 +119,14 @@ import { computed, onMounted, toRefs, ref, defineAsyncComponent } from "vue";
 import type { AnyObject } from "@/types/global";
 import { useVModels } from "@vueuse/core";
 import { showTips } from "@/utils/message/showTips.js";
+import { ComponentType } from "@/types/base";
 
 const singleImgComponent = defineAsyncComponent(
   () => import("./singleImgComponent.vue"),
+);
+
+const locationComponent = defineAsyncComponent(
+  () => import("./locationComponent.vue"),
 );
 
 const props = defineProps<{
@@ -137,15 +148,16 @@ const { type, apiMethod, apiParams, config, disabled, readonly, options } =
   toRefs(props);
 const { field } = useVModels(props, emit);
 
-const isInput = computed(() => type?.value === "input");
-const isNumber = computed(() => type?.value === "input-number");
-const isTextarea = computed(() => type?.value === "textarea");
-const isSelect = computed(() => type?.value === "select");
-const isSelectCascade = computed(() => type?.value === "cascade");
-const isDate = computed(() => type?.value === "date");
-const isRadio = computed(() => type?.value === "radio");
-const isCheckBox = computed(() => type?.value === "checkbox");
-const isImg = computed(() => type?.value === "img");
+const isInput = computed(() => type?.value === ComponentType.input);
+const isNumber = computed(() => type?.value === ComponentType.inputNumber);
+const isTextarea = computed(() => type?.value === ComponentType.textarea);
+const isSelect = computed(() => type?.value === ComponentType.select);
+const isSelectCascade = computed(() => type?.value === ComponentType.cascade);
+const isDate = computed(() => type?.value === ComponentType.date);
+const isRadio = computed(() => type?.value === ComponentType.radio);
+const isCheckBox = computed(() => type?.value === ComponentType.checkbox);
+const isImg = computed(() => type?.value === ComponentType.img);
+const isLocation = computed(() => type?.value === ComponentType.location);
 
 const requestOptions = async () => {
   if (apiMethod?.value) {
