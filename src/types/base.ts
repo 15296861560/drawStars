@@ -23,5 +23,6 @@ export enum ComponentType {
   radio = "radio",
   checkbox = "checkbox",
   img = "img",
+  locationPoint = "locationPoint",
   location = "location",
 }

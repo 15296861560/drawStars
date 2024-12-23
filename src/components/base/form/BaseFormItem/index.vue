@@ -96,6 +96,11 @@
     />
 
     <location-component
+      v-else-if="isLocationPoint"
+      v-model:field="field"
+      :disabled="disabled"
+    />
+    <custom-location-component
       v-else-if="isLocation"
       v-model:field="field"
       :disabled="disabled"
@@ -129,6 +134,10 @@ const locationComponent = defineAsyncComponent(
   () => import("./locationComponent.vue"),
 );
 
+const CustomLocationComponent = defineAsyncComponent(
+  () => import("./CustomLocationComponent.vue"),
+);
+
 const props = defineProps<{
   field: string | number | boolean | string[] | any;
   type?: string;
@@ -157,6 +166,7 @@ const isDate = computed(() => type?.value === ComponentType.date);
 const isRadio = computed(() => type?.value === ComponentType.radio);
 const isCheckBox = computed(() => type?.value === ComponentType.checkbox);
 const isImg = computed(() => type?.value === ComponentType.img);
+const isLocationPoint = computed(() => type?.value === ComponentType.locationPoint);
 const isLocation = computed(() => type?.value === ComponentType.location);
 
 const requestOptions = async () => {

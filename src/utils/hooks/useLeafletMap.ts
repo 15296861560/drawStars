@@ -1,5 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import "leaflet.wmts";
+import '@geoman-io/leaflet-geoman-free'
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 import L from "leaflet";
 import axios from "axios";
 
