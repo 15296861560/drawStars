@@ -50,12 +50,13 @@
 </template>
 <script setup>
 import { onMounted, ref, reactive, defineAsyncComponent, computed } from "vue";
-import webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
+import noticeApi from "@/assets/js/api/noticeController/noticeApi.js";
 import { showTips } from "@/utils/message/showTips.js";
 import { ElMessageBox } from "element-plus";
-import { dialogFields, tableFields } from "./schema/configureSchema";
+import { dialogFields, tableFields } from "./config/schema";
 import i18n from "@/lang/index.js";
 import { exportFile } from "@/utils/commom/importAndExport.ts";
+import router from "@/router";
 
 const $t = i18n.global.t;
 
@@ -71,23 +72,21 @@ const SearchItem = defineAsyncComponent(
 
 const confirmMethod = async (newData) => {
   const nowDate = new Date().getTime();
-  const websiteInfo = {
-    name: newData.name,
+  const notice = {
+    title: newData.title,
+    content: newData.content,
     type: newData.type,
-    icon: newData.icon,
-    address: newData.address,
-    open_way: newData.open_way,
-    create_time: nowDate,
+    create_time: new Date(newData.create_time || null).getTime(),
     update_time: nowDate,
   };
-  let confirmFun = webAdressApi.createWebsite;
+  let confirmFun = noticeApi.createNotice;
   let successTips = "创建成功";
   if (newData.id) {
-    websiteInfo.id = newData.id;
-    confirmFun = webAdressApi.updateWebsite;
+    notice.id = newData.id;
+    confirmFun = noticeApi.updateNotice;
     successTips = "编辑成功";
   }
-  const result = await confirmFun(websiteInfo);
+  const result = await confirmFun(notice);
   if (result.status) {
     showTips("success", successTips);
     query();
@@ -99,14 +98,14 @@ const confirmMethod = async (newData) => {
 
 const initMethod = async (params) => {
   const { id } = params;
-  const result = await webAdressApi.getWebsiteDetailById(id);
+  const result = await noticeApi.getNoticeDetailById(id);
   return result;
 };
 
 const dialogOptions = reactive({
   fieldList: dialogFields,
   confirmMethod,
-  confirmParams: {},
+  confirmParams: { type: "rich" },
   initMethod,
   initParams: {},
   disabled: false,
@@ -117,11 +116,8 @@ const dialogRef = ref();
 const dialogTitle = ref("新增");
 
 const searchInfo = reactive({
-  name: "",
+  title: "",
   type: "",
-  icon: "",
-  address: "",
-  open_way: "",
 });
 
 const tableData = ref([]);
@@ -129,50 +125,23 @@ const checkList = ref([]);
 const handleSelectionChange = (val) => {
   checkList.value = val.map((v) => v.id);
 };
-const openWayOptions = ref([
-  {
-    label: "新tab页签打开",
-    value: "newTab",
-  },
-  {
-    label: "当前窗口打开",
-    value: "curWindow",
-  },
-  {
-    label: "进入模块",
-    value: "module",
-  },
-]);
+
 const typeOptions = ref([
   {
-    label: "框架",
-    value: "frame",
+    label: "外链",
+    value: "link",
   },
   {
-    label: "工具",
-    value: "tool",
-  },
-  {
-    label: "资源",
-    value: "resource",
-  },
-  {
-    label: "模块",
-    value: "module",
+    label: "富文本",
+    value: "rich",
   },
 ]);
 
 const searchItems = computed(() => [
   {
-    field: "name",
-    label: "名称",
-    placeholder: $t("placeholder.inputName"),
-    type: "input",
-  },
-  {
-    field: "address",
-    label: "地址",
-    placeholder: $t("placeholder.inputAdress"),
+    field: "title",
+    label: "标题",
+    placeholder: $t("placeholder.inputTitle"),
     type: "input",
   },
   {
@@ -181,13 +150,6 @@ const searchItems = computed(() => [
     placeholder: $t("placeholder.inputType"),
     type: "select",
     options: typeOptions.value,
-  },
-  {
-    field: "open_way",
-    label: "打开方式",
-    placeholder: $t("placeholder.inputOpenWay"),
-    type: "select",
-    options: openWayOptions.value,
   },
 ]);
 
@@ -208,7 +170,7 @@ async function query() {
 
   getTotal(params);
 
-  const result = await webAdressApi.queryWebsite(params);
+  const result = await noticeApi.queryNoticeList(params);
   if (result.status) {
     tableData.value = result.data.map((item) => {
       item.create_time = new Date(item.create_time).toLocaleString();
@@ -228,7 +190,7 @@ const getAllData = async () => {
     ...searchInfo,
   };
 
-  const result = await webAdressApi.queryWebsite(params);
+  const result = await noticeApi.queryNoticeList(params);
   if (result.status) {
     dataList = result.data.map((item) => {
       item.create_time = new Date(item.create_time).toLocaleString();
@@ -243,7 +205,7 @@ const getAllData = async () => {
 };
 
 async function getTotal(params) {
-  const result = await webAdressApi.getWebsiteCount(params);
+  const result = await noticeApi.getNoticeCount(params);
   if (result.status) {
     pageInfo.total = result.data[0]?.["COUNT(*)"] || 0;
   } else {
@@ -264,7 +226,7 @@ async function deleteRow(row) {
     return;
   }
 
-  const result = await webAdressApi.deleteWebsite(id);
+  const result = await noticeApi.deleteNotice(id);
   if (result.status) {
     showTips("success", "删除成功");
     query();
@@ -302,7 +264,7 @@ function batchDelete() {
     .then(async () => {
       // 构造sql
       const ids = checkList.value;
-      const result = await webAdressApi.batchDeleteWebsite(ids);
+      const result = await noticeApi.batchDeleteNotice(ids);
       if (result.status) {
         // 删除成功后操作
         checkList.value = [];
@@ -369,7 +331,7 @@ const tableOperate = [
 const tableOptions = reactive({
   tableData,
   tableFields,
-  tableName: "资料列表",
+  tableName: "通知列表",
   showIndex: false,
   showSelection: true,
   pageTableOperate,

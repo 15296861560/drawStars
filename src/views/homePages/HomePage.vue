@@ -75,6 +75,7 @@ export default {
         { name: "lab", path: "/home/labHomePage" },
         { name: "case", path: "/home/caseHomePage" },
         { name: "resource", path: "/home/resourceHomePage" },
+        { name: "manage", path: "/home/manageHomePage" },
       ],
       areaOption: {},
       lineOption: {},

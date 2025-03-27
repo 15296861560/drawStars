@@ -72,4 +72,99 @@ export default {
       });
     });
   },
+
+  // 通用插入数据
+  insertInfo: (info, tableName) => {
+    let fields = "";
+    let values = "";
+    Object.keys(info).forEach(k => {
+      fields += k + ",";
+      values = values + "'" + info[k] + "',";
+    })
+
+    fields = fields.slice(0, -1);
+    values = values.slice(0, -1);
+    let sql = {
+      sql: `INSERT INTO ${tableName} (${fields}) VALUES(${values})`,
+    };
+    return $axios(sql, "/mysqlApi/sql");
+  },
+  // 通用删除数据
+  deleteInfo: (id, tableName) =>
+    $axios(
+      {
+        sql: `DELETE  FROM ${tableName} WHERE id=` + id,
+      },
+      "/mysqlApi/sql",
+    ),
+  // 通用批量删除数据
+  batchDeleteInfo: (ids, tableName) =>
+    $axios(
+      {
+        sql: `DELETE FROM ${tableName} WHERE id in (${ids})`,
+      },
+      "/mysqlApi/sql",
+    ),
+  // 通用更新数据
+  updateInfo: (info, tableName) => {
+    let fields = "";
+    const infoId = info.id;
+    delete info.id;
+    for (let k in info) {
+      fields += `${k}='${info[k]}',`;
+    }
+    fields = fields.slice(0, -1);
+    let sql = {
+      sql: `UPDATE ${tableName} SET ` + fields + " WHERE id=" + infoId,
+    };
+    return $axios(sql, "/mysqlApi/sql");
+  },
+  // 通用分页查询数据
+  queryInfoList: (param, tableName, paramKeys = [], orderInfo = { field: 'update_time', order: 'desc' }) => {
+    const pageSize = param.pageSize || 10;
+    const limit = ((param.curPage - 1) * pageSize) || 0;
+    let whereStr = paramKeys.map(key => {
+      return `${key} like concat('%',?,'%') and`
+    })?.join(" ");
+
+    if (whereStr.length) {
+      whereStr = `where ${whereStr.slice(0, -3)}`
+    }
+
+    whereStr = `${whereStr}order by ${orderInfo.field} ${orderInfo.order} limit ?,?`
+
+    const params = {
+      sql: `SELECT * FROM ${tableName} ${whereStr}`,
+      values: [
+        ...paramKeys.map(key => param[key]),
+        limit,
+        pageSize,
+      ],
+    };
+    return $axios(params, "/mysqlApi/sql");
+  },
+  // 通用查询总数
+  getInfoCount: (paramKeys = [], values, tableName) => {
+    let whereStr = paramKeys.map(key => {
+      return `${key} like concat('%',?,'%') and`
+    })?.join(" ");
+
+    if (whereStr.length) {
+      whereStr = `where ${whereStr.slice(0, -3)}`
+    }
+
+    const params = {
+      sql: `SELECT COUNT(*) FROM ${tableName} ${whereStr}`,
+      values,
+    };
+    return $axios(params, "/mysqlApi/sql");
+  },
+  // 通用根据id查数据
+  getInfoDetailById: (id, tableName) => {
+    const params = {
+      sql: `SELECT * FROM ${tableName} where id = ?`,
+      values: [id],
+    };
+    return $axios(params, "/mysqlApi/sql");
+  },
 };

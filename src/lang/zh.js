@@ -12,6 +12,7 @@ export default {
     lab: "实验室",
     case: "例子",
     resource: "资料库",
+    manage: "管理中心",
     echartHomePage: {
       basicBar: "基础柱状图",
       basicLine: "基础折线图",
@@ -83,6 +84,9 @@ export default {
     resourceHomePage: {
       configure: "配置资料",
       webFrame: "前端框架",
+    },
+    manageHomePage: {
+      notice: "通知管理",
     },
   },
   navigation: {
@@ -205,6 +209,7 @@ export default {
     inputIcon: "请输入图标链接",
     inputAdress: "请输入地址",
     inputOpenWay: "请选择打开方式",
+    inputTitle: "请输入标题",
   },
   text: {
     selected: "选中",

@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-03-25 23:20:53
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-10 16:51:14
- * @FilePath: \drawStars-Vue3\src\components\base\form\dialog.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <el-dialog v-model="dialogVisible" v-bind="$attrs" draggable overflow>
     <el-form
@@ -37,13 +29,22 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
-        <el-button type="primary" @click="confirm"> 确认 </el-button>
+        <el-button type="primary" @click="confirm" :loading="confirmLoading">
+          确认
+        </el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, defineAsyncComponent, watch, toRefs } from "vue";
+import {
+  ref,
+  reactive,
+  defineAsyncComponent,
+  watch,
+  toRefs,
+  nextTick,
+} from "vue";
 import { useVModels } from "@vueuse/core";
 import type { AnyObject, Field, DialogOption } from "@/types/global";
 import { showTips } from "@/utils/message/showTips.js";
@@ -88,6 +89,7 @@ const cancel = () => {
   });
 };
 
+const confirmLoading = ref(false);
 const confirm = async () => {
   const formEl = formRef.value;
   if (!formEl) {
@@ -97,8 +99,9 @@ const confirm = async () => {
     if (valid) {
       if (options.value.confirmMethod) {
         const params = Object.assign(formInfo, options.value.confirmParams);
-
+        confirmLoading.value = true;
         const res = await options.value.confirmMethod(params);
+        confirmLoading.value = false;
         if (!res.status) {
           showTips("error", res.msg);
         }
@@ -127,13 +130,11 @@ const init = async () => {
     if (!data) {
       return;
     }
-    fieldList.value.forEach((element) => {
-      if (element.fieldName.endsWith("time")) {
-        formInfo[element.fieldName] = new Date(
-          data[element.fieldName],
-        ).toLocaleString();
+    Object.keys(data)?.forEach((key) => {
+      if (key.endsWith("time")) {
+        formInfo[key] = new Date(data[key]).toLocaleString();
       } else {
-        formInfo[element.fieldName] = data[element.fieldName] || "";
+        formInfo[key] = data[key] || "";
       }
     });
   }

@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-03-25 23:36:46
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-16 20:47:45
- * @FilePath: \drawStars-Vue3\src\components\base\form\BaseFormItem\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <div class="w-full">
     <el-input-number
@@ -97,12 +89,18 @@
 
     <location-component
       v-else-if="isLocationPoint"
-      v-model:field="field"
+      v-model:value-model="field"
       :disabled="disabled"
     />
     <custom-location-component
       v-else-if="isLocation"
-      v-model:field="field"
+      v-model:value-model="field"
+      :disabled="disabled"
+    />
+    <rich-text-editor-component
+      ref="richText"
+      v-else-if="isRichText"
+      v-model:value-model="field"
       :disabled="disabled"
     />
 
@@ -120,7 +118,14 @@
 /**
  * 通用表单元素组件
  * */
-import { computed, onMounted, toRefs, ref, defineAsyncComponent } from "vue";
+import {
+  computed,
+  onMounted,
+  toRefs,
+  ref,
+  defineAsyncComponent,
+  watch,
+} from "vue";
 import type { AnyObject } from "@/types/global";
 import { useVModels } from "@vueuse/core";
 import { showTips } from "@/utils/message/showTips.js";
@@ -136,6 +141,10 @@ const locationComponent = defineAsyncComponent(
 
 const CustomLocationComponent = defineAsyncComponent(
   () => import("./CustomLocationComponent.vue"),
+);
+
+const RichTextEditorComponent = defineAsyncComponent(
+  () => import("./RichTextEditorComponent.vue"),
 );
 
 const props = defineProps<{
@@ -166,8 +175,11 @@ const isDate = computed(() => type?.value === ComponentType.date);
 const isRadio = computed(() => type?.value === ComponentType.radio);
 const isCheckBox = computed(() => type?.value === ComponentType.checkbox);
 const isImg = computed(() => type?.value === ComponentType.img);
-const isLocationPoint = computed(() => type?.value === ComponentType.locationPoint);
+const isLocationPoint = computed(
+  () => type?.value === ComponentType.locationPoint,
+);
 const isLocation = computed(() => type?.value === ComponentType.location);
+const isRichText = computed(() => type?.value === ComponentType.richText);
 
 const requestOptions = async () => {
   if (apiMethod?.value) {
@@ -179,6 +191,17 @@ const requestOptions = async () => {
     }
   }
 };
+
+const richText = ref();
+window.richText = richText;
+watch(
+  () => field.value,
+  () => {
+    if (isRichText.value && richText.value) {
+      richText.value.modelValue = field.value;
+    }
+  },
+);
 
 defineExpose({
   options,

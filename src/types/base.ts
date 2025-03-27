@@ -25,4 +25,5 @@ export enum ComponentType {
   img = "img",
   locationPoint = "locationPoint",
   location = "location",
+  richText = "richText",
 }

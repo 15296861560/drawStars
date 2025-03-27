@@ -12,6 +12,7 @@ export default {
     lab: "Lab",
     case: "Case",
     resource: "Resource Center",
+    manage: "Manage Center",
     echartHomePage: {
       basicBar: "Basic Histogram",
       basicLine: "Basic Line",
@@ -83,6 +84,9 @@ export default {
     resourceHomePage: {
       configure: "Configuration data",
       webFrame: "Web Frame",
+    },
+    manageHomePage: {
+      notice: "Notice Manage",
     },
   },
   navigation: {
@@ -207,6 +211,7 @@ export default {
     inputIcon: "Please enter icon link",
     inputAdress: "Please enter the address",
     inputOpenWay: "Please select the opening method",
+    inputTitle: "Please enter a title",
   },
   text: {
     selected: "Selected",

@@ -1,10 +1,10 @@
 @font-face {font-family: "drawstars-icon";
-  src: url('../font/drawstars-icon.eot?t=1690733586193'); /* IE9*/
-  src: url('../font/drawstars-icon.eot?t=1690733586193#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("../font/drawstars-icon.woff2?t=1690733586193") format("woff2"),
-  url("../font/drawstars-icon.woff?t=1690733586193") format("woff"),
-  url('../font/drawstars-icon.ttf?t=1690733586193') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../font/drawstars-icon.svg?t=1690733586193#drawstars-icon') format('svg'); /* iOS 4.1- */
+  src: url('../font/drawstars-icon.eot?t=1734943477757'); /* IE9*/
+  src: url('../font/drawstars-icon.eot?t=1734943477757#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("../font/drawstars-icon.woff2?t=1734943477757") format("woff2"),
+  url("../font/drawstars-icon.woff?t=1734943477757") format("woff"),
+  url('../font/drawstars-icon.ttf?t=1734943477757') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../font/drawstars-icon.svg?t=1734943477757#drawstars-icon') format('svg'); /* iOS 4.1- */
 }
 
 [class^="drawstars-icon-"], [class*=" drawstars-icon-"] {
@@ -50,38 +50,44 @@
 .drawstars-icon-line:before { content: "\ea21"; }
 .drawstars-icon-liquidFill:before { content: "\ea22"; }
 .drawstars-icon-location:before { content: "\ea23"; }
-.drawstars-icon-map:before { content: "\ea24"; }
-.drawstars-icon-mic-off:before { content: "\ea25"; }
-.drawstars-icon-mic-off__hover:before { content: "\ea26"; }
-.drawstars-icon-mic-on:before { content: "\ea27"; }
-.drawstars-icon-mic-on__hover:before { content: "\ea28"; }
-.drawstars-icon-multimedia:before { content: "\ea29"; }
-.drawstars-icon-networkStrength:before { content: "\ea2a"; }
-.drawstars-icon-pay:before { content: "\ea2b"; }
-.drawstars-icon-pie:before { content: "\ea2c"; }
-.drawstars-icon-polar:before { content: "\ea2d"; }
-.drawstars-icon-position:before { content: "\ea2e"; }
-.drawstars-icon-practice:before { content: "\ea2f"; }
-.drawstars-icon-processVideo:before { content: "\ea30"; }
-.drawstars-icon-progressBar:before { content: "\ea31"; }
-.drawstars-icon-promptBox:before { content: "\ea32"; }
-.drawstars-icon-resource:before { content: "\ea33"; }
-.drawstars-icon-shortcutKey:before { content: "\ea34"; }
-.drawstars-icon-simple:before { content: "\ea35"; }
-.drawstars-icon-special:before { content: "\ea36"; }
-.drawstars-icon-stackedBar:before { content: "\ea37"; }
-.drawstars-icon-tool:before { content: "\ea38"; }
-.drawstars-icon-transition:before { content: "\ea39"; }
-.drawstars-icon-translate:before { content: "\ea3a"; }
-.drawstars-icon-utilities:before { content: "\ea3b"; }
-.drawstars-icon-video-off:before { content: "\ea3c"; }
-.drawstars-icon-video-off__hover:before { content: "\ea3d"; }
-.drawstars-icon-video-on:before { content: "\ea3e"; }
-.drawstars-icon-video-on__hover:before { content: "\ea3f"; }
-.drawstars-icon-video:before { content: "\ea40"; }
-.drawstars-icon-webFrame:before { content: "\ea41"; }
-.drawstars-icon-webpack:before { content: "\ea42"; }
-.drawstars-icon-words:before { content: "\ea43"; }
+.drawstars-icon-log:before { content: "\ea24"; }
+.drawstars-icon-manage:before { content: "\ea25"; }
+.drawstars-icon-map:before { content: "\ea26"; }
+.drawstars-icon-menu:before { content: "\ea27"; }
+.drawstars-icon-mic-off:before { content: "\ea28"; }
+.drawstars-icon-mic-off__hover:before { content: "\ea29"; }
+.drawstars-icon-mic-on:before { content: "\ea2a"; }
+.drawstars-icon-mic-on__hover:before { content: "\ea2b"; }
+.drawstars-icon-multimedia:before { content: "\ea2c"; }
+.drawstars-icon-networkStrength:before { content: "\ea2d"; }
+.drawstars-icon-notice:before { content: "\ea2e"; }
+.drawstars-icon-pay:before { content: "\ea2f"; }
+.drawstars-icon-pie:before { content: "\ea30"; }
+.drawstars-icon-polar:before { content: "\ea31"; }
+.drawstars-icon-position:before { content: "\ea32"; }
+.drawstars-icon-practice:before { content: "\ea33"; }
+.drawstars-icon-processVideo:before { content: "\ea34"; }
+.drawstars-icon-progressBar:before { content: "\ea35"; }
+.drawstars-icon-promptBox:before { content: "\ea36"; }
+.drawstars-icon-resource:before { content: "\ea37"; }
+.drawstars-icon-setting:before { content: "\ea38"; }
+.drawstars-icon-shortcutKey:before { content: "\ea39"; }
+.drawstars-icon-simple:before { content: "\ea3a"; }
+.drawstars-icon-special:before { content: "\ea3b"; }
+.drawstars-icon-stackedBar:before { content: "\ea3c"; }
+.drawstars-icon-tool:before { content: "\ea3d"; }
+.drawstars-icon-transition:before { content: "\ea3e"; }
+.drawstars-icon-translate:before { content: "\ea3f"; }
+.drawstars-icon-users:before { content: "\ea40"; }
+.drawstars-icon-utilities:before { content: "\ea41"; }
+.drawstars-icon-video-off:before { content: "\ea42"; }
+.drawstars-icon-video-off__hover:before { content: "\ea43"; }
+.drawstars-icon-video-on:before { content: "\ea44"; }
+.drawstars-icon-video-on__hover:before { content: "\ea45"; }
+.drawstars-icon-video:before { content: "\ea46"; }
+.drawstars-icon-webFrame:before { content: "\ea47"; }
+.drawstars-icon-webpack:before { content: "\ea48"; }
+.drawstars-icon-words:before { content: "\ea49"; }
 
 $drawstars-icon-alipay: "\ea01";
 $drawstars-icon-animation: "\ea02";
@@ -118,36 +124,42 @@ $drawstars-icon-lang: "\ea20";
 $drawstars-icon-line: "\ea21";
 $drawstars-icon-liquidFill: "\ea22";
 $drawstars-icon-location: "\ea23";
-$drawstars-icon-map: "\ea24";
-$drawstars-icon-mic-off: "\ea25";
-$drawstars-icon-mic-off__hover: "\ea26";
-$drawstars-icon-mic-on: "\ea27";
-$drawstars-icon-mic-on__hover: "\ea28";
-$drawstars-icon-multimedia: "\ea29";
-$drawstars-icon-networkStrength: "\ea2a";
-$drawstars-icon-pay: "\ea2b";
-$drawstars-icon-pie: "\ea2c";
-$drawstars-icon-polar: "\ea2d";
-$drawstars-icon-position: "\ea2e";
-$drawstars-icon-practice: "\ea2f";
-$drawstars-icon-processVideo: "\ea30";
-$drawstars-icon-progressBar: "\ea31";
-$drawstars-icon-promptBox: "\ea32";
-$drawstars-icon-resource: "\ea33";
-$drawstars-icon-shortcutKey: "\ea34";
-$drawstars-icon-simple: "\ea35";
-$drawstars-icon-special: "\ea36";
-$drawstars-icon-stackedBar: "\ea37";
-$drawstars-icon-tool: "\ea38";
-$drawstars-icon-transition: "\ea39";
-$drawstars-icon-translate: "\ea3a";
-$drawstars-icon-utilities: "\ea3b";
-$drawstars-icon-video-off: "\ea3c";
-$drawstars-icon-video-off__hover: "\ea3d";
-$drawstars-icon-video-on: "\ea3e";
-$drawstars-icon-video-on__hover: "\ea3f";
-$drawstars-icon-video: "\ea40";
-$drawstars-icon-webFrame: "\ea41";
-$drawstars-icon-webpack: "\ea42";
-$drawstars-icon-words: "\ea43";
+$drawstars-icon-log: "\ea24";
+$drawstars-icon-manage: "\ea25";
+$drawstars-icon-map: "\ea26";
+$drawstars-icon-menu: "\ea27";
+$drawstars-icon-mic-off: "\ea28";
+$drawstars-icon-mic-off__hover: "\ea29";
+$drawstars-icon-mic-on: "\ea2a";
+$drawstars-icon-mic-on__hover: "\ea2b";
+$drawstars-icon-multimedia: "\ea2c";
+$drawstars-icon-networkStrength: "\ea2d";
+$drawstars-icon-notice: "\ea2e";
+$drawstars-icon-pay: "\ea2f";
+$drawstars-icon-pie: "\ea30";
+$drawstars-icon-polar: "\ea31";
+$drawstars-icon-position: "\ea32";
+$drawstars-icon-practice: "\ea33";
+$drawstars-icon-processVideo: "\ea34";
+$drawstars-icon-progressBar: "\ea35";
+$drawstars-icon-promptBox: "\ea36";
+$drawstars-icon-resource: "\ea37";
+$drawstars-icon-setting: "\ea38";
+$drawstars-icon-shortcutKey: "\ea39";
+$drawstars-icon-simple: "\ea3a";
+$drawstars-icon-special: "\ea3b";
+$drawstars-icon-stackedBar: "\ea3c";
+$drawstars-icon-tool: "\ea3d";
+$drawstars-icon-transition: "\ea3e";
+$drawstars-icon-translate: "\ea3f";
+$drawstars-icon-users: "\ea40";
+$drawstars-icon-utilities: "\ea41";
+$drawstars-icon-video-off: "\ea42";
+$drawstars-icon-video-off__hover: "\ea43";
+$drawstars-icon-video-on: "\ea44";
+$drawstars-icon-video-on__hover: "\ea45";
+$drawstars-icon-video: "\ea46";
+$drawstars-icon-webFrame: "\ea47";
+$drawstars-icon-webpack: "\ea48";
+$drawstars-icon-words: "\ea49";
 
