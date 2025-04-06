@@ -193,7 +193,6 @@ const requestOptions = async () => {
 };
 
 const richText = ref();
-window.richText = richText;
 watch(
   () => field.value,
   () => {

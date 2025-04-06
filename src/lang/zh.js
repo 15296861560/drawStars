@@ -87,7 +87,41 @@ export default {
     },
     manageHomePage: {
       notice: "通知管理",
-    },
+      logs: "日志管理",
+      logTypes: {
+        login: "登录日志",
+        operation: "操作日志",
+        business: "业务日志",
+        statistics: "数据统计"
+      },
+      search: {
+        username: "用户名",
+        ip: "IP地址",
+        status: "状态",
+        operation: "操作类型",
+        module: "业务模块",
+        type: "日志类型",
+        operator: "操作人",
+        timeRange: "时间范围"
+      },
+      logManage: {
+        loginLog: "登录日志",
+        operationLog: "操作日志",
+        businessLog: "业务日志",
+        statistics: "数据统计",
+        title: "日志管理",
+        search: {
+          username: "用户名",
+          ip: "IP地址",
+          status: "状态",
+          operation: "操作类型",
+          module: "业务模块",
+          type: "日志类型",
+          operator: "操作人",
+          timeRange: "时间范围"
+        }
+      }
+    }
   },
   navigation: {
     profile: "个人中心",
@@ -233,4 +267,8 @@ export default {
     levelUp: "提高权限",
     curLevel: "当前权限等级",
   },
+  status: {
+    success: "成功",
+    fail: "失败"
+  }
 };

@@ -16,6 +16,18 @@
       >
       </el-option>
     </el-select>
+    <el-date-picker
+      v-else-if="type === SEARCH_ITEM_TYPE.daterange"
+      type="daterange"
+      format="YYYY-MM-DD"
+      value-format="YYYY-MM-DD"
+      start-placeholder="开始时间"
+      end-placeholder="结束时间"
+      v-model="field"
+      v-bind="$attrs"
+      :disabled="disabled"
+      :readonly="readonly"
+    />
     <el-input
       v-else
       v-model="field"
@@ -50,6 +62,7 @@ const { field } = useVModels(props, emit);
 const SEARCH_ITEM_TYPE = {
   input: "input",
   select: "select",
+  daterange: "daterange",
 };
 </script>
 <style scoped lang="less">

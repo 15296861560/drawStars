@@ -86,8 +86,46 @@ export default {
       webFrame: "Web Frame",
     },
     manageHomePage: {
-      notice: "Notice Manage",
-    },
+      notice: "Notice Management",
+      logs: "Log Management",
+      logTypes: {
+        login: "Login Log",
+        operation: "Operation Log",
+        business: "Business Log",
+        statistics: "Statistics"
+      },
+      search: {
+        username: "Username",
+        ip: "IP Address",
+        status: "Status",
+        operation: "Operation Type",
+        module: "Business Module",
+        type: "Log Type",
+        operator: "Operator",
+        timeRange: "Time Range"
+      },
+      logManage: {
+        loginLog: "Login Log",
+        operationLog: "Operation Log",
+        businessLog: "Business Log",
+        statistics: "Data Statistics",
+        title: "Log Management",
+        search: {
+          username: "Username",
+          ip: "IP Address",
+          status: "Status",
+          operation: "Operation Type",
+          module: "Business Module",
+          type: "Log Type",
+          operator: "Operator",
+          timeRange: "Time Range"
+        },
+        status: {
+          success: "Success",
+          fail: "Failed"
+        }
+      }
+    }
   },
   navigation: {
     profile: "Profile",
@@ -235,4 +273,8 @@ export default {
     levelUp: "Increase Level",
     curLevel: "Current  Level",
   },
+  status: {
+    success: "Success",
+    fail: "Failed"
+  }
 };

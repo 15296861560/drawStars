@@ -2,11 +2,11 @@
   <div>
     <div class="g-home-module">
       <router-link-normal
-        :to="`/home/${homepage}/${page}`"
-        :imgName="page"
-        :text="$t(`homePage.${homepage}.${page}`)"
-        v-for="(page, index) in routes"
-        :key="page"
+        :to="`/home/${homepage}/${page.name}`"
+        :imgName="page.imgName"
+        :text="$t(`homePage.${homepage}.${page.name}`)"
+        v-for="page in routes"
+        :key="page.name"
       ></router-link-normal>
     </div>
   </div>
@@ -18,7 +18,10 @@ export default {
   data() {
     return {
       homepage: "manageHomePage",
-      routes: ["notice"],
+      routes: [
+        { name: "notice", imgName: "notice" },
+        { name: "logs", imgName: "log" },
+      ],
     };
   },
 };
