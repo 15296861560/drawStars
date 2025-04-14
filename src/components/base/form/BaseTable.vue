@@ -27,7 +27,7 @@
     <!-- 表格内容 -->
     <el-table
       ref="tableRef"
-      class="mb-10 custom-table"
+      class="mb-10 default-table"
       tooltip-effect="dark"
       stripe
       v-bind="$attrs"
@@ -170,6 +170,9 @@ const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   border-radius: 8px;
   padding: 1rem /* 16/16 */;
   position: relative;
+  .default-table {
+    height: 25.9375rem /* 415/16 */;
+  }
   .table-header {
     display: flex;
     align-items: center;
