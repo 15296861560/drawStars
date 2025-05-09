@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-04-06 21:41:22
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-16 20:46:55
- * @FilePath: \drawStars-Vue3\src\components\base\form\BaseTable.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <div class="base-table">
     <div class="table-header">
@@ -151,11 +143,11 @@ const {
 
 //是否展示按钮
 const handleShowButton = (operate: AnyObject, row: AnyObject): boolean =>
-  operate.show ? operate.show(operate, row, props.options, route) : true;
+  operate.show ? operate.show(row, props.options, route, operate) : true;
 
 //是否禁用按钮
 const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
-  operate.disabled ? operate.disabled(operate, row) : false;
+  operate.disabled ? operate.disabled(row, operate) : false;
 </script>
 
 <style scoped lang="less">

@@ -120,7 +120,8 @@ export default {
           operator: "操作人",
           timeRange: "时间范围"
         }
-      }
+      },
+      app: "应用管理"
     }
   },
   navigation: {

@@ -21,6 +21,7 @@ export default {
       routes: [
         { name: "notice", imgName: "notice" },
         { name: "logs", imgName: "log" },
+        { name: "app", imgName: "app" },
       ],
     };
   },

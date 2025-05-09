@@ -18,6 +18,14 @@ export default [
     },
   },
   {
+    path: "/home/manageHomePage/app",
+    name: "应用管理",
+    component: () => import("@/views/manage/appManage/index.vue"),
+    meta: {
+      title: ["首页", "管理中心", "应用管理"],
+    },
+  },
+  {
     path: "/home/manageHomePage/logs",
     redirect: "/home/manageHomePage/logs/login",
     name: "日志管理",

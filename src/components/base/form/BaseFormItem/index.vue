@@ -86,6 +86,12 @@
       v-model:field="field"
       :disabled="disabled"
     />
+    <upload-component
+      v-else-if="isUpload"
+      v-model:value-model="field"
+      v-bind="attrs"
+      :disabled="disabled"
+    />
 
     <location-component
       v-else-if="isLocationPoint"
@@ -134,6 +140,9 @@ import { ComponentType } from "@/types/base";
 const singleImgComponent = defineAsyncComponent(
   () => import("./singleImgComponent.vue"),
 );
+const UploadComponent = defineAsyncComponent(
+  () => import("./UploadComponent.vue"),
+);
 
 const locationComponent = defineAsyncComponent(
   () => import("./locationComponent.vue"),
@@ -156,14 +165,23 @@ const props = defineProps<{
   disabled?: boolean;
   readonly?: boolean;
   options?: Array<AnyObject>;
+  attrs?: AnyObject;
 }>();
 
 const emit = defineEmits<{
   (e: "update:field", value: string | number | boolean | string[] | any): void;
 }>();
 
-const { type, apiMethod, apiParams, config, disabled, readonly, options } =
-  toRefs(props);
+const {
+  type,
+  apiMethod,
+  apiParams,
+  config,
+  disabled,
+  readonly,
+  options,
+  attrs,
+} = toRefs(props);
 const { field } = useVModels(props, emit);
 
 const isInput = computed(() => type?.value === ComponentType.input);
@@ -175,6 +193,7 @@ const isDate = computed(() => type?.value === ComponentType.date);
 const isRadio = computed(() => type?.value === ComponentType.radio);
 const isCheckBox = computed(() => type?.value === ComponentType.checkbox);
 const isImg = computed(() => type?.value === ComponentType.img);
+const isUpload = computed(() => type?.value === ComponentType.upload);
 const isLocationPoint = computed(
   () => type?.value === ComponentType.locationPoint,
 );

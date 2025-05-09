@@ -41,6 +41,8 @@ requests.interceptors.request.use((config) => {
     // 将token放到请求头发送给服务器,将tokenkey放在请求头中
     config.headers.accessToken = token;
   }
+
+  config.headers['X-Menu'] = router.currentRoute.value.path;
   return config;
 });
 requests.interceptors.response.use(
@@ -58,29 +60,53 @@ requests.interceptors.response.use(
     return response;
   },
   (err) => {
-    // console.log('报错拦截器',err)
-    return Promise.reject(err);
+    const errObj = JSON.parse(JSON.stringify(err));
+
+    if (errObj.response) {
+      const status = errObj.response.status;
+      switch (status) {
+        case 400:
+          showError("400(Bad request):请求无效 ");
+          break;
+        case 404:
+          showError("404(Not Found):请求的资源不存在");
+          break;
+        case 500:
+          showError("500(Internal Server Error):内部服务器错误");
+          break;
+        case 504:
+          showError("504(Gateway Time-out):请求超时");
+          break;
+        default:
+          showError(errObj.message);
+      }
+    } else {
+      showError(errObj.message);
+    }
+    return {
+      status: false,
+      data: errObj
+    };
   },
 );
 
-let showError = function (errorMessage) {
+const showError = function (errorMessage) {
   ElMessage({
     type: "error",
     message: errorMessage,
   });
 };
 
-const $axios = function (params, methodURL) {
+const $axios = function (params, methodURL, config = { method: 'post' }) {
   let promise = new Promise(function (resolve, reject) {
     let url = apiInfo.getURL.value;
     if (methodURL) {
       url += methodURL;
     }
 
-    requests
-      .post(url, params, {
-        timeout: params.timeout || 30000,
-      })
+    requests[config.method || 'post'](url, params, {
+      timeout: params.timeout || 30000,
+    })
       .then((res) => {
         if (!res.data.status) {
           // 统一配置请求成功但接口报错时的提示
@@ -89,29 +115,10 @@ const $axios = function (params, methodURL) {
         resolve(res.data);
       })
       .catch((err) => {
-        let errObj = JSON.parse(JSON.stringify(err));
-        if (errObj.response) {
-          let status = errObj.response.status;
-          switch (status) {
-            case 400:
-              showError("400(Bad request):请求无效 ");
-              break;
-            case 404:
-              showError("404(Not Found):请求的资源不存在");
-              break;
-            case 500:
-              showError("500(Internal Server Error):内部服务器错误");
-              break;
-            case 504:
-              showError("504(Gateway Time-out):请求超时");
-              break;
-            default:
-              showError(errObj.message);
-          }
-        } else {
-          showError(errObj.message);
-        }
-        reject(err);
+        resolve({
+          status: false,
+          data: err
+        });
       });
   });
   return promise;
@@ -160,4 +167,4 @@ const $axiosGet = function (params = {}, methodURL = "", options = {}) {
   return promise;
 };
 
-export { $axios, $axiosGet };
+export { $axios, $axiosGet, requests };

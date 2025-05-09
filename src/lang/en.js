@@ -124,7 +124,8 @@ export default {
           success: "Success",
           fail: "Failed"
         }
-      }
+      },
+      "app":"Application management"
     }
   },
   navigation: {

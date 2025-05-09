@@ -310,8 +310,6 @@ export default {
       if (res.status) {
         this.userInfo = res.data;
         this.afterLogin(this.userInfo);
-      } else {
-        this.$message.error(res.msg);
       }
     },
     // 验证码登录

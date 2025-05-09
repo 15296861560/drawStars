@@ -21,6 +21,7 @@
           :readonly="options.readonly"
           :disabled="options.disabled"
           :options="field.options"
+          :attrs="field.attrs"
           class="w-full"
         />
       </el-form-item>
@@ -84,8 +85,9 @@ const cancel = () => {
   }
   formEl.resetFields();
   dialogVisible.value = false;
-  fieldList.value.forEach((element) => {
-    formInfo[element.fieldName] = element.defaultVal || "";
+
+  Object.keys(formInfo).forEach((key) => {
+    formInfo[key] = "";
   });
 };
 
@@ -102,9 +104,6 @@ const confirm = async () => {
         confirmLoading.value = true;
         const res = await options.value.confirmMethod(params);
         confirmLoading.value = false;
-        if (!res.status) {
-          showTips("error", res.msg);
-        }
       }
 
       emit("confirm");
@@ -126,7 +125,7 @@ const init = async () => {
       return;
     }
 
-    const data = res.data[0];
+    const data = Array.isArray(res.data) ? res.data[0] : res.data;
     if (!data) {
       return;
     }
@@ -147,6 +146,8 @@ const opentDialog = () => {
 watch(dialogVisible, (v) => {
   if (v) {
     init();
+  } else {
+    cancel();
   }
 });
 

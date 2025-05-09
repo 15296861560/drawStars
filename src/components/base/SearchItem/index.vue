@@ -4,7 +4,7 @@
     <el-select
       v-if="type === SEARCH_ITEM_TYPE.select"
       v-model="field"
-      :placeholder="placeholder || `请输入${label}`"
+      :placeholder="placeholder || `请选择${label}`"
       v-bind="$attrs"
       class="w-full"
     >
