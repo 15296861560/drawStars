@@ -105,7 +105,7 @@ const $axios = function (params, methodURL, config = { method: 'post' }) {
     }
 
     requests[config.method || 'post'](url, params, {
-      timeout: params.timeout || 30000,
+      timeout: params.timeout || DEFAULT_TIMEOUT,
     })
       .then((res) => {
         if (!res.data.status) {
@@ -151,7 +151,7 @@ const $axiosGet = function (params = {}, methodURL = "", options = {}) {
           ...options.extOption,
         },
         {
-          timeout: params.timeout || 300000,
+          timeout: params.timeout || DEFAULT_TIMEOUT,
         },
       )
       .then((res) => {

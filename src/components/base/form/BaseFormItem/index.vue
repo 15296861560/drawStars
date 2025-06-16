@@ -153,7 +153,7 @@ const CustomLocationComponent = defineAsyncComponent(
 );
 
 const RichTextEditorComponent = defineAsyncComponent(
-  () => import("./RichTextEditorComponent.vue"),
+  () => import("./RichTextEditorComponentQuill.vue"),
 );
 
 const props = defineProps<{
@@ -216,7 +216,7 @@ watch(
   () => field.value,
   () => {
     if (isRichText.value && richText.value) {
-      richText.value.modelValue = field.value;
+      richText.value.updateValueModel(field.value);
     }
   },
 );

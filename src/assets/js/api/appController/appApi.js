@@ -48,7 +48,7 @@ const appApi = {
    * @param {String} id - 应用ID
    * @returns {Promise} - 返回升级结果
    */
-  upgradeApp: (id) => requests({ url: `/api/appApi/upgrade/${id}`, method: 'post' }),
+  upgradeApp: (data) => requests({ url: `/api/appApi/upgrade/${id}`, data, method: 'post' }),
 
   /**
    * 发布应用
