@@ -18,54 +18,64 @@ import requireTransform from "vite-plugin-require-transform"; // 引入require
 
 import path from "node:path";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  server: {
-    proxy: {
-      "/api": {
-        // target: "http://127.0.0.1:8010",
-        target: "http://127.0.0.1:8011",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
-      },
-      "/uploadImg": {
-        // target: "http://127.0.0.1:8010",
-        target: "http://127.0.0.1:8011",
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/uploadImg/, ""),
-      },
-    },
-  },
-  plugins: [
-    vue(),
-    vueJsx(),
-    commonjs(),
-    requireTransform({
-      fileRegex: /.ts$|.tsx$|js$|.jsx$|.vue$/,
-    }),
-    vueI18n({
-      // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
-      // compositionOnly: false,
+import { CREATE_VERSION, CREATE_BUILD_TIME } from "./version.js";
 
-      // you need to set i18n resource including paths !
-      include: path.resolve(__dirname, "./src/lang/languange/**"),
-    }),
-  ],
-  resolve: {
-    alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      less: {
-        modifyVars: {
-          hack: `true; @import (reference) "${path.resolve(
-            "src/assets/styles/global.less",
-          )}";`,
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
+  return {
+    server: {
+      proxy: {
+        "/api": {
+          // target: "http://127.0.0.1:8010",
+          target: "http://127.0.0.1:8011",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
         },
-        javascriptEnabled: true,
+        "/uploadImg": {
+          // target: "http://127.0.0.1:8010",
+          target: "http://127.0.0.1:8011",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/uploadImg/, ""),
+        },
       },
     },
-  },
+    plugins: [
+      vue(),
+      vueJsx(),
+      commonjs(),
+      requireTransform({
+        fileRegex: /.ts$|.tsx$|js$|.jsx$|.vue$/,
+      }),
+      vueI18n({
+        // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
+        // compositionOnly: false,
+
+        // you need to set i18n resource including paths !
+        include: path.resolve(__dirname, "./src/lang/languange/**"),
+      }),
+    ],
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            hack: `true; @import (reference) "${path.resolve(
+              "src/assets/styles/global.less",
+            )}";`,
+          },
+          javascriptEnabled: true,
+        },
+      },
+    },
+    define: {
+      VERSION_INFO: JSON.stringify({
+        VERSION: CREATE_VERSION(mode),
+        BUILD_TIME: CREATE_BUILD_TIME(),
+      }),
+    },
+  };
 });
