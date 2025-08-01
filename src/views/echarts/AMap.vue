@@ -2,7 +2,19 @@
   <div class="flex flex-col h-full simple-map-components">
     <el-row v-show="search" :gutter="20" class="flex-center">
       <el-col :span="12" class="mb-4">
-        <el-input v-model="state.searchAddress" placeholder="请输入搜索地址" />
+        <el-input
+          id="searchAddress"
+          @focus="state.focusSearchAddress = true"
+          @blur="searchAddressBlur"
+          v-model="state.searchAddress"
+          placeholder="请输入搜索地址"
+        />
+        <div
+          v-show="state.focusSearchAddress"
+          id="searchResult"
+          @mouseover="state.canCloseSearchPanel = false"
+          @mouseout="state.canCloseSearchPanel = true"
+        ></div>
       </el-col>
       <el-col :span="12">
         <el-button type="primary" @click="handleGeocoderLocation"
@@ -78,9 +90,18 @@ const state = reactive<AnyObject>({
   marker: null,
   lnglat: {},
   searchAddress: "",
+  autoComplete: {},
+  focusSearchAddress: false,
+  canCloseSearchPanel: true,
   gLayGroups: null, // 总图形绘制组
   highlightLayGroups: null, // 高亮绘制组
 });
+
+const searchAddressBlur = () => {
+  if (state.canCloseSearchPanel) {
+    state.focusSearchAddress = false;
+  }
+};
 
 const handleSave = (): void => {
   emit("handle-items", state.lnglat);
@@ -112,6 +133,32 @@ const handleInitMap = (): void => {
     });
 
     handleInitData();
+
+    AMap.plugin(["AMap.PlaceSearch", "AMap.AutoComplete"], function () {
+      state.autoComplete = new AMap.AutoComplete({
+        input: "searchAddress",
+        //city 限定城市，默认全国
+        city: "全国",
+      });
+
+      const placeSearch = new AMap.PlaceSearch({
+        pageSize: 10, //单页显示结果条数
+        pageIndex: 1, //页码
+        city: "全国", //兴趣点城市
+        citylimit: false, //是否强制限制在设置的城市内搜索
+        map: state.AMap, //展现结果的地图实例
+        panel: "searchResult", //参数值为你页面定义容器的 id 值
+        autoFitView: true, //是否自动调整地图视野使绘制的 Marker 点都处于视口的可见范围
+      });
+      //注册监听，当选中某条记录时会触发
+      state.autoComplete.on("select", (e) => {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name); //关键字查询查询
+      });
+      placeSearch.on("listElementClick", (e) => {
+        state.focusSearchAddress = false;
+      });
+    });
   });
 };
 
@@ -142,7 +189,9 @@ const handleGeocoderAddress = (lng: number, lat: number): void => {
   let geocoder = new AMap.Geocoder({
     radius: 1000,
   });
+  console.log(lng, lat);
   geocoder.getAddress([lng, lat], function (status: string, result: any) {
+    console.log(status, result);
     if (status === "complete" && result?.regeocode) {
       state.lnglat["address"] = result?.regeocode?.formattedAddress ?? "";
     } else {
@@ -550,6 +599,15 @@ defineExpose({
   &__icon {
     width: 30px;
     height: 30px;
+  }
+}
+
+.amap-sug-result {
+  z-index: 10000;
+}
+.amap_lib_placeSearch {
+  .poibox {
+    text-align: left;
   }
 }
 </style>
