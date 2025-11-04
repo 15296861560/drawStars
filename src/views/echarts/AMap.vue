@@ -189,9 +189,7 @@ const handleGeocoderAddress = (lng: number, lat: number): void => {
   let geocoder = new AMap.Geocoder({
     radius: 1000,
   });
-  console.log(lng, lat);
   geocoder.getAddress([lng, lat], function (status: string, result: any) {
-    console.log(status, result);
     if (status === "complete" && result?.regeocode) {
       state.lnglat["address"] = result?.regeocode?.formattedAddress ?? "";
     } else {
