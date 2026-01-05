@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="g-home">
+    <div class="relative g-home z-1">
       <div class="g-home-module">
         <el-row class="g-home-module">
           <router-link-normal
@@ -45,6 +45,8 @@
         </el-row>
       </div>
     </div>
+
+    <Assistant></Assistant>
   </div>
 </template>
 <script>
@@ -52,6 +54,7 @@ import Dependence from "@/components/part/dependence.vue";
 import CommitInfo from "@/components/part/commitInfo.vue";
 import RouterLinkNormal from "@/components/stars/RouterLinkNormal.vue";
 import BasicEchart from "@/components/echarts/BasicEchart.vue";
+import Assistant from "@/components/assistant/index.vue";
 import chartData from "@/assets/js/testData/chartData";
 import Mock from "mockjs";
 
@@ -61,6 +64,7 @@ export default {
     Dependence,
     CommitInfo,
     RouterLinkNormal,
+    Assistant,
   },
   data() {
     return {

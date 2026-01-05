@@ -44,6 +44,7 @@
     "sortablejs": "^1.15.0",
     "style-resources-loader": "^1.5.0",
     "tsparticles": "^2.6.0",
+    "uuid": "^13.0.0",
     "video.js": "^8.3.0",
     "vite-plugin-require-transform": "^1.0.21",
     "vue": "^3.2.41",
