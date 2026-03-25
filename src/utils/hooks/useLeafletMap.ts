@@ -3,7 +3,7 @@ import "leaflet.wmts";
 import L from "leaflet";
 import axios from "axios";
 
-const TK_KEY = "";
+export const TK_KEY = "";
 
 /**
  * 创建单个多边形
@@ -90,12 +90,14 @@ export const mapInit = (mapDomId = "map", zoom = 11) => {
     maxZoom: 17,
     minZoom: 2,
     zoomOffset: 1,
+    attribution: "&copy; 天地图",
   }).addTo(map);
 
   L.tileLayer(CVA_C + TK_KEY, {
     maxZoom: 17,
     minZoom: 2,
     zoomOffset: 1,
+    attribution: "&copy; 天地图",
   }).addTo(map);
 
   return map;

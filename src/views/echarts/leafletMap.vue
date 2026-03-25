@@ -2,6 +2,12 @@
   <div class="flex flex-col h-full simple-map-components">
     <el-row :gutter="20" class="flex-center">
       <el-col :span="12" class="mb-4">
+        <el-select v-model="baseMapType" @change="handleBaseMapChange">
+          <el-option label="矢量图" value="vector" />
+          <el-option label="影像图" value="satellite" />
+        </el-select>
+      </el-col>
+      <el-col :span="12" class="mb-4">
         <el-input v-model="state.searchAddress" placeholder="请输入搜索地址" />
       </el-col>
       <el-col :span="12">
@@ -47,7 +53,7 @@
 /**
  * 简易地图 组件
  * */
-import { nextTick, onMounted, reactive, ref, watch } from "vue";
+import { nextTick, onMounted, reactive, ref, onUnmounted } from "vue";
 import type { AnyObject } from "@/types/global";
 
 import {
@@ -55,10 +61,35 @@ import {
   refreshLayer,
   createPolygonEditor,
   searchPosition,
+  TK_KEY
 } from "@/utils/hooks/useLeafletMap.ts";
 import { EditPen } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import L from "leaflet";
+
+// 矢量与影像底图图层定义
+const vectorTileLayer = L.tileLayer(
+  "http://t1.tianditu.gov.cn/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" + TK_KEY,
+  {
+    maxZoom: 17,
+    minZoom: 2,
+    zoomOffset: 1,
+    attribution: "&copy; 天地图",
+  },
+);
+
+const satelliteTileLayer = L.tileLayer(
+  "http://t1.tianditu.gov.cn/img_c/wmts?layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" + TK_KEY,
+  {
+    maxZoom: 17,
+    minZoom: 2,
+    zoomOffset: 1,
+    attribution: "&copy; 天地图",
+  },
+);
+
+// 底图类型状态
+const baseMapType = ref("vector");
 
 const emit = defineEmits<{
   (e: "handle-items", value: AnyObject): void;
@@ -89,6 +120,9 @@ const handleInitMap = (): void => {
     state.leafletMap.on("click", (e) => {
       handleAddMarker(e.latlng);
     });
+
+    // 初始化底图
+    // handleBaseMapChange();
   });
 };
 
@@ -206,12 +240,42 @@ const handleGeocoderLocation = async () => {
   }
 };
 
+// 切换底图的方法
+const handleBaseMapChange = () => {
+  if (state.leafletMap) {
+    // 移除所有底图图层
+    state.leafletMap.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer) {
+        state.leafletMap.removeLayer(layer);
+      }
+    });
+
+    // 添加新的底图图层
+    if (baseMapType.value === "vector") {
+      state.leafletMap.addLayer(vectorTileLayer);
+    } else if (baseMapType.value === "satellite") {
+      state.leafletMap.addLayer(satelliteTileLayer);
+    }
+  }
+};
+
 onMounted(() => {
   handleInitMap();
 });
 
 defineExpose({
   state,
+});
+
+// 组件卸载时移除底图图层
+onUnmounted(() => {
+  if (state.leafletMap) {
+    state.leafletMap.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer) {
+        state.leafletMap.removeLayer(layer);
+      }
+    });
+  }
 });
 </script>
 
