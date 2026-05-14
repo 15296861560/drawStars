@@ -44,13 +44,13 @@
     "video.js": "^8.3.0",
     "vite-plugin-require-transform": "^1.0.21",
     "vue": "^3.2.41",
-    "vue-i18n": "^9.3.0-beta.10",
+    "vue-i18n": "^11.3.0",
     "vue-jsonp": "^2.0.0",
     "vue-router": "^4.1.5",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@intlify/vite-plugin-vue-i18n": "^6.0.3",
+    "@intlify/vite-plugin-vue-i18n": "^7.0.0",
     "@types/node": "^16.11.68",
     "@vitejs/plugin-vue": "^3.1.2",
     "@vitejs/plugin-vue-jsx": "^2.0.1",
@@ -79,5 +79,14 @@
   "prettier": {
     "eslintIntegration": true,
     "semi": true
+  },
+  "pnpm": {
+    "overrides": {
+      "@intlify/shared": "latest",
+      "@intlify/message-compiler": "latest",
+      "@intlify/core-base": "latest",
+      "@intlify/vue-i18n-bridge": "latest",
+      "@intlify/bundle-utils": "latest"
+    }
   }
 }
