@@ -7,9 +7,9 @@
           @open="handleOpen"
           @close="handleClose"
           @select="handleSelect"
-          background-color="#282c34"
-          text-color="#fff"
-          active-text-color="#ffd04b"
+          :background-color="menuBg"
+          :text-color="menuText"
+          :active-text-color="menuActive"
           :collapse="websiteInfo.isCollapse"
           :unique-opened="true"
           :router="false"
@@ -19,7 +19,7 @@
           <el-menu-item index="collapse" class="m-text-center">
             <el-icon v-show="websiteInfo.isCollapse"><ArrowRight /></el-icon>
             <template #title>
-              <span>Draw Starts</span>
+              <span v-if="layout.sidebarLogo">Draw Starts</span>
             </template>
           </el-menu-item>
           <el-menu-item index="/home/homepage">
@@ -90,6 +90,9 @@
 
 <script>
 import { RouterList } from "@/router/index.ts";
+import { getHomePathList } from "@/utils/home-path-list";
+import { layoutSettingsStore } from "@/stores/layout-settings";
+import { mockUndefinedRouteError } from "@/utils/mock-undefined-error";
 import Test1 from "@/views/pages/test1.vue";
 import Test2 from "@/views/pages/test2.vue";
 export default {
@@ -104,6 +107,20 @@ export default {
       pathList: [],
     };
   },
+  computed: {
+    layout() {
+      return layoutSettingsStore();
+    },
+    menuBg() {
+      return this.layout.isDarkAside ? "#282c34" : "#ffffff";
+    },
+    menuText() {
+      return this.layout.isDarkAside ? "#fff" : "#303133";
+    },
+    menuActive() {
+      return this.layout.isDarkAside ? "#ffd04b" : "var(--el-color-primary)";
+    },
+  },
   methods: {
     levelDown() {
       this.userData.level > 1 && this.userData.level--;
@@ -116,7 +133,7 @@ export default {
     },
     levelUp() {
       this.userData.level < 9 && this.userData.level++;
-      if (this.userData.level > 1) {
+      if (this.userData.level > 1 && !this.$router.hasRoute("测试页1")) {
         this.$router.addRoute("home", {
           path: "/home/test1",
           name: "测试页1",
@@ -127,7 +144,7 @@ export default {
           },
         });
       }
-      if (this.userData.level > 2) {
+      if (this.userData.level > 2 && !this.$router.hasRoute("测试页2")) {
         this.$router.addRoute("home", {
           path: "/home/test2",
           name: "测试页2",
@@ -154,7 +171,7 @@ export default {
           this.toOutSide();
           break;
         case "undefinedError":
-          this.mockError("undefined");
+          mockUndefinedRouteError();
           break;
         case "collapse":
           this.collapse();
@@ -177,12 +194,6 @@ export default {
     toOutSide() {
       window.open("https://cn.bing.com/");
     },
-    // 模拟错误
-    mockError(errType) {
-      if (errType === "undefined") {
-        abcd = efgh;
-      }
-    },
     // 收缩侧边栏
     collapse() {
       if (!this.websiteInfo.isPC) {
@@ -193,29 +204,12 @@ export default {
     },
     // 获取主页列表数据
     getHomePages() {
-      // 获取HomePage列表
-      let paths = [];
-      let homeRouter = RouterList.filter((item) => item.name == "home")[0];
-      homeRouter.children.forEach((route) => {
-        let i = route.path.indexOf("HomePage");
-        let path = route.path.slice(0, i + 8);
-        if (i != -1 && !paths.includes(path)) {
-          paths.push(path);
-        }
-      });
-      this.pathList = paths.map((item) => {
-        let i = item.indexOf("HomePage");
-        return {
-          path: item,
-          name: "homePage." + item.slice(6, i),
-        };
-      });
-
+      this.pathList = getHomePathList();
       this.defaultActive = this.$route.fullPath;
     },
     // 初始化动态路由
     initDynamicRouter() {
-      if (this.userData.level > 1) {
+      if (this.userData.level > 1 && !this.$router.hasRoute("测试页1")) {
         this.$router.addRoute("home", {
           path: "/home/test1",
           name: "测试页1",
@@ -226,7 +220,7 @@ export default {
           },
         });
       }
-      if (this.userData.level > 2) {
+      if (this.userData.level > 2 && !this.$router.hasRoute("测试页2")) {
         this.$router.addRoute("home", {
           path: "/home/test2",
           name: "测试页2",

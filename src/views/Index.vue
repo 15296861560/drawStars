@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div class="index-root" :class="{ 'layout-fixed-header': layout.fixedHeader }">
     <el-container>
-      <el-aside class="g-aside" :style="width" v-if="websiteInfo.isPC"
+      <el-aside class="g-aside" :style="width" v-if="showAside"
         ><asideList ref="asideList"></asideList
       ></el-aside>
       <el-container>
-        <el-header>
-          <!-- 导航栏 -->
+        <el-header class="site-header" height="auto">
           <navigation
             :titleData="$route.meta.title"
             ref="navigation"
           ></navigation>
+          <layout-tags-view v-if="layout.tagsView" />
         </el-header>
         <el-main class="g-main">
           <div style="min-height: calc(100vh - 180px)">
@@ -24,12 +24,13 @@
             </router-view>
           </div>
 
-          <el-footer class="g-footer">
+          <el-footer v-show="layout.footerVisible" class="g-footer">
             <myfooter></myfooter>
           </el-footer>
         </el-main>
       </el-container>
     </el-container>
+    <layout-settings-drawer />
   </div>
 </template>
 
@@ -37,7 +38,10 @@
 import AsideList from "@/components/AsideList.vue";
 import Navigation from "@/components/Navigation.vue";
 import Myfooter from "@/components/Myfooter.vue";
-import { useRouter, useRoute } from "vue-router";
+import LayoutTagsView from "@/components/layout/LayoutTagsView.vue";
+import LayoutSettingsDrawer from "@/components/layout/LayoutSettingsDrawer.vue";
+import { layoutSettingsStore } from "@/stores/layout-settings";
+import { useRoute } from "vue-router";
 import {
   NOTIFY_URL,
   WEBSITE_CHANNEL,
@@ -52,6 +56,8 @@ export default {
     AsideList,
     Navigation,
     Myfooter,
+    LayoutTagsView,
+    LayoutSettingsDrawer,
   },
   provide() {
     return {
@@ -74,6 +80,12 @@ export default {
       let route = useRoute();
 
       return route;
+    },
+    layout() {
+      return layoutSettingsStore();
+    },
+    showAside() {
+      return this.websiteInfo.isPC && this.layout.navType !== 3;
     },
   },
   methods: {
@@ -98,17 +110,43 @@ export default {
         this.width = "width:200px;";
       }
     },
+    "layout.navType"(n) {
+      if (n === 2) {
+        this.websiteInfo.isCollapse = true;
+      } else if (n === 1) {
+        this.websiteInfo.isCollapse = false;
+      }
+    },
+    "layout.tagsView"(on) {
+      if (!on) {
+        this.layout.clearVisitedViews();
+      }
+    },
+    "layout.dynamicTitle"() {
+      this.layout.applyDocumentTitle(this.$route);
+    },
   },
   mounted() {
-    let that = this;
     this.isComputer();
     window.addEventListener("resize", this.isComputer);
     if (this.websiteInfo.isCollapse) {
       this.width = "width:50px;";
     }
 
+    this.layout.applyThemeFromState();
+    this._layoutAfterEach = this.$router.afterEach((to) => {
+      this.layout.addVisitedView(to);
+      this.layout.applyDocumentTitle(to);
+    });
+
     if (!isSkipLoginMode()) {
       this.initNotify();
+    }
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.isComputer);
+    if (this._layoutAfterEach) {
+      this._layoutAfterEach();
     }
   },
 };
@@ -173,5 +211,19 @@ export default {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 0, 0, 0.4);
+}
+
+.index-root.layout-fixed-header .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.06);
+}
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 </style>

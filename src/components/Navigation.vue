@@ -1,50 +1,39 @@
 <template>
   <div class="navigation">
-    <el-breadcrumb>
-      <!-- 路由导航 -->
-      <el-breadcrumb-item
-        v-show="websiteInfo.isPC"
-        v-for="(item, index) in titleData"
-        :key="index"
-      >
-        <span @click="toFirstPage" v-if="index === 0" class="firstPage"
-          ><el-icon class="mr4"><Menu /></el-icon>{{ item }}</span
-        >
-        <span v-if="index !== 0" @click="goPage(index)" class="title">{{
-          item
-        }}</span>
-      </el-breadcrumb-item>
+    <div class="left-part">
+      <top-home-menu v-if="showTopLayoutMenu" />
+      <el-breadcrumb v-else>
+        <!-- 路由导航 -->
+        <el-breadcrumb-item v-show="websiteInfo.isPC" v-for="(item, index) in titleData" :key="index">
+          <span @click="toFirstPage" v-if="index === 0" class="firstPage"><el-icon class="mr4">
+              <Menu />
+            </el-icon>{{ item }}</span>
+          <span v-if="index !== 0" @click="goPage(index)" class="title">{{
+            item
+            }}</span>
+        </el-breadcrumb-item>
 
-      <el-breadcrumb-item v-show="!websiteInfo.isPC">
-        <span @click="toFirstPage" class="firstPage"
-          ><el-icon><Menu /></el-icon>{{ titleData[0] }}</span
-        >
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+        <el-breadcrumb-item v-show="!websiteInfo.isPC">
+          <span @click="toFirstPage" class="firstPage"><el-icon>
+              <Menu />
+            </el-icon>{{ titleData[0] }}</span>
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
 
     <div class="right-part">
       <!-- 错误日志记录 -->
       <errorLog></errorLog>
       <!-- 全屏 -->
-      <el-icon
-        class="full-screen u-icon"
-        :title="$t('navigation.fullScreen')"
-        @click="fullScreen"
-        ><FullScreen
-      /></el-icon>
+      <el-icon class="full-screen u-icon" :title="$t('navigation.fullScreen')" @click="fullScreen">
+        <FullScreen />
+      </el-icon>
       <!-- 消息 -->
-      <el-icon
-        class="message u-icon"
-        :title="$t('navigation.message')"
-        @click="toSeeMessage"
-        ><Message
-      /></el-icon>
+      <el-icon class="message u-icon" :title="$t('navigation.message')" @click="toSeeMessage">
+        <Message />
+      </el-icon>
       <!-- 选择语言 -->
-      <el-dropdown
-        class="selectLang"
-        :title="$t('navigation.selectLang')"
-        @command="handleSetLanguage"
-      >
+      <el-dropdown class="selectLang" :title="$t('navigation.selectLang')" @command="handleSetLanguage">
         <div class="u-icon drawstars-icon-lang language"></div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -70,7 +59,9 @@
             <el-dropdown-item @click.native="toPersonalCenter">{{
               $t("navigation.profile")
             }}</el-dropdown-item>
-            <el-dropdown-item>{{ $t("navigation.setting") }}</el-dropdown-item>
+            <el-dropdown-item @click.native="openLayoutSettings">{{
+              $t("navigation.layoutSettings")
+            }}</el-dropdown-item>
             <el-dropdown-item @click.native="toChangePasswork">{{
               $t("navigation.changePasswork")
             }}</el-dropdown-item>
@@ -83,11 +74,7 @@
     </div>
   </div>
 
-  <messageSide
-    id="msgSide"
-    :showMessageBox="showMessageBox"
-    @close="closeMessageBox"
-  ></messageSide>
+  <messageSide id="msgSide" :showMessageBox="showMessageBox" @close="closeMessageBox"></messageSide>
 </template>
 
 <script>
@@ -100,6 +87,8 @@ import { userInfoStore } from "@/stores/user-info";
 import { settingInfoStore } from "@/stores/setting-info";
 import messageSide from "@/views/message/messageSide.vue";
 import errorLog from "@/components/part/errorLog.vue";
+import TopHomeMenu from "@/components/layout/TopHomeMenu.vue";
+import { layoutSettingsStore } from "@/stores/layout-settings";
 
 const settingInfo = settingInfoStore();
 const userInfo = userInfoStore();
@@ -114,6 +103,7 @@ export default {
   components: {
     messageSide,
     errorLog,
+    TopHomeMenu,
   },
   data() {
     return {
@@ -133,9 +123,13 @@ export default {
     userName() {
       return userInfo.getUserName;
     },
+    showTopLayoutMenu() {
+      const layout = layoutSettingsStore();
+      return this.websiteInfo.isPC && layout.navType === 3;
+    },
   },
   methods: {
-    initMessage() {},
+    initMessage() { },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       console.log(key);
@@ -197,7 +191,7 @@ export default {
         .push({
           path: "/home/homepage",
         })
-        .catch(() => {});
+        .catch(() => { });
     },
     handleSetLanguage(lang) {
       this.$i18n.locale = lang;
@@ -235,9 +229,12 @@ export default {
         this.showMessageBox = false;
       }, 500);
     },
+    openLayoutSettings() {
+      layoutSettingsStore().openDrawer();
+    },
   },
   watch: {},
-  mounted() {},
+  mounted() { },
 };
 </script>
 
@@ -248,20 +245,32 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
+  min-height: 48px;
+
+  .left-part {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
 
   .right-part {
     display: flex;
     align-items: center;
+
     .full-screen {
       margin-left: 1vw;
       cursor: pointer;
     }
+
     .message {
       margin-left: 1vw;
       cursor: pointer;
     }
+
     .selectLang {
       margin-left: 1vw;
+
       .language {
         height: 3vh;
         outline: none;
@@ -270,6 +279,7 @@ export default {
 
     .profile {
       margin-left: 2vw;
+
       .el-dropdown-link {
         outline: none;
       }
@@ -280,19 +290,23 @@ export default {
 .title:hover {
   color: #4395ff;
 }
+
 .title:active {
   color: aqua;
 }
+
 .firstPage {
   display: flex;
   color: black;
   font-weight: bold;
   cursor: pointer;
 }
+
 .firstPage:hover {
   color: #4395ff;
   font-weight: bold;
 }
+
 .firstPage:active {
   color: aqua;
   font-weight: bold;
