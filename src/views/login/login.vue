@@ -176,6 +176,7 @@
 import * as _ from "lodash";
 import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
 import { findReq } from "@/assets/js/api";
+import { isSkipLoginMode } from "@/config/skip-login";
 import { userInfoStore } from "@/stores/user-info";
 import { particles } from "./particles.js";
 import { loadFull } from "tsparticles";
@@ -419,6 +420,9 @@ export default {
     },
     // 判断是否已登录
     async isLogin() {
+      if (isSkipLoginMode()) {
+        return;
+      }
       const verifyLogin = findReq("loginController", "verifyLogin");
       const res = await verifyLogin();
       if (!res.status) {

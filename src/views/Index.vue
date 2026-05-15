@@ -43,6 +43,8 @@ import {
   WEBSITE_CHANNEL,
 } from "@/assets/js/notify/notify-config.js";
 import { userInfoStore } from "@/stores/user-info";
+import { isSkipLoginMode } from "@/config/skip-login";
+
 const userInfo = userInfoStore();
 
 export default {
@@ -105,7 +107,9 @@ export default {
       this.width = "width:50px;";
     }
 
-    this.initNotify();
+    if (!isSkipLoginMode()) {
+      this.initNotify();
+    }
   },
 };
 </script>

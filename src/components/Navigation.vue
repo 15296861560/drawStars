@@ -92,6 +92,10 @@
 
 <script>
 import storage from "@/utils/commom/storage";
+import {
+  applySkipLoginSession,
+  isSkipLoginMode,
+} from "@/config/skip-login";
 import { userInfoStore } from "@/stores/user-info";
 import { settingInfoStore } from "@/stores/setting-info";
 import messageSide from "@/views/message/messageSide.vue";
@@ -173,6 +177,14 @@ export default {
       });
     },
     logout() {
+      if (isSkipLoginMode()) {
+        applySkipLoginSession();
+        this.$message({
+          type: "info",
+          message: "当前为跳过登录模式，已恢复本地预览会话",
+        });
+        return;
+      }
       userInfo.changeUserInfo({});
       userInfo.updateToken("");
 

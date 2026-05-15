@@ -14,6 +14,7 @@ import i18n from "@/lang/index.js";
 import Particles from "particles.vue3";
 // 自定义指令
 import installDirectives from "@/utils/directives/index.js";
+import { applySkipLoginSession, isSkipLoginMode } from "@/config/skip-login";
 
 // 配置埋点
 import "@/plugins/umami/umami.js";
@@ -29,6 +30,9 @@ export default (app: App<Element>) => {
   app.use(Particles);
 
   installStore(app);
+  if (isSkipLoginMode()) {
+    applySkipLoginSession();
+  }
   installElementPlus(app);
   installDrawStartsUI(app);
   installNotify(app);

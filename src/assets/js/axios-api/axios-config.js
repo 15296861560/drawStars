@@ -51,9 +51,11 @@ requests.interceptors.response.use(
       response.data.code &&
       response.data.code === "TOKEN-FAIL"
     ) {
-      router.push({
-        path: "/login",
-      });
+      if (import.meta.env.VITE_SKIP_LOGIN !== "true") {
+        router.push({
+          path: "/login",
+        });
+      }
     }
     return response;
   },
