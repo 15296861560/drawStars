@@ -65,21 +65,21 @@
   </div>
 </template>
 <script>
-import Mock from "mockjs";
+import Mock from 'mockjs'
 export default {
   data() {
     return {
-      data: "",
-    };
+      data: ''
+    }
   },
   methods: {
     refresh() {
       this.data = Mock.mock({
-        "string|1-10": "★",
-      });
-      console.log(this.data.string);
-    },
-  },
-};
+        'string|1-10': '★'
+      })
+      console.log(this.data.string)
+    }
+  }
+}
 </script>
 <style></style>

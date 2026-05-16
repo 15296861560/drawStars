@@ -1,7 +1,6 @@
-/**echarts图表 */
-import * as echarts from "echarts";
-import type { App } from "vue";
+import * as echarts from 'echarts'
+import * as _Vue from 'vue'
 
-export default (app: App<Element>) => {
-  app.config.globalProperties.$echarts = echarts;
-};
+export default (app: _Vue.App<Element>) => {
+  app.config.globalProperties.$echarts = echarts
+}

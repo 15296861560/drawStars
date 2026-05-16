@@ -42,10 +42,10 @@
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style lang="less" scoped>
 .fade-out {

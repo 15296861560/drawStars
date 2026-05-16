@@ -12,7 +12,7 @@
       <router-link to="/home/labHomePage/promise" class="m-router-link">
         <div class="m-home-button">
           <div class="m-img">
-            <h1>{{ $t("homePage.labHomePage.promise") }}</h1>
+            <h1>{{ $t('homePage.labHomePage.promise') }}</h1>
           </div>
           <div></div>
         </div>
@@ -29,19 +29,19 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "labHomePage",
+      homepage: 'labHomePage',
       routes: [
-        { name: "vueReactivity", imgName: "bind" },
-        { name: "webpack", imgName: "webpack" },
-        { name: "frame", imgName: "frame" },
-        { name: "directive", imgName: "directive" },
-      ],
-    };
-  },
-};
+        { name: 'vueReactivity', imgName: 'bind' },
+        { name: 'webpack', imgName: 'webpack' },
+        { name: 'frame', imgName: 'frame' },
+        { name: 'directive', imgName: 'directive' }
+      ]
+    }
+  }
+}
 </script>

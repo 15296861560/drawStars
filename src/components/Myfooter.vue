@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <footer class="footer">Copyright © {{ $t("footer.msg") }}</footer>
+    <footer class="footer">Copyright © {{ $t('footer.msg') }}</footer>
   </div>
 </template>
 <style scoped>

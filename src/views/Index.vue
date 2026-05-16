@@ -38,21 +38,21 @@
 </template>
 
 <script>
-import AsideList from "@/components/AsideList.vue";
-import Navigation from "@/components/Navigation.vue";
-import Myfooter from "@/components/Myfooter.vue";
-import LayoutTagsView from "@/components/layout/LayoutTagsView.vue";
-import LayoutSettingsDrawer from "@/components/layout/LayoutSettingsDrawer.vue";
-import { layoutSettingsStore } from "@/stores/layout-settings";
-import { useRoute } from "vue-router";
+import AsideList from '@/components/AsideList.vue'
+import Navigation from '@/components/Navigation.vue'
+import Myfooter from '@/components/Myfooter.vue'
+import LayoutTagsView from '@/components/layout/LayoutTagsView.vue'
+import LayoutSettingsDrawer from '@/components/layout/LayoutSettingsDrawer.vue'
+import { layoutSettingsStore } from '@/stores/layout-settings'
+import { useRoute } from 'vue-router'
 import {
   NOTIFY_URL,
-  WEBSITE_CHANNEL,
-} from "@/assets/js/notify/notify-config.js";
-import { userInfoStore } from "@/stores/user-info";
-import { isSkipLoginMode } from "@/config/skip-login";
+  WEBSITE_CHANNEL
+} from '@/assets/js/notify/notify-config.js'
+import { userInfoStore } from '@/stores/user-info'
+import { isSkipLoginMode } from '@/config/skip-login'
 
-const userInfo = userInfoStore();
+const userInfo = userInfoStore()
 
 export default {
   components: {
@@ -60,99 +60,99 @@ export default {
     Navigation,
     Myfooter,
     LayoutTagsView,
-    LayoutSettingsDrawer,
+    LayoutSettingsDrawer
   },
   provide() {
     return {
-      websiteInfo: this.websiteInfo,
-    };
+      websiteInfo: this.websiteInfo
+    }
   },
   data() {
     return {
-      width: "width:200px;",
+      width: 'width:200px;',
       screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
       screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
       websiteInfo: {
         isPC: true, // 判断是否是电脑
-        isCollapse: false, // 侧边栏是否收缩
-      },
-    };
+        isCollapse: false // 侧边栏是否收缩
+      }
+    }
   },
   computed: {
     $route() {
-      let route = useRoute();
+      let route = useRoute()
 
-      return route;
+      return route
     },
     layout() {
-      return layoutSettingsStore();
+      return layoutSettingsStore()
     },
     showAside() {
-      return this.websiteInfo.isPC && this.layout.navType !== 3;
-    },
+      return this.websiteInfo.isPC && this.layout.navType !== 3
+    }
   },
   methods: {
     isComputer() {
-      let userAgent = navigator.userAgent;
-      let phoneList = ["Android", "iPhone", "SymbianOS"];
+      let userAgent = navigator.userAgent
+      let phoneList = ['Android', 'iPhone', 'SymbianOS']
       this.websiteInfo.isPC = phoneList.every(
-        (item) => userAgent.indexOf(item) == -1,
-      ); // 不包含手机型号则视为PC
+        item => userAgent.indexOf(item) == -1
+      ) // 不包含手机型号则视为PC
     },
     async initNotify() {
-      await this.$notify.createInstance(NOTIFY_URL);
-      await this.$notify.login(userInfo.getToken.value);
-      this.$notify.joinChannel(WEBSITE_CHANNEL);
-    },
+      await this.$notify.createInstance(NOTIFY_URL)
+      await this.$notify.login(userInfo.getToken.value)
+      this.$notify.joinChannel(WEBSITE_CHANNEL)
+    }
   },
   watch: {
-    "websiteInfo.isCollapse"(val) {
+    'websiteInfo.isCollapse'(val) {
       if (val) {
-        this.width = "width:50px;";
+        this.width = 'width:50px;'
       } else {
-        this.width = "width:200px;";
+        this.width = 'width:200px;'
       }
     },
-    "layout.navType"(n) {
+    'layout.navType'(n) {
       if (n === 2) {
-        this.websiteInfo.isCollapse = true;
+        this.websiteInfo.isCollapse = true
       } else if (n === 1) {
-        this.websiteInfo.isCollapse = false;
+        this.websiteInfo.isCollapse = false
       }
     },
-    "layout.tagsView"(on) {
+    'layout.tagsView'(on) {
       if (!on) {
-        this.layout.clearVisitedViews();
+        this.layout.clearVisitedViews()
       }
     },
-    "layout.dynamicTitle"() {
-      this.layout.applyDocumentTitle(this.$route);
-    },
+    'layout.dynamicTitle'() {
+      this.layout.applyDocumentTitle(this.$route)
+    }
   },
   mounted() {
-    this.isComputer();
-    window.addEventListener("resize", this.isComputer);
+    this.isComputer()
+    window.addEventListener('resize', this.isComputer)
     if (this.websiteInfo.isCollapse) {
-      this.width = "width:50px;";
+      this.width = 'width:50px;'
     }
 
-    this.layout.applyThemeFromState();
-    this._layoutAfterEach = this.$router.afterEach((to) => {
-      this.layout.addVisitedView(to);
-      this.layout.applyDocumentTitle(to);
-    });
+    this.layout.applyThemeFromState()
+    this._layoutAfterEach = this.$router.afterEach(to => {
+      this.layout.addVisitedView(to)
+      this.layout.applyDocumentTitle(to)
+    })
 
     if (!isSkipLoginMode()) {
-      this.initNotify();
+      this.initNotify()
     }
   },
   beforeUnmount() {
-    window.removeEventListener("resize", this.isComputer);
+    window.removeEventListener('resize', this.isComputer)
     if (this._layoutAfterEach) {
-      this._layoutAfterEach();
+      this._layoutAfterEach()
     }
-  },
-};
+  }
+}
 </script>
 
 <style>

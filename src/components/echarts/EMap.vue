@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import china from "@/assets/json/china.json";
-import { echartMixin } from "../mixin/echartMixin";
+import china from '@/assets/json/china.json'
+import { echartMixin } from '../mixin/echartMixin'
 export default {
   mixins: [echartMixin],
   data() {
@@ -49,50 +49,50 @@ export default {
         江苏: [118.767413, 32.041544],
         北京: [116.405285, 39.904989],
         香港: [114.173355, 22.320048],
-        澳门: [113.5, 22.2],
-      },
-    };
+        澳门: [113.5, 22.2]
+      }
+    }
   },
   computed: {
     linesEndCoords() {
-      let linesEndCoords = {};
-      let geoCoordMap = this.geoCoordMap;
-      let keys = Object.keys(geoCoordMap);
-      keys.forEach((item) => {
-        linesEndCoords[item] = [130, geoCoordMap[item][1]];
-      });
+      let linesEndCoords = {}
+      let geoCoordMap = this.geoCoordMap
+      let keys = Object.keys(geoCoordMap)
+      keys.forEach(item => {
+        linesEndCoords[item] = [130, geoCoordMap[item][1]]
+      })
 
-      return linesEndCoords;
-    },
+      return linesEndCoords
+    }
   },
   methods: {
     initData(newVal) {
       // 显示前10具体数据
-      this.mapData = JSON.parse(JSON.stringify(newVal.data));
+      this.mapData = JSON.parse(JSON.stringify(newVal.data))
       let datas = this.mapData
         .sort(function (a, b) {
-          return a.value - b.value;
+          return a.value - b.value
         })
-        .slice(0, 10);
+        .slice(0, 10)
 
-      let keys = [];
-      datas.forEach((item) => {
-        keys.push(item.name);
-      });
+      let keys = []
+      datas.forEach(item => {
+        keys.push(item.name)
+      })
 
       // lines的数据
-      let linesData = [];
-      let linesEndCoords = this.linesEndCoords;
-      let geoCoordMap = this.geoCoordMap;
+      let linesData = []
+      let linesEndCoords = this.linesEndCoords
+      let geoCoordMap = this.geoCoordMap
 
       // 显示的值
-      let showValue = {};
-      datas.forEach((item) => {
-        showValue[item.name] = item.value + "m³";
-      });
+      let showValue = {}
+      datas.forEach(item => {
+        showValue[item.name] = item.value + 'm³'
+      })
       keys.forEach((item, index) => {
-        let toLocation = linesEndCoords[item];
-        toLocation[1] = 40 - index * 2;
+        let toLocation = linesEndCoords[item]
+        toLocation[1] = 40 - index * 2
         linesData.push({
           name: item,
           value: showValue[item], // 显示值
@@ -100,22 +100,22 @@ export default {
           // 每条线的样式
           lineStyle: {
             show: true,
-            type: "dashed",
-            color: "red",
-          },
-        });
-      });
+            type: 'dashed',
+            color: 'red'
+          }
+        })
+      })
 
       this.option = {
         title: {
           show: true,
           text: newVal.title,
-          x: "center",
-          textStyle: { color: "black" },
-          top: "2%",
+          x: 'center',
+          textStyle: { color: 'black' },
+          top: '2%'
         },
         tooltip: {
-          trigger: "item",
+          trigger: 'item'
         },
 
         // 左侧小导航图标
@@ -127,25 +127,25 @@ export default {
             { start: 200000 },
             { start: 100000, end: 200000 },
             { start: 10000, end: 100000 },
-            { start: 0, end: 10000 },
+            { start: 0, end: 10000 }
           ],
           inRange: {
-            color: ["#6C2398", "#573BC0", "#32B1FF"],
+            color: ['#6C2398', '#573BC0', '#32B1FF']
           },
           // color: ["red", "blue", "yellow", "green"],
-          textStyle: { color: "black" },
+          textStyle: { color: 'black' }
         },
 
         // 配置属性
         series: [
           {
-            name: "数据",
-            type: "map",
-            map: "china",
+            name: '数据',
+            type: 'map',
+            map: 'china',
             roam: true, // 是否开启鼠标缩放和平移漫游
             label: {
               show: true, // 省份信息
-              color: "aqua",
+              color: 'aqua'
 
               // formatter: (params) => {
               //   let label = "";
@@ -155,61 +155,61 @@ export default {
               //   return label;
               // },
             },
-            data: newVal.data, // 数据
+            data: newVal.data // 数据
           },
           {
             // 含引导线的省份，用lines实现
-            type: "lines",
-            symbol: "circle",
+            type: 'lines',
+            symbol: 'circle',
             symbolSize: [6, 4],
             label: {
               show: true,
               // formatter: "{b}{c}",
-              formatter: (params) => {
-                let showValue = "";
+              formatter: params => {
+                let showValue = ''
                 // console.log(params)
                 showValue =
-                  params.dataIndex + 1 + "," + params.name + " " + params.value;
+                  params.dataIndex + 1 + ',' + params.name + ' ' + params.value
 
-                return showValue;
+                return showValue
               },
-              color: "green",
+              color: 'green'
             },
-            data: linesData,
-          },
+            data: linesData
+          }
         ],
         // 地理坐标系组件用于地图的绘制，支持在地理坐标系上绘制散点图，线集。
         geo: [
           {
-            map: "china",
-            roam: true,
-          },
-        ],
-      };
+            map: 'china',
+            roam: true
+          }
+        ]
+      }
 
-      this.myChart.setOption(this.option, true);
+      this.myChart.setOption(this.option, true)
 
-      let that = this;
-      this.myChart.on("click", function (params) {
+      let that = this
+      this.myChart.on('click', function (params) {
         // that.$router.push({ path: "/MapDetail", query: {} });
-        that.getProvince(params);
-      });
+        that.getProvince(params)
+      })
     },
     getProvince(params) {
       // 调用父组件设置的点击事件
-      this.$emit("getProvince", params);
+      this.$emit('getProvince', params)
     },
     paint() {
-      this.$echarts.registerMap("china", china);
-      this.myChart = this.$echarts.init(document.getElementById(this.echartId));
+      this.$echarts.registerMap('china', china)
+      this.myChart = this.$echarts.init(document.getElementById(this.echartId))
       if (this.chartData) {
-        this.initData(this.chartData);
+        this.initData(this.chartData)
       }
       // 不重新渲染下排名信息第一次渲染不出来
       this.$nextTick(() => {
-        this.resizeChart();
-      });
-    },
-  },
-};
+        this.resizeChart()
+      })
+    }
+  }
+}
 </script>

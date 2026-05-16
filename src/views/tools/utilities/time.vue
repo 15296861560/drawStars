@@ -149,45 +149,45 @@
 export default {
   data() {
     return {
-      timeInMs1: "",
-      timeInMs2: "",
-      timeInMs3: "",
-      curTime: "",
-      curTime2: "",
-    };
+      timeInMs1: '',
+      timeInMs2: '',
+      timeInMs3: '',
+      curTime: '',
+      curTime2: ''
+    }
   },
   methods: {
     getTimeInMs(key) {
       switch (key) {
         case 1:
-          this.timeInMs1 = Date.now();
-          break;
+          this.timeInMs1 = Date.now()
+          break
         case 2:
-          this.timeInMs2 = new Date().getTime();
-          break;
+          this.timeInMs2 = new Date().getTime()
+          break
         case 3:
-          this.timeInMs3 = performance.now();
-          break;
+          this.timeInMs3 = performance.now()
+          break
         default:
-          break;
+          break
       }
     },
     getCurTime1(key) {
       switch (key) {
         case 1:
-          this.curTime = new Date();
-          break;
+          this.curTime = new Date()
+          break
         case 2:
-          this.timeInMs2 = new Date().getTime();
-          break;
+          this.timeInMs2 = new Date().getTime()
+          break
         case 3:
-          this.timeInMs3 = performance.now();
-          break;
+          this.timeInMs3 = performance.now()
+          break
         default:
-          break;
+          break
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style></style>

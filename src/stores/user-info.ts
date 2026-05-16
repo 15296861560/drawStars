@@ -6,30 +6,30 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-02-08 23:31:20
  */
-import { ref, reactive, computed } from "vue";
-import { defineStore } from "pinia";
+import { ref, reactive, computed } from 'vue'
+import { defineStore } from 'pinia'
 
 export const userInfoStore = defineStore(
-  "userInfo",
+  'userInfo',
   () => {
     const userInfo = reactive({
-      name: "",
+      name: '',
       userId: 0,
-      phone: "",
-    }) as UserInfo;
-    const token = ref("");
-    const getUserInfo = computed(() => userInfo);
-    const getUserId = computed(() => userInfo.userId);
-    const getUserName = computed(() => userInfo.name);
-    const getToken = computed(() => token);
+      phone: ''
+    }) as UserInfo
+    const token = ref('')
+    const getUserInfo = computed(() => userInfo)
+    const getUserId = computed(() => userInfo.userId)
+    const getUserName = computed(() => userInfo.name)
+    const getToken = computed(() => token)
     function changeUserInfo(newVal: UserInfo) {
-      userInfo.name = newVal.name;
-      userInfo.userId = newVal.userId;
-      userInfo.phone = newVal.phone;
+      userInfo.name = newVal.name
+      userInfo.userId = newVal.userId
+      userInfo.phone = newVal.phone
     }
 
     function updateToken(newVal: string) {
-      token.value = newVal;
+      token.value = newVal
     }
 
     return {
@@ -40,18 +40,18 @@ export const userInfoStore = defineStore(
       getUserName,
       getToken,
       updateToken,
-      changeUserInfo,
-    };
+      changeUserInfo
+    }
   },
   {
     persist: {
-      storage: sessionStorage,
-    },
-  },
-);
+      storage: sessionStorage
+    }
+  }
+)
 
 interface UserInfo {
-  name: String;
-  userId: number;
-  phone: String;
+  name: String
+  userId: number
+  phone: String
 }

@@ -9,44 +9,44 @@
 /* 特效模块 */
 export default [
   {
-    path: "/home/specialHomePage",
-    name: "特效模块",
-    component: () => import("@/views/homePages/specialHomePage.vue"),
+    path: '/home/specialHomePage',
+    name: '特效模块',
+    component: () => import('@/views/homePages/specialHomePage.vue'),
     meta: {
-      title: ["首页", "特效模块"],
-      keepAlive: true,
-    },
+      title: ['首页', '特效模块'],
+      keepAlive: true
+    }
   },
   {
-    path: "/home/specialHomePage/transition",
-    name: "过渡",
-    component: () => import("@/views/specials/transition.vue"),
+    path: '/home/specialHomePage/transition',
+    name: '过渡',
+    component: () => import('@/views/specials/transition.vue'),
     meta: {
-      title: ["首页", "特效模块", "过渡"],
-    },
+      title: ['首页', '特效模块', '过渡']
+    }
   },
   {
-    path: "/home/specialHomePage/animation",
-    name: "动画",
-    component: () => import("@/views/specials/animation.vue"),
+    path: '/home/specialHomePage/animation',
+    name: '动画',
+    component: () => import('@/views/specials/animation.vue'),
     meta: {
-      title: ["首页", "特效模块", "动画"],
-    },
+      title: ['首页', '特效模块', '动画']
+    }
   },
   {
-    path: "/home/specialHomePage/words",
-    name: "文字",
-    component: () => import("@/views/specials/words.vue"),
+    path: '/home/specialHomePage/words',
+    name: '文字',
+    component: () => import('@/views/specials/words.vue'),
     meta: {
-      title: ["首页", "特效模块", "文字"],
-    },
+      title: ['首页', '特效模块', '文字']
+    }
   },
   {
-    path: "/home/specialHomePage/drag",
-    name: "拖拽",
-    component: () => import("@/views/specials/drag.vue"),
+    path: '/home/specialHomePage/drag',
+    name: '拖拽',
+    component: () => import('@/views/specials/drag.vue'),
     meta: {
-      title: ["首页", "特效模块", "拖拽"],
-    },
-  },
-];
+      title: ['首页', '特效模块', '拖拽']
+    }
+  }
+]

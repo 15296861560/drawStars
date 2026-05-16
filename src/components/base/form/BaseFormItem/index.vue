@@ -115,65 +115,64 @@
 /**
  * 通用表单元素组件
  * */
-import { computed, onMounted, toRefs, ref, defineAsyncComponent } from "vue";
-import type { AnyObject } from "@/types/global";
-import { useVModels } from "@vueuse/core";
-import { showTips } from "@/utils/message/showTips.js";
-import { ComponentType } from "@/types/base";
+import { computed, onMounted, toRefs, defineAsyncComponent } from 'vue'
+import type { AnyObject } from '@/types/global'
+import { useVModels } from '@vueuse/core'
+import { showTips } from '@/utils/message/showTips.js'
+import { ComponentType } from '@/types/base'
 
 const singleImgComponent = defineAsyncComponent(
-  () => import("./singleImgComponent.vue"),
-);
+  () => import('./singleImgComponent.vue')
+)
 
 const locationComponent = defineAsyncComponent(
-  () => import("./locationComponent.vue"),
-);
+  () => import('./locationComponent.vue')
+)
 
 const props = defineProps<{
-  field: string | number | boolean | string[] | any;
-  type?: string;
-  apiMethod?: Function;
-  apiParams?: AnyObject;
-  config?: AnyObject;
-  disabled?: boolean;
-  readonly?: boolean;
-  options?: Array<AnyObject>;
-}>();
+  field: string | number | boolean | string[] | any
+  type?: string
+  apiMethod?: Function
+  apiParams?: AnyObject
+  config?: AnyObject
+  disabled?: boolean
+  readonly?: boolean
+  options?: Array<AnyObject>
+}>()
 
 const emit = defineEmits<{
-  (e: "update:field", value: string | number | boolean | string[] | any): void;
-}>();
+  (e: 'update:field', value: string | number | boolean | string[] | any): void
+}>()
 
 const { type, apiMethod, apiParams, config, disabled, readonly, options } =
-  toRefs(props);
-const { field } = useVModels(props, emit);
+  toRefs(props)
+const { field } = useVModels(props, emit)
 
-const isInput = computed(() => type?.value === ComponentType.input);
-const isNumber = computed(() => type?.value === ComponentType.inputNumber);
-const isTextarea = computed(() => type?.value === ComponentType.textarea);
-const isSelect = computed(() => type?.value === ComponentType.select);
-const isSelectCascade = computed(() => type?.value === ComponentType.cascade);
-const isDate = computed(() => type?.value === ComponentType.date);
-const isRadio = computed(() => type?.value === ComponentType.radio);
-const isCheckBox = computed(() => type?.value === ComponentType.checkbox);
-const isImg = computed(() => type?.value === ComponentType.img);
-const isLocation = computed(() => type?.value === ComponentType.location);
+const isNumber = computed(() => type?.value === ComponentType.inputNumber)
+const isTextarea = computed(() => type?.value === ComponentType.textarea)
+const isSelect = computed(() => type?.value === ComponentType.select)
+const isSelectCascade = computed(() => type?.value === ComponentType.cascade)
+const isDate = computed(() => type?.value === ComponentType.date)
+const isRadio = computed(() => type?.value === ComponentType.radio)
+const isCheckBox = computed(() => type?.value === ComponentType.checkbox)
+const isImg = computed(() => type?.value === ComponentType.img)
+const isLocation = computed(() => type?.value === ComponentType.location)
 
 const requestOptions = async () => {
   if (apiMethod?.value) {
-    const res = await apiMethod.value(apiParams?.value);
+    const res = await apiMethod.value(apiParams?.value)
     if (res.status) {
-      options!.value = res.data || [];
+      options!.value = res.data || []
     } else {
-      showTips("error", res.msg);
+      showTips('error', res.msg)
     }
   }
-};
+}
 
 defineExpose({
-  options,
-});
+  options
+})
 onMounted(() => {
-  requestOptions();
-});
+  requestOptions()
+})
 </script>

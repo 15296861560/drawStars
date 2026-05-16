@@ -167,60 +167,60 @@
   </div>
 </template>
 <script>
-import exampleData from "./data";
+import exampleData from './data'
 export default {
   data() {
     return {
-      regexInput1: "",
-      regexInput2: "",
-      regexInput3: "",
-      regexInput4: "",
-      regexResult1: "",
-      regexResult2: "",
-      regexResult3: "",
-      regexResult4: "",
-      regExp: "",
-      exmampleInput: "",
-      exampleResult: "",
+      regexInput1: '',
+      regexInput2: '',
+      regexInput3: '',
+      regexInput4: '',
+      regexResult1: '',
+      regexResult2: '',
+      regexResult3: '',
+      regexResult4: '',
+      regExp: '',
+      exmampleInput: '',
+      exampleResult: '',
 
-      exampleList: [],
-    };
+      exampleList: []
+    }
   },
   methods: {
     regex(key) {
       switch (key) {
         case 1: {
-          const regex1 = /^[a-zA-Z]+$/; // 直接量正则表达式
-          this.regexResult1 = regex1.test(this.regexInput1);
-          break;
+          const regex1 = /^[a-zA-Z]+$/ // 直接量正则表达式
+          this.regexResult1 = regex1.test(this.regexInput1)
+          break
         }
         case 2: {
-          const regex2 = new RegExp("^[a-zA-Z]+$"); // 构造函数
-          this.regexResult2 = regex2.test(this.regexInput2);
-          break;
+          const regex2 = new RegExp('^[a-zA-Z]+$') // 构造函数
+          this.regexResult2 = regex2.test(this.regexInput2)
+          break
         }
         case 3:
-          this.regexResult3 = this.regexInput3.search("[0-9]");
-          break;
+          this.regexResult3 = this.regexInput3.search('[0-9]')
+          break
         case 4:
-          this.regexResult4 = this.regexInput4.replace(/[0-9]/g, "*");
-          break;
+          this.regexResult4 = this.regexInput4.replace(/[0-9]/g, '*')
+          break
         default:
-          break;
+          break
       }
     },
     exmampleInputClick() {
-      this.refs.regex.select();
+      this.refs.regex.select()
     },
     exampleRegExp() {
-      let regex = new RegExp(this.regExp);
-      this.exampleResult = regex.test(this.exmampleInput);
-    },
+      let regex = new RegExp(this.regExp)
+      this.exampleResult = regex.test(this.exmampleInput)
+    }
   },
 
   mounted() {
-    this.exampleList = exampleData.exampleList;
-  },
-};
+    this.exampleList = exampleData.exampleList
+  }
+}
 </script>
 <style></style>

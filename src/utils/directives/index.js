@@ -7,15 +7,15 @@
  * @LastEditTime: 2022-12-20 23:29:47
  */
 
-import copy from "./copy";
-import longpress from "./longpress";
-import debounce from "./debounce";
-import emoji from "./emoji";
-import lazyload from "./lazyload";
-import waterMarker from "./waterMarker";
-import draggable from "./draggable";
+import copy from './copy'
+import longpress from './longpress'
+import debounce from './debounce'
+import emoji from './emoji'
+import lazyload from './lazyload'
+import waterMarker from './waterMarker'
+import draggable from './draggable'
 
-export default (app) => {
+export default app => {
   const directives = {
     copy,
     longpress,
@@ -23,10 +23,10 @@ export default (app) => {
     emoji,
     lazyload,
     waterMarker,
-    draggable,
-  };
+    draggable
+  }
 
-  Object.keys(directives).forEach((key) => {
-    app.directive(key, directives[key]);
-  });
-};
+  Object.keys(directives).forEach(key => {
+    app.directive(key, directives[key])
+  })
+}

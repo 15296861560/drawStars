@@ -6,5 +6,5 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-06-17 22:32:35
  */
-export const NOTIFY_URL = "ws://localhost:8031/";
-export const WEBSITE_CHANNEL = "drawstars-web";
+export const NOTIFY_URL = 'ws://localhost:8031/'
+export const WEBSITE_CHANNEL = 'drawstars-web'

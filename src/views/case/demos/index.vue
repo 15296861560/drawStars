@@ -29,18 +29,18 @@ export default {
   data() {
     return {
       demos: [
-        { name: "爱心", path: "love" },
-        { name: "烟花", path: "fireworks" },
-        { name: "星空", path: "skystar" },
-      ],
-    };
+        { name: '爱心', path: 'love' },
+        { name: '烟花', path: 'fireworks' },
+        { name: '星空', path: 'skystar' }
+      ]
+    }
   },
   methods: {
     toPage(path) {
-      let realPath = "/home/caseHomePage/demos/" + path;
-      this.$router.push(realPath).catch((error) => error);
-    },
-  },
-};
+      let realPath = '/home/caseHomePage/demos/' + path
+      this.$router.push(realPath).catch(error => error)
+    }
+  }
+}
 </script>
 <style></style>

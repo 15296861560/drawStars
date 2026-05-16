@@ -11,6 +11,7 @@
     "lint": "eslint src",
     "fix": "eslint src  --fix",
     "lint:fix": "eslint src --ext .vue,.js,.ts,.jsx,.tsx --fix",
+    "format": "eslint src --fix && prettier --write src package.json tsconfig.json tsconfig.config.json vite.config.ts tailwind.config.js .eslintrc.js env.d.ts .vscode",
     "update-css": "npx tailwindcss -i ./src/assets/styles/input.css -o ./src/assets/styles/output.css --watch",
     "prettier": "npx prettier . --write"
   },
@@ -75,9 +76,6 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint"
-  },
-  "prettier": {
-    "semi": true
   },
   "pnpm": {
     "overrides": {

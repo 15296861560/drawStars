@@ -6,23 +6,23 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-07-22 23:16:58
  */
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
 
 export const apiInfoStore = defineStore(
-  "apiInfo",
+  'apiInfo',
   () => {
-    const url = ref("/api");
-    const getURL = computed(() => url);
+    const url = ref('/api')
+    const getURL = computed(() => url)
     function changeApi(newVal: string) {
-      url.value = newVal;
+      url.value = newVal
     }
 
-    return { url, getURL, changeApi };
+    return { url, getURL, changeApi }
   },
   {
     persist: {
-      storage: sessionStorage,
-    },
-  },
-);
+      storage: sessionStorage
+    }
+  }
+)

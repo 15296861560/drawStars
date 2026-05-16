@@ -73,16 +73,16 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click.native="toPersonalCenter">{{
-              $t("navigation.profile")
+              $t('navigation.profile')
             }}</el-dropdown-item>
             <el-dropdown-item @click.native="openLayoutSettings">{{
-              $t("navigation.layoutSettings")
+              $t('navigation.layoutSettings')
             }}</el-dropdown-item>
             <el-dropdown-item @click.native="toChangePasswork">{{
-              $t("navigation.changePasswork")
+              $t('navigation.changePasswork')
             }}</el-dropdown-item>
             <el-dropdown-item divided @click.native="logout">{{
-              $t("navigation.logOut")
+              $t('navigation.logOut')
             }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -98,161 +98,161 @@
 </template>
 
 <script>
-import storage from "@/utils/commom/storage";
-import { applySkipLoginSession, isSkipLoginMode } from "@/config/skip-login";
-import { userInfoStore } from "@/stores/user-info";
-import { settingInfoStore } from "@/stores/setting-info";
-import messageSide from "@/views/message/messageSide.vue";
-import errorLog from "@/components/part/errorLog.vue";
-import TopHomeMenu from "@/components/layout/TopHomeMenu.vue";
-import { layoutSettingsStore } from "@/stores/layout-settings";
+import storage from '@/utils/commom/storage'
+import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
+import { userInfoStore } from '@/stores/user-info'
+import { settingInfoStore } from '@/stores/setting-info'
+import messageSide from '@/views/message/messageSide.vue'
+import errorLog from '@/components/part/errorLog.vue'
+import TopHomeMenu from '@/components/layout/TopHomeMenu.vue'
+import { layoutSettingsStore } from '@/stores/layout-settings'
 
-const settingInfo = settingInfoStore();
-const userInfo = userInfoStore();
+const settingInfo = settingInfoStore()
+const userInfo = userInfoStore()
 
 export default {
-  name: "Navigation",
+  name: 'Navigation',
   props: {
     titleData: Array,
-    default: [],
+    default: []
   },
-  inject: ["websiteInfo"],
+  inject: ['websiteInfo'],
   components: {
     messageSide,
     errorLog,
-    TopHomeMenu,
+    TopHomeMenu
   },
   data() {
     return {
-      activeIndex: "1",
-      activeIndex2: "1",
-      search: "",
+      activeIndex: '1',
+      activeIndex2: '1',
+      search: '',
       screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
       screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
       isFullscreen: false, // 是否全屏显示
-      showMessageBox: false, // 是否显示消息盒子
-    };
+      showMessageBox: false // 是否显示消息盒子
+    }
   },
   computed: {
     language() {
-      return settingInfo.getLanguage;
+      return settingInfo.getLanguage
     },
     userName() {
-      return userInfo.getUserName;
+      return userInfo.getUserName
     },
     showTopLayoutMenu() {
-      const layout = layoutSettingsStore();
-      return this.websiteInfo.isPC && layout.navType === 3;
-    },
+      const layout = layoutSettingsStore()
+      return this.websiteInfo.isPC && layout.navType === 3
+    }
   },
   methods: {
     initMessage() {},
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      console.log(key);
+      console.log(key, keyPath)
+      console.log(key)
       // if(key=='1-3')this.$router.push('https://cn.bing.com/');
       // if(key=='1-3')window.localtion.href = 'https://cn.bing.com/';
     },
     goPage(index) {
-      let path = this.$route.path;
-      let paths = path.split("/");
-      let toPath = "";
+      let path = this.$route.path
+      let paths = path.split('/')
+      let toPath = ''
       for (let i = 1; i <= index + 1; i++) {
-        toPath += "/" + paths[i];
+        toPath += '/' + paths[i]
       }
       // 当前路径不跳转
       if (toPath == path) {
-        return;
+        return
       }
       this.$router.push({
-        path: toPath,
-      });
+        path: toPath
+      })
     },
     toPersonalCenter() {
-      let toPath = "/home/personalCenter/personalProfile";
-      this.toNewPath(toPath);
+      let toPath = '/home/personalCenter/personalProfile'
+      this.toNewPath(toPath)
     },
     toChangePasswork() {
-      let toPath = "/home/personalCenter/changePassword";
-      this.toNewPath(toPath);
+      let toPath = '/home/personalCenter/changePassword'
+      this.toNewPath(toPath)
     },
     toNewPath(toPath) {
-      let path = this.$route.path;
+      let path = this.$route.path
 
       if (path === toPath) {
-        return;
+        return
       }
 
       this.$router.push({
-        path: toPath,
-      });
+        path: toPath
+      })
     },
     logout() {
       if (isSkipLoginMode()) {
-        applySkipLoginSession();
+        applySkipLoginSession()
         this.$message({
-          type: "info",
-          message: "当前为跳过登录模式，已恢复本地预览会话",
-        });
-        return;
+          type: 'info',
+          message: '当前为跳过登录模式，已恢复本地预览会话'
+        })
+        return
       }
-      userInfo.changeUserInfo({});
-      userInfo.updateToken("");
+      userInfo.changeUserInfo({})
+      userInfo.updateToken('')
 
       this.$router.push({
-        path: "/login",
-      });
+        path: '/login'
+      })
     },
     toFirstPage() {
       this.$router
         .push({
-          path: "/home/homepage",
+          path: '/home/homepage'
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     handleSetLanguage(lang) {
-      this.$i18n.locale = lang;
-      storage.local.save("LANGUAGE", lang);
-      settingInfo.changeSettingInfo(lang);
+      this.$i18n.locale = lang
+      storage.local.save('LANGUAGE', lang)
+      settingInfo.changeSettingInfo(lang)
       this.$message({
-        message: this.$t("tips.switchLanguageSuccess"),
-        type: "success",
-      });
+        message: this.$t('tips.switchLanguageSuccess'),
+        type: 'success'
+      })
     },
     // 全屏
     fullScreen() {
       // 该方法进入全屏的方式与f11有差异
       if (this.isFullscreen) {
-        this.isFullscreen = false;
-        document.webkitCancelFullScreen();
+        this.isFullscreen = false
+        document.webkitCancelFullScreen()
       } else {
-        this.isFullscreen = true;
-        document.documentElement.webkitRequestFullScreen();
+        this.isFullscreen = true
+        document.documentElement.webkitRequestFullScreen()
       }
     },
     // 查看消息
     toSeeMessage() {
       if (this.showMessageBox) {
-        this.closeMessageBox();
+        this.closeMessageBox()
       } else {
-        this.showMessageBox = true;
+        this.showMessageBox = true
       }
     },
     closeMessageBox() {
-      let msgSide = document.getElementById("msgSide");
-      msgSide.classList.add("slideOutRight");
+      let msgSide = document.getElementById('msgSide')
+      msgSide.classList.add('slideOutRight')
       setTimeout(() => {
-        msgSide.classList.remove("slideOutRight");
-        this.showMessageBox = false;
-      }, 500);
+        msgSide.classList.remove('slideOutRight')
+        this.showMessageBox = false
+      }, 500)
     },
     openLayoutSettings() {
-      layoutSettingsStore().openDrawer();
-    },
+      layoutSettingsStore().openDrawer()
+    }
   },
   watch: {},
-  mounted() {},
-};
+  mounted() {}
+}
 </script>
 
 <style lang="less" scoped>

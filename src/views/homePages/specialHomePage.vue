@@ -20,15 +20,15 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "specialHomePage",
-      imgSrc: "special/",
-      routes: ["transition", "animation", "words", "drag"],
-    };
-  },
-};
+      homepage: 'specialHomePage',
+      imgSrc: 'special/',
+      routes: ['transition', 'animation', 'words', 'drag']
+    }
+  }
+}
 </script>

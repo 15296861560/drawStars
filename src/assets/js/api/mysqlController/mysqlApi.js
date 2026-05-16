@@ -7,7 +7,7 @@
  * @LastEditTime: 2022-12-17 23:09:28
  */
 /* mysql数据库操作相关接口 */
-import { $axios } from "@/assets/js/axios-api/axios-config.js";
+import { $axios } from '@/assets/js/axios-api/axios-config.js'
 
 export default {
   /**
@@ -16,7 +16,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  query: (params) => $axios(params, "/mysqlApi/query"),
+  query: params => $axios(params, '/mysqlApi/query'),
 
   /**
    * @description: 插入
@@ -24,7 +24,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  register: (params) => $axios(params, "/mysqlApi/register"),
+  register: params => $axios(params, '/mysqlApi/register'),
 
   /**
    * @description: 删除
@@ -32,7 +32,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  cancel: (params) => $axios(params, "/mysqlApi/cancel"),
+  cancel: params => $axios(params, '/mysqlApi/cancel'),
 
   /**
    * @description: 执行SQL
@@ -40,5 +40,5 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  excuteSQL: (params) => $axios(params, "/mysqlApi/sql"),
-};
+  excuteSQL: params => $axios(params, '/mysqlApi/sql')
+}

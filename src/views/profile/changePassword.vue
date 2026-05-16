@@ -35,35 +35,35 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { showTips } from "@/utils/message/showTips.js";
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
+import { ref } from 'vue'
+import { showTips } from '@/utils/message/showTips.js'
+import { userInfoStore } from '@/stores/user-info'
+const userInfo = userInfoStore()
 
-import { findReq } from "@/assets/js/api";
-const changePassword = findReq("profileController", "changePassword");
+import { findReq } from '@/assets/js/api'
+const changePassword = findReq('profileController', 'changePassword')
 
-const oldPassword = ref("");
-const password = ref("");
-const newPassword = ref("");
+const oldPassword = ref('')
+const password = ref('')
+const newPassword = ref('')
 
 async function comfirm() {
   if (password.value !== newPassword.value) {
-    showTips("error", "两次新密码不一致");
-    return;
+    showTips('error', '两次新密码不一致')
+    return
   }
 
   let param = {
     id: userInfo.getUserId,
     password: oldPassword.value,
-    newPassword: newPassword.value,
-  };
+    newPassword: newPassword.value
+  }
 
-  let res = await changePassword(param);
+  let res = await changePassword(param)
   if (res.status) {
-    showTips("success", "修改成功");
+    showTips('success', '修改成功')
   } else {
-    showTips("error", res.msg);
+    showTips('error', res.msg)
   }
 }
 </script>

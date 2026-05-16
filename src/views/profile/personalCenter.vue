@@ -22,51 +22,51 @@
   </div>
 </template>
 <script>
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 
-const PERSONAL_PREFIX = "/home/personalCenter/";
+const PERSONAL_PREFIX = '/home/personalCenter/'
 export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
-      curMenu: "personalProfile",
-    };
+      curMenu: 'personalProfile'
+    }
   },
   computed: {
     menus() {
       return [
-        { name: this.$t("personalProfile"), path: "personalProfile" },
-        { name: this.$t("accountSettings"), path: "accountSettings" },
-        { name: this.$t("changePassword"), path: "changePassword" },
-        { name: this.$t("changePhone"), path: "bindPhone" },
-      ];
-    },
+        { name: this.$t('personalProfile'), path: 'personalProfile' },
+        { name: this.$t('accountSettings'), path: 'accountSettings' },
+        { name: this.$t('changePassword'), path: 'changePassword' },
+        { name: this.$t('changePhone'), path: 'bindPhone' }
+      ]
+    }
   },
 
   mounted() {
-    this.init();
+    this.init()
   },
   activated() {},
   methods: {
     init() {
-      this.initData();
+      this.initData()
     },
     initData() {
-      let fullPath = this.$route.fullPath;
-      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length);
+      let fullPath = this.$route.fullPath
+      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length)
     },
     toggleMenu(menu) {
-      this.curMenu = menu;
-      let nextPath = PERSONAL_PREFIX + menu;
+      this.curMenu = menu
+      let nextPath = PERSONAL_PREFIX + menu
       if (nextPath === this.$route.path) {
-        return;
+        return
       }
       this.$router.push({
-        path: nextPath,
-      });
-    },
-  },
-};
+        path: nextPath
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .personal-center {

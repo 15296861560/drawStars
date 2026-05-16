@@ -1,8 +1,8 @@
 <template>
   <div>
     <span v-if="type === TABLE_ITEM_TYPE.select">{{
-      options?.find((o) => o[config?.valueKey || "value"] === field)?.[
-        config?.labelKey || "label"
+      options?.find(o => o[config?.valueKey || 'value'] === field)?.[
+        config?.labelKey || 'label'
       ]
     }}</span>
 
@@ -23,29 +23,29 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, toRefs, ref, defineAsyncComponent } from "vue";
-import type { AnyObject } from "@/types/global";
+import { toRefs } from 'vue'
+import type { AnyObject } from '@/types/global'
 
 const TABLE_ITEM_TYPE = {
-  text: "text",
-  img: "img",
-  link: "link",
-  select: "select",
-  tag: "tag",
-};
+  text: 'text',
+  img: 'img',
+  link: 'link',
+  select: 'select',
+  tag: 'tag'
+}
 
 const props = defineProps<{
-  field: string | number | boolean | string[] | any;
-  type?: string;
-  apiMethod?: Function;
-  apiParams?: AnyObject;
-  config?: AnyObject;
-  disabled?: boolean;
-  readonly?: boolean;
-  tableViewMode?: boolean;
-  options?: Array<AnyObject>;
-}>();
+  field: string | number | boolean | string[] | any
+  type?: string
+  apiMethod?: Function
+  apiParams?: AnyObject
+  config?: AnyObject
+  disabled?: boolean
+  readonly?: boolean
+  tableViewMode?: boolean
+  options?: Array<AnyObject>
+}>()
 
 const { type, apiMethod, apiParams, config, disabled, readonly, options } =
-  toRefs(props);
+  toRefs(props)
 </script>

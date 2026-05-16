@@ -8,59 +8,59 @@
  */
 // 值为任意类型的Object
 export interface AnyObject {
-  [key: string]: any;
+  [key: string]: any
 }
 
 export interface Field {
-  fieldName: string;
-  label: string;
-  type?: string;
-  rule?: Array<AnyObject> | AnyObject;
-  hideDialog?: boolean;
-  hideTable?: boolean;
-  width?: string | number;
-  minWidth?: string | number;
-  [key: string]: any;
+  fieldName: string
+  label: string
+  type?: string
+  rule?: Array<AnyObject> | AnyObject
+  hideDialog?: boolean
+  hideTable?: boolean
+  width?: string | number
+  minWidth?: string | number
+  [key: string]: any
 }
 
 export interface DialogOption {
-  fieldList: Array<Field>;
-  disabled?: boolean;
-  readonly?: boolean;
-  confirmMethod?: Function;
-  confirmParams?: AnyObject;
-  labelPosition?: string;
-  [key: string]: any;
+  fieldList: Array<Field>
+  disabled?: boolean
+  readonly?: boolean
+  confirmMethod?: Function
+  confirmParams?: AnyObject
+  labelPosition?: string
+  [key: string]: any
 }
 
 export interface Operate {
-  label: string;
-  color?: string;
-  type?: string;
-  action: Function;
-  show?: Function;
-  disabled?: Function;
-  loading?: boolean | Ref;
+  label: string
+  color?: string
+  type?: string
+  action: Function
+  show?: Function
+  disabled?: Function
+  loading?: boolean | Ref
 }
 
 export interface TableOption {
-  tableData: Array<any>;
-  tableFields: Array<Field>;
-  showIndex?: boolean;
-  showSelection?: boolean;
-  pageTableOperate?: Array<Operate>;
-  tableOperate?: Array<Operate>;
-  tableOperateWidth: string | number;
-  tableData: Array<AnyObject>;
-  rowKey?: string;
-  tableName?: string;
-  [key: string]: any;
+  tableData: Array<any>
+  tableFields: Array<Field>
+  showIndex?: boolean
+  showSelection?: boolean
+  pageTableOperate?: Array<Operate>
+  tableOperate?: Array<Operate>
+  tableOperateWidth: string | number
+  tableData: Array<AnyObject>
+  rowKey?: string
+  tableName?: string
+  [key: string]: any
 }
 
 export interface PageInfo {
-  curPage: number;
-  pageSize: number;
-  total: number;
-  curPageChange: Function;
-  layout: string;
+  curPage: number
+  pageSize: number
+  total: number
+  curPageChange: Function
+  layout: string
 }

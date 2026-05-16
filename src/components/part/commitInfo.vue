@@ -9,7 +9,7 @@
 <template>
   <div class="commit">
     <div class="title-row">
-      <div class="commit-title">{{ $t("commit.updateLog") }}</div>
+      <div class="commit-title">{{ $t('commit.updateLog') }}</div>
     </div>
     <div class="commit-main">
       <el-timeline :reverse="false">
@@ -27,37 +27,37 @@
 </template>
 
 <script setup>
-import axios from "axios";
-import { onMounted, reactive } from "vue";
-import { showTips } from "@/utils/message/showTips.js";
+import axios from 'axios'
+import { onMounted, reactive } from 'vue'
+import { showTips } from '@/utils/message/showTips.js'
 
-const commitInfoList = reactive([]);
+const commitInfoList = reactive([])
 
 async function getCommitInfoList() {
-  const accout = 15296861560;
-  const warehouse = "drawStars";
-  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits`;
-  let res = await axios.get(url).catch((e) => {
-    showTips("error", e.toString());
-  });
+  const accout = 15296861560
+  const warehouse = 'drawStars'
+  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits`
+  let res = await axios.get(url).catch(e => {
+    showTips('error', e.toString())
+  })
   if (res.status === 200) {
-    res.data.forEach((c) => {
-      let message = c.commit?.message;
-      if (message && message.startsWith("feat")) {
+    res.data.forEach(c => {
+      let message = c.commit?.message
+      if (message && message.startsWith('feat')) {
         commitInfoList.push({
           date: c.commit?.author?.date,
-          feat: message.slice(5),
-        });
+          feat: message.slice(5)
+        })
       }
-    });
+    })
   } else {
-    showTips("error", res.toString());
+    showTips('error', res.toString())
   }
 }
 
 onMounted(() => {
-  getCommitInfoList();
-});
+  getCommitInfoList()
+})
 </script>
 
 <style lang="less" scoped>

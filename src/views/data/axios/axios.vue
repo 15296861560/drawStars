@@ -71,41 +71,41 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
   data() {
     return {
-      getOfResult: "",
-      getOfResult2: "",
-      getOfResultCORS: "",
-    };
+      getOfResult: '',
+      getOfResult2: '',
+      getOfResultCORS: ''
+    }
   },
   methods: {
     getResult() {
       // axios.defaults.baseURL = '/api';
-      let _this = this;
+      let _this = this
       axios
-        .get("/api/testApi/test/getTest")
-        .then((response) => (_this.getOfResult = response.data))
+        .get('/api/testApi/test/getTest')
+        .then(response => (_this.getOfResult = response.data))
         .catch(function (error) {
           // 请求失败处理
-          alert(error);
-          _this.getOfResult = error;
-        });
+          alert(error)
+          _this.getOfResult = error
+        })
     },
     getResult2() {
-      let _this = this;
+      let _this = this
       axios
-        .post("/api/testApi/test/postTest")
-        .then((response) => (_this.getOfResult2 = response.data))
+        .post('/api/testApi/test/postTest')
+        .then(response => (_this.getOfResult2 = response.data))
         .catch(function (error) {
           // 请求失败处理
-          alert(error);
-          _this.getOfResult2 = error;
-        });
-    },
-  },
-};
+          alert(error)
+          _this.getOfResult2 = error
+        })
+    }
+  }
+}
 </script>
 <style></style>

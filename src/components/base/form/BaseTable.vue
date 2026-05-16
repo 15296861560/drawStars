@@ -110,32 +110,23 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  defineAsyncComponent,
-  nextTick,
-  onUnmounted,
-  reactive,
-  ref,
-  toRefs,
-  watch,
-} from "vue";
-import type { AnyObject, Field, TableOption, PageInfo } from "@/types/global";
-import { useRoute } from "vue-router";
+import { defineAsyncComponent, ref, toRefs } from 'vue'
+import * as _Global from '@/types/global'
+import { useRoute } from 'vue-router'
 
-const route = useRoute();
+const route = useRoute()
 const BaseTableItem = defineAsyncComponent(
-  () => import("./BaseTableItem/index.vue"),
-);
+  () => import('./BaseTableItem/index.vue')
+)
 
 const props = defineProps<{
-  options: TableOption;
-  page: PageInfo;
-}>();
+  options: _Global.TableOption
+  page: _Global.PageInfo
+}>()
 
 const defaultPage = ref({
-  layout: "total,prev, pager, next,jumper",
-});
+  layout: 'total,prev, pager, next,jumper'
+})
 
 const {
   tableData,
@@ -146,16 +137,21 @@ const {
   tableOperateWidth,
   rowKey,
   tableName,
-  tableOperate,
-} = toRefs(props.options as TableOption);
+  tableOperate
+} = toRefs(props.options as _Global.TableOption)
 
 //是否展示按钮
-const handleShowButton = (operate: AnyObject, row: AnyObject): boolean =>
-  operate.show ? operate.show(operate, row, props.options, route) : true;
+const handleShowButton = (
+  operate: _Global.AnyObject,
+  row: _Global.AnyObject
+): boolean =>
+  operate.show ? operate.show(operate, row, props.options, route) : true
 
 //是否禁用按钮
-const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
-  operate.disabled ? operate.disabled(operate, row) : false;
+const handleDisabledButton = (
+  operate: _Global.AnyObject,
+  row: _Global.AnyObject
+): boolean => (operate.disabled ? operate.disabled(operate, row) : false)
 </script>
 
 <style scoped lang="less">

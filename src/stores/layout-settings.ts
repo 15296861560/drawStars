@@ -1,148 +1,148 @@
-import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import type { RouteLocationNormalized } from "vue-router";
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import * as _VueRouter from 'vue-router'
 import {
   LAYOUT_SETTING_STORAGE_KEY,
-  layoutDefaults,
-} from "@/config/layout-defaults";
-import { handleThemeStyle } from "@/utils/theme-style";
+  layoutDefaults
+} from '@/config/layout-defaults'
+import { handleThemeStyle } from '@/utils/theme-style'
 
-export type SideTheme = "theme-dark" | "theme-light";
+export type SideTheme = 'theme-dark' | 'theme-light'
 
 export type VisitedView = {
-  path: string;
-  fullPath: string;
-  name?: string | symbol | null;
-  title: string;
-};
+  path: string
+  fullPath: string
+  name?: string | symbol | null
+  title: string
+}
 
 function readStoredLayout(): Record<string, unknown> | null {
   try {
-    const raw = localStorage.getItem(LAYOUT_SETTING_STORAGE_KEY);
+    const raw = localStorage.getItem(LAYOUT_SETTING_STORAGE_KEY)
     if (!raw) {
-      return null;
+      return null
     }
-    return JSON.parse(raw) as Record<string, unknown>;
+    return JSON.parse(raw) as Record<string, unknown>
   } catch {
-    return null;
+    return null
   }
 }
 
-const stored = readStoredLayout();
+const stored = readStoredLayout()
 
-const BASE_TITLE = "Draw Stars";
+const BASE_TITLE = 'Draw Stars'
 
-export const layoutSettingsStore = defineStore("layoutSettings", () => {
+export const layoutSettingsStore = defineStore('layoutSettings', () => {
   const theme = ref(
-    typeof stored?.theme === "string" ? stored.theme : "#409EFF",
-  );
+    typeof stored?.theme === 'string' ? stored.theme : '#409EFF'
+  )
   const sideTheme = ref<SideTheme>(
-    stored?.sideTheme === "theme-light"
-      ? "theme-light"
-      : layoutDefaults.sideTheme,
-  );
+    stored?.sideTheme === 'theme-light'
+      ? 'theme-light'
+      : layoutDefaults.sideTheme
+  )
   const navType = ref(
-    typeof stored?.navType === "number"
+    typeof stored?.navType === 'number'
       ? stored.navType
-      : layoutDefaults.navType,
-  );
+      : layoutDefaults.navType
+  )
   const tagsView = ref(
-    typeof stored?.tagsView === "boolean"
+    typeof stored?.tagsView === 'boolean'
       ? stored.tagsView
-      : layoutDefaults.tagsView,
-  );
+      : layoutDefaults.tagsView
+  )
   const tagsIcon = ref(
-    typeof stored?.tagsIcon === "boolean"
+    typeof stored?.tagsIcon === 'boolean'
       ? stored.tagsIcon
-      : layoutDefaults.tagsIcon,
-  );
+      : layoutDefaults.tagsIcon
+  )
   const fixedHeader = ref(
-    typeof stored?.fixedHeader === "boolean"
+    typeof stored?.fixedHeader === 'boolean'
       ? stored.fixedHeader
-      : layoutDefaults.fixedHeader,
-  );
+      : layoutDefaults.fixedHeader
+  )
   const sidebarLogo = ref(
-    typeof stored?.sidebarLogo === "boolean"
+    typeof stored?.sidebarLogo === 'boolean'
       ? stored.sidebarLogo
-      : layoutDefaults.sidebarLogo,
-  );
+      : layoutDefaults.sidebarLogo
+  )
   const dynamicTitle = ref(
-    typeof stored?.dynamicTitle === "boolean"
+    typeof stored?.dynamicTitle === 'boolean'
       ? stored.dynamicTitle
-      : layoutDefaults.dynamicTitle,
-  );
+      : layoutDefaults.dynamicTitle
+  )
   const footerVisible = ref(
-    typeof stored?.footerVisible === "boolean"
+    typeof stored?.footerVisible === 'boolean'
       ? stored.footerVisible
-      : layoutDefaults.footerVisible,
-  );
+      : layoutDefaults.footerVisible
+  )
 
-  const visitedViews = ref<VisitedView[]>([]);
+  const visitedViews = ref<VisitedView[]>([])
 
-  const drawerVisible = ref(false);
+  const drawerVisible = ref(false)
 
-  function routeTitle(route: RouteLocationNormalized): string {
-    const t = route.meta?.title;
+  function routeTitle(route: _VueRouter.RouteLocationNormalized): string {
+    const t = route.meta?.title
     if (Array.isArray(t)) {
-      return t.join(" / ");
+      return t.join(' / ')
     }
-    if (typeof t === "string") {
-      return t;
+    if (typeof t === 'string') {
+      return t
     }
-    return (route.name && String(route.name)) || route.path;
+    return (route.name && String(route.name)) || route.path
   }
 
-  function addVisitedView(route: RouteLocationNormalized) {
+  function addVisitedView(route: _VueRouter.RouteLocationNormalized) {
     if (!tagsView.value) {
-      return;
+      return
     }
-    if (!route.path || route.path === "/login" || route.path === "/") {
-      return;
+    if (!route.path || route.path === '/login' || route.path === '/') {
+      return
     }
-    const title = routeTitle(route);
-    const exists = visitedViews.value.some(
-      (v) => v.fullPath === route.fullPath,
-    );
+    const title = routeTitle(route)
+    const exists = visitedViews.value.some(v => v.fullPath === route.fullPath)
     if (exists) {
-      return;
+      return
     }
     visitedViews.value.push({
       path: route.path,
       fullPath: route.fullPath,
       name: route.name,
-      title,
-    });
+      title
+    })
     if (visitedViews.value.length > 12) {
-      visitedViews.value.shift();
+      visitedViews.value.shift()
     }
   }
 
   function removeVisitedView(fullPath: string) {
-    const i = visitedViews.value.findIndex((v) => v.fullPath === fullPath);
+    const i = visitedViews.value.findIndex(v => v.fullPath === fullPath)
     if (i !== -1) {
-      visitedViews.value.splice(i, 1);
+      visitedViews.value.splice(i, 1)
     }
   }
 
   function applyThemeFromState() {
-    handleThemeStyle(theme.value);
+    handleThemeStyle(theme.value)
   }
 
-  function applyDocumentTitle(route: RouteLocationNormalized | null) {
+  function applyDocumentTitle(
+    route: _VueRouter.RouteLocationNormalized | null
+  ) {
     if (!dynamicTitle.value || !route) {
-      document.title = BASE_TITLE;
-      return;
+      document.title = BASE_TITLE
+      return
     }
-    const piece = routeTitle(route);
-    document.title = piece ? `${piece} - ${BASE_TITLE}` : BASE_TITLE;
+    const piece = routeTitle(route)
+    document.title = piece ? `${piece} - ${BASE_TITLE}` : BASE_TITLE
   }
 
   function openDrawer() {
-    drawerVisible.value = true;
+    drawerVisible.value = true
   }
 
   function closeDrawer() {
-    drawerVisible.value = false;
+    drawerVisible.value = false
   }
 
   function persistToLocalStorage() {
@@ -155,20 +155,20 @@ export const layoutSettingsStore = defineStore("layoutSettings", () => {
       dynamicTitle: dynamicTitle.value,
       footerVisible: footerVisible.value,
       sideTheme: sideTheme.value,
-      theme: theme.value,
-    };
-    localStorage.setItem(LAYOUT_SETTING_STORAGE_KEY, JSON.stringify(payload));
+      theme: theme.value
+    }
+    localStorage.setItem(LAYOUT_SETTING_STORAGE_KEY, JSON.stringify(payload))
   }
 
   function resetLocalStorageAndReload() {
-    localStorage.removeItem(LAYOUT_SETTING_STORAGE_KEY);
-    window.location.reload();
+    localStorage.removeItem(LAYOUT_SETTING_STORAGE_KEY)
+    window.location.reload()
   }
 
-  const isDarkAside = computed(() => sideTheme.value === "theme-dark");
+  const isDarkAside = computed(() => sideTheme.value === 'theme-dark')
 
   function clearVisitedViews() {
-    visitedViews.value = [];
+    visitedViews.value = []
   }
 
   return {
@@ -194,6 +194,6 @@ export const layoutSettingsStore = defineStore("layoutSettings", () => {
     persistToLocalStorage,
     resetLocalStorageAndReload,
     routeTitle,
-    clearVisitedViews,
-  };
-});
+    clearVisitedViews
+  }
+})

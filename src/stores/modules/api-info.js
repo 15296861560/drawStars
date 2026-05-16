@@ -8,24 +8,24 @@
  */
 export default {
   state: {
-    url: "/api",
+    url: '/api'
   },
   mutations: {
     changeApi(state, { attr, val }) {
-      state[attr] = val;
-    },
+      state[attr] = val
+    }
   },
   getters: {
     getUrl(state) {
-      return state.url;
-    },
+      return state.url
+    }
   },
   actions: {
     changeApi(context, { attr, val }) {
-      context.commit("changeApi", {
+      context.commit('changeApi', {
         attr,
-        val,
-      });
-    },
-  },
-};
+        val
+      })
+    }
+  }
+}

@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import { echartMixin } from "../mixin/echartMixin";
+import { echartMixin } from '../mixin/echartMixin'
 export default {
-  mixins: [echartMixin],
-};
+  mixins: [echartMixin]
+}
 </script>

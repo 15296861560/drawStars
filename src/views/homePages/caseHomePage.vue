@@ -20,14 +20,14 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "caseHomePage",
-      routes: ["boards", "demos", "games"],
-    };
-  },
-};
+      homepage: 'caseHomePage',
+      routes: ['boards', 'demos', 'games']
+    }
+  }
+}
 </script>

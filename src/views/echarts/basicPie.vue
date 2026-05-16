@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { echartViewsMixin } from "../mixin/echartViewsMixin";
+import { echartViewsMixin } from '../mixin/echartViewsMixin'
 export default {
   mixins: [echartViewsMixin],
   data() {
@@ -13,59 +13,59 @@ export default {
       myChart: null,
       option: {
         title: {
-          text: "某站点用户访问来源",
-          subtext: "纯属虚构",
-          left: "center",
-          top: "20",
+          text: '某站点用户访问来源',
+          subtext: '纯属虚构',
+          left: 'center',
+          top: '20'
         },
         tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
-          orient: "vertical",
-          left: "20",
-          top: "20",
+          orient: 'vertical',
+          left: '20',
+          top: '20'
         },
         series: [
           {
-            name: "访问来源",
-            type: "pie",
-            radius: "50%",
+            name: '访问来源',
+            type: 'pie',
+            radius: '50%',
             data: [
-              { value: 1048, name: "搜索引擎" },
-              { value: 735, name: "直接访问" },
-              { value: 580, name: "邮件营销" },
-              { value: 484, name: "联盟广告" },
-              { value: 300, name: "视频广告" },
+              { value: 1048, name: '搜索引擎' },
+              { value: 735, name: '直接访问' },
+              { value: 580, name: '邮件营销' },
+              { value: 484, name: '联盟广告' },
+              { value: 300, name: '视频广告' }
             ],
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
                 shadowOffsetX: 0,
-                shadowColor: "rgba(0, 0, 0, 0.5)",
-              },
-            },
-          },
-        ],
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
       },
 
-      statisticalData: [120, 200, 150, 80, 70, 110, 130],
-    };
+      statisticalData: [120, 200, 150, 80, 70, 110, 130]
+    }
   },
   methods: {
     paint() {
-      this.initData();
+      this.initData()
 
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = this.$echarts.init(document.getElementById("echart-pie"));
+      this.myChart = this.$echarts.init(document.getElementById('echart-pie'))
       // 绘制图表
-      this.myChart.setOption(this.option);
+      this.myChart.setOption(this.option)
     },
     initData() {
       // this.option.xAxis.data = this.XData;
       // this.option.series[0].data = this.statisticalData;
-    },
-  },
-};
+    }
+  }
+}
 </script>

@@ -19,31 +19,31 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "echartHomePage",
-      imgSrc: "echarts/",
+      homepage: 'echartHomePage',
+      imgSrc: 'echarts/',
       routes: [
-        { name: "basicBar", imgName: "bar" },
-        { name: "basicLine", imgName: "line" },
-        { name: "basicArea", imgName: "area" },
-        { name: "basicPie", imgName: "pie" },
-        { name: "bar", imgName: "bar" },
-        { name: "stackedBar", imgName: "stackedBar" },
-        { name: "barLineDrill", imgName: "barLineDrill" },
-        { name: "polar", imgName: "polar" },
-        { name: "dynamicOrderBar", imgName: "dynamicOrderBar" },
-        { name: "gauge", imgName: "gauge" },
-        { name: "eMap", imgName: "map" },
-        { name: "baiduMap", imgName: "location" },
-        { name: "aMap", imgName: "location" },
-        { name: "leafletMap", imgName: "location" },
-      ],
-    };
-  },
-};
+        { name: 'basicBar', imgName: 'bar' },
+        { name: 'basicLine', imgName: 'line' },
+        { name: 'basicArea', imgName: 'area' },
+        { name: 'basicPie', imgName: 'pie' },
+        { name: 'bar', imgName: 'bar' },
+        { name: 'stackedBar', imgName: 'stackedBar' },
+        { name: 'barLineDrill', imgName: 'barLineDrill' },
+        { name: 'polar', imgName: 'polar' },
+        { name: 'dynamicOrderBar', imgName: 'dynamicOrderBar' },
+        { name: 'gauge', imgName: 'gauge' },
+        { name: 'eMap', imgName: 'map' },
+        { name: 'baiduMap', imgName: 'location' },
+        { name: 'aMap', imgName: 'location' },
+        { name: 'leafletMap', imgName: 'location' }
+      ]
+    }
+  }
+}
 </script>

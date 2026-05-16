@@ -75,36 +75,36 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
-import { errorLogStore } from "@/stores/error-log";
-const errorLog = errorLogStore();
+import { ref, reactive, computed } from 'vue'
+import { errorLogStore } from '@/stores/error-log'
+const errorLog = errorLogStore()
 
-const dialogTableVisible = ref(false);
+const dialogTableVisible = ref(false)
 
 const errorLogs = computed(() => {
-  return errorLog.getErrorLogs;
-});
+  return errorLog.getErrorLogs
+})
 
 const showErrorLog = () => {
-  dialogTableVisible.value = true;
-};
+  dialogTableVisible.value = true
+}
 function clearAll() {
-  dialogTableVisible.value = false;
-  errorLog.clearErrorLog();
+  dialogTableVisible.value = false
+  errorLog.clearErrorLog()
 }
 
 const searchList = reactive([
   {
-    title: "百度搜索",
-    url: "https://www.baidu.com/baidu?wd=",
+    title: '百度搜索',
+    url: 'https://www.baidu.com/baidu?wd='
   },
   {
-    title: "谷歌搜索",
-    url: "https://www.google.com/search?q=",
+    title: '谷歌搜索',
+    url: 'https://www.google.com/search?q='
   },
   {
-    title: "Bing搜索",
-    url: "https://cn.bing.com/search?q=",
-  },
-]);
+    title: 'Bing搜索',
+    url: 'https://cn.bing.com/search?q='
+  }
+])
 </script>

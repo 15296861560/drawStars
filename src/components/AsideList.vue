@@ -25,14 +25,14 @@
           <el-menu-item index="/home/homepage">
             <el-icon><HomeFilled /></el-icon>
             <template #title>
-              <span>{{ $t("aside.homePage") }}</span>
+              <span>{{ $t('aside.homePage') }}</span>
             </template>
           </el-menu-item>
 
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Shop /></el-icon>
-              <span>{{ $t("aside.module") }}</span>
+              <span>{{ $t('aside.module') }}</span>
             </template>
             <el-menu-item
               :index="item.path"
@@ -44,20 +44,20 @@
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Avatar /></el-icon>
-              <span>{{ $t("aside.test") }}</span>
+              <span>{{ $t('aside.test') }}</span>
             </template>
             <el-menu-item-group title="权限示例">
               <el-menu-item v-if="userData.level > 1" index="/home/test1">{{
-                $t("aside.moreThanOne")
+                $t('aside.moreThanOne')
               }}</el-menu-item>
               <el-menu-item v-if="userData.level > 2" index="/home/test2">{{
-                $t("aside.moreThanTwo")
+                $t('aside.moreThanTwo')
               }}</el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="测试页面">
               <el-menu-item index="outSide"
                 ><el-icon><Link /></el-icon
-                >{{ $t("aside.externalLinks") }}</el-menu-item
+                >{{ $t('aside.externalLinks') }}</el-menu-item
               >
             </el-menu-item-group>
             <el-menu-item-group title="模拟错误">
@@ -67,19 +67,19 @@
           <el-sub-menu index="3">
             <template #title>
               <el-icon><User /></el-icon>
-              <span>{{ $t("aside.power") }}</span>
+              <span>{{ $t('aside.power') }}</span>
             </template>
             <el-menu-item index="levelDown"
               ><el-icon><CaretBottom /></el-icon
-              >{{ $t("aside.levelDown") }}</el-menu-item
+              >{{ $t('aside.levelDown') }}</el-menu-item
             >
             <el-menu-item index="levelUp" route="{}"
               ><el-icon><CaretTop /></el-icon
-              >{{ $t("aside.levelUp") }}</el-menu-item
+              >{{ $t('aside.levelUp') }}</el-menu-item
             >
             <el-menu-item disabled
               ><el-icon><DCaret /></el-icon
-              >{{ $t("aside.curLevel") + userData.level }}</el-menu-item
+              >{{ $t('aside.curLevel') + userData.level }}</el-menu-item
             >
           </el-sub-menu>
         </el-menu>
@@ -89,98 +89,98 @@
 </template>
 
 <script>
-import { getHomePathList } from "@/utils/home-path-list";
-import { layoutSettingsStore } from "@/stores/layout-settings";
-import { mockUndefinedRouteError } from "@/utils/mock-undefined-error";
-import Test1 from "@/views/pages/test1.vue";
-import Test2 from "@/views/pages/test2.vue";
+import { getHomePathList } from '@/utils/home-path-list'
+import { layoutSettingsStore } from '@/stores/layout-settings'
+import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import Test1 from '@/views/pages/test1.vue'
+import Test2 from '@/views/pages/test2.vue'
 export default {
-  name: "AsideList",
-  inject: ["websiteInfo"],
+  name: 'AsideList',
+  inject: ['websiteInfo'],
   data() {
     return {
       userData: {
-        level: 3,
+        level: 3
       },
-      defaultActive: "/home/homepage",
-      pathList: [],
-    };
+      defaultActive: '/home/homepage',
+      pathList: []
+    }
   },
   computed: {
     layout() {
-      return layoutSettingsStore();
+      return layoutSettingsStore()
     },
     menuBg() {
-      return this.layout.isDarkAside ? "#282c34" : "#ffffff";
+      return this.layout.isDarkAside ? '#282c34' : '#ffffff'
     },
     menuText() {
-      return this.layout.isDarkAside ? "#fff" : "#303133";
+      return this.layout.isDarkAside ? '#fff' : '#303133'
     },
     menuActive() {
-      return this.layout.isDarkAside ? "#ffd04b" : "var(--el-color-primary)";
-    },
+      return this.layout.isDarkAside ? '#ffd04b' : 'var(--el-color-primary)'
+    }
   },
   methods: {
     levelDown() {
-      this.userData.level > 1 && this.userData.level--;
-      if (this.userData.level < 3 && this.$router.hasRoute("测试页2")) {
-        this.$router.removeRoute("测试页2");
+      this.userData.level > 1 && this.userData.level--
+      if (this.userData.level < 3 && this.$router.hasRoute('测试页2')) {
+        this.$router.removeRoute('测试页2')
       }
-      if (this.userData.level < 2 && this.$router.hasRoute("测试页1")) {
-        this.$router.removeRoute("测试页1");
+      if (this.userData.level < 2 && this.$router.hasRoute('测试页1')) {
+        this.$router.removeRoute('测试页1')
       }
     },
     levelUp() {
-      this.userData.level < 9 && this.userData.level++;
-      if (this.userData.level > 1 && !this.$router.hasRoute("测试页1")) {
-        this.$router.addRoute("home", {
-          path: "/home/test1",
-          name: "测试页1",
+      this.userData.level < 9 && this.userData.level++
+      if (this.userData.level > 1 && !this.$router.hasRoute('测试页1')) {
+        this.$router.addRoute('home', {
+          path: '/home/test1',
+          name: '测试页1',
           component: Test1,
           meta: {
-            title: ["首页", "测试页1"],
-            keepAlive: true,
-          },
-        });
+            title: ['首页', '测试页1'],
+            keepAlive: true
+          }
+        })
       }
-      if (this.userData.level > 2 && !this.$router.hasRoute("测试页2")) {
-        this.$router.addRoute("home", {
-          path: "/home/test2",
-          name: "测试页2",
+      if (this.userData.level > 2 && !this.$router.hasRoute('测试页2')) {
+        this.$router.addRoute('home', {
+          path: '/home/test2',
+          name: '测试页2',
           component: Test2,
           meta: {
-            title: ["首页", "测试页2"],
-            keepAlive: true,
-          },
-        });
+            title: ['首页', '测试页2'],
+            keepAlive: true
+          }
+        })
       }
     },
     handleSelect(path) {
       if (!path) {
-        return;
+        return
       }
       switch (path) {
-        case "levelDown":
-          this.levelDown();
-          break;
-        case "levelUp":
-          this.levelUp();
-          break;
-        case "outSide":
-          this.toOutSide();
-          break;
-        case "undefinedError":
-          mockUndefinedRouteError();
-          break;
-        case "collapse":
-          this.collapse();
-          break;
+        case 'levelDown':
+          this.levelDown()
+          break
+        case 'levelUp':
+          this.levelUp()
+          break
+        case 'outSide':
+          this.toOutSide()
+          break
+        case 'undefinedError':
+          mockUndefinedRouteError()
+          break
+        case 'collapse':
+          this.collapse()
+          break
 
         default:
           this.$router.push({
-            path,
-          });
-          break;
+            path
+          })
+          break
       }
     },
     handleOpen(_key, _keyPath) {
@@ -191,52 +191,52 @@ export default {
     },
 
     toOutSide() {
-      window.open("https://cn.bing.com/");
+      window.open('https://cn.bing.com/')
     },
     // 收缩侧边栏
     collapse() {
       if (!this.websiteInfo.isPC) {
-        this.websiteInfo.isCollapse = true;
+        this.websiteInfo.isCollapse = true
       } else {
-        this.websiteInfo.isCollapse = !this.websiteInfo.isCollapse;
+        this.websiteInfo.isCollapse = !this.websiteInfo.isCollapse
       }
     },
     // 获取主页列表数据
     getHomePages() {
-      this.pathList = getHomePathList();
-      this.defaultActive = this.$route.fullPath;
+      this.pathList = getHomePathList()
+      this.defaultActive = this.$route.fullPath
     },
     // 初始化动态路由
     initDynamicRouter() {
-      if (this.userData.level > 1 && !this.$router.hasRoute("测试页1")) {
-        this.$router.addRoute("home", {
-          path: "/home/test1",
-          name: "测试页1",
+      if (this.userData.level > 1 && !this.$router.hasRoute('测试页1')) {
+        this.$router.addRoute('home', {
+          path: '/home/test1',
+          name: '测试页1',
           component: Test1,
           meta: {
-            title: ["首页", "测试页1"],
-            keepAlive: true,
-          },
-        });
+            title: ['首页', '测试页1'],
+            keepAlive: true
+          }
+        })
       }
-      if (this.userData.level > 2 && !this.$router.hasRoute("测试页2")) {
-        this.$router.addRoute("home", {
-          path: "/home/test2",
-          name: "测试页2",
+      if (this.userData.level > 2 && !this.$router.hasRoute('测试页2')) {
+        this.$router.addRoute('home', {
+          path: '/home/test2',
+          name: '测试页2',
           component: Test2,
           meta: {
-            title: ["首页", "测试页2"],
-            keepAlive: true,
-          },
-        });
+            title: ['首页', '测试页2'],
+            keepAlive: true
+          }
+        })
       }
-    },
+    }
   },
   mounted() {
-    this.getHomePages();
-    this.initDynamicRouter();
-  },
-};
+    this.getHomePages()
+    this.initDynamicRouter()
+  }
+}
 </script>
 
 <style scoped>

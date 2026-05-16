@@ -8,23 +8,23 @@
 -->
 <template>
   <div class="g-flex-normal" style="position: realative">
-    <div class="m-card-normal mr10" v-copy="copyText">{{ $t("copy") }}</div>
+    <div class="m-card-normal mr10" v-copy="copyText">{{ $t('copy') }}</div>
     <div class="m-card-normal mr10" v-longpress="longpress">
-      {{ $t("longpress") }}
+      {{ $t('longpress') }}
     </div>
     <div class="m-card-normal mr10" v-debounce="debounceClick">
-      {{ $t("debounce") }}
+      {{ $t('debounce') }}
     </div>
     <div
       class="m-card-normal mr10"
       v-waterMarker="{ text: '水印~', textColor: 'rgba(180, 180, 180, 0.4)' }"
     >
-      {{ $t("waterMarker") }}
+      {{ $t('waterMarker') }}
     </div>
 
     <div class="draggable-area mb10">
       <div class="m-card-normal draggable-el" v-draggable>
-        {{ $t("draggable") }}
+        {{ $t('draggable') }}
       </div>
     </div>
 
@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 // import "@/utils/directives/index.js";
 // const waterMarker = {
 //   mounted: function (el, binding) {
@@ -75,26 +75,26 @@ export default {
   // directives: { waterMarker },
   data() {
     return {
-      copyText: "复制内容",
-      inputText: "",
-      imgSrc: require("@/assets/img/svg/lab.svg"),
-    };
+      copyText: '复制内容',
+      inputText: '',
+      imgSrc: require('@/assets/img/svg/lab.svg')
+    }
   },
   methods: {
     longpress() {
       this.$message({
-        type: "success",
-        message: this.$t("tips.longPressSuccess"),
-      });
+        type: 'success',
+        message: this.$t('tips.longPressSuccess')
+      })
     },
     debounceClick() {
       this.$message({
-        type: "success",
-        message: this.$t("tips.cancelClick"),
-      });
-    },
-  },
-};
+        type: 'success',
+        message: this.$t('tips.cancelClick')
+      })
+    }
+  }
+}
 </script>
 <style scoped>
 .draggable-area {

@@ -23,17 +23,17 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../../mixin/homePageMixin";
+import { homePageMixin } from '../../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "pay",
-      imgSrc: "tools/pay/",
-      routes: ["alipay"],
-    };
+      homepage: 'pay',
+      imgSrc: 'tools/pay/',
+      routes: ['alipay']
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style></style>

@@ -1,7 +1,7 @@
 <template>
   <div class="dependence">
     <div class="title-row">
-      <div class="dependence-title">{{ $t("dependence.dependenceInfo") }}</div>
+      <div class="dependence-title">{{ $t('dependence.dependenceInfo') }}</div>
     </div>
     <div class="dependence-main">
       <ul>
@@ -18,39 +18,39 @@
 </template>
 
 <script>
-import packageMsg from "../../../package.json";
+import packageMsg from '../../../package.json'
 // 最多显示多少条依赖信息
-const maxShowLength = 10;
+const maxShowLength = 10
 export default {
-  name: "Dependence",
+  name: 'Dependence',
   props: {},
   data() {
     return {
       dpList: [],
-      isOverflow: false,
-    };
+      isOverflow: false
+    }
   },
   methods: {
     getDpList() {
-      let dpList = [];
+      let dpList = []
       for (let key in packageMsg.dependencies) {
         if (dpList.length >= maxShowLength) {
-          this.isOverflow = true;
-          break;
+          this.isOverflow = true
+          break
         }
         dpList.push({
           relyOn: key,
-          version: packageMsg.dependencies[key],
-        });
+          version: packageMsg.dependencies[key]
+        })
       }
 
-      this.dpList = dpList;
-    },
+      this.dpList = dpList
+    }
   },
   mounted() {
-    this.getDpList();
-  },
-};
+    this.getDpList()
+  }
+}
 </script>
 
 <style lang="less" scoped>

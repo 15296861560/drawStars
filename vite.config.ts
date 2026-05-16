@@ -6,42 +6,42 @@
  * @LastEditors: lgy
  * @LastEditTime: 2024-03-04 23:53:12
  */
-import { fileURLToPath, URL } from "node:url";
+import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from "vite";
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
-import vueI18n from "@intlify/vite-plugin-vue-i18n";
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueI18n from '@intlify/vite-plugin-vue-i18n'
 
-import commonjs from "@rollup/plugin-commonjs"; // 引入commojs
-import requireTransform from "vite-plugin-require-transform"; // 引入require
+import commonjs from '@rollup/plugin-commonjs' // 引入commojs
+import requireTransform from 'vite-plugin-require-transform' // 引入require
 
-import path from "node:path";
+import path from 'node:path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
-      "/api": {
+      '/api': {
         // target: "http://127.0.0.1:8010",
-        target: "http://127.0.0.1:8011",
+        target: 'http://127.0.0.1:8011',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: path => path.replace(/^\/api/, '')
       },
-      "/uploadImg": {
+      '/uploadImg': {
         // target: "http://127.0.0.1:8010",
-        target: "http://127.0.0.1:8011",
+        target: 'http://127.0.0.1:8011',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/uploadImg/, ""),
-      },
-    },
+        rewrite: path => path.replace(/^\/uploadImg/, '')
+      }
+    }
   },
   plugins: [
     vue(),
     vueJsx(),
     commonjs(),
     requireTransform({
-      fileRegex: /.ts$|.tsx$|js$|.jsx$|.vue$/,
+      fileRegex: /.ts$|.tsx$|js$|.jsx$|.vue$/
     }),
     vueI18n({
       // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
@@ -49,26 +49,26 @@ export default defineConfig({
 
       // Locale message modules (avoid scanning index.js / non-locale files)
       include: [
-        path.resolve(__dirname, "./src/lang/en.js"),
-        path.resolve(__dirname, "./src/lang/zh.js"),
-      ],
-    }),
+        path.resolve(__dirname, './src/lang/en.js'),
+        path.resolve(__dirname, './src/lang/zh.js')
+      ]
+    })
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
-    },
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   },
   css: {
     preprocessorOptions: {
       less: {
         modifyVars: {
           hack: `true; @import (reference) "${path.resolve(
-            "src/assets/styles/global.less",
-          )}";`,
+            'src/assets/styles/global.less'
+          )}";`
         },
-        javascriptEnabled: true,
-      },
-    },
-  },
-});
+        javascriptEnabled: true
+      }
+    }
+  }
+})

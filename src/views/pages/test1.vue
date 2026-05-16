@@ -14,18 +14,18 @@
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
   methods: {
     toTest() {
       this.$router.push({
-        path: "/home/homepage",
-      });
+        path: '/home/homepage'
+      })
     },
     uploadData() {
-      this.$emit("syn");
-    },
-  },
-};
+      this.$emit('syn')
+    }
+  }
+}
 </script>
 <style></style>

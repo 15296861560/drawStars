@@ -43,63 +43,64 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineAsyncComponent, watchEffect } from "vue";
-import { useVModels } from "@vueuse/core";
-import type { AnyObject } from "@/types/global";
+import { ref, defineAsyncComponent, watchEffect } from 'vue'
+import * as _Global from '@/types/global'
+import { useVModels } from '@vueuse/core'
 
 const SimpleMap = defineAsyncComponent(
-  () => import("@/components/base/map/SimpleLeafletMap.vue"),
-);
+  () => import('@/components/base/map/SimpleLeafletMap.vue')
+)
 
 const props = defineProps<{
-  field: string | number | boolean | string[] | any;
-  valueModel?: string;
-  search?: boolean;
-  disabled?: boolean;
-}>();
+  field: string | number | boolean | string[] | any
+  valueModel?: string
+  search?: boolean
+  range?: boolean
+  disabled?: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: "update:valueModel", value: string): void;
-}>();
+  (e: 'update:valueModel', value: string): void
+}>()
 
-const { valueModel } = useVModels(props, emit);
+const { valueModel } = useVModels(props, emit)
 
-const modelValue = ref(valueModel.value?.split(",").reverse().join(",") || "");
-let radius = "";
+const modelValue = ref(valueModel.value?.split(',').reverse().join(',') || '')
+let radius = ''
 watchEffect(() => {
   if (props.search) {
-    const lnglat = modelValue.value?.split(",");
+    const lnglat = modelValue.value?.split(',')
     const searchData = {
       centerX: lnglat[0],
       centerY: lnglat[1],
       radius,
-      type: 1,
-    };
+      type: 1
+    }
 
-    valueModel.value = JSON.stringify(searchData);
+    valueModel.value = JSON.stringify(searchData)
   } else {
-    valueModel.value = `${modelValue.value || ""}`;
+    valueModel.value = `${modelValue.value || ''}`
   }
-});
+})
 
-const mapDialogVisble = ref(false);
+const mapDialogVisble = ref(false)
 
-const handleItems = (data: AnyObject) => {
-  const res = { ...data };
-  modelValue.value = `${res.point.lng},${res.point.lat}`;
-  radius = res.radius;
-};
+const handleItems = (data: _Global.AnyObject) => {
+  const res = { ...data }
+  modelValue.value = `${res.point.lng},${res.point.lat}`
+  radius = res.radius
+}
 
-const reuseForm = ref({});
-const simpleMapRef = ref();
+const reuseForm = ref({})
+const simpleMapRef = ref()
 
 const handleSave = (): void => {
   handleItems({
     ...simpleMapRef.value.state.lnglat,
-    radius: simpleMapRef.value.value,
-  });
-  mapDialogVisble.value = false;
-};
+    radius: simpleMapRef.value.value
+  })
+  mapDialogVisble.value = false
+}
 </script>
 <style scoped lang="less">
 .simple-map-box {

@@ -56,28 +56,28 @@
   </div>
 </template>
 <script>
-import { findReq } from "@/assets/js/api";
-const toPay = findReq("payController", "toPay");
+import { findReq } from '@/assets/js/api'
+const toPay = findReq('payController', 'toPay')
 
 export default {
   data() {
     return {
       goods: {
         outTradeNo: new Date().getTime(),
-        subject: "商品a",
+        subject: '商品a',
         price: 0.01,
         qty: 1,
-        detail: "商品a是。。。",
-      },
-    };
+        detail: '商品a是。。。'
+      }
+    }
   },
   methods: {
     init() {},
     async pay() {
-      const res = await toPay({ goods: this.goods });
-      window.open(res.data);
-    },
-  },
-};
+      const res = await toPay({ goods: this.goods })
+      window.open(res.data)
+    }
+  }
+}
 </script>
 <style></style>

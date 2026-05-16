@@ -9,22 +9,22 @@
 /* 组件模块 */
 export default [
   {
-    path: "/home/componentsHomePage",
-    name: "组件模块",
-    component: () => import("@/views/homePages/componentsHomePage.vue"),
+    path: '/home/componentsHomePage',
+    name: '组件模块',
+    component: () => import('@/views/homePages/componentsHomePage.vue'),
     meta: {
-      title: ["首页", "组件模块"],
-      keepAlive: true,
-    },
+      title: ['首页', '组件模块'],
+      keepAlive: true
+    }
   },
   {
-    path: "/home/componentsHomePage/commonComponents",
-    name: "常用组件",
+    path: '/home/componentsHomePage/commonComponents',
+    name: '常用组件',
     component: () =>
-      import("@/views/myComponents/commonComponents/commonComponents.vue"),
+      import('@/views/myComponents/commonComponents/commonComponents.vue'),
     meta: {
-      title: ["首页", "组件模块", "常用组件"],
-      keepAlive: true,
-    },
-  },
-];
+      title: ['首页', '组件模块', '常用组件'],
+      keepAlive: true
+    }
+  }
+]

@@ -1,7 +1,7 @@
 <template>
   <div class="personal-profile">
     <div class="base-info">
-      <div class="base-info-head">{{ $t("baseInfo") }}</div>
+      <div class="base-info-head">{{ $t('baseInfo') }}</div>
 
       <div class="base-info-content">
         <el-form
@@ -53,9 +53,9 @@
 
           <el-form-item>
             <el-button type="primary" @click="updateUserInfo">{{
-              $t("btn.save")
+              $t('btn.save')
             }}</el-button>
-            <el-button @click="cancel">{{ $t("btn.cancel") }}</el-button>
+            <el-button @click="cancel">{{ $t('btn.cancel') }}</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -63,148 +63,147 @@
   </div>
 </template>
 <script>
-import { debounce } from "lodash";
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
-import { findReq } from "@/assets/js/api";
+import { debounce } from 'lodash'
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
+import { findReq } from '@/assets/js/api'
 
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
+import { userInfoStore } from '@/stores/user-info'
+const userInfo = userInfoStore()
 
-const queryPovinceList = findReq("resourceController", "queryPovinceList");
-const queryCityList = findReq("resourceController", "queryCityList");
-const queryAreaList = findReq("resourceController", "queryAreaList");
-const queryTownList = findReq("resourceController", "queryTownList");
+const queryPovinceList = findReq('resourceController', 'queryPovinceList')
+const queryCityList = findReq('resourceController', 'queryCityList')
+const queryAreaList = findReq('resourceController', 'queryAreaList')
+const queryTownList = findReq('resourceController', 'queryTownList')
 
-const queryUserInfo = findReq("profileController", "queryUserInfo");
-const updateUserInfo = findReq("profileController", "updateUserInfo");
+const queryUserInfo = findReq('profileController', 'queryUserInfo')
+const updateUserInfo = findReq('profileController', 'updateUserInfo')
 
-const DEBOUNCE_TIME = 1000;
+const DEBOUNCE_TIME = 1000
 export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
       // 原始数据
       userData: {
-        name: "Nickname",
-        id: "User ID",
-        gender: "保密",
-        introduction: "Introduction",
-        region: "shanghai",
-        birthday: "",
+        name: 'Nickname',
+        id: 'User ID',
+        gender: '保密',
+        introduction: 'Introduction',
+        region: 'shanghai',
+        birthday: ''
       },
       // 界面数据
       personalData: {
-        nickname: "",
-        userID: "",
-        gender: "",
-        introduction: "",
-        region: "",
-        birthday: "",
+        nickname: '',
+        userID: '',
+        gender: '',
+        introduction: '',
+        region: '',
+        birthday: ''
       },
       cascaderProps: {
         lazy: true,
         lazyLoad(node, resolve) {
-          let level = node.level;
+          let level = node.level
           try {
             switch (level) {
               case 0:
-                queryPovinceList().then((result) => {
-                  let nodes = result.map((region) => {
+                queryPovinceList().then(result => {
+                  let nodes = result.map(region => {
                     return {
                       value: region.province,
                       label: region.name,
-                      leaf: false,
-                    };
-                  });
-                  resolve(nodes);
-                });
-                break;
+                      leaf: false
+                    }
+                  })
+                  resolve(nodes)
+                })
+                break
               case 1:
-                queryCityList({ province: node.value }).then((result) => {
-                  let nodes = result.map((region) => {
+                queryCityList({ province: node.value }).then(result => {
+                  let nodes = result.map(region => {
                     return {
                       value: region.city,
                       label: region.name,
-                      leaf: false,
-                    };
-                  });
+                      leaf: false
+                    }
+                  })
                   if (!nodes.length) {
                     nodes = [
                       {
-                        value: "01",
+                        value: '01',
                         label: node.label,
-                        leaf: false,
-                      },
-                    ];
+                        leaf: false
+                      }
+                    ]
                   }
-                  resolve(nodes);
-                });
+                  resolve(nodes)
+                })
 
-                break;
+                break
               case 2:
                 queryAreaList({
                   province: node.parent.value,
-                  city: node.value,
-                }).then((result) => {
-                  let nodes = result.map((region) => {
+                  city: node.value
+                }).then(result => {
+                  let nodes = result.map(region => {
                     return {
                       value: region.area,
                       label: region.name,
-                      leaf: false,
-                    };
-                  });
-                  resolve(nodes);
-                });
+                      leaf: false
+                    }
+                  })
+                  resolve(nodes)
+                })
 
-                break;
+                break
               case 3:
                 queryTownList({
                   province: node.parent.parent.value,
                   city: node.parent.value,
-                  area: node.value,
-                }).then((result) => {
-                  let nodes = result.map((region) => {
+                  area: node.value
+                }).then(result => {
+                  let nodes = result.map(region => {
                     return {
                       value: region.town,
                       label: region.name,
-                      leaf: true,
-                    };
-                  });
-                  resolve(nodes);
-                });
+                      leaf: true
+                    }
+                  })
+                  resolve(nodes)
+                })
 
-                break;
+                break
               default:
-                break;
+                break
             }
           } catch (error) {
             $message({
-              type: "error",
-              message: error.toString(),
-            });
+              type: 'error',
+              message: error.toString()
+            })
           }
-        },
-      },
-    };
+        }
+      }
+    }
   },
   created() {
-    this.initUserInfo();
+    this.initUserInfo()
   },
   methods: {
     // 初始化个人信息
     async initUserInfo() {
-      this.userData = await queryUserInfo(userInfo.getUserId);
+      this.userData = await queryUserInfo(userInfo.getUserId)
 
-      let { name, introduction, birthday, region, gender, phone } =
-        this.userData;
+      let { name, introduction, birthday, region, gender } = this.userData
 
       this.personalData = {
         nickname: name,
-        gender: gender ? gender : this.$t("genderGroup.secrecy"),
+        gender: gender ? gender : this.$t('genderGroup.secrecy'),
         introduction: introduction,
-        region: region ? region.split(",") : [],
-        birthday: birthday,
-      };
+        region: region ? region.split(',') : [],
+        birthday: birthday
+      }
     },
     // 更新信息
     updateUserInfo: debounce(
@@ -215,40 +214,39 @@ export default {
           introduction: this.personalData.introduction,
           birthday: this.personalData.birthday,
           region: this.personalData.region.toString(),
-          gender: this.personalData.gender,
-        };
+          gender: this.personalData.gender
+        }
 
-        let res = await updateUserInfo(params);
+        let res = await updateUserInfo(params)
         if (res.status) {
-          this.userData = params;
-          this.$message.success(this.$t("tip.updateSuccess"));
+          this.userData = params
+          this.$message.success(this.$t('tip.updateSuccess'))
         } else {
-          this.$message.error(this.$t("tip.updateFail"));
+          this.$message.error(this.$t('tip.updateFail'))
         }
       },
       DEBOUNCE_TIME,
       {
         leading: true,
-        trailing: false,
-      },
+        trailing: false
+      }
     ),
     // 取消
     cancel() {
-      let { name, introduction, birthday, region, gender, phone } =
-        this.userData;
+      let { name, introduction, birthday, region, gender } = this.userData
       this.personalData = {
         nickname: name,
         gender: gender,
         introduction: introduction,
         region: region,
-        birthday: birthday,
-      };
+        birthday: birthday
+      }
     },
     handleRegionChange(value) {
-      console.log(value);
-    },
-  },
-};
+      console.log(value)
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .personal-profile {

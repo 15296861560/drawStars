@@ -7,6 +7,6 @@
  * @LastEditTime: 2022-12-17 15:30:23
  */
 /* 翻译相关接口 */
-import { $axios } from "@/assets/js/axios-api/axios-config.js";
+import { $axios } from '@/assets/js/axios-api/axios-config.js'
 
-export default { getSign: (params) => $axios(params, "/translateApi/getSign") };
+export default { getSign: params => $axios(params, '/translateApi/getSign') }

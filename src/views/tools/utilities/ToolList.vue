@@ -48,51 +48,51 @@
   </div>
 </template>
 <script>
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 export default {
   mixins: [i18nLabelMixin],
   data() {
-    return {};
+    return {}
   },
   computed: {
     titleArray() {
       return [
         {
-          title: this.$t("time"),
-          index: "1",
+          title: this.$t('time'),
+          index: '1',
           titleData: [
             {
-              title: this.$t("timeList.getTime"),
-              index: "/home/toolHomePage/utilities/time",
-            },
-          ],
+              title: this.$t('timeList.getTime'),
+              index: '/home/toolHomePage/utilities/time'
+            }
+          ]
         },
         {
-          title: this.$t("data"),
-          index: "2",
+          title: this.$t('data'),
+          index: '2',
           titleData: [
             {
-              title: this.$t("dataList.regex"),
-              index: "/home/toolHomePage/utilities/regex",
+              title: this.$t('dataList.regex'),
+              index: '/home/toolHomePage/utilities/regex'
             },
             {
-              title: this.$t("dataList.importAndExport"),
-              index: "/home/toolHomePage/utilities/importAndExport",
-            },
-          ],
-        },
-      ];
-    },
+              title: this.$t('dataList.importAndExport'),
+              index: '/home/toolHomePage/utilities/importAndExport'
+            }
+          ]
+        }
+      ]
+    }
   },
   methods: {
-    handleSelect(key, keyPath) {
-      this.toPage(key);
+    handleSelect(key, _keyPath) {
+      this.toPage(key)
     },
     toPage(path) {
-      this.$router.push(path).catch((error) => error);
-    },
-  },
-};
+      this.$router.push(path).catch(error => error)
+    }
+  }
+}
 </script>
 <style></style>
 <i18n>

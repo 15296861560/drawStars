@@ -20,17 +20,17 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "componentsHomePage",
+      homepage: 'componentsHomePage',
       routes: [
         // { name: "dragAndDropComponents", imgName: "drag" },
-        { name: "commonComponents", imgName: "common" },
-      ],
-    };
-  },
-};
+        { name: 'commonComponents', imgName: 'common' }
+      ]
+    }
+  }
+}
 </script>

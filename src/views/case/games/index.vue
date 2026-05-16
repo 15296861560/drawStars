@@ -22,25 +22,25 @@
   </div>
 </template>
 <script>
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
       games: [
-        { name: "2048", path: "2048" },
-        { name: "gobang", path: "gobang" },
-      ],
-    };
+        { name: '2048', path: '2048' },
+        { name: 'gobang', path: 'gobang' }
+      ]
+    }
   },
   methods: {
     showGame(path) {
       this.$router.push({
-        path: `/home/caseHomePage/games/${path}`,
-      });
-    },
-  },
-};
+        path: `/home/caseHomePage/games/${path}`
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .tag-list {

@@ -7,7 +7,7 @@
     size="300px"
   >
     <div class="setting-drawer-title">
-      <h3 class="drawer-title">{{ $t("layoutSettings.navTitle") }}</h3>
+      <h3 class="drawer-title">{{ $t('layoutSettings.navTitle') }}</h3>
     </div>
     <div class="nav-wrap">
       <el-tooltip :content="$t('layoutSettings.navLeft')" placement="bottom">
@@ -40,7 +40,7 @@
     </div>
 
     <div class="setting-drawer-title">
-      <h3 class="drawer-title">{{ $t("layoutSettings.themeStyle") }}</h3>
+      <h3 class="drawer-title">{{ $t('layoutSettings.themeStyle') }}</h3>
     </div>
     <div class="setting-drawer-block-checbox">
       <div
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.themeColor") }}</span>
+      <span>{{ $t('layoutSettings.themeColor') }}</span>
       <span class="comp-style">
         <el-color-picker
           v-model="layout.theme"
@@ -80,15 +80,15 @@
     </div>
     <el-divider />
 
-    <h3 class="drawer-title">{{ $t("layoutSettings.systemLayout") }}</h3>
+    <h3 class="drawer-title">{{ $t('layoutSettings.systemLayout') }}</h3>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.tagsView") }}</span>
+      <span>{{ $t('layoutSettings.tagsView') }}</span>
       <span class="comp-style">
         <el-switch v-model="layout.tagsView" class="drawer-switch" />
       </span>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.tagsIcon") }}</span>
+      <span>{{ $t('layoutSettings.tagsIcon') }}</span>
       <span class="comp-style">
         <el-switch
           v-model="layout.tagsIcon"
@@ -98,25 +98,25 @@
       </span>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.fixedHeader") }}</span>
+      <span>{{ $t('layoutSettings.fixedHeader') }}</span>
       <span class="comp-style">
         <el-switch v-model="layout.fixedHeader" class="drawer-switch" />
       </span>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.sidebarLogo") }}</span>
+      <span>{{ $t('layoutSettings.sidebarLogo') }}</span>
       <span class="comp-style">
         <el-switch v-model="layout.sidebarLogo" class="drawer-switch" />
       </span>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.dynamicTitle") }}</span>
+      <span>{{ $t('layoutSettings.dynamicTitle') }}</span>
       <span class="comp-style">
         <el-switch v-model="layout.dynamicTitle" class="drawer-switch" />
       </span>
     </div>
     <div class="drawer-item">
-      <span>{{ $t("layoutSettings.footer") }}</span>
+      <span>{{ $t('layoutSettings.footer') }}</span>
       <span class="comp-style">
         <el-switch v-model="layout.footerVisible" class="drawer-switch" />
       </span>
@@ -125,86 +125,86 @@
     <el-divider />
     <el-button type="primary" plain @click="saveSetting">
       <el-icon class="mr4"><DocumentAdd /></el-icon
-      >{{ $t("layoutSettings.save") }}
+      >{{ $t('layoutSettings.save') }}
     </el-button>
     <el-button plain @click="resetSetting">
-      <el-icon class="mr4"><Refresh /></el-icon>{{ $t("layoutSettings.reset") }}
+      <el-icon class="mr4"><Refresh /></el-icon>{{ $t('layoutSettings.reset') }}
     </el-button>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
-import { ElLoading } from "element-plus";
-import { Select, DocumentAdd, Refresh } from "@element-plus/icons-vue";
-import { useI18n } from "vue-i18n";
-import { layoutSettingsStore } from "@/stores/layout-settings";
-import { handleThemeStyle } from "@/utils/theme-style";
+import { watch } from 'vue'
+import { ElLoading } from 'element-plus'
+import { Select, DocumentAdd, Refresh } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
+import { layoutSettingsStore } from '@/stores/layout-settings'
+import { handleThemeStyle } from '@/utils/theme-style'
 
-const { t } = useI18n();
-const layout = layoutSettingsStore();
+const { t } = useI18n()
+const layout = layoutSettingsStore()
 
 const predefineColors = [
-  "#409EFF",
-  "#ff4500",
-  "#ff8c00",
-  "#ffd700",
-  "#90ee90",
-  "#00ced1",
-  "#1e90ff",
-  "#c71585",
-];
+  '#409EFF',
+  '#ff4500',
+  '#ff8c00',
+  '#ffd700',
+  '#90ee90',
+  '#00ced1',
+  '#1e90ff',
+  '#c71585'
+]
 
 function setNavType(n: number) {
-  layout.navType = n;
+  layout.navType = n
 }
 
 function onThemePick(val: string | null) {
   if (val) {
-    layout.theme = val;
-    handleThemeStyle(val);
+    layout.theme = val
+    handleThemeStyle(val)
   }
 }
 
 watch(
   () => layout.theme,
-  (v) => {
-    handleThemeStyle(v);
-  },
-);
+  v => {
+    handleThemeStyle(v)
+  }
+)
 
 watch(
   () => layout.dynamicTitle,
   () => {
     layout.applyDocumentTitle(
       // 由父级路由同步；此处仅恢复默认或保持
-      null,
-    );
-  },
-);
+      null
+    )
+  }
+)
 
 function saveSetting() {
   const loading = ElLoading.service({
     lock: true,
-    text: t("layoutSettings.saving"),
-    background: "rgba(0,0,0,0.2)",
-  });
-  layout.persistToLocalStorage();
+    text: t('layoutSettings.saving'),
+    background: 'rgba(0,0,0,0.2)'
+  })
+  layout.persistToLocalStorage()
   setTimeout(() => {
-    loading.close();
-  }, 400);
+    loading.close()
+  }, 400)
 }
 
 function resetSetting() {
   const loading = ElLoading.service({
     lock: true,
-    text: t("layoutSettings.resetting"),
-    background: "rgba(0,0,0,0.2)",
-  });
+    text: t('layoutSettings.resetting'),
+    background: 'rgba(0,0,0,0.2)'
+  })
   setTimeout(() => {
-    loading.close();
-    layout.resetLocalStorageAndReload();
-  }, 600);
+    loading.close()
+    layout.resetLocalStorageAndReload()
+  }, 600)
 }
 </script>
 

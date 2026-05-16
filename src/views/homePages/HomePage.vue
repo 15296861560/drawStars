@@ -48,104 +48,104 @@
   </div>
 </template>
 <script>
-import Dependence from "@/components/part/dependence.vue";
-import CommitInfo from "@/components/part/commitInfo.vue";
-import RouterLinkNormal from "@/components/stars/RouterLinkNormal.vue";
-import BasicEchart from "@/components/echarts/BasicEchart.vue";
-import chartData from "@/assets/js/testData/chartData";
-import Mock from "mockjs";
+import Dependence from '@/components/part/dependence.vue'
+import CommitInfo from '@/components/part/commitInfo.vue'
+import RouterLinkNormal from '@/components/stars/RouterLinkNormal.vue'
+import BasicEchart from '@/components/echarts/BasicEchart.vue'
+import chartData from '@/assets/js/testData/chartData'
+import Mock from 'mockjs'
 
 export default {
   components: {
     BasicEchart,
     Dependence,
     CommitInfo,
-    RouterLinkNormal,
+    RouterLinkNormal
   },
   data() {
     return {
       dataTimer: null, // 定时器
       routes: [
-        { name: "echart", path: "/home/echartHomePage" },
-        { name: "tool", path: "/home/toolHomePage" },
-        { name: "components", path: "/home/componentsHomePage" },
-        { name: "special", path: "/home/specialHomePage" },
-        { name: "data", path: "/home/dataHomePage" },
-        { name: "multimedia", path: "/home/multimediaHomePage" },
-        { name: "lab", path: "/home/labHomePage" },
-        { name: "case", path: "/home/caseHomePage" },
-        { name: "resource", path: "/home/resourceHomePage" },
+        { name: 'echart', path: '/home/echartHomePage' },
+        { name: 'tool', path: '/home/toolHomePage' },
+        { name: 'components', path: '/home/componentsHomePage' },
+        { name: 'special', path: '/home/specialHomePage' },
+        { name: 'data', path: '/home/dataHomePage' },
+        { name: 'multimedia', path: '/home/multimediaHomePage' },
+        { name: 'lab', path: '/home/labHomePage' },
+        { name: 'case', path: '/home/caseHomePage' },
+        { name: 'resource', path: '/home/resourceHomePage' }
       ],
       areaOption: {},
       lineOption: {},
       pieOption: {},
-      isHidden: true,
-    };
+      isHidden: true
+    }
   },
   methods: {
     getChartData() {
-      this.areaOption = chartData.areaOption;
-      this.lineOption = chartData.lineOption;
-      this.pieOption = chartData.pieOption;
+      this.areaOption = chartData.areaOption
+      this.lineOption = chartData.lineOption
+      this.pieOption = chartData.pieOption
     },
     // 模拟更新数据
     updateChartData() {
-      let data = this.areaOption.series[0].data;
+      let data = this.areaOption.series[0].data
       data.forEach((element, index, arr) => {
         arr[index] = Mock.mock({
-          "number|0-250": 1,
-        }).number;
-      });
-      this.areaOption.series[0].data = [];
-      this.areaOption.series[0].data = data;
+          'number|0-250': 1
+        }).number
+      })
+      this.areaOption.series[0].data = []
+      this.areaOption.series[0].data = data
     },
     autoTooltip(option) {
       let pieChart = this.$echarts.getInstanceByDom(
-        document.getElementById("echart-pie"),
-      );
-      let currentIndex = 0;
+        document.getElementById('echart-pie')
+      )
+      let currentIndex = 0
       this.dataTimer = setInterval(function () {
-        let dataLen = option.series[0].data.length;
+        let dataLen = option.series[0].data.length
         // 取消之前高亮的图形
         pieChart.dispatchAction({
-          type: "downplay",
+          type: 'downplay',
           seriesIndex: 0,
-          dataIndex: currentIndex,
-        });
-        currentIndex = (currentIndex + 1) % dataLen;
+          dataIndex: currentIndex
+        })
+        currentIndex = (currentIndex + 1) % dataLen
         // 高亮当前图形
         pieChart.dispatchAction({
-          type: "highlight",
+          type: 'highlight',
           seriesIndex: 0,
-          dataIndex: currentIndex,
-        });
+          dataIndex: currentIndex
+        })
         // 显示 tooltip
         pieChart.dispatchAction({
-          type: "showTip",
+          type: 'showTip',
           seriesIndex: 0,
-          dataIndex: currentIndex,
-        });
-      }, 1000);
-    },
+          dataIndex: currentIndex
+        })
+      }, 1000)
+    }
   },
   activated() {
-    this.isHidden = false;
+    this.isHidden = false
     this.$nextTick(() => {
-      this.getChartData();
-      this.autoTooltip(this.pieOption);
-    });
+      this.getChartData()
+      this.autoTooltip(this.pieOption)
+    })
   },
   mounted() {},
   deactivated() {
-    this.isHidden = true;
+    this.isHidden = true
     // 销毁定时器
-    clearInterval(this.dataTimer);
+    clearInterval(this.dataTimer)
   },
   beforeDestroy() {
     // 销毁定时器
-    clearInterval(this.dataTimer);
-  },
-};
+    clearInterval(this.dataTimer)
+  }
+}
 </script>
 <style scoped lang="less">
 .home-echart-container {

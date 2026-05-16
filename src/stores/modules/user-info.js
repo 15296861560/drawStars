@@ -9,36 +9,36 @@
 export default {
   state: {
     userInfo: {
-      name: "",
-      userId: 0,
+      name: '',
+      userId: 0
     },
-    token: "",
+    token: ''
   },
   mutations: {
     changeUserInfo(state, { attr, val }) {
-      state[attr] = val;
-    },
+      state[attr] = val
+    }
   },
   getters: {
     getUserInfo(state) {
-      return state.userInfo;
+      return state.userInfo
     },
     getUserId(state) {
-      return state.userInfo.id;
+      return state.userInfo.id
     },
     getUserName(state) {
-      return state.userInfo.name || "未登录";
+      return state.userInfo.name || '未登录'
     },
     getToken(state) {
-      return state.token;
-    },
+      return state.token
+    }
   },
   actions: {
     changeUserInfo(context, { attr, val }) {
-      context.commit("changeUserInfo", {
+      context.commit('changeUserInfo', {
         attr,
-        val,
-      });
-    },
-  },
-};
+        val
+      })
+    }
+  }
+}

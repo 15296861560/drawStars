@@ -10,22 +10,22 @@
   <div>
     <div class="m-map-search">
       <label
-        >{{ $t("module.echarts.baiduMap.area")
+        >{{ $t('module.echarts.baiduMap.area')
         }}<el-input v-model="location" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.keyWord")
+        {{ $t('module.echarts.baiduMap.keyWord')
         }}<el-input v-model="keyword" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.longitude") }}
+        {{ $t('module.echarts.baiduMap.longitude') }}
         <el-input v-model="markerPo.lat" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.latitude") }}
+        {{ $t('module.echarts.baiduMap.latitude') }}
         <el-input v-model="markerPo.lng" class="m-map-search-input"
       /></label>
     </div>
@@ -78,8 +78,8 @@
           >
             <span>{{
               showMorePanel
-                ? $t("module.echarts.baiduMap.showSearchList")
-                : $t("module.echarts.baiduMap.hideSearchList")
+                ? $t('module.echarts.baiduMap.showSearchList')
+                : $t('module.echarts.baiduMap.hideSearchList')
             }}</span>
             <el-icon><ArrowRight /></el-icon>
           </span>
@@ -89,60 +89,60 @@
   </div>
 </template>
 <script setup>
-import BaiduMapVue3 from "baidu-map-vue3";
-import { BaiduMap } from "baidu-map-vue3";
+import BaiduMapVue3 from 'baidu-map-vue3'
+import { BaiduMap } from 'baidu-map-vue3'
 import {
   onMounted,
   onBeforeMount,
   ref,
   reactive,
-  getCurrentInstance,
-} from "vue";
-import { showTips } from "@/utils/message/showTips.js";
-import { $axiosGet } from "@/assets/js/axios-api/axios-config.js";
-const apiKey = ref("");
-const mapReady = ref(false);
+  getCurrentInstance
+} from 'vue'
+import { showTips } from '@/utils/message/showTips.js'
+import { $axiosGet } from '@/assets/js/axios-api/axios-config.js'
+const apiKey = ref('')
+const mapReady = ref(false)
 
 // 中心点
 const point = ref({
   lng: 116.403963,
-  lat: 39.915119,
-});
+  lat: 39.915119
+})
 
 // 位置
-const location = ref("佛山");
+const location = ref('佛山')
 //  关键词
-const keyword = ref("佛山");
+const keyword = ref('佛山')
 // 点标注经纬度
 const markerPo = reactive({
   lng: 39.910925,
-  lat: 116.413384,
-});
+  lat: 116.413384
+})
 
 // 是否显示展示更多面板
-const showMorePanel = ref(true);
+const showMorePanel = ref(true)
 
 // 初始化
 async function init() {
-  const app = getCurrentInstance().appContext.app;
+  const app = getCurrentInstance().appContext.app
 
-  const res = await $axiosGet({}, "/baiduApi/getMapApiKey");
+  const res = await $axiosGet({}, '/baiduApi/getMapApiKey')
   if (res.status) {
-    apiKey.value = res.data;
+    apiKey.value = res.data
     app.use(BaiduMapVue3, {
-      apiKey: apiKey.value,
-    });
-    mapReady.value = true;
+      apiKey: apiKey.value
+    })
+    mapReady.value = true
   } else {
-    showTips("error", "getApiKey fail");
+    showTips('error', 'getApiKey fail')
   }
 }
 
 onBeforeMount(() => {
-  init();
-});
+  init()
+})
 
-onMounted(async () => {});
+onMounted(async () => {})
 </script>
 
 <style lang="less" scoped>

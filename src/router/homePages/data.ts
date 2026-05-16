@@ -9,64 +9,64 @@
 /* 数据模块 */
 export default [
   {
-    path: "/home/dataHomePage",
-    name: "数据传输模块",
-    component: () => import("@/views/homePages/dataHomePage.vue"),
+    path: '/home/dataHomePage',
+    name: '数据传输模块',
+    component: () => import('@/views/homePages/dataHomePage.vue'),
     meta: {
-      title: ["首页", "数据传输模块"],
-      keepAlive: true,
-    },
+      title: ['首页', '数据传输模块'],
+      keepAlive: true
+    }
     // children:[]
   },
   {
-    path: "/home/dataHomePage/Mock",
-    name: "Mock",
-    component: () => import("@/views/data/Mock/Mock.vue"),
+    path: '/home/dataHomePage/Mock',
+    name: 'Mock',
+    component: () => import('@/views/data/Mock/Mock.vue'),
     meta: {
-      title: ["首页", "数据传输模块", "Mock"],
-      keepAlive: true,
+      title: ['首页', '数据传输模块', 'Mock'],
+      keepAlive: true
     },
     children: [
       {
-        path: "/home/dataHomePage/Mock/dataTemplate",
-        name: "数据模板定义",
-        component: () => import("@/views/data/Mock/dataTemplate.vue"),
+        path: '/home/dataHomePage/Mock/dataTemplate',
+        name: '数据模板定义',
+        component: () => import('@/views/data/Mock/dataTemplate.vue'),
         meta: {
-          title: ["首页", "数据传输模块", "Mock", "数据模板定义"],
-        },
-      },
-    ],
+          title: ['首页', '数据传输模块', 'Mock', '数据模板定义']
+        }
+      }
+    ]
   },
   {
-    path: "/home/dataHomePage/axios",
-    name: "axios",
-    component: () => import("@/views/data/axios/axios.vue"),
+    path: '/home/dataHomePage/axios',
+    name: 'axios',
+    component: () => import('@/views/data/axios/axios.vue'),
     meta: {
-      title: ["首页", "数据传输模块", "axios"],
-    },
+      title: ['首页', '数据传输模块', 'axios']
+    }
   },
   {
-    path: "/home/dataHomePage/Sqlite",
-    name: "Sqlite",
-    component: () => import("@/views/data/Sqlite/Sqlite.vue"),
+    path: '/home/dataHomePage/Sqlite',
+    name: 'Sqlite',
+    component: () => import('@/views/data/Sqlite/Sqlite.vue'),
     meta: {
-      title: ["首页", "数据传输模块", "Sqlite"],
-    },
+      title: ['首页', '数据传输模块', 'Sqlite']
+    }
   },
   {
-    path: "/home/dataHomePage/MySQL",
-    name: "MySQL",
-    component: () => import("@/views/data/MySQL/mysql.vue"),
+    path: '/home/dataHomePage/MySQL',
+    name: 'MySQL',
+    component: () => import('@/views/data/MySQL/mysql.vue'),
     meta: {
-      title: ["首页", "数据传输模块", "MySQL"],
-    },
+      title: ['首页', '数据传输模块', 'MySQL']
+    }
   },
   {
-    path: "/home/dataHomePage/WebSocket",
-    name: "WebSocket",
-    component: () => import("@/views/data/WebSocket/webSocket.vue"),
+    path: '/home/dataHomePage/WebSocket',
+    name: 'WebSocket',
+    component: () => import('@/views/data/WebSocket/webSocket.vue'),
     meta: {
-      title: ["首页", "数据传输模块", "WebSocket"],
-    },
-  },
-];
+      title: ['首页', '数据传输模块', 'WebSocket']
+    }
+  }
+]

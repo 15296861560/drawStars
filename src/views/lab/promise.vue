@@ -40,63 +40,63 @@
 export default {
   data() {
     return {
-      logList: [],
-    };
+      logList: []
+    }
   },
   methods: {
     asyncMethod1() {
       let promise = new Promise((resolve, reject) => {
-        let y = Math.random();
+        let y = Math.random()
 
-        let flag = true;
+        let flag = true
         if (y > 0.5) {
-          flag = false;
+          flag = false
         }
 
         setTimeout(() => {
           if (flag) {
-            this.logList.push("m1 resolve");
-            resolve("resolve方法");
+            this.logList.push('m1 resolve')
+            resolve('resolve方法')
           } else {
-            this.logList.push("m1 reject");
-            reject("reject方法");
+            this.logList.push('m1 reject')
+            reject('reject方法')
           }
-        }, 1000);
-      });
+        }, 1000)
+      })
 
-      return promise;
+      return promise
     },
     asyncMethod2() {
       let promise = new Promise((resolve, reject) => {
         setTimeout(() => {
-          this.logList.push("m2 resolve");
-          resolve("resolve方法");
-          this.logList.push("m2 reject");
-          reject("reject方法");
-        }, 1000);
-      });
+          this.logList.push('m2 resolve')
+          resolve('resolve方法')
+          this.logList.push('m2 reject')
+          reject('reject方法')
+        }, 1000)
+      })
 
-      return promise;
+      return promise
     },
     asyncMethod3() {
-      this.asyncMethod2().then((res) => {
-        this.logList.push("then里方法2返回结果:" + res);
-        this.logList.push("then里调用方法1");
+      this.asyncMethod2().then(res => {
+        this.logList.push('then里方法2返回结果:' + res)
+        this.logList.push('then里调用方法1')
         this.asyncMethod1()
-          .then((res2) => {
-            this.logList.push("方法2的then里方法1返回结果:" + res2);
+          .then(res2 => {
+            this.logList.push('方法2的then里方法1返回结果:' + res2)
           })
-          .catch((e) => {
-            this.logList.push("catch里的信息:" + e);
-          });
-      });
+          .catch(e => {
+            this.logList.push('catch里的信息:' + e)
+          })
+      })
     },
     reset() {
-      Object.assign(this.$data, this.$options.data());
-    },
+      Object.assign(this.$data, this.$options.data())
+    }
   },
-  mounted() {},
-};
+  mounted() {}
+}
 </script>
 <style lang="less" scoped>
 .outputMsg {

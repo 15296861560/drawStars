@@ -6,13 +6,13 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-18 00:31:33
  */
-import { ElMessage } from "element-plus";
+import { ElMessage } from 'element-plus'
 
 let showTips = function (type, msg) {
   ElMessage({
     type: type,
-    message: msg,
-  });
-};
+    message: msg
+  })
+}
 
-export { showTips };
+export { showTips }

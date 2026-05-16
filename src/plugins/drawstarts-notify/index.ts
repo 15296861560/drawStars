@@ -1,7 +1,6 @@
-/**消息通知能力 */
-import type { App } from "vue";
-import { notifyClient } from "drawstarts-notify";
+import { notifyClient } from 'drawstarts-notify'
+import * as _Vue from 'vue'
 
-export default (app: App<Element>) => {
-  app.config.globalProperties.$notify = notifyClient;
-};
+export default (app: _Vue.App<Element>) => {
+  app.config.globalProperties.$notify = notifyClient
+}

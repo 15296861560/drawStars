@@ -6,21 +6,21 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-23 23:59:16
  */
-import { ref, computed } from "vue";
-import { defineStore } from "pinia";
+import { ref, computed } from 'vue'
+import { defineStore } from 'pinia'
 
 export const settingInfoStore = defineStore(
-  "settingInfo",
+  'settingInfo',
   () => {
-    const language = ref("zh");
-    const getLanguage = computed(() => language);
+    const language = ref('zh')
+    const getLanguage = computed(() => language)
     function changeSettingInfo(newVal: string) {
-      language.value = newVal;
+      language.value = newVal
     }
 
-    return { language, getLanguage, changeSettingInfo };
+    return { language, getLanguage, changeSettingInfo }
   },
   {
-    persist: true,
-  },
-);
+    persist: true
+  }
+)

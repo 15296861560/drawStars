@@ -25,7 +25,7 @@
     <div v-show="drawToolInfo.drawingState" class="draw-tool">
       <div class="draw-tool__btn" @click.stop="exitDraw">
         <el-icon><Back /></el-icon>
-        {{ drawToolInfo.editingState ? "退出" : "返回" }}
+        {{ drawToolInfo.editingState ? '退出' : '返回' }}
       </div>
       <div
         v-show="drawToolInfo.editingState"
@@ -53,232 +53,232 @@
 /**
  * 简易地图 组件
  * */
-import { nextTick, onMounted, reactive, ref, onUnmounted } from "vue";
-import type { AnyObject } from "@/types/global";
+import { nextTick, onMounted, reactive, ref, onUnmounted } from 'vue'
+import type { AnyObject } from '@/types/global'
 
 import {
   mapInit,
   refreshLayer,
   createPolygonEditor,
   searchPosition,
-  TK_KEY,
-} from "@/utils/hooks/useLeafletMap";
-import { EditPen } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
-import L from "leaflet";
+  TK_KEY
+} from '@/utils/hooks/useLeafletMap'
+import { EditPen } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import L from 'leaflet'
 
 // 矢量与影像底图图层定义
 const vectorTileLayer = L.tileLayer(
-  "http://t1.tianditu.gov.cn/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" +
+  'http://t1.tianditu.gov.cn/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=' +
     TK_KEY,
   {
     maxZoom: 17,
     minZoom: 2,
     zoomOffset: 1,
-    attribution: "&copy; 天地图",
-  },
-);
+    attribution: '&copy; 天地图'
+  }
+)
 
 const satelliteTileLayer = L.tileLayer(
-  "http://t1.tianditu.gov.cn/img_c/wmts?layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" +
+  'http://t1.tianditu.gov.cn/img_c/wmts?layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=' +
     TK_KEY,
   {
     maxZoom: 17,
     minZoom: 2,
     zoomOffset: 1,
-    attribution: "&copy; 天地图",
-  },
-);
+    attribution: '&copy; 天地图'
+  }
+)
 
 // 底图类型状态
-const baseMapType = ref("vector");
+const baseMapType = ref('vector')
 
-const emit = defineEmits<{
-  (e: "handle-items", value: AnyObject): void;
-}>();
+defineEmits<{
+  (e: 'handle-items', value: AnyObject): void
+}>()
 
-const simpleMapRef = ref();
+const simpleMapRef = ref()
 
 const state = reactive<AnyObject>({
   leafletMap: null,
   mapLoading: false,
   marker: null,
   lnglat: {},
-  searchAddress: "",
+  searchAddress: '',
   gLayGroups: null, // 总图形绘制组
-  highlightLayGroups: null, // 高亮绘制组
-});
+  highlightLayGroups: null // 高亮绘制组
+})
 
 const handleInitMap = (): void => {
   nextTick(() => {
-    state.leafletMap = mapInit("SimpleMap", 11);
+    state.leafletMap = mapInit('SimpleMap', 11)
 
-    state.gLayGroups = refreshLayer(state.leafletMap, state.gLayGroups);
+    state.gLayGroups = refreshLayer(state.leafletMap, state.gLayGroups)
     state.highlightLayGroups = refreshLayer(
       state.leafletMap,
-      state.highlightLayGroups,
-    );
+      state.highlightLayGroups
+    )
 
-    state.leafletMap.on("click", (e) => {
-      handleAddMarker(e.latlng);
-    });
+    state.leafletMap.on('click', e => {
+      handleAddMarker(e.latlng)
+    })
 
     // 初始化底图
     // handleBaseMapChange();
-  });
-};
+  })
+}
 
 /**绘制多边形 */
 
 export interface Polygon {
-  getExtData: Function;
-  setOptions: Function;
+  getExtData: Function
+  setOptions: Function
 }
 
 export interface PolygonEditor {
-  points: Array<any>;
-  poly: any;
-  close: Function;
-  addAdsorbPolygons: Function;
+  points: Array<any>
+  poly: any
+  close: Function
+  addAdsorbPolygons: Function
 }
 
 export interface EventTarget extends Polygon {
   _opts: {
-    path: [];
-  };
-  remove: Function;
-  getPath: Function;
+    path: []
+  }
+  remove: Function
+  getPath: Function
 }
 
 export interface MapEvent {
-  target: EventTarget;
+  target: EventTarget
   originEvent: {
-    pageX: string | number;
-    pageY: string | number;
-  };
+    pageX: string | number
+    pageY: string | number
+  }
   lnglat: {
-    KL: number;
-    className: string;
-    kT: number;
-    lat: number;
-    lng: number;
-    pos: Array<number>;
-  };
+    KL: number
+    className: string
+    kT: number
+    lat: number
+    lng: number
+    pos: Array<number>
+  }
 }
 
 const drawToolInfo = reactive({
   polyEditor: null as PolygonEditor | null, //多边形吸附工具对象
   selectedPolygon: null as EventTarget | null, // 选中的多边形
   drawingState: false, //是否绘制中状态
-  editingState: false, //是否编辑中状态
-});
+  editingState: false //是否编辑中状态
+})
 
 //开始绘制
 const createPolygon = () => {
-  drawToolInfo.polyEditor = createPolygonEditor(state.leafletMap);
+  drawToolInfo.polyEditor = createPolygonEditor(state.leafletMap)
 
-  drawToolInfo.drawingState = true;
-  drawToolInfo.editingState = false;
-};
+  drawToolInfo.drawingState = true
+  drawToolInfo.editingState = false
+}
 
 const enterDraw = () => {
-  drawToolInfo.drawingState = true;
-  createPolygon();
+  drawToolInfo.drawingState = true
+  createPolygon()
 
-  ElMessage.warning("你已进入绘画模式");
-};
+  ElMessage.warning('你已进入绘画模式')
+}
 
 const closeDraw = () => {
-  drawToolInfo.drawingState = false;
-  drawToolInfo.polyEditor?.close();
-};
+  drawToolInfo.drawingState = false
+  drawToolInfo.polyEditor?.close()
+}
 
 const exitDraw = () => {
-  closeDraw();
-};
+  closeDraw()
+}
 
 const saveDraw = async () => {
   if (!drawToolInfo.polyEditor?.poly) {
-    ElMessage.warning("请先绘制多边形");
+    ElMessage.warning('请先绘制多边形')
   }
 
-  drawToolInfo.polyEditor?.addAdsorbPolygons();
+  drawToolInfo.polyEditor?.addAdsorbPolygons()
 
-  ElMessage.success(drawToolInfo.editingState ? "保存成功" : "绘制成功");
-  closeDraw();
-};
+  ElMessage.success(drawToolInfo.editingState ? '保存成功' : '绘制成功')
+  closeDraw()
+}
 
 const handleAddMarker = (point): void => {
   if (state.marker) {
-    state.leafletMap.removeLayer(state.marker);
-    state.marker = null;
+    state.leafletMap.removeLayer(state.marker)
+    state.marker = null
   }
 
   const pointIcon = L.divIcon({
-    className: "position-icon",
-    iconSize: [32, 32],
-  });
+    className: 'position-icon',
+    iconSize: [32, 32]
+  })
 
   state.marker = L.marker(point, {
-    icon: pointIcon,
-  });
+    icon: pointIcon
+  })
 
-  state.leafletMap.addLayer(state.marker);
-  state.leafletMap.setView(point);
-};
+  state.leafletMap.addLayer(state.marker)
+  state.leafletMap.setView(point)
+}
 
 const handleGeocoderLocation = async () => {
-  const res = await searchPosition(state.searchAddress);
+  const res = await searchPosition(state.searchAddress)
 
   if (res.status === 200) {
-    const lonlat = res.data?.pois?.[0]?.lonlat || res.data?.area?.lonlat || "";
-    const latLng = lonlat.split(",").reverse();
+    const lonlat = res.data?.pois?.[0]?.lonlat || res.data?.area?.lonlat || ''
+    const latLng = lonlat.split(',').reverse()
 
-    const center = L.latLng(latLng[0], latLng[1]);
+    const center = L.latLng(latLng[0], latLng[1])
 
-    handleAddMarker(center);
+    handleAddMarker(center)
   } else {
-    console.error("根据地址查询位置失败");
+    console.error('根据地址查询位置失败')
   }
-};
+}
 
 // 切换底图的方法
 const handleBaseMapChange = () => {
   if (state.leafletMap) {
     // 移除所有底图图层
-    state.leafletMap.eachLayer((layer) => {
+    state.leafletMap.eachLayer(layer => {
       if (layer instanceof L.TileLayer) {
-        state.leafletMap.removeLayer(layer);
+        state.leafletMap.removeLayer(layer)
       }
-    });
+    })
 
     // 添加新的底图图层
-    if (baseMapType.value === "vector") {
-      state.leafletMap.addLayer(vectorTileLayer);
-    } else if (baseMapType.value === "satellite") {
-      state.leafletMap.addLayer(satelliteTileLayer);
+    if (baseMapType.value === 'vector') {
+      state.leafletMap.addLayer(vectorTileLayer)
+    } else if (baseMapType.value === 'satellite') {
+      state.leafletMap.addLayer(satelliteTileLayer)
     }
   }
-};
+}
 
 onMounted(() => {
-  handleInitMap();
-});
+  handleInitMap()
+})
 
 defineExpose({
-  state,
-});
+  state
+})
 
 // 组件卸载时移除底图图层
 onUnmounted(() => {
   if (state.leafletMap) {
-    state.leafletMap.eachLayer((layer) => {
+    state.leafletMap.eachLayer(layer => {
       if (layer instanceof L.TileLayer) {
-        state.leafletMap.removeLayer(layer);
+        state.leafletMap.removeLayer(layer)
       }
-    });
+    })
   }
-});
+})
 </script>
 
 <style lang="less">
@@ -288,7 +288,7 @@ onUnmounted(() => {
   .position-icon {
     width: 32px;
     height: 32px;
-    background: url("@/assets/img/map/icon_dot_green.png") no-repeat;
+    background: url('@/assets/img/map/icon_dot_green.png') no-repeat;
     background-size: 100%;
   }
 }

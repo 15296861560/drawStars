@@ -23,26 +23,26 @@
 
 <script>
 export default {
-  name: "RouterLinkNormal",
+  name: 'RouterLinkNormal',
   props: {
     to: {
       type: String,
-      default: "#",
+      default: '#'
     },
     imgName: {
       type: String,
-      default: "",
+      default: ''
     },
     text: {
       type: String,
-      default: "",
+      default: ''
     },
     format: {
       type: String,
-      default: "svg",
-    },
-  },
-};
+      default: 'svg'
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped></style>

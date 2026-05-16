@@ -7,11 +7,11 @@
 export default {
   data() {
     return {
-      frameSrc: "http://localhost:8883/",
-    };
+      frameSrc: 'http://localhost:8883/'
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style>
 .normal-frame {

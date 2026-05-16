@@ -2,9 +2,9 @@
  * 加载 leaflet 地图
  * */
 
-import type { App } from "vue";
-import L from "leaflet";
+import L from 'leaflet'
+import * as _Vue from 'vue'
 
-export default (app: App<Element>) => {
-  app.use(L, { name: "L" });
-};
+export default (app: _Vue.App<Element>) => {
+  app.use(L, { name: 'L' })
+}

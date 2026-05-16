@@ -37,15 +37,15 @@ export default {
   data() {
     return {
       basicList: [
-        { name: "渐变色一", class: "linear1" },
-        { name: "渐变色二", class: "linear2" },
-        { name: "发光一", class: "shine1" },
-        { name: "阴影", class: "shadow" },
-      ],
-    };
+        { name: '渐变色一', class: 'linear1' },
+        { name: '渐变色二', class: 'linear2' },
+        { name: '发光一', class: 'shine1' },
+        { name: '阴影', class: 'shadow' }
+      ]
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style lang="less" scoped>
 .linear1 {

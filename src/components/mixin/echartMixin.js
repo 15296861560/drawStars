@@ -6,42 +6,42 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-06-26 22:43:25
  */
-import { markRaw } from "vue";
+import { markRaw } from 'vue'
 
 export const echartMixin = {
   props: {
     echartId: {
-      type: String,
+      type: String
     },
     chartData: {
       type: Object,
-      default: null,
+      default: null
     },
     width: {
       type: String,
-      default: "",
+      default: ''
     },
     height: {
       type: String,
-      default: "",
-    },
+      default: ''
+    }
   },
   data() {
     return {
       myChart: null,
-      option: {},
-    };
+      option: {}
+    }
   },
   methods: {
     // 初始化图表
     paint() {
       if (this.chartData) {
-        this.initData(this.chartData);
+        this.initData(this.chartData)
       }
       // 基于准备好的dom，初始化echarts实例
       this.myChart = markRaw(
-        this.$echarts.init(document.getElementById(this.echartId)),
-      );
+        this.$echarts.init(document.getElementById(this.echartId))
+      )
       // setOption使用方式:
       // chart.setOption(option, notMerge, lazyUpdate); ||
       // chart.setOption(option, {
@@ -62,43 +62,43 @@ export const echartMixin = {
       // silent: boolean
       // 可选。阻止调用 setOption 时抛出事件，默认为 false，即抛出事件。
       // 绘制图表
-      this.myChart.setOption(this.option, true);
+      this.myChart.setOption(this.option, true)
     },
     // 重绘(更新数据)
     repaint(newVal) {
-      this.initData(newVal);
-      this.myChart.setOption(this.option, true);
+      this.initData(newVal)
+      this.myChart.setOption(this.option, true)
     },
     initData(newVal) {
-      this.option = newVal;
+      this.option = newVal
     },
     resizeChart() {
       if (this.myChart) {
-        this.myChart.resize();
+        this.myChart.resize()
       }
-    },
+    }
   },
   watch: {
     chartData: {
       handler(newVal) {
         if (newVal) {
-          this.repaint(newVal);
+          this.repaint(newVal)
         }
       },
-      deep: true, // 打开深度监听
-    },
+      deep: true // 打开深度监听
+    }
   },
   mounted() {
-    this.paint();
+    this.paint()
     // 监听窗口发生变化，resize组件
-    window.addEventListener("resize", this.resizeChart);
+    window.addEventListener('resize', this.resizeChart)
   },
   beforeDestroy() {
     // 释放myChart实例
     if (this.myChart) {
-      this.myChart.clear();
+      this.myChart.clear()
     }
     // 并取消监听事件
-    window.removeEventListener("resize", this.resizeChart);
-  },
-};
+    window.removeEventListener('resize', this.resizeChart)
+  }
+}

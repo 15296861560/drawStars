@@ -2,7 +2,7 @@
   <div>
     <div class="g-module-normal">
       <div class="m-block">
-        <div class="m-block-title">{{ $t("module.media.video") }}</div>
+        <div class="m-block-title">{{ $t('module.media.video') }}</div>
         <div class="top-part">
           <el-button size="default" round type="success" @click="openVideo">
             <span>开启摄像头</span>
@@ -74,126 +74,123 @@ export default {
       showContext: null,
       width: 320,
       height: 240,
-      color: "rgba(255, 69, 0, 0.68)",
+      color: 'rgba(255, 69, 0, 0.68)',
       predefineColors: [
-        "#ff4500",
-        "#ff8c00",
-        "#ffd700",
-        "#90ee90",
-        "#00ced1",
-        "#1e90ff",
-        "#c71585",
-        "rgba(255, 69, 0, 0.68)",
-        "rgb(255, 120, 0)",
-        "hsv(51, 100, 98)",
-        "hsva(120, 40, 94, 0.5)",
-        "hsl(181, 100%, 37%)",
-        "hsla(209, 100%, 56%, 0.73)",
-        "#c7158577",
+        '#ff4500',
+        '#ff8c00',
+        '#ffd700',
+        '#90ee90',
+        '#00ced1',
+        '#1e90ff',
+        '#c71585',
+        'rgba(255, 69, 0, 0.68)',
+        'rgb(255, 120, 0)',
+        'hsv(51, 100, 98)',
+        'hsva(120, 40, 94, 0.5)',
+        'hsl(181, 100%, 37%)',
+        'hsla(209, 100%, 56%, 0.73)',
+        '#c7158577'
       ],
       selectColorList: [],
-      rgbList: [],
-    };
+      rgbList: []
+    }
   },
   methods: {
     openVideo() {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-          this.video.srcObject = stream;
-          this.video.play();
-        });
+        navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+          this.video.srcObject = stream
+          this.video.play()
+        })
       }
     },
     closeVideo() {
-      this.video.srcObject.getTracks()[0].stop();
+      this.video.srcObject.getTracks()[0].stop()
     },
     selectColor() {
-      let rgbStr = this.color.slice(4, -1);
-      let rgb = rgbStr.split(",");
-      rgb.forEach((element) => {
-        element = Number(element);
-      });
+      let rgbStr = this.color.slice(4, -1)
+      let rgb = rgbStr.split(',').map(s => Number(String(s).trim()))
 
       let RGB = {
         r: rgb[0],
         g: rgb[1],
-        b: rgb[2],
-      };
-      this.rgbList.push(RGB);
-      this.selectColorList.push(this.color);
+        b: rgb[2]
+      }
+      this.rgbList.push(RGB)
+      this.selectColorList.push(this.color)
     },
     selectCanvasColor(e) {
-      let imageData = this.copyContext.getImageData(e.offsetX, e.offsetY, 1, 1);
+      let imageData = this.copyContext.getImageData(e.offsetX, e.offsetY, 1, 1)
       let RGB = {
         r: imageData.data[0],
         g: imageData.data[1],
-        b: imageData.data[2],
-      };
-      this.rgbList.push(RGB);
-      this.selectColorList.push(`rgb(${RGB.r},${RGB.g},${RGB.b})`);
+        b: imageData.data[2]
+      }
+      this.rgbList.push(RGB)
+      this.selectColorList.push(`rgb(${RGB.r},${RGB.g},${RGB.b})`)
     },
     closeAllColor() {
-      this.rgbList = [];
-      this.selectColorList = [];
+      this.rgbList = []
+      this.selectColorList = []
     },
     doLoad() {
-      this.video = this.$refs.video;
-      this.copyCanvas = this.$refs.copyCanvas;
-      this.copyContext = this.copyCanvas.getContext("2d");
-      this.showCanvas = this.$refs.showCanvas;
-      this.showContext = this.showCanvas.getContext("2d");
-      let self = this;
+      this.video = this.$refs.video
+      this.copyCanvas = this.$refs.copyCanvas
+      this.copyContext = this.copyCanvas.getContext('2d')
+      this.showCanvas = this.$refs.showCanvas
+      this.showContext = this.showCanvas.getContext('2d')
+      let self = this
       this.video.addEventListener(
-        "play",
+        'play',
         function () {
-          self.timerCallback();
+          self.timerCallback()
         },
-        false,
-      );
+        false
+      )
     },
     timerCallback() {
-      this.width = this.video.videoWidth / 2;
-      this.height = this.video.videoHeight / 2;
+      this.width = this.video.videoWidth / 2
+      this.height = this.video.videoHeight / 2
       if (this.video.paused || this.video.ended) {
-        return;
+        return
       }
       if (this.width && this.height) {
-        this.computeFrame();
+        this.computeFrame()
       }
-      requestAnimationFrame(this.timerCallback);
+      requestAnimationFrame(this.timerCallback)
     },
     computeFrame() {
-      this.copyContext.drawImage(this.video, 0, 0, this.width, this.height);
-      let frame = this.copyContext.getImageData(0, 0, this.width, this.height);
-      let l = frame.data.length / 4;
+      this.copyContext.drawImage(this.video, 0, 0, this.width, this.height)
+      let frame = this.copyContext.getImageData(0, 0, this.width, this.height)
+      let l = frame.data.length / 4
 
       for (let i = 0; i < l; i++) {
-        let r = frame.data[i * 4 + 0];
-        let g = frame.data[i * 4 + 1];
-        let b = frame.data[i * 4 + 2];
+        let r = frame.data[i * 4 + 0]
+        let g = frame.data[i * 4 + 1]
+        let b = frame.data[i * 4 + 2]
         for (let j = 0, RGB = this.rgbList[0]; RGB; j++) {
           if (
             Math.abs(r - RGB.r) < 10 &&
             Math.abs(g - RGB.g) < 10 &&
             Math.abs(b - RGB.b) < 10
           ) {
-            frame.data[i * 4 + 3] = 0;
-            break;
+            frame.data[i * 4 + 3] = 0
+            break
           }
-          RGB = this.rgbList[j];
+          RGB = this.rgbList[j]
         }
       }
-      this.showContext.putImageData(frame, 0, 0);
-    },
+      this.showContext.putImageData(frame, 0, 0)
+    }
   },
   mounted() {
-    this.doLoad();
-    this.openVideo();
+    this.doLoad()
+    this.openVideo()
   },
   destroyed() {
-    this.closeVideo();
-  },
-};
+    this.closeVideo()
+  }
+}
 </script>
 <style lang="less" scoped>
 .color-group {

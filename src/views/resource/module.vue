@@ -10,14 +10,14 @@
   <iframe class="normal-frame" :src="frameSrc"></iframe>
 </template>
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
-const route = useRoute();
-const frameSrc = ref("");
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+const frameSrc = ref('')
 
 onMounted(() => {
-  frameSrc.value = route.query.address;
-});
+  frameSrc.value = route.query.address
+})
 </script>
 <style scoped>
 .normal-frame {

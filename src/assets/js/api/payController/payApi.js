@@ -7,7 +7,7 @@
  * @LastEditTime: 2022-12-17 15:30:07
  */
 /* 支付相关接口 */
-import { $axios } from "@/assets/js/axios-api/axios-config.js";
+import { $axios } from '@/assets/js/axios-api/axios-config.js'
 
 export default {
   /**
@@ -16,5 +16,5 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  toPay: (params) => $axios(params, "/payApi/toPay"),
-};
+  toPay: params => $axios(params, '/payApi/toPay')
+}

@@ -9,48 +9,48 @@
 const storage = {
   local: {
     save(key: string, value: string) {
-      localStorage.setItem(key, JSON.stringify(value));
+      localStorage.setItem(key, JSON.stringify(value))
     },
-    get(key: string, defaultValue: string = "") {
-      const raw = localStorage.getItem(key);
+    get(key: string, defaultValue: string = '') {
+      const raw = localStorage.getItem(key)
       if (raw === null) {
-        return defaultValue;
+        return defaultValue
       }
       try {
-        return JSON.parse(raw) || defaultValue;
+        return JSON.parse(raw) || defaultValue
       } catch {
-        return defaultValue;
+        return defaultValue
       }
     },
     remove(key: string) {
-      localStorage.removeItem(key);
+      localStorage.removeItem(key)
     },
     clear() {
-      localStorage.clear();
-    },
+      localStorage.clear()
+    }
   },
   session: {
     save(key: string, value: string) {
-      sessionStorage.setItem(key, JSON.stringify(value));
+      sessionStorage.setItem(key, JSON.stringify(value))
     },
-    get(key: string, defaultValue: string = "") {
-      const raw = sessionStorage.getItem(key);
+    get(key: string, defaultValue: string = '') {
+      const raw = sessionStorage.getItem(key)
       if (raw === null) {
-        return defaultValue;
+        return defaultValue
       }
       try {
-        return JSON.parse(raw) || defaultValue;
+        return JSON.parse(raw) || defaultValue
       } catch {
-        return defaultValue;
+        return defaultValue
       }
     },
     remove(key: string) {
-      sessionStorage.removeItem(key);
+      sessionStorage.removeItem(key)
     },
     clear() {
-      sessionStorage.clear();
-    },
-  },
-};
+      sessionStorage.clear()
+    }
+  }
+}
 
-export default storage;
+export default storage

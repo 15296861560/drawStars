@@ -1,3 +1,3 @@
-import echartMixin from "./echartMixin.js";
+import echartMixin from './echartMixin.js'
 
-export { echartMixin };
+export { echartMixin }

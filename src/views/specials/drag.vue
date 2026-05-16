@@ -80,216 +80,216 @@
   </div>
 </template>
 <script>
-import Sortable from "sortablejs";
-import { cloneDeep } from "lodash";
+import Sortable from 'sortablejs'
+import { cloneDeep } from 'lodash'
 export default {
   data() {
     return {
-      groupIds: "",
-      groupTexts: "",
+      groupIds: '',
+      groupTexts: '',
       groupAData: [
-        { id: "a1", text: "111" },
-        { id: "a2", text: "222" },
-        { id: "a3", text: "333" },
-        { id: "a4", text: "444" },
-        { id: "a5", text: "555" },
-        { id: "a6", text: "666" },
+        { id: 'a1', text: '111' },
+        { id: 'a2', text: '222' },
+        { id: 'a3', text: '333' },
+        { id: 'a4', text: '444' },
+        { id: 'a5', text: '555' },
+        { id: 'a6', text: '666' }
       ],
       groupBData: [
-        { id: "b1", text: "111" },
-        { id: "b2", text: "222" },
-        { id: "b3", text: "333" },
-        { id: "b4", text: "444" },
-        { id: "b5", text: "555" },
-        { id: "b6", text: "666" },
+        { id: 'b1', text: '111' },
+        { id: 'b2', text: '222' },
+        { id: 'b3', text: '333' },
+        { id: 'b4', text: '444' },
+        { id: 'b5', text: '555' },
+        { id: 'b6', text: '666' }
       ],
       groupCData: [
-        { id: "c1", text: "111" },
-        { id: "c2", text: "222" },
-        { id: "c3", text: "333" },
-        { id: "c4", text: "444" },
-        { id: "c5", text: "555" },
-        { id: "c6", text: "666" },
+        { id: 'c1', text: '111' },
+        { id: 'c2', text: '222' },
+        { id: 'c3', text: '333' },
+        { id: 'c4', text: '444' },
+        { id: 'c5', text: '555' },
+        { id: 'c6', text: '666' }
       ],
-      curShowData: "",
-    };
+      curShowData: ''
+    }
   },
   mounted() {
-    this.initSortable();
+    this.initSortable()
   },
   methods: {
     initSortable() {
-      const groupElA = this.$refs.groupA;
-      const groupElB = this.$refs.groupB;
-      const groupElC = this.$refs.groupC;
-      const groupELRefreshA = this.$refs.groupARefresh;
+      const groupElA = this.$refs.groupA
+      const groupElB = this.$refs.groupB
+      const groupElC = this.$refs.groupC
+      const groupELRefreshA = this.$refs.groupARefresh
       const optionA = {
-        group: "sameGroup",
+        group: 'sameGroup',
         // 是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
         sort: true,
         // 动画效果
         animation: 500,
         // Easing 动画
-        easing: "ease",
+        easing: 'ease',
         // 停靠位置的自定义样式
-        ghostClass: "ghost",
+        ghostClass: 'ghost',
         // 选中元素的自定义样式
-        chosenClass: "chosen",
+        chosenClass: 'chosen',
         // 拖拽时的自定义样式
-        dragClass: "drag",
+        dragClass: 'drag',
         // 忽略HTML5原生拖拽行为
         forceFallback: true,
         // 拖动结束
         onEnd: this.onEndA,
         //  拖拽完后添加元素事件
-        onAdd: this.onAddA,
-      };
+        onAdd: this.onAddA
+      }
       const optionB = {
-        group: "sameGroup",
+        group: 'sameGroup',
         sort: true,
-        ghostClass: "ghost",
+        ghostClass: 'ghost',
         // 忽略HTML5原生拖拽行为
         forceFallback: true,
         // 拖动结束
-        onEnd: this.onEndB,
-      };
+        onEnd: this.onEndB
+      }
       const optionC = {
         sort: true,
-        ghostClass: "ghost",
-        filter: ".group-title",
-      };
+        ghostClass: 'ghost',
+        filter: '.group-title'
+      }
       const optionRefreshA = {
         // 是否允许列内部排序，如果为false当有多个排序组时,多个组之间可以拖拽，本身不能拖拽
         sort: true,
         // 动画效果
         animation: 500,
         // Easing 动画
-        easing: "ease",
+        easing: 'ease',
         // 停靠位置的自定义样式
-        ghostClass: "ghost",
+        ghostClass: 'ghost',
         // 选中元素的自定义样式
-        chosenClass: "chosen",
+        chosenClass: 'chosen',
         // 拖拽时的自定义样式
-        dragClass: "drag",
+        dragClass: 'drag',
         // 忽略HTML5原生拖拽行为
         forceFallback: true,
         // 拖动结束
-        onEnd: this.onEndRefreshA,
-      };
-      let sortable1 = new Sortable(groupElA, optionA);
-      let sortable2 = new Sortable(groupElB, optionB);
-      let sortable3 = new Sortable(groupElC, optionC);
-      let sortable4 = new Sortable(groupELRefreshA, optionRefreshA);
+        onEnd: this.onEndRefreshA
+      }
+      let _sortable1 = new Sortable(groupElA, optionA)
+      let _sortable2 = new Sortable(groupElB, optionB)
+      let _sortable3 = new Sortable(groupElC, optionC)
+      let _sortable4 = new Sortable(groupELRefreshA, optionRefreshA)
     },
     printGroup(groupData, dataName) {
-      this.curShowData = dataName;
+      this.curShowData = dataName
       this.groupIds = groupData
-        .map((item) => {
-          return item.id;
+        .map(item => {
+          return item.id
         })
-        .join(",");
+        .join(',')
       this.groupTexts = groupData
-        .map((item) => {
-          return item.text;
+        .map(item => {
+          return item.text
         })
-        .join(",");
+        .join(',')
     },
     onEndA(evt) {
-      let newIndex = evt.newIndex;
-      let oldIndex = evt.oldIndex;
+      let newIndex = evt.newIndex
+      let oldIndex = evt.oldIndex
       if (newIndex === oldIndex) {
-        return;
+        return
       }
-      let newNode = evt.item;
-      let group = evt.to;
+      let newNode = evt.item
+      let group = evt.to
 
       // 组间移动
       if (evt.to === evt.from) {
         this.groupAData.splice(
           newIndex,
           0,
-          ...this.groupAData.splice(oldIndex, 1),
-        );
+          ...this.groupAData.splice(oldIndex, 1)
+        )
 
-        let oldNode = group.children[oldIndex];
-        group.removeChild(newNode);
+        let oldNode = group.children[oldIndex]
+        group.removeChild(newNode)
         if (newIndex > oldIndex) {
-          group.insertBefore(newNode, oldNode);
+          group.insertBefore(newNode, oldNode)
         } else {
-          group.insertBefore(newNode, oldNode.nextSibling);
+          group.insertBefore(newNode, oldNode.nextSibling)
         }
       } else {
         this.groupBData.splice(
           newIndex,
           0,
-          ...this.groupAData.splice(oldIndex, 1),
-        );
+          ...this.groupAData.splice(oldIndex, 1)
+        )
 
-        group.removeChild(newNode);
+        group.removeChild(newNode)
         // 还原删除的节点
-        let oldGroup = evt.from;
-        let nextDrag = oldGroup.children[oldIndex];
-        oldGroup.insertBefore(newNode, nextDrag);
+        let oldGroup = evt.from
+        let nextDrag = oldGroup.children[oldIndex]
+        oldGroup.insertBefore(newNode, nextDrag)
       }
     },
     onEndB(evt) {
-      let newIndex = evt.newIndex;
-      let oldIndex = evt.oldIndex;
+      let newIndex = evt.newIndex
+      let oldIndex = evt.oldIndex
       if (newIndex === oldIndex) {
-        return;
+        return
       }
-      let newNode = evt.item;
-      let group = evt.to;
+      let newNode = evt.item
+      let group = evt.to
 
       // 组间移动
       if (evt.to === evt.from) {
         this.groupBData.splice(
           newIndex,
           0,
-          ...this.groupBData.splice(oldIndex, 1),
-        );
+          ...this.groupBData.splice(oldIndex, 1)
+        )
 
-        let oldNode = group.children[oldIndex];
-        group.removeChild(newNode);
+        let oldNode = group.children[oldIndex]
+        group.removeChild(newNode)
         if (newIndex > oldIndex) {
-          group.insertBefore(newNode, oldNode);
+          group.insertBefore(newNode, oldNode)
         } else {
-          group.insertBefore(newNode, oldNode.nextSibling);
+          group.insertBefore(newNode, oldNode.nextSibling)
         }
       } else {
         this.groupAData.splice(
           newIndex,
           0,
-          ...this.groupBData.splice(oldIndex, 1),
-        );
+          ...this.groupBData.splice(oldIndex, 1)
+        )
 
-        group.removeChild(newNode);
+        group.removeChild(newNode)
         // 还原删除的节点
-        let oldGroup = evt.from;
-        let nextDrag = oldGroup.children[oldIndex];
-        oldGroup.insertBefore(newNode, nextDrag);
+        let oldGroup = evt.from
+        let nextDrag = oldGroup.children[oldIndex]
+        oldGroup.insertBefore(newNode, nextDrag)
       }
     },
-    onAddA(evt) {
-      console.log("onAddA");
+    onAddA(_evt) {
+      console.log('onAddA')
     },
     onEndRefreshA(evt) {
-      let newIndex = evt.newIndex;
-      let oldIndex = evt.oldIndex;
+      let newIndex = evt.newIndex
+      let oldIndex = evt.oldIndex
       if (newIndex === oldIndex) {
-        return;
+        return
       }
-      let newNode = evt.item;
-      let group = evt.to;
-      let groupData = cloneDeep(this.groupAData);
-      groupData.splice(newIndex, 0, ...groupData.splice(oldIndex, 1));
-      this.groupAData = [];
+      let _newNode = evt.item
+      let _group = evt.to
+      let groupData = cloneDeep(this.groupAData)
+      groupData.splice(newIndex, 0, ...groupData.splice(oldIndex, 1))
+      this.groupAData = []
       this.$nextTick(() => {
-        this.groupAData = groupData;
-      });
-    },
-  },
-};
+        this.groupAData = groupData
+      })
+    }
+  }
+}
 </script>
 <style lang="less" scoped>
 .box {

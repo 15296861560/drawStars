@@ -10,7 +10,7 @@
   <div>
     <div class="g-module-normal">
       <div class="m-block">
-        <div class="m-block-title">{{ $t("module.media.video") }}</div>
+        <div class="m-block-title">{{ $t('module.media.video') }}</div>
         <div class="m-block-content2">
           <div>
             <video
@@ -23,7 +23,7 @@
           </div>
           <div style="display: flex; justify-content: center">
             <el-button size="default" id="snap" v-on:click="capture()">{{
-              $t("btn.capture")
+              $t('btn.capture')
             }}</el-button>
           </div>
           <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
@@ -43,27 +43,26 @@ export default {
     return {
       video: {},
       canvas: {},
-      captures: [],
-    };
+      captures: []
+    }
   },
   methods: {
     capture() {
-      this.canvas = this.$refs.canvas;
-      let context = this.canvas
-        .getContext("2d")
-        .drawImage(this.video, 0, 0, 640, 480);
-      this.captures.push(canvas.toDataURL("image/png"));
-    },
-  },
-  mounted() {
-    this.video = this.$refs.video;
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-        video.srcObject = stream;
-        this.video.play();
-      });
+      this.canvas = this.$refs.canvas
+      const ctx = this.canvas.getContext('2d')
+      ctx.drawImage(this.video, 0, 0, 640, 480)
+      this.captures.push(this.canvas.toDataURL('image/png'))
     }
   },
-};
+  mounted() {
+    this.video = this.$refs.video
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        video.srcObject = stream
+        this.video.play()
+      })
+    }
+  }
+}
 </script>
 <style></style>

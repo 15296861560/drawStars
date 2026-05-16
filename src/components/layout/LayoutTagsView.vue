@@ -25,19 +25,19 @@
 </template>
 
 <script setup lang="ts">
-import { Menu, Close } from "@element-plus/icons-vue";
-import { useRouter } from "vue-router";
-import { layoutSettingsStore } from "@/stores/layout-settings";
+import { Menu, Close } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { layoutSettingsStore } from '@/stores/layout-settings'
 
-const layout = layoutSettingsStore();
-const router = useRouter();
+const layout = layoutSettingsStore()
+const router = useRouter()
 
 function close(fullPath: string) {
-  layout.removeVisitedView(fullPath);
+  layout.removeVisitedView(fullPath)
 }
 
 function go(fullPath: string) {
-  router.push(fullPath);
+  router.push(fullPath)
 }
 </script>
 

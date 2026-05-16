@@ -11,12 +11,12 @@
   >
     <el-menu-item index="/home/homepage">
       <el-icon><HomeFilled /></el-icon>
-      <span>{{ $t("aside.homePage") }}</span>
+      <span>{{ $t('aside.homePage') }}</span>
     </el-menu-item>
     <el-sub-menu index="sub-mod">
       <template #title>
         <el-icon><Shop /></el-icon>
-        <span>{{ $t("aside.module") }}</span>
+        <span>{{ $t('aside.module') }}</span>
       </template>
       <el-menu-item
         v-for="item in pathList"
@@ -29,20 +29,20 @@
     <el-sub-menu index="sub-test">
       <template #title>
         <el-icon><Avatar /></el-icon>
-        <span>{{ $t("aside.test") }}</span>
+        <span>{{ $t('aside.test') }}</span>
       </template>
       <el-menu-item-group :title="$t('layoutSettings.permExample')">
         <el-menu-item v-if="userData.level > 1" index="/home/test1">{{
-          $t("aside.moreThanOne")
+          $t('aside.moreThanOne')
         }}</el-menu-item>
         <el-menu-item v-if="userData.level > 2" index="/home/test2">{{
-          $t("aside.moreThanTwo")
+          $t('aside.moreThanTwo')
         }}</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group :title="$t('layoutSettings.testPages')">
         <el-menu-item index="outSide"
           ><el-icon><Link /></el-icon
-          >{{ $t("aside.externalLinks") }}</el-menu-item
+          >{{ $t('aside.externalLinks') }}</el-menu-item
         >
       </el-menu-item-group>
       <el-menu-item-group title="模拟错误">
@@ -52,26 +52,26 @@
     <el-sub-menu index="sub-pow">
       <template #title>
         <el-icon><User /></el-icon>
-        <span>{{ $t("aside.power") }}</span>
+        <span>{{ $t('aside.power') }}</span>
       </template>
       <el-menu-item index="levelDown"
         ><el-icon><CaretBottom /></el-icon
-        >{{ $t("aside.levelDown") }}</el-menu-item
+        >{{ $t('aside.levelDown') }}</el-menu-item
       >
       <el-menu-item index="levelUp"
-        ><el-icon><CaretTop /></el-icon>{{ $t("aside.levelUp") }}</el-menu-item
+        ><el-icon><CaretTop /></el-icon>{{ $t('aside.levelUp') }}</el-menu-item
       >
       <el-menu-item disabled
         ><el-icon><DCaret /></el-icon
-        >{{ $t("aside.curLevel") + userData.level }}</el-menu-item
+        >{{ $t('aside.curLevel') + userData.level }}</el-menu-item
       >
     </el-sub-menu>
   </el-menu>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import {
   HomeFilled,
   Shop,
@@ -80,102 +80,102 @@ import {
   User,
   CaretBottom,
   CaretTop,
-  DCaret,
-} from "@element-plus/icons-vue";
-import { getHomePathList } from "@/utils/home-path-list";
-import { mockUndefinedRouteError } from "@/utils/mock-undefined-error";
-import Test1 from "@/views/pages/test1.vue";
-import Test2 from "@/views/pages/test2.vue";
+  DCaret
+} from '@element-plus/icons-vue'
+import { getHomePathList } from '@/utils/home-path-list'
+import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import Test1 from '@/views/pages/test1.vue'
+import Test2 from '@/views/pages/test2.vue'
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
-const pathList = ref(getHomePathList());
-const defaultActive = ref("/home/homepage");
-const userData = ref({ level: 3 });
+const pathList = ref(getHomePathList())
+const defaultActive = ref('/home/homepage')
+const userData = ref({ level: 3 })
 
 function levelDown() {
   if (userData.value.level > 1) {
-    userData.value.level--;
+    userData.value.level--
   }
-  if (userData.value.level < 3 && router.hasRoute("测试页2")) {
-    router.removeRoute("测试页2");
+  if (userData.value.level < 3 && router.hasRoute('测试页2')) {
+    router.removeRoute('测试页2')
   }
-  if (userData.value.level < 2 && router.hasRoute("测试页1")) {
-    router.removeRoute("测试页1");
+  if (userData.value.level < 2 && router.hasRoute('测试页1')) {
+    router.removeRoute('测试页1')
   }
 }
 
 function levelUp() {
   if (userData.value.level < 9) {
-    userData.value.level++;
+    userData.value.level++
   }
-  if (userData.value.level > 1 && !router.hasRoute("测试页1")) {
-    router.addRoute("home", {
-      path: "/home/test1",
-      name: "测试页1",
+  if (userData.value.level > 1 && !router.hasRoute('测试页1')) {
+    router.addRoute('home', {
+      path: '/home/test1',
+      name: '测试页1',
       component: Test1,
-      meta: { title: ["首页", "测试页1"], keepAlive: true },
-    });
+      meta: { title: ['首页', '测试页1'], keepAlive: true }
+    })
   }
-  if (userData.value.level > 2 && !router.hasRoute("测试页2")) {
-    router.addRoute("home", {
-      path: "/home/test2",
-      name: "测试页2",
+  if (userData.value.level > 2 && !router.hasRoute('测试页2')) {
+    router.addRoute('home', {
+      path: '/home/test2',
+      name: '测试页2',
       component: Test2,
-      meta: { title: ["首页", "测试页2"], keepAlive: true },
-    });
+      meta: { title: ['首页', '测试页2'], keepAlive: true }
+    })
   }
 }
 
 function handleSelect(path: string) {
   if (!path) {
-    return;
+    return
   }
   switch (path) {
-    case "levelDown":
-      levelDown();
-      break;
-    case "levelUp":
-      levelUp();
-      break;
-    case "outSide":
-      window.open("https://cn.bing.com/");
-      break;
-    case "undefinedError":
-      mockUndefinedRouteError();
-      break;
+    case 'levelDown':
+      levelDown()
+      break
+    case 'levelUp':
+      levelUp()
+      break
+    case 'outSide':
+      window.open('https://cn.bing.com/')
+      break
+    case 'undefinedError':
+      mockUndefinedRouteError()
+      break
     default:
-      router.push({ path });
+      router.push({ path })
   }
 }
 
 onMounted(() => {
-  defaultActive.value = route.fullPath;
-  if (userData.value.level > 1 && !router.hasRoute("测试页1")) {
-    router.addRoute("home", {
-      path: "/home/test1",
-      name: "测试页1",
+  defaultActive.value = route.fullPath
+  if (userData.value.level > 1 && !router.hasRoute('测试页1')) {
+    router.addRoute('home', {
+      path: '/home/test1',
+      name: '测试页1',
       component: Test1,
-      meta: { title: ["首页", "测试页1"], keepAlive: true },
-    });
+      meta: { title: ['首页', '测试页1'], keepAlive: true }
+    })
   }
-  if (userData.value.level > 2 && !router.hasRoute("测试页2")) {
-    router.addRoute("home", {
-      path: "/home/test2",
-      name: "测试页2",
+  if (userData.value.level > 2 && !router.hasRoute('测试页2')) {
+    router.addRoute('home', {
+      path: '/home/test2',
+      name: '测试页2',
       component: Test2,
-      meta: { title: ["首页", "测试页2"], keepAlive: true },
-    });
+      meta: { title: ['首页', '测试页2'], keepAlive: true }
+    })
   }
-});
+})
 
 watch(
   () => route.fullPath,
-  (p) => {
-    defaultActive.value = p;
-  },
-);
+  p => {
+    defaultActive.value = p
+  }
+)
 </script>
 
 <style scoped lang="less">

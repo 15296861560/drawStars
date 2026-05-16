@@ -7,12 +7,12 @@
  * @LastEditTime: 2022-11-24 23:33:34
  */
 // 首先引入Mock
-const Mock = require("mockjs");
+const Mock = require('mockjs')
 
 // 引入所有的mock文件
-require("@/mock/api/home");
+require('@/mock/api/home')
 
 // 设置拦截ajax请求的相应时间
 Mock.setup({
-  timeout: "200-600",
-});
+  timeout: '200-600'
+})

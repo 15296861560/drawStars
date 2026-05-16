@@ -9,12 +9,12 @@
 /* 登录相关 */
 export default [
   {
-    path: "/login",
-    alias: "/",
-    name: "登录",
-    component: () => import("@/views/login/login.vue"),
+    path: '/login',
+    alias: '/',
+    name: '登录',
+    component: () => import('@/views/login/login.vue'),
     meta: {
-      title: ["登录"],
-    },
-  },
-];
+      title: ['登录']
+    }
+  }
+]

@@ -9,15 +9,15 @@
 <template>
   <div class="not-found">
     <h1 class="not-found-title">404</h1>
-    <h2 class="not-found-content">{{ $t("notFoundContent") }}</h2>
+    <h2 class="not-found-content">{{ $t('notFoundContent') }}</h2>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 <style scoped lang="less">
 @-webkit-keyframes com-linear {

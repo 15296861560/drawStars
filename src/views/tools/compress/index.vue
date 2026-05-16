@@ -15,12 +15,12 @@
             <div>
               <el-button type="primary" size="small" @click="clear"
                 ><el-icon><RefreshRight /></el-icon>>{{
-                  $t("btn.clear")
+                  $t('btn.clear')
                 }}</el-button
               >
               <el-button type="primary" size="small" @click="running"
                 ><el-icon><VideoPlay /></el-icon
-                >{{ $t("btn.clickRun") }}</el-button
+                >{{ $t('btn.clickRun') }}</el-button
               >
             </div>
           </div>
@@ -37,8 +37,8 @@
       <el-col :xs="24" :sm="12">
         <div class="m-box">
           <div class="m-box-title">
-            <div class="m-btn msg">{{ $t("btn.runningRes") }}</div>
-            <div class="m-btn msg" @click="copy">{{ $t("btn.copy") }}</div>
+            <div class="m-btn msg">{{ $t('btn.runningRes') }}</div>
+            <div class="m-btn msg" @click="copy">{{ $t('btn.copy') }}</div>
           </div>
           <div class="m-box-main">
             <textarea
@@ -54,36 +54,36 @@
   </div>
 </template>
 <script>
-import { findReq } from "@/assets/js/api";
+import { findReq } from '@/assets/js/api'
 export default {
   data() {
     return {
       fullscreenLoading: false,
-      content: "",
-      compressCode: "",
-    };
+      content: '',
+      compressCode: ''
+    }
   },
   methods: {
     async running() {
-      this.fullscreenLoading = true;
-      const req = findReq("commomController", "compressCode");
-      const res = await req({ content: this.content });
-      this.fullscreenLoading = false;
+      this.fullscreenLoading = true
+      const req = findReq('commomController', 'compressCode')
+      const res = await req({ content: this.content })
+      this.fullscreenLoading = false
       if (res.status) {
-        this.compressCode = res.data;
+        this.compressCode = res.data
       }
     },
     clear() {
-      this.content = "";
+      this.content = ''
     },
     copy() {
-      let copyText = this.$refs.code;
-      copyText.select(); // 选择对象
-      document.execCommand("Copy");
-    },
+      let copyText = this.$refs.code
+      copyText.select() // 选择对象
+      document.execCommand('Copy')
+    }
   },
   mounted() {},
-  destroyed() {},
-};
+  destroyed() {}
+}
 </script>
 <style></style>

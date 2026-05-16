@@ -43,113 +43,113 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, defineAsyncComponent, watch, toRefs } from "vue";
-import { useVModels } from "@vueuse/core";
-import type { AnyObject, Field, DialogOption } from "@/types/global";
-import { showTips } from "@/utils/message/showTips.js";
+import { ref, reactive, defineAsyncComponent, watch, toRefs } from 'vue'
+import { useVModels } from '@vueuse/core'
+import type { AnyObject, DialogOption } from '@/types/global'
+import { showTips } from '@/utils/message/showTips.js'
 const BaseFormItem = defineAsyncComponent(
-  () => import("./BaseFormItem/index.vue"),
-);
+  () => import('./BaseFormItem/index.vue')
+)
 
 const emit = defineEmits<{
-  (e: "confirm"): void;
-}>();
+  (e: 'confirm'): void
+}>()
 
-const dialogVisible = ref(false);
+const dialogVisible = ref(false)
 
 const props = defineProps<{
-  options: DialogOption;
-}>();
+  options: DialogOption
+}>()
 
-const { options } = toRefs(props);
+const { options } = toRefs(props)
 
-const { fieldList } = useVModels(props.options, emit);
+const { fieldList } = useVModels(props.options, emit)
 
-const formInfo = reactive<AnyObject>({});
+const formInfo = reactive<AnyObject>({})
 
-const rules = reactive<AnyObject>({});
-fieldList.value.forEach((field) => {
+const rules = reactive<AnyObject>({})
+fieldList.value.forEach(field => {
   if (field.rule) {
-    rules[field.fieldName] = field.rule;
+    rules[field.fieldName] = field.rule
   }
-});
+})
 
-const formRef = ref();
+const formRef = ref()
 
 const cancel = () => {
-  const formEl = formRef.value;
+  const formEl = formRef.value
   if (!formEl) {
-    return;
+    return
   }
-  formEl.resetFields();
-  dialogVisible.value = false;
-  fieldList.value.forEach((element) => {
-    formInfo[element.fieldName] = element.defaultVal || "";
-  });
-};
+  formEl.resetFields()
+  dialogVisible.value = false
+  fieldList.value.forEach(element => {
+    formInfo[element.fieldName] = element.defaultVal || ''
+  })
+}
 
 const confirm = async () => {
-  const formEl = formRef.value;
+  const formEl = formRef.value
   if (!formEl) {
-    return;
+    return
   }
   formEl.validate(async (valid: any) => {
     if (valid) {
       if (options.value.confirmMethod) {
-        const params = Object.assign(formInfo, options.value.confirmParams);
+        const params = Object.assign(formInfo, options.value.confirmParams)
 
-        const res = await options.value.confirmMethod(params);
+        const res = await options.value.confirmMethod(params)
         if (!res.status) {
-          showTips("error", res.msg);
+          showTips('error', res.msg)
         }
       }
 
-      emit("confirm");
-      cancel();
+      emit('confirm')
+      cancel()
     }
-  });
-};
+  })
+}
 
 const init = async () => {
-  fieldList.value.forEach((element) => {
-    formInfo[element.fieldName] = element.defaultVal || "";
-  });
+  fieldList.value.forEach(element => {
+    formInfo[element.fieldName] = element.defaultVal || ''
+  })
 
   if (options.value.initMethod && options.value.initParams?.id) {
-    const params = Object.assign(formInfo, options.value.initParams);
-    const res = await options.value.initMethod(params);
+    const params = Object.assign(formInfo, options.value.initParams)
+    const res = await options.value.initMethod(params)
     if (!res.status) {
-      showTips("error", res.msg);
-      return;
+      showTips('error', res.msg)
+      return
     }
 
-    const data = res.data[0];
+    const data = res.data[0]
     if (!data) {
-      return;
+      return
     }
-    fieldList.value.forEach((element) => {
-      if (element.fieldName.endsWith("time")) {
+    fieldList.value.forEach(element => {
+      if (element.fieldName.endsWith('time')) {
         formInfo[element.fieldName] = new Date(
-          data[element.fieldName],
-        ).toLocaleString();
+          data[element.fieldName]
+        ).toLocaleString()
       } else {
-        formInfo[element.fieldName] = data[element.fieldName] || "";
+        formInfo[element.fieldName] = data[element.fieldName] || ''
       }
-    });
+    })
   }
-};
+}
 
 const opentDialog = () => {
-  dialogVisible.value = true;
-};
+  dialogVisible.value = true
+}
 
-watch(dialogVisible, (v) => {
+watch(dialogVisible, v => {
   if (v) {
-    init();
+    init()
   }
-});
+})
 
 defineExpose({
-  opentDialog,
-});
+  opentDialog
+})
 </script>

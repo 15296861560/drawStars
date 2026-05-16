@@ -45,7 +45,7 @@
           <div class="message-card__info">
             <div class="message-card__info__tag">{{ notify.tag }}</div>
             <div class="message-card__info__time">
-              {{ formatDate(notify.createTime, "yyyy-MM-dd HH:mm") }}
+              {{ formatDate(notify.createTime, 'yyyy-MM-dd HH:mm') }}
             </div>
           </div>
         </li>
@@ -59,73 +59,60 @@
 </template>
 
 <script setup>
-import { onMounted, ref, reactive, watch } from "vue";
-import { showTips } from "@/utils/message/showTips.js";
-import formatDate from "@/utils/commom/formatDate.js";
-import { findReq } from "@/assets/js/api";
-import { WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
-import { userInfoStore } from "@/stores/user-info";
+import { onMounted, ref, reactive } from 'vue'
+import formatDate from '@/utils/commom/formatDate.js'
+import { findReq } from '@/assets/js/api'
 
-const userInfo = userInfoStore();
-
-const props = defineProps({
-  showMessageBox: { type: Boolean, required: false, default: true },
-});
+defineProps({
+  showMessageBox: { type: Boolean, required: false, default: true }
+})
 
 // 运行时
-const emit = defineEmits(["change", "update", "close"]);
+const emit = defineEmits(['change', 'update', 'close'])
 
-const option = ref("all");
+const option = ref('all')
 const options = [
   {
-    value: "all",
-    label: "全部",
+    value: 'all',
+    label: '全部'
   },
   {
-    value: "read",
-    label: "已读",
+    value: 'read',
+    label: '已读'
   },
   {
-    value: "unread",
-    label: "未读",
-  },
-];
+    value: 'unread',
+    label: '未读'
+  }
+]
 
-const msgBox = ref(null);
-const hasMore = ref(false);
+const msgBox = ref(null)
+const hasMore = ref(false)
 
-const queryMore = () => {};
+const queryMore = () => {}
 
 const close = () => {
-  emit("close", false);
-};
+  emit('close', false)
+}
 
-let notifyList = reactive([]);
+let notifyList = reactive([])
 
 const getMyAllNotify = async () => {
-  const queryMyAllNotify = findReq("notifyController", "queryMyAllNotify");
-  const res = await queryMyAllNotify();
+  const queryMyAllNotify = findReq('notifyController', 'queryMyAllNotify')
+  const res = await queryMyAllNotify()
   if (!res.status || !res.data) {
-    return;
+    return
   }
-  notifyList = res.data;
-};
-
-const notifyCallback = (data) => {};
-
-const initNotify = () => {
-  this.$notify.addNotifyCallback("websideMsg", WEBSITE_CHANNEL, (data) => {
-    notifyList.push(data);
-  });
-};
+  notifyList = res.data
+}
 
 const init = async () => {
-  getMyAllNotify();
-};
+  getMyAllNotify()
+}
 
 onMounted(() => {
-  init();
-});
+  init()
+})
 </script>
 <style lang="less" scoped>
 .message-box {

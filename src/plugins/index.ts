@@ -1,42 +1,42 @@
 /**
  * 加载 插件 主入口
  * */
-import type { App } from "vue";
-import router from "@/router";
-import installStore from "@/plugins/pinia";
-import installElementPlus from "@/plugins/element-plus";
-import installDrawStartsUI from "@/plugins/draw-stars-ui";
-import installNotify from "@/plugins/drawstarts-notify";
-import installEcharts from "@/plugins/echarts";
-import installLeaflet from "@/plugins/leaflet";
+import router from '@/router'
+import installStore from '@/plugins/pinia'
+import installElementPlus from '@/plugins/element-plus'
+import installDrawStartsUI from '@/plugins/draw-stars-ui'
+import installNotify from '@/plugins/drawstarts-notify'
+import installEcharts from '@/plugins/echarts'
+import installLeaflet from '@/plugins/leaflet'
 // @ts-ignore
-import i18n from "@/lang/index.js";
-import Particles from "particles.vue3";
+import i18n from '@/lang/index.js'
+import Particles from 'particles.vue3'
 // 自定义指令
-import installDirectives from "@/utils/directives/index.js";
-import { applySkipLoginSession, isSkipLoginMode } from "@/config/skip-login";
+import installDirectives from '@/utils/directives/index.js'
+import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
 
 // 配置埋点
-import "@/plugins/umami/umami.js";
+import '@/plugins/umami/umami.js'
 // 加载高德地图
-import "@/plugins/amap/index.js";
+import '@/plugins/amap/index.js'
 
 // 消除新特性的告警信息
-import "default-passive-events";
+import 'default-passive-events'
+import * as _Vue from 'vue'
 
-export default (app: App<Element>) => {
-  app.use(router);
-  app.use(i18n);
-  app.use(Particles);
+export default (app: _Vue.App<Element>) => {
+  app.use(router)
+  app.use(i18n)
+  app.use(Particles)
 
-  installStore(app);
+  installStore(app)
   if (isSkipLoginMode()) {
-    applySkipLoginSession();
+    applySkipLoginSession()
   }
-  installElementPlus(app);
-  installDrawStartsUI(app);
-  installNotify(app);
-  installEcharts(app);
-  installLeaflet(app);
-  installDirectives(app);
-};
+  installElementPlus(app)
+  installDrawStartsUI(app)
+  installNotify(app)
+  installEcharts(app)
+  installLeaflet(app)
+  installDirectives(app)
+}

@@ -6,17 +6,17 @@
  * @LastEditors: lgy
  * @LastEditTime: 2023-06-24 01:12:06
  */
-import { useI18n } from "vue-i18n";
+import { useI18n } from 'vue-i18n'
 export const i18nLabelMixin = {
   methods: {
     initLocalLang() {
       const { t } = useI18n({
-        inheritLocale: true,
-      });
-      this.$t = t;
-    },
+        inheritLocale: true
+      })
+      this.$t = t
+    }
   },
   created() {
-    this.initLocalLang();
-  },
-};
+    this.initLocalLang()
+  }
+}

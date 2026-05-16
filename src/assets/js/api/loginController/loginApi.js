@@ -7,7 +7,7 @@
  * @LastEditTime: 2023-10-06 22:10:49
  */
 /* 登录相关接口 */
-import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
+import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
 
 export default {
   /**
@@ -19,7 +19,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  loginByPassword: (params) => $axios(params, "/loginApi/loginByPassword"),
+  loginByPassword: params => $axios(params, '/loginApi/loginByPassword'),
 
   /**
    * @description: 通过验证码登录
@@ -30,7 +30,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  loginBySMS: (params) => $axios(params, "/loginApi/loginBySMS"),
+  loginBySMS: params => $axios(params, '/loginApi/loginBySMS'),
 
   /**
    * @description: 手机号注册
@@ -42,7 +42,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  registerByPhone: (params) => $axios(params, "/loginApi/registerByPhone"),
+  registerByPhone: params => $axios(params, '/loginApi/registerByPhone'),
 
   /**
    * @description: 通过token查询用户信息
@@ -53,16 +53,16 @@ export default {
    * @author: lgy
    */
   verifyLogin: async () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const accessToken = searchParams.get("accessToken");
+    const searchParams = new URLSearchParams(window.location.search)
+    const accessToken = searchParams.get('accessToken')
 
     const res = await $axiosGet(
       {
-        accessToken,
+        accessToken
       },
-      "/loginApi/verifyLogin",
-    );
-    return res;
+      '/loginApi/verifyLogin'
+    )
+    return res
   },
 
   /**
@@ -74,5 +74,5 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  getCaptcha: (param) => $axiosGet(param, "/loginApi/getCaptcha"),
-};
+  getCaptcha: param => $axiosGet(param, '/loginApi/getCaptcha')
+}

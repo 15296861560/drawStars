@@ -8,16 +8,16 @@
  */
 const debounce = {
   mounted(el, binding) {
-    let timer;
-    el.addEventListener("click", () => {
+    let timer
+    el.addEventListener('click', () => {
       if (timer) {
-        clearTimeout(timer);
+        clearTimeout(timer)
       }
       timer = setTimeout(() => {
-        binding.value();
-      }, 1000);
-    });
-  },
-};
+        binding.value()
+      }, 1000)
+    })
+  }
+}
 
-export default debounce;
+export default debounce
