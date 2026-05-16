@@ -21,7 +21,7 @@ export default [
   {
     path: "/home/dataHomePage/Mock",
     name: "Mock",
-    component: () => import("@/views/data/Mock/mock.vue"),
+    component: () => import("@/views/data/Mock/Mock.vue"),
     meta: {
       title: ["首页", "数据传输模块", "Mock"],
       keepAlive: true,
@@ -48,7 +48,7 @@ export default [
   {
     path: "/home/dataHomePage/Sqlite",
     name: "Sqlite",
-    component: () => import("@/views/data/Sqlite/sqlite.vue"),
+    component: () => import("@/views/data/Sqlite/Sqlite.vue"),
     meta: {
       title: ["首页", "数据传输模块", "Sqlite"],
     },

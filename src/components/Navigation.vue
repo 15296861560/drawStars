@@ -4,19 +4,23 @@
       <top-home-menu v-if="showTopLayoutMenu" />
       <el-breadcrumb v-else>
         <!-- 路由导航 -->
-        <el-breadcrumb-item v-show="websiteInfo.isPC" v-for="(item, index) in titleData" :key="index">
-          <span @click="toFirstPage" v-if="index === 0" class="firstPage"><el-icon class="mr4">
-              <Menu />
-            </el-icon>{{ item }}</span>
+        <el-breadcrumb-item
+          v-show="websiteInfo.isPC"
+          v-for="(item, index) in titleData"
+          :key="index"
+        >
+          <span @click="toFirstPage" v-if="index === 0" class="firstPage"
+            ><el-icon class="mr4"> <Menu /> </el-icon>{{ item }}</span
+          >
           <span v-if="index !== 0" @click="goPage(index)" class="title">{{
             item
-            }}</span>
+          }}</span>
         </el-breadcrumb-item>
 
         <el-breadcrumb-item v-show="!websiteInfo.isPC">
-          <span @click="toFirstPage" class="firstPage"><el-icon>
-              <Menu />
-            </el-icon>{{ titleData[0] }}</span>
+          <span @click="toFirstPage" class="firstPage"
+            ><el-icon> <Menu /> </el-icon>{{ titleData[0] }}</span
+          >
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -25,15 +29,27 @@
       <!-- 错误日志记录 -->
       <errorLog></errorLog>
       <!-- 全屏 -->
-      <el-icon class="full-screen u-icon" :title="$t('navigation.fullScreen')" @click="fullScreen">
+      <el-icon
+        class="full-screen u-icon"
+        :title="$t('navigation.fullScreen')"
+        @click="fullScreen"
+      >
         <FullScreen />
       </el-icon>
       <!-- 消息 -->
-      <el-icon class="message u-icon" :title="$t('navigation.message')" @click="toSeeMessage">
+      <el-icon
+        class="message u-icon"
+        :title="$t('navigation.message')"
+        @click="toSeeMessage"
+      >
         <Message />
       </el-icon>
       <!-- 选择语言 -->
-      <el-dropdown class="selectLang" :title="$t('navigation.selectLang')" @command="handleSetLanguage">
+      <el-dropdown
+        class="selectLang"
+        :title="$t('navigation.selectLang')"
+        @command="handleSetLanguage"
+      >
         <div class="u-icon drawstars-icon-lang language"></div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -74,15 +90,16 @@
     </div>
   </div>
 
-  <messageSide id="msgSide" :showMessageBox="showMessageBox" @close="closeMessageBox"></messageSide>
+  <messageSide
+    id="msgSide"
+    :showMessageBox="showMessageBox"
+    @close="closeMessageBox"
+  ></messageSide>
 </template>
 
 <script>
 import storage from "@/utils/commom/storage";
-import {
-  applySkipLoginSession,
-  isSkipLoginMode,
-} from "@/config/skip-login";
+import { applySkipLoginSession, isSkipLoginMode } from "@/config/skip-login";
 import { userInfoStore } from "@/stores/user-info";
 import { settingInfoStore } from "@/stores/setting-info";
 import messageSide from "@/views/message/messageSide.vue";
@@ -129,7 +146,7 @@ export default {
     },
   },
   methods: {
-    initMessage() { },
+    initMessage() {},
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
       console.log(key);
@@ -191,7 +208,7 @@ export default {
         .push({
           path: "/home/homepage",
         })
-        .catch(() => { });
+        .catch(() => {});
     },
     handleSetLanguage(lang) {
       this.$i18n.locale = lang;
@@ -234,7 +251,7 @@ export default {
     },
   },
   watch: {},
-  mounted() { },
+  mounted() {},
 };
 </script>
 

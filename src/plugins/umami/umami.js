@@ -1,3 +1,4 @@
+/* global umami */
 // 埋点跟踪代码配置
 import { umamiConfig } from "./umami-config";
 

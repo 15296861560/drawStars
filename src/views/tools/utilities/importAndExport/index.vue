@@ -99,7 +99,7 @@ export default {
     },
   },
   methods: {
-    importFile(e) {
+    importFile(_e) {
       let file = this.$refs.file.files[0];
 
       this.getFile(file).then((res) => {
@@ -128,7 +128,7 @@ export default {
 
         let outdata;
 
-        reader.onload = function (e) {
+        reader.onload = function (_e) {
           let bytes = new Uint8Array(reader.result);
 
           let length = bytes.byteLength;
@@ -142,7 +142,7 @@ export default {
           });
 
           // outdata就是excel导入的数据
-          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // excel 数据再处理
+          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // excel 数据再处理
 
           resolve(outdata);
         };
@@ -240,7 +240,7 @@ export default {
       // 调用打印功能
       // window.print();
     },
-    handleCurrentChange(currentPage) {},
+    handleCurrentChange(_currentPage) {},
     getTemplate() {
       window.location.href = "/static/导入模板.xlsx";
     },

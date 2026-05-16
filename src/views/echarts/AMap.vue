@@ -57,7 +57,7 @@ import {
 import { EditPen } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 
-const VITE_MAP_CENTER = [114.5208633462726, 30.788403946730268]; // 地图统一中心位置
+const VITE_MAP_CENTER = [114.520863, 30.788404]; // 地图统一中心位置
 
 const emit = defineEmits<{
   (e: "handle-items", value: AnyObject): void;

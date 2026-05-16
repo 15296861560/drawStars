@@ -122,44 +122,52 @@ const $axios = function (params, methodURL) {
 let apiObj = reqCache();
 
 const $axiosGet = function (params = {}, methodURL = "", options = {}) {
-  let promise = new Promise(async function (resolve, reject) {
-    let reqURL = apiInfo.getURL.value;
-    methodURL && (reqURL += methodURL);
-    let realURL = reqURL + "?";
+  return new Promise((resolve, reject) => {
+    const run = async () => {
+      let reqURL = apiInfo.getURL.value;
+      methodURL && (reqURL += methodURL);
+      let realURL = reqURL + "?";
 
-    Object.keys(params).forEach((key) => {
-      realURL = `${realURL}${key}=${params[key]}&`;
-    });
-    realURL = realURL.slice(0, -1);
+      Object.keys(params).forEach((key) => {
+        realURL = `${realURL}${key}=${params[key]}&`;
+      });
+      realURL = realURL.slice(0, -1);
 
-    const cacheResp = await apiObj.beforeFetch(realURL, options);
-    if (cacheResp) {
-      resolve(cacheResp.data);
-      return;
-    }
+      try {
+        const cacheResp = await apiObj.beforeFetch(realURL, options);
+        if (cacheResp) {
+          resolve(cacheResp.data);
+          return;
+        }
 
-    requests
-      .get(
-        reqURL,
-        {
-          params,
-          ...options.extOption,
-        },
-        {
-          timeout: params.timeout || 300000,
-        },
-      )
-      .then((res) => {
-        res.status === 200 && apiObj.afterFetch(res, realURL, options);
-        resolve(res.data);
-      })
-      .catch((err) => {
+        requests
+          .get(
+            reqURL,
+            {
+              params,
+              ...options.extOption,
+            },
+            {
+              timeout: params.timeout || 300000,
+            },
+          )
+          .then((res) => {
+            res.status === 200 && apiObj.afterFetch(res, realURL, options);
+            resolve(res.data);
+          })
+          .catch((err) => {
+            let errStr = JSON.stringify(err);
+            showError(errStr);
+            reject(err);
+          });
+      } catch (err) {
         let errStr = JSON.stringify(err);
         showError(errStr);
         reject(err);
-      });
+      }
+    };
+    void run();
   });
-  return promise;
 };
 
 export { $axios, $axiosGet };

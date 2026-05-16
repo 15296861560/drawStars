@@ -26,9 +26,6 @@ import * as zh from "video.js/dist/lang/zh-CN.json";
 const videoPlayer = ref(null);
 const player = ref(null);
 const option = reactive({
-  controls: true, // 设置是否显示控制条，默认为true
-  autoplay: false, // 设置是否自动播放，默认为false
-  preload: "auto", // 设置预加载行为，可选值为auto、metadata或none
   poster: "//vjs.zencdn.net/v/oceans.png", // 设置视频封面图的URL
   // 指定要播放的视频源，可以是一个数组，每个元素包含src和type属性
   sources: [

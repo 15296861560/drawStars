@@ -7,7 +7,7 @@ declare global {
   const AMap: any;
 }
 
-const VITE_MAP_CENTER = [114.5208633462726, 30.788403946730268]; // 地图统一中心位置
+const VITE_MAP_CENTER = [114.520863, 30.788404]; // 地图统一中心位置
 
 /**
  * 地图初始化参数
@@ -166,8 +166,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/map/icon_point_jzw.png", import.meta.url)
-      .href,
+    image: new URL("@/assets/img/map/icon_point_jzw.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
@@ -177,8 +176,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(28, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/map/icon_point_wgy.png", import.meta.url)
-      .href,
+    image: new URL("@/assets/img/map/icon_point_wgy.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(28, 33),
     // 图标取图偏移量
@@ -232,8 +230,7 @@ export const symbolData = {
     // 图标尺寸
     size: new AMap.Size(33, 33),
     // 图标的取图地址
-    image: new URL("@/assets/img/map/icon_dot_green.png", import.meta.url)
-      .href,
+    image: new URL("@/assets/img/map/icon_dot_green.png", import.meta.url).href,
     // 图标所用图片大小
     imageSize: new AMap.Size(33, 33),
     // 图标取图偏移量

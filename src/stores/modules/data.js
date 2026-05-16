@@ -16,7 +16,7 @@ export default {
     getDataList(state) {
       return state.dataList;
     },
-    getRouteList() {
+    getRouteList(state) {
       return state.routeList;
     },
   },

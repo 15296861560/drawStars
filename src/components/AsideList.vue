@@ -36,7 +36,7 @@
             </template>
             <el-menu-item
               :index="item.path"
-              v-for="(item, index) in pathList"
+              v-for="item in pathList"
               :key="item.path"
               >{{ $t(item.name) }}</el-menu-item
             >
@@ -89,14 +89,13 @@
 </template>
 
 <script>
-import { RouterList } from "@/router/index.ts";
 import { getHomePathList } from "@/utils/home-path-list";
 import { layoutSettingsStore } from "@/stores/layout-settings";
 import { mockUndefinedRouteError } from "@/utils/mock-undefined-error";
 import Test1 from "@/views/pages/test1.vue";
 import Test2 from "@/views/pages/test2.vue";
 export default {
-  name: "Aside",
+  name: "AsideList",
   inject: ["websiteInfo"],
   data() {
     return {
@@ -184,10 +183,10 @@ export default {
           break;
       }
     },
-    handleOpen(key, keyPath) {
+    handleOpen(_key, _keyPath) {
       // 展开
     },
-    handleClose(key, keyPath) {
+    handleClose(_key, _keyPath) {
       // 收起
     },
 

@@ -58,7 +58,7 @@ export default {
       let linesEndCoords = {};
       let geoCoordMap = this.geoCoordMap;
       let keys = Object.keys(geoCoordMap);
-      keys.forEach((item, index) => {
+      keys.forEach((item) => {
         linesEndCoords[item] = [130, geoCoordMap[item][1]];
       });
 

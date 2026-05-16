@@ -52,7 +52,7 @@ export default [
   {
     path: "/home/multimediaHomePage/pictureEditing",
     name: "图片编辑",
-    component: () => import("@/views/multimedia/pictureEditing/index.vue"),
+    component: () => import("@/views/multimedia/pictureEditing/Index.vue"),
     meta: {
       title: ["首页", "多媒体模块", "图片编辑"],
       keepAlive: true,

@@ -189,14 +189,16 @@ export default {
   methods: {
     regex(key) {
       switch (key) {
-        case 1:
-          let regex1 = /^[a-zA-Z]+$/; // 直接量正则表达式
+        case 1: {
+          const regex1 = /^[a-zA-Z]+$/; // 直接量正则表达式
           this.regexResult1 = regex1.test(this.regexInput1);
           break;
-        case 2:
-          var regex2 = new RegExp("^[a-zA-Z]+$"); // 构造函数
+        }
+        case 2: {
+          const regex2 = new RegExp("^[a-zA-Z]+$"); // 构造函数
           this.regexResult2 = regex2.test(this.regexInput2);
           break;
+        }
         case 3:
           this.regexResult3 = this.regexInput3.search("[0-9]");
           break;

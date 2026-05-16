@@ -12,7 +12,15 @@ const storage = {
       localStorage.setItem(key, JSON.stringify(value));
     },
     get(key: string, defaultValue: string = "") {
-      return JSON.parse(localStorage.getItem(key)) || defaultValue;
+      const raw = localStorage.getItem(key);
+      if (raw === null) {
+        return defaultValue;
+      }
+      try {
+        return JSON.parse(raw) || defaultValue;
+      } catch {
+        return defaultValue;
+      }
     },
     remove(key: string) {
       localStorage.removeItem(key);
@@ -26,7 +34,15 @@ const storage = {
       sessionStorage.setItem(key, JSON.stringify(value));
     },
     get(key: string, defaultValue: string = "") {
-      return JSON.parse(sessionStorage.getItem(key)) || defaultValue;
+      const raw = sessionStorage.getItem(key);
+      if (raw === null) {
+        return defaultValue;
+      }
+      try {
+        return JSON.parse(raw) || defaultValue;
+      } catch {
+        return defaultValue;
+      }
     },
     remove(key: string) {
       sessionStorage.removeItem(key);

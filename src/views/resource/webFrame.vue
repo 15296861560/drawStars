@@ -229,10 +229,11 @@ function open(openObj: WebObj) {
     case OPEN_WAY.curWindow:
       window.location.href = openObj.address;
       break;
-    case OPEN_WAY.module:
+    case OPEN_WAY.module: {
       const { address, name, type } = openObj;
       router.push({ name: "模块", query: { address, name, type } });
       break;
+    }
     default:
       break;
   }

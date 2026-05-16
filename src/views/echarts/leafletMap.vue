@@ -61,15 +61,16 @@ import {
   refreshLayer,
   createPolygonEditor,
   searchPosition,
-  TK_KEY
-} from "@/utils/hooks/useLeafletMap.ts";
+  TK_KEY,
+} from "@/utils/hooks/useLeafletMap";
 import { EditPen } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import L from "leaflet";
 
 // 矢量与影像底图图层定义
 const vectorTileLayer = L.tileLayer(
-  "http://t1.tianditu.gov.cn/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" + TK_KEY,
+  "http://t1.tianditu.gov.cn/vec_c/wmts?layer=vec&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" +
+    TK_KEY,
   {
     maxZoom: 17,
     minZoom: 2,
@@ -79,7 +80,8 @@ const vectorTileLayer = L.tileLayer(
 );
 
 const satelliteTileLayer = L.tileLayer(
-  "http://t1.tianditu.gov.cn/img_c/wmts?layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" + TK_KEY,
+  "http://t1.tianditu.gov.cn/img_c/wmts?layer=img&style=default&tilematrixset=c&Service=WMTS&Request=GetTile&Version=1.0.0&Format=tiles&TileMatrix={z}&TileCol={x}&TileRow={y}&tk=" +
+    TK_KEY,
   {
     maxZoom: 17,
     minZoom: 2,

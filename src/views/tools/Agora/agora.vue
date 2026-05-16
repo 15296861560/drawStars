@@ -48,7 +48,7 @@
       <el-button type="success" @click="showSetting = true">
         <span> 音视频设备测试 </span>
       </el-button>
-      <el-button type="success" @click="">
+      <el-button type="success" @click="noop">
         <span> 调整通话音量 </span>
       </el-button>
     </div>
@@ -146,7 +146,6 @@ export default {
       return this.appId;
     },
     async getRTCToken(account, channelName, role) {
-      let rtcToken = "";
       let res = await $axios(
         { user: account, channelName, role },
         "/agoraApi/getRTCToken",
@@ -238,7 +237,7 @@ export default {
         return;
       }
       if (!this.rtc.screenClient) {
-        const { appId, channel, uid } = this.options;
+        const { appId, channel } = this.options;
 
         const account = this.options.uid + "_screen";
         this.options.token = await this.getRTCToken(
@@ -270,6 +269,7 @@ export default {
       this.rtc.localAudioTrack &&
         this.rtc.localAudioTrack.setDevice(this.deviceObj.microphoneId);
     },
+    noop() {},
   },
 };
 </script>

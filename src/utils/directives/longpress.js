@@ -7,7 +7,7 @@
  * @LastEditTime: 2022-12-20 23:31:46
  */
 const longpress = {
-  mounted(el, binding, vNode) {
+  mounted(el, binding, _vNode) {
     if (typeof binding.value !== "function") {
       throw "callback must be a function";
     }
@@ -25,7 +25,7 @@ const longpress = {
       }
     };
     // 取消计时器
-    let cancel = (e) => {
+    let cancel = (_e) => {
       if (pressTimer !== null) {
         clearTimeout(pressTimer);
         pressTimer = null;

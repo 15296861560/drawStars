@@ -21,7 +21,7 @@ function transaction(sql) {
       function (tx) {
         tx.executeSql(sql);
       },
-      function (tx, err) {
+      function (_tx, err) {
         if (!err) {
           err = "事务执行失败";
         }
@@ -30,7 +30,7 @@ function transaction(sql) {
         reject(err);
         // console.log("transaction fail:", err);
       },
-      function (tx, msg) {
+      function (_tx, _msg) {
         resolve();
         // if (!msg) msg = "事务执行成功";
         // console.log("transaction success:", msg);
@@ -46,20 +46,20 @@ function executeSql(sql, valArray, successful) {
         tx.executeSql(
           sql,
           valArray,
-          function (tx, msg) {
+          function (_tx, _msg) {
             // console.log("executeSql success:", msg);
           },
-          function (tx, err) {
+          function (_tx, err) {
             showTips("error", err.source + "====" + err.message);
             // console.log("executeSql fail:", err.source + "====" + err.message);
           },
         );
       },
-      function (tx, err) {
+      function (_tx, err) {
         showTips("error", err);
         // console.log("transaction fail:", err);
       },
-      function (tx, msg) {
+      function (_tx, _msg) {
         // if (!msg) msg = "事务执行成功";
         // console.log("transaction success:", msg);
       },
@@ -67,14 +67,14 @@ function executeSql(sql, valArray, successful) {
   } else if (arguments.length == 3) {
     DB.transaction(
       function (tx) {
-        tx.executeSql(sql, valArray, successful, function (tx, err) {
+        tx.executeSql(sql, valArray, successful, function (_tx, err) {
           showTips("error", err.source + "====" + err.message);
         });
       },
-      function (tx, err) {
+      function (_tx, err) {
         showTips("error", err);
       },
-      function (tx, msg) {
+      function (_tx, _msg) {
         // if (!msg) msg = "事务执行成功";
         // console.log("transaction success:", msg);
       },
@@ -86,7 +86,7 @@ function executeSql(sql, valArray, successful) {
 }
 
 function dbTransaction(fnHandle, fnReject, fnResolve) {
-  return new Promise((resolve, reject) => {
+  return new Promise((_resolve, _reject) => {
     DB.transaction(fnHandle, fnReject, fnResolve);
   });
 }

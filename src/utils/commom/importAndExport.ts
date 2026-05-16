@@ -32,7 +32,7 @@ const importFile = (f) => {
       });
 
       // outdata就是excel导入的数据
-      outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // excel 数据再处理
+      outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // excel 数据再处理
 
       resolve(outdata);
     };

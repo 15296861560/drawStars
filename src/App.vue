@@ -55,9 +55,7 @@ router.beforeEach((to, from) => {
   if (isSkipLoginMode()) {
     NoProgress.done();
     const isLoginEntry =
-      to.path === "/login" ||
-      to.path === "/" ||
-      to.name === "登录";
+      to.path === "/login" || to.path === "/" || to.name === "登录";
     if (isLoginEntry) {
       return { path: "/home/homepage", replace: true };
     }

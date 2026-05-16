@@ -16,7 +16,9 @@
       >
         <el-icon v-if="layout.tagsIcon" class="tag-ico"><Menu /></el-icon>
         <span>{{ tag.title }}</span>
-        <el-icon class="tag-close" @click.stop="close(tag.fullPath)"><Close /></el-icon>
+        <el-icon class="tag-close" @click.stop="close(tag.fullPath)"
+          ><Close
+        /></el-icon>
       </a>
     </router-link>
   </div>

@@ -41,7 +41,8 @@
       </el-menu-item-group>
       <el-menu-item-group :title="$t('layoutSettings.testPages')">
         <el-menu-item index="outSide"
-          ><el-icon><Link /></el-icon>{{ $t("aside.externalLinks") }}</el-menu-item
+          ><el-icon><Link /></el-icon
+          >{{ $t("aside.externalLinks") }}</el-menu-item
         >
       </el-menu-item-group>
       <el-menu-item-group title="模拟错误">
@@ -54,13 +55,15 @@
         <span>{{ $t("aside.power") }}</span>
       </template>
       <el-menu-item index="levelDown"
-        ><el-icon><CaretBottom /></el-icon>{{ $t("aside.levelDown") }}</el-menu-item
+        ><el-icon><CaretBottom /></el-icon
+        >{{ $t("aside.levelDown") }}</el-menu-item
       >
       <el-menu-item index="levelUp"
         ><el-icon><CaretTop /></el-icon>{{ $t("aside.levelUp") }}</el-menu-item
       >
       <el-menu-item disabled
-        ><el-icon><DCaret /></el-icon>{{ $t("aside.curLevel") + userData.level }}</el-menu-item
+        ><el-icon><DCaret /></el-icon
+        >{{ $t("aside.curLevel") + userData.level }}</el-menu-item
       >
     </el-sub-menu>
   </el-menu>

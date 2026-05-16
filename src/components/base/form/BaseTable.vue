@@ -147,7 +147,7 @@ const {
   rowKey,
   tableName,
   tableOperate,
-} = toRefs(<TableOption>props.options);
+} = toRefs(props.options as TableOption);
 
 //是否展示按钮
 const handleShowButton = (operate: AnyObject, row: AnyObject): boolean =>

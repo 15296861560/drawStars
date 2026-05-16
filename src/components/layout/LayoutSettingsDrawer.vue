@@ -43,7 +43,10 @@
       <h3 class="drawer-title">{{ $t("layoutSettings.themeStyle") }}</h3>
     </div>
     <div class="setting-drawer-block-checbox">
-      <div class="setting-drawer-block-checbox-item" @click="layout.sideTheme = 'theme-dark'">
+      <div
+        class="setting-drawer-block-checbox-item"
+        @click="layout.sideTheme = 'theme-dark'"
+      >
         <span class="thumb thumb-dark" aria-hidden="true" />
         <div
           v-if="layout.sideTheme === 'theme-dark'"
@@ -52,7 +55,10 @@
           <el-icon :color="layout.theme"><Select /></el-icon>
         </div>
       </div>
-      <div class="setting-drawer-block-checbox-item" @click="layout.sideTheme = 'theme-light'">
+      <div
+        class="setting-drawer-block-checbox-item"
+        @click="layout.sideTheme = 'theme-light'"
+      >
         <span class="thumb thumb-light" aria-hidden="true" />
         <div
           v-if="layout.sideTheme === 'theme-light'"
@@ -84,7 +90,11 @@
     <div class="drawer-item">
       <span>{{ $t("layoutSettings.tagsIcon") }}</span>
       <span class="comp-style">
-        <el-switch v-model="layout.tagsIcon" :disabled="!layout.tagsView" class="drawer-switch" />
+        <el-switch
+          v-model="layout.tagsIcon"
+          :disabled="!layout.tagsView"
+          class="drawer-switch"
+        />
       </span>
     </div>
     <div class="drawer-item">
@@ -114,7 +124,8 @@
 
     <el-divider />
     <el-button type="primary" plain @click="saveSetting">
-      <el-icon class="mr4"><DocumentAdd /></el-icon>{{ $t("layoutSettings.save") }}
+      <el-icon class="mr4"><DocumentAdd /></el-icon
+      >{{ $t("layoutSettings.save") }}
     </el-button>
     <el-button plain @click="resetSetting">
       <el-icon class="mr4"><Refresh /></el-icon>{{ $t("layoutSettings.reset") }}

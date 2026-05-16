@@ -37,16 +37,24 @@ export const layoutSettingsStore = defineStore("layoutSettings", () => {
     typeof stored?.theme === "string" ? stored.theme : "#409EFF",
   );
   const sideTheme = ref<SideTheme>(
-    stored?.sideTheme === "theme-light" ? "theme-light" : layoutDefaults.sideTheme,
+    stored?.sideTheme === "theme-light"
+      ? "theme-light"
+      : layoutDefaults.sideTheme,
   );
   const navType = ref(
-    typeof stored?.navType === "number" ? stored.navType : layoutDefaults.navType,
+    typeof stored?.navType === "number"
+      ? stored.navType
+      : layoutDefaults.navType,
   );
   const tagsView = ref(
-    typeof stored?.tagsView === "boolean" ? stored.tagsView : layoutDefaults.tagsView,
+    typeof stored?.tagsView === "boolean"
+      ? stored.tagsView
+      : layoutDefaults.tagsView,
   );
   const tagsIcon = ref(
-    typeof stored?.tagsIcon === "boolean" ? stored.tagsIcon : layoutDefaults.tagsIcon,
+    typeof stored?.tagsIcon === "boolean"
+      ? stored.tagsIcon
+      : layoutDefaults.tagsIcon,
   );
   const fixedHeader = ref(
     typeof stored?.fixedHeader === "boolean"
@@ -92,7 +100,9 @@ export const layoutSettingsStore = defineStore("layoutSettings", () => {
       return;
     }
     const title = routeTitle(route);
-    const exists = visitedViews.value.some((v) => v.fullPath === route.fullPath);
+    const exists = visitedViews.value.some(
+      (v) => v.fullPath === route.fullPath,
+    );
     if (exists) {
       return;
     }

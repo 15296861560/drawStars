@@ -1,4 +1,4 @@
-import { RouterList } from "@/router/index.ts";
+import { RouterList } from "@/router/index";
 
 export type HomePathItem = { path: string; name: string };
 

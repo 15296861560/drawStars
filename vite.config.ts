@@ -47,8 +47,11 @@ export default defineConfig({
       // if you want to use Vue I18n Legacy API, you need to set `compositionOnly: false`
       // compositionOnly: false,
 
-      // you need to set i18n resource including paths !
-      include: path.resolve(__dirname, "./src/lang/languange/**"),
+      // Locale message modules (avoid scanning index.js / non-locale files)
+      include: [
+        path.resolve(__dirname, "./src/lang/en.js"),
+        path.resolve(__dirname, "./src/lang/zh.js"),
+      ],
     }),
   ],
   resolve: {

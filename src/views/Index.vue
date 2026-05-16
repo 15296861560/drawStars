@@ -1,5 +1,8 @@
 <template>
-  <div class="index-root" :class="{ 'layout-fixed-header': layout.fixedHeader }">
+  <div
+    class="index-root"
+    :class="{ 'layout-fixed-header': layout.fixedHeader }"
+  >
     <el-container>
       <el-aside class="g-aside" :style="width" v-if="showAside"
         ><asideList ref="asideList"></asideList

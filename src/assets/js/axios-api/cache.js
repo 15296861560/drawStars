@@ -46,9 +46,11 @@ function reqCache() {
       switch (opt.cacheFrom) {
         case cacheFrom.local: {
           await this.setLocalCache(resp, url, opt);
+          break;
         }
         case cacheFrom.session: {
           await this.setSessionCache(resp, url, opt);
+          break;
         }
         case cacheFrom.page: {
           await this.setPageCache(resp, url, opt);

@@ -99,7 +99,7 @@ export default [
       {
         path: "/home/toolHomePage/pay/alipay",
         name: "支付宝 ",
-        component: () => import("@/views/tools/pay/alipay.vue"),
+        component: () => import("@/views/tools/pay/Alipay.vue"),
         meta: {
           title: ["首页", "工具模块", "支付", "支付宝 "],
         },

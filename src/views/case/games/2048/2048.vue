@@ -132,6 +132,7 @@ export default {
       // 随机一个位置
       let randx = this.randomLocation();
       let randy = this.randomLocation();
+      // eslint-disable-next-line no-constant-condition -- 直至找到空位
       while (true) {
         if (board[randx][randy] === 0) {
           break;
