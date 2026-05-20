@@ -12,7 +12,7 @@ import installLeaflet from '@/plugins/leaflet'
 import i18n from '@/lang/index.js'
 import Particles from 'particles.vue3'
 // 自定义指令
-import installDirectives from '@/utils/directives/index.js'
+import installDirectives from '@/utils/directives'
 import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
 
 // 配置埋点

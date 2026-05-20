@@ -36,17 +36,63 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['src/utils/directives/emoji.js'],
+      files: ['src/utils/directives/emoji.ts'],
       rules: {
         'no-misleading-character-class': 'off',
         'no-useless-escape': 'off'
       }
     },
     {
-      files: ['*.ts', '*.tsx', '*.vue'],
+      files: ['*.ts', '*.tsx'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+      },
+      plugins: ['@typescript-eslint'],
       rules: {
-        // TypeScript 类型与 Vue 编译器宏在 Babel 解析下会误报
-        'no-undef': 'off'
+        // 关闭 Babel 规则，改用 TS 规则（能识别 import type / 类型注解中的引用）
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_'
+          }
+        ]
+      }
+    },
+    {
+      files: ['*.vue'],
+      parser: 'vue-eslint-parser',
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        parser: {
+          ts: '@typescript-eslint/parser',
+          js: '@babel/eslint-parser'
+        },
+        requireConfigFile: false,
+        babelOptions: {
+          parserOpts: {
+            plugins: ['jsx', 'typescript']
+          }
+        }
+      },
+      plugins: ['@typescript-eslint'],
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_'
+          }
+        ]
       }
     },
     {

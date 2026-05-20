@@ -116,7 +116,7 @@ drawStars-Vue3/
 
 ## 自定义指令
 
-在 `src/utils/directives/` 中注册，包含：`v-copy`、`v-longpress`、`v-debounce`、`v-emoji`、`v-lazyload`、`v-waterMarker`、`v-draggable`。实验室模块提供指令使用示例。
+在 `src/utils/directives/`（TypeScript）中注册，包含：`v-copy`、`v-longpress`、`v-debounce`、`v-throttle`、`v-emoji`、`v-lazyload`、`v-waterMarker`、`v-draggable`、`v-click-outside`、`v-trim`、`v-focus`、`v-permission`、`v-loading`。实验室「指令」页（`src/views/lab/directive.vue`）提供对应示例。
 
 ## 提交信息规范
 
