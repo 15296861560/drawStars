@@ -238,6 +238,36 @@ export default {
     phone: 'Phone Number',
     level: 'Level'
   },
+  aiAssistant: {
+    title: 'AI Voice Assistant',
+    fabLabel: 'AI',
+    toggleSidebar: 'Toggle conversation list',
+    toggleGroup: 'Toggle conversation groups',
+    resetPosition: 'Reset panel position',
+    newChat: 'New chat',
+    inputPlaceholder: 'Type a message, or try: weather, translate, chart, table…',
+    send: 'Send',
+    voiceInput: 'Voice input',
+    uploadFile: 'Upload file',
+    listening: 'Listening',
+    voiceFailed: 'Speech recognition failed, using mock text',
+    thinking: 'Thinking…',
+    thinkingProcess: 'Reasoning',
+    tryHint: 'Try',
+    emptyTitle: 'Start a conversation',
+    emptyDesc: 'Type, speak, or upload a file — replies may include tables and charts',
+    fabOpen: 'Open AI assistant',
+    fabClose: 'Close AI assistant',
+    close: 'Close',
+    resize: 'Drag to resize window',
+    dragHint: 'Drag to move · Double-click title to reset',
+    inputHint: 'Enter to send · Shift+Enter for newline · Esc to close',
+    group: {
+      today: 'Today',
+      yesterday: 'Yesterday',
+      earlier: 'Earlier'
+    }
+  },
   aside: {
     homePage: 'Home Page',
     module: 'Module',

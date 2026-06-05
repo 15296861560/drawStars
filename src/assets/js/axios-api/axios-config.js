@@ -17,17 +17,25 @@ import router from '@/router'
 
 import reqCache from './cache.js'
 
-const apiInfo = apiInfoStore()
-const userInfo = userInfoStore()
-
 const DEFAULT_TIMEOUT = 1000 * 60 * 2
 
 let api_base_url = ''
-
 if (process.env.NODE_ENV === 'production') {
   api_base_url = 'http://127.0.0.1:8010/'
-  apiInfo.changeApi('')
 }
+
+let hasSyncedProdApiUrl = false
+
+const getApiInfo = () => {
+  const apiInfo = apiInfoStore()
+  if (!hasSyncedProdApiUrl && process.env.NODE_ENV === 'production') {
+    apiInfo.changeApi('')
+    hasSyncedProdApiUrl = true
+  }
+  return apiInfo
+}
+
+const getUserInfo = () => userInfoStore()
 
 const requests = axios.create({
   baseURL: api_base_url
@@ -36,7 +44,7 @@ const requests = axios.create({
 requests.defaults.timeout = DEFAULT_TIMEOUT
 requests.interceptors.request.use(config => {
   // console.log('请求拦截器', config)
-  let token = userInfo.getToken.value
+  let token = getUserInfo().getToken.value
   if (token) {
     // 将token放到请求头发送给服务器,将tokenkey放在请求头中
     config.headers.accessToken = token
@@ -74,6 +82,7 @@ let showError = function (errorMessage) {
 
 const $axios = function (params, methodURL) {
   let promise = new Promise(function (resolve, reject) {
+    const apiInfo = getApiInfo()
     let url = apiInfo.getURL.value
     if (methodURL) {
       url += methodURL
@@ -124,6 +133,7 @@ let apiObj = reqCache()
 const $axiosGet = function (params = {}, methodURL = '', options = {}) {
   return new Promise((resolve, reject) => {
     const run = async () => {
+      const apiInfo = getApiInfo()
       let reqURL = apiInfo.getURL.value
       methodURL && (reqURL += methodURL)
       let realURL = reqURL + '?'

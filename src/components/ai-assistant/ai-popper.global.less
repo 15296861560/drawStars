@@ -1,0 +1,27 @@
+// 全局浮层：高于助手面板，避免 tooltip / message 被遮挡
+@import './ai-variables.less';
+
+.ai-assistant-popper.el-popper {
+  z-index: @ai-z-popper !important;
+}
+
+.ai-assistant-popper.el-popper.is-dark {
+  z-index: @ai-z-popper !important;
+}
+
+.el-message.ai-assistant-message {
+  z-index: @ai-z-message !important;
+}
+
+.ai-assistant-panel {
+  .el-loading-mask {
+    z-index: 5;
+    border-radius: 0 0 @ai-radius-lg @ai-radius-lg;
+  }
+}
+
+.ai-tooltip-trigger {
+  display: inline-flex;
+  vertical-align: middle;
+  line-height: 0;
+}

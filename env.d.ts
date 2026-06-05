@@ -8,4 +8,6 @@ declare module '*.svg' {
 interface ImportMetaEnv {
   /** 为 true 时跳过登录校验，且不依赖后端会话 */
   readonly VITE_SKIP_LOGIN?: string
+  /** 为 false 时 AI 助手走真实 API（未实现前仍回退 Mock） */
+  readonly VITE_AI_ASSISTANT_MOCK?: string
 }

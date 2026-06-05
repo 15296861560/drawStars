@@ -26,6 +26,7 @@ app.config.errorHandler = (err, vm, info) => {
 }
 
 import { RouterView, useRouter } from 'vue-router'
+import AiAssistantHost from '@/components/ai-assistant/AiAssistantHost.vue'
 
 import { userInfoStore } from '@/stores/user-info'
 import { isSkipLoginMode } from '@/config/skip-login'
@@ -78,6 +79,7 @@ router.afterEach(() => {
 </script>
 
 <template>
+  <AiAssistantHost />
   <router-view v-slot="{ Component }">
     <transition name="all" mode="out-in">
       <keep-alive>

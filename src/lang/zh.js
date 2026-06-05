@@ -236,6 +236,36 @@ export default {
     phone: '手机号码',
     level: '等级'
   },
+  aiAssistant: {
+    title: 'AI 语音助手',
+    fabLabel: 'AI',
+    toggleSidebar: '展开/收起对话列表',
+    toggleGroup: '展开/收起对话分组',
+    resetPosition: '重置窗口位置',
+    newChat: '新建对话',
+    inputPlaceholder: '输入消息，或试试：天气、翻译、图表、表格…',
+    send: '发送',
+    voiceInput: '语音输入',
+    uploadFile: '上传文件',
+    listening: '正在聆听',
+    voiceFailed: '语音识别失败，已使用 Mock 文本',
+    thinking: '正在思考…',
+    thinkingProcess: '思考过程',
+    tryHint: '试试',
+    emptyTitle: '开始新对话',
+    emptyDesc: '输入文字、语音或上传文件，我会用表格、图表等形式回复你',
+    fabOpen: '打开 AI 助手',
+    fabClose: '关闭 AI 助手',
+    close: '关闭',
+    resize: '拖拽调整窗口大小',
+    dragHint: '拖拽移动 · 双击标题栏重置',
+    inputHint: 'Enter 发送 · Shift+Enter 换行 · Esc 关闭',
+    group: {
+      today: '今天',
+      yesterday: '昨天',
+      earlier: '更早'
+    }
+  },
   aside: {
     homePage: '首页',
     module: '模块',
