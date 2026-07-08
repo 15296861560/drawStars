@@ -2,7 +2,19 @@
   <div class="flex flex-col h-full simple-map-components">
     <el-row v-show="search" :gutter="20" class="flex-center">
       <el-col :span="12" class="mb-4">
-        <el-input v-model="state.searchAddress" placeholder="请输入搜索地址" />
+        <el-input
+          id="searchAddress"
+          @focus="state.focusSearchAddress = true"
+          @blur="searchAddressBlur"
+          v-model="state.searchAddress"
+          placeholder="请输入搜索地址"
+        />
+        <div
+          v-show="state.focusSearchAddress"
+          id="searchResult"
+          @mouseover="state.canCloseSearchPanel = false"
+          @mouseout="state.canCloseSearchPanel = true"
+        ></div>
       </el-col>
       <el-col :span="12">
         <el-button type="primary" @click="handleGeocoderLocation"
@@ -81,6 +93,12 @@ const state = reactive<AnyObject>({
   gLayGroups: null, // 总图形绘制组
   highlightLayGroups: null // 高亮绘制组
 })
+
+const searchAddressBlur = () => {
+  if (state.canCloseSearchPanel) {
+    state.focusSearchAddress = false
+  }
+}
 
 const handleSave = (): void => {
   emit('handle-items', state.lnglat)
@@ -549,6 +567,15 @@ defineExpose({
   &__icon {
     width: 30px;
     height: 30px;
+  }
+}
+
+.amap-sug-result {
+  z-index: 10000;
+}
+.amap_lib_placeSearch {
+  .poibox {
+    text-align: left;
   }
 }
 </style>

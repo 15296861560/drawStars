@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-04-06 21:41:22
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-16 20:46:55
- * @FilePath: \drawStars-Vue3\src\components\base\form\BaseTable.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <div class="base-table">
     <div class="table-header">
@@ -27,7 +19,7 @@
     <!-- 表格内容 -->
     <el-table
       ref="tableRef"
-      class="mb-10 custom-table"
+      class="mb-10 default-table"
       tooltip-effect="dark"
       stripe
       v-bind="$attrs"
@@ -166,6 +158,9 @@ const handleDisabledButton = (
   border-radius: 8px;
   padding: 1rem /* 16/16 */;
   position: relative;
+  .default-table {
+    height: 25.9375rem /* 415/16 */;
+  }
   .table-header {
     display: flex;
     align-items: center;

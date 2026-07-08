@@ -245,7 +245,8 @@ export default {
     toggleGroup: 'Toggle conversation groups',
     resetPosition: 'Reset panel position',
     newChat: 'New chat',
-    inputPlaceholder: 'Type a message, or try: weather, translate, chart, table…',
+    inputPlaceholder:
+      'Type a message, or try: weather, translate, chart, table…',
     send: 'Send',
     voiceInput: 'Voice input',
     uploadFile: 'Upload file',
@@ -256,7 +257,8 @@ export default {
     thinkingProcess: 'Reasoning',
     tryHint: 'Try',
     emptyTitle: 'Start a conversation',
-    emptyDesc: 'Type, speak, or upload a file — replies may include tables and charts',
+    emptyDesc:
+      'Type, speak, or upload a file — replies may include tables and charts',
     fabOpen: 'Open AI assistant',
     fabClose: 'Close AI assistant',
     close: 'Close',

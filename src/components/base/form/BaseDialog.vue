@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-03-25 23:20:53
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-10 16:51:14
- * @FilePath: \drawStars-Vue3\src\components\base\form\dialog.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <el-dialog v-model="dialogVisible" v-bind="$attrs" draggable overflow>
     <el-form
@@ -29,6 +21,7 @@
           :readonly="options.readonly"
           :disabled="options.disabled"
           :options="field.options"
+          :attrs="field.attrs"
           class="w-full"
         />
       </el-form-item>
@@ -37,7 +30,9 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="cancel">取消</el-button>
-        <el-button type="primary" @click="confirm"> 确认 </el-button>
+        <el-button type="primary" @click="confirm" :loading="confirmLoading">
+          确认
+        </el-button>
       </div>
     </template>
   </el-dialog>
@@ -88,6 +83,7 @@ const cancel = () => {
   })
 }
 
+const confirmLoading = ref(false)
 const confirm = async () => {
   const formEl = formRef.value
   if (!formEl) {

@@ -73,14 +73,14 @@ requests.interceptors.response.use(
   }
 )
 
-let showError = function (errorMessage) {
+const showError = function (errorMessage) {
   ElMessage({
     type: 'error',
     message: errorMessage
   })
 }
 
-const $axios = function (params, methodURL) {
+const $axios = function (params, methodURL, config = { method: 'post' }) {
   let promise = new Promise(function (resolve, reject) {
     const apiInfo = getApiInfo()
     let url = apiInfo.getURL.value

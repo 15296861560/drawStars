@@ -1,10 +1,10 @@
 @font-face {font-family: "drawstars-icon";
-  src: url('../font/drawstars-icon.eot?t=1690733586193'); /* IE9*/
-  src: url('../font/drawstars-icon.eot?t=1690733586193#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url("../font/drawstars-icon.woff2?t=1690733586193") format("woff2"),
-  url("../font/drawstars-icon.woff?t=1690733586193") format("woff"),
-  url('../font/drawstars-icon.ttf?t=1690733586193') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../font/drawstars-icon.svg?t=1690733586193#drawstars-icon') format('svg'); /* iOS 4.1- */
+  src: url('../font/drawstars-icon.eot?t=1747275088563'); /* IE9*/
+  src: url('../font/drawstars-icon.eot?t=1747275088563#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("../font/drawstars-icon.woff2?t=1747275088563") format("woff2"),
+  url("../font/drawstars-icon.woff?t=1747275088563") format("woff"),
+  url('../font/drawstars-icon.ttf?t=1747275088563') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../font/drawstars-icon.svg?t=1747275088563#drawstars-icon') format('svg'); /* iOS 4.1- */
 }
 
 [class^="drawstars-icon-"], [class*=" drawstars-icon-"] {
@@ -17,137 +17,153 @@
 
 .drawstars-icon-alipay:before { content: "\ea01"; }
 .drawstars-icon-animation:before { content: "\ea02"; }
-.drawstars-icon-area:before { content: "\ea03"; }
-.drawstars-icon-bar:before { content: "\ea04"; }
-.drawstars-icon-barLineDrill:before { content: "\ea05"; }
-.drawstars-icon-bind:before { content: "\ea06"; }
-.drawstars-icon-boards:before { content: "\ea07"; }
-.drawstars-icon-bug:before { content: "\ea08"; }
-.drawstars-icon-camera:before { content: "\ea09"; }
-.drawstars-icon-case:before { content: "\ea0a"; }
-.drawstars-icon-chat:before { content: "\ea0b"; }
-.drawstars-icon-common:before { content: "\ea0c"; }
-.drawstars-icon-components:before { content: "\ea0d"; }
-.drawstars-icon-compress:before { content: "\ea0e"; }
-.drawstars-icon-configure:before { content: "\ea0f"; }
-.drawstars-icon-crop:before { content: "\ea10"; }
-.drawstars-icon-data:before { content: "\ea11"; }
-.drawstars-icon-defaultPic:before { content: "\ea12"; }
-.drawstars-icon-demos:before { content: "\ea13"; }
-.drawstars-icon-directive:before { content: "\ea14"; }
-.drawstars-icon-drag:before { content: "\ea15"; }
-.drawstars-icon-dynamicOrderBar:before { content: "\ea16"; }
-.drawstars-icon-echart:before { content: "\ea17"; }
-.drawstars-icon-eye-hidden:before { content: "\ea18"; }
-.drawstars-icon-eye-show:before { content: "\ea19"; }
-.drawstars-icon-flop:before { content: "\ea1a"; }
-.drawstars-icon-frame:before { content: "\ea1b"; }
-.drawstars-icon-games:before { content: "\ea1c"; }
-.drawstars-icon-gauge:before { content: "\ea1d"; }
-.drawstars-icon-gitHub:before { content: "\ea1e"; }
-.drawstars-icon-lab:before { content: "\ea1f"; }
-.drawstars-icon-lang:before { content: "\ea20"; }
-.drawstars-icon-line:before { content: "\ea21"; }
-.drawstars-icon-liquidFill:before { content: "\ea22"; }
-.drawstars-icon-location:before { content: "\ea23"; }
-.drawstars-icon-map:before { content: "\ea24"; }
-.drawstars-icon-mic-off:before { content: "\ea25"; }
-.drawstars-icon-mic-off__hover:before { content: "\ea26"; }
-.drawstars-icon-mic-on:before { content: "\ea27"; }
-.drawstars-icon-mic-on__hover:before { content: "\ea28"; }
-.drawstars-icon-multimedia:before { content: "\ea29"; }
-.drawstars-icon-networkStrength:before { content: "\ea2a"; }
-.drawstars-icon-pay:before { content: "\ea2b"; }
-.drawstars-icon-pie:before { content: "\ea2c"; }
-.drawstars-icon-polar:before { content: "\ea2d"; }
-.drawstars-icon-position:before { content: "\ea2e"; }
-.drawstars-icon-practice:before { content: "\ea2f"; }
-.drawstars-icon-processVideo:before { content: "\ea30"; }
-.drawstars-icon-progressBar:before { content: "\ea31"; }
-.drawstars-icon-promptBox:before { content: "\ea32"; }
-.drawstars-icon-resource:before { content: "\ea33"; }
-.drawstars-icon-shortcutKey:before { content: "\ea34"; }
-.drawstars-icon-simple:before { content: "\ea35"; }
-.drawstars-icon-special:before { content: "\ea36"; }
-.drawstars-icon-stackedBar:before { content: "\ea37"; }
-.drawstars-icon-tool:before { content: "\ea38"; }
-.drawstars-icon-transition:before { content: "\ea39"; }
-.drawstars-icon-translate:before { content: "\ea3a"; }
-.drawstars-icon-utilities:before { content: "\ea3b"; }
-.drawstars-icon-video-off:before { content: "\ea3c"; }
-.drawstars-icon-video-off__hover:before { content: "\ea3d"; }
-.drawstars-icon-video-on:before { content: "\ea3e"; }
-.drawstars-icon-video-on__hover:before { content: "\ea3f"; }
-.drawstars-icon-video:before { content: "\ea40"; }
-.drawstars-icon-webFrame:before { content: "\ea41"; }
-.drawstars-icon-webpack:before { content: "\ea42"; }
-.drawstars-icon-words:before { content: "\ea43"; }
+.drawstars-icon-app:before { content: "\ea03"; }
+.drawstars-icon-area:before { content: "\ea04"; }
+.drawstars-icon-bar:before { content: "\ea05"; }
+.drawstars-icon-barLineDrill:before { content: "\ea06"; }
+.drawstars-icon-bind:before { content: "\ea07"; }
+.drawstars-icon-boards:before { content: "\ea08"; }
+.drawstars-icon-bug:before { content: "\ea09"; }
+.drawstars-icon-camera:before { content: "\ea0a"; }
+.drawstars-icon-case:before { content: "\ea0b"; }
+.drawstars-icon-chat:before { content: "\ea0c"; }
+.drawstars-icon-common:before { content: "\ea0d"; }
+.drawstars-icon-components:before { content: "\ea0e"; }
+.drawstars-icon-compress:before { content: "\ea0f"; }
+.drawstars-icon-configure:before { content: "\ea10"; }
+.drawstars-icon-crop:before { content: "\ea11"; }
+.drawstars-icon-data:before { content: "\ea12"; }
+.drawstars-icon-defaultPic:before { content: "\ea13"; }
+.drawstars-icon-demos:before { content: "\ea14"; }
+.drawstars-icon-directive:before { content: "\ea15"; }
+.drawstars-icon-drag:before { content: "\ea16"; }
+.drawstars-icon-dynamicOrderBar:before { content: "\ea17"; }
+.drawstars-icon-echart:before { content: "\ea18"; }
+.drawstars-icon-eye-hidden:before { content: "\ea19"; }
+.drawstars-icon-eye-show:before { content: "\ea1a"; }
+.drawstars-icon-flop:before { content: "\ea1b"; }
+.drawstars-icon-frame:before { content: "\ea1c"; }
+.drawstars-icon-games:before { content: "\ea1d"; }
+.drawstars-icon-gauge:before { content: "\ea1e"; }
+.drawstars-icon-gitHub:before { content: "\ea1f"; }
+.drawstars-icon-lab:before { content: "\ea20"; }
+.drawstars-icon-lang:before { content: "\ea21"; }
+.drawstars-icon-line:before { content: "\ea22"; }
+.drawstars-icon-liquidFill:before { content: "\ea23"; }
+.drawstars-icon-location:before { content: "\ea24"; }
+.drawstars-icon-log:before { content: "\ea25"; }
+.drawstars-icon-manage:before { content: "\ea26"; }
+.drawstars-icon-map:before { content: "\ea27"; }
+.drawstars-icon-menu:before { content: "\ea28"; }
+.drawstars-icon-mic-off:before { content: "\ea29"; }
+.drawstars-icon-mic-off__hover:before { content: "\ea2a"; }
+.drawstars-icon-mic-on:before { content: "\ea2b"; }
+.drawstars-icon-mic-on__hover:before { content: "\ea2c"; }
+.drawstars-icon-multimedia:before { content: "\ea2d"; }
+.drawstars-icon-networkStrength:before { content: "\ea2e"; }
+.drawstars-icon-notice:before { content: "\ea2f"; }
+.drawstars-icon-pay:before { content: "\ea30"; }
+.drawstars-icon-pie:before { content: "\ea31"; }
+.drawstars-icon-polar:before { content: "\ea32"; }
+.drawstars-icon-position:before { content: "\ea33"; }
+.drawstars-icon-practice:before { content: "\ea34"; }
+.drawstars-icon-processVideo:before { content: "\ea35"; }
+.drawstars-icon-progressBar:before { content: "\ea36"; }
+.drawstars-icon-promptBox:before { content: "\ea37"; }
+.drawstars-icon-resource:before { content: "\ea38"; }
+.drawstars-icon-setting:before { content: "\ea39"; }
+.drawstars-icon-shortcutKey:before { content: "\ea3a"; }
+.drawstars-icon-simple:before { content: "\ea3b"; }
+.drawstars-icon-special:before { content: "\ea3c"; }
+.drawstars-icon-stackedBar:before { content: "\ea3d"; }
+.drawstars-icon-tool:before { content: "\ea3e"; }
+.drawstars-icon-transition:before { content: "\ea3f"; }
+.drawstars-icon-translate:before { content: "\ea40"; }
+.drawstars-icon-users:before { content: "\ea41"; }
+.drawstars-icon-utilities:before { content: "\ea42"; }
+.drawstars-icon-video-off:before { content: "\ea43"; }
+.drawstars-icon-video-off__hover:before { content: "\ea44"; }
+.drawstars-icon-video-on:before { content: "\ea45"; }
+.drawstars-icon-video-on__hover:before { content: "\ea46"; }
+.drawstars-icon-video:before { content: "\ea47"; }
+.drawstars-icon-webFrame:before { content: "\ea48"; }
+.drawstars-icon-webpack:before { content: "\ea49"; }
+.drawstars-icon-word-monochrome:before { content: "\ea4a"; }
+.drawstars-icon-words:before { content: "\ea4b"; }
 
 $drawstars-icon-alipay: "\ea01";
 $drawstars-icon-animation: "\ea02";
-$drawstars-icon-area: "\ea03";
-$drawstars-icon-bar: "\ea04";
-$drawstars-icon-barLineDrill: "\ea05";
-$drawstars-icon-bind: "\ea06";
-$drawstars-icon-boards: "\ea07";
-$drawstars-icon-bug: "\ea08";
-$drawstars-icon-camera: "\ea09";
-$drawstars-icon-case: "\ea0a";
-$drawstars-icon-chat: "\ea0b";
-$drawstars-icon-common: "\ea0c";
-$drawstars-icon-components: "\ea0d";
-$drawstars-icon-compress: "\ea0e";
-$drawstars-icon-configure: "\ea0f";
-$drawstars-icon-crop: "\ea10";
-$drawstars-icon-data: "\ea11";
-$drawstars-icon-defaultPic: "\ea12";
-$drawstars-icon-demos: "\ea13";
-$drawstars-icon-directive: "\ea14";
-$drawstars-icon-drag: "\ea15";
-$drawstars-icon-dynamicOrderBar: "\ea16";
-$drawstars-icon-echart: "\ea17";
-$drawstars-icon-eye-hidden: "\ea18";
-$drawstars-icon-eye-show: "\ea19";
-$drawstars-icon-flop: "\ea1a";
-$drawstars-icon-frame: "\ea1b";
-$drawstars-icon-games: "\ea1c";
-$drawstars-icon-gauge: "\ea1d";
-$drawstars-icon-gitHub: "\ea1e";
-$drawstars-icon-lab: "\ea1f";
-$drawstars-icon-lang: "\ea20";
-$drawstars-icon-line: "\ea21";
-$drawstars-icon-liquidFill: "\ea22";
-$drawstars-icon-location: "\ea23";
-$drawstars-icon-map: "\ea24";
-$drawstars-icon-mic-off: "\ea25";
-$drawstars-icon-mic-off__hover: "\ea26";
-$drawstars-icon-mic-on: "\ea27";
-$drawstars-icon-mic-on__hover: "\ea28";
-$drawstars-icon-multimedia: "\ea29";
-$drawstars-icon-networkStrength: "\ea2a";
-$drawstars-icon-pay: "\ea2b";
-$drawstars-icon-pie: "\ea2c";
-$drawstars-icon-polar: "\ea2d";
-$drawstars-icon-position: "\ea2e";
-$drawstars-icon-practice: "\ea2f";
-$drawstars-icon-processVideo: "\ea30";
-$drawstars-icon-progressBar: "\ea31";
-$drawstars-icon-promptBox: "\ea32";
-$drawstars-icon-resource: "\ea33";
-$drawstars-icon-shortcutKey: "\ea34";
-$drawstars-icon-simple: "\ea35";
-$drawstars-icon-special: "\ea36";
-$drawstars-icon-stackedBar: "\ea37";
-$drawstars-icon-tool: "\ea38";
-$drawstars-icon-transition: "\ea39";
-$drawstars-icon-translate: "\ea3a";
-$drawstars-icon-utilities: "\ea3b";
-$drawstars-icon-video-off: "\ea3c";
-$drawstars-icon-video-off__hover: "\ea3d";
-$drawstars-icon-video-on: "\ea3e";
-$drawstars-icon-video-on__hover: "\ea3f";
-$drawstars-icon-video: "\ea40";
-$drawstars-icon-webFrame: "\ea41";
-$drawstars-icon-webpack: "\ea42";
-$drawstars-icon-words: "\ea43";
+$drawstars-icon-app: "\ea03";
+$drawstars-icon-area: "\ea04";
+$drawstars-icon-bar: "\ea05";
+$drawstars-icon-barLineDrill: "\ea06";
+$drawstars-icon-bind: "\ea07";
+$drawstars-icon-boards: "\ea08";
+$drawstars-icon-bug: "\ea09";
+$drawstars-icon-camera: "\ea0a";
+$drawstars-icon-case: "\ea0b";
+$drawstars-icon-chat: "\ea0c";
+$drawstars-icon-common: "\ea0d";
+$drawstars-icon-components: "\ea0e";
+$drawstars-icon-compress: "\ea0f";
+$drawstars-icon-configure: "\ea10";
+$drawstars-icon-crop: "\ea11";
+$drawstars-icon-data: "\ea12";
+$drawstars-icon-defaultPic: "\ea13";
+$drawstars-icon-demos: "\ea14";
+$drawstars-icon-directive: "\ea15";
+$drawstars-icon-drag: "\ea16";
+$drawstars-icon-dynamicOrderBar: "\ea17";
+$drawstars-icon-echart: "\ea18";
+$drawstars-icon-eye-hidden: "\ea19";
+$drawstars-icon-eye-show: "\ea1a";
+$drawstars-icon-flop: "\ea1b";
+$drawstars-icon-frame: "\ea1c";
+$drawstars-icon-games: "\ea1d";
+$drawstars-icon-gauge: "\ea1e";
+$drawstars-icon-gitHub: "\ea1f";
+$drawstars-icon-lab: "\ea20";
+$drawstars-icon-lang: "\ea21";
+$drawstars-icon-line: "\ea22";
+$drawstars-icon-liquidFill: "\ea23";
+$drawstars-icon-location: "\ea24";
+$drawstars-icon-log: "\ea25";
+$drawstars-icon-manage: "\ea26";
+$drawstars-icon-map: "\ea27";
+$drawstars-icon-menu: "\ea28";
+$drawstars-icon-mic-off: "\ea29";
+$drawstars-icon-mic-off__hover: "\ea2a";
+$drawstars-icon-mic-on: "\ea2b";
+$drawstars-icon-mic-on__hover: "\ea2c";
+$drawstars-icon-multimedia: "\ea2d";
+$drawstars-icon-networkStrength: "\ea2e";
+$drawstars-icon-notice: "\ea2f";
+$drawstars-icon-pay: "\ea30";
+$drawstars-icon-pie: "\ea31";
+$drawstars-icon-polar: "\ea32";
+$drawstars-icon-position: "\ea33";
+$drawstars-icon-practice: "\ea34";
+$drawstars-icon-processVideo: "\ea35";
+$drawstars-icon-progressBar: "\ea36";
+$drawstars-icon-promptBox: "\ea37";
+$drawstars-icon-resource: "\ea38";
+$drawstars-icon-setting: "\ea39";
+$drawstars-icon-shortcutKey: "\ea3a";
+$drawstars-icon-simple: "\ea3b";
+$drawstars-icon-special: "\ea3c";
+$drawstars-icon-stackedBar: "\ea3d";
+$drawstars-icon-tool: "\ea3e";
+$drawstars-icon-transition: "\ea3f";
+$drawstars-icon-translate: "\ea40";
+$drawstars-icon-users: "\ea41";
+$drawstars-icon-utilities: "\ea42";
+$drawstars-icon-video-off: "\ea43";
+$drawstars-icon-video-off__hover: "\ea44";
+$drawstars-icon-video-on: "\ea45";
+$drawstars-icon-video-on__hover: "\ea46";
+$drawstars-icon-video: "\ea47";
+$drawstars-icon-webFrame: "\ea48";
+$drawstars-icon-webpack: "\ea49";
+$drawstars-icon-word-monochrome: "\ea4a";
+$drawstars-icon-words: "\ea4b";
 

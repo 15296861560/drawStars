@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="g-home">
+    <div class="relative g-home z-1">
       <div class="g-home-module">
         <el-row class="g-home-module">
           <router-link-normal
@@ -45,6 +45,8 @@
         </el-row>
       </div>
     </div>
+
+    <Assistant></Assistant>
   </div>
 </template>
 <script>

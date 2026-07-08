@@ -1,11 +1,3 @@
-<!--
- * @Author: “lgy lgy-lgy@qq.com
- * @Date: 2024-03-25 23:36:46
- * @LastEditors: “lgy lgy-lgy@qq.com
- * @LastEditTime: 2024-06-16 20:47:45
- * @FilePath: \drawStars-Vue3\src\components\base\form\BaseFormItem\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <div class="w-full">
     <el-input-number
@@ -94,10 +86,27 @@
       v-model:field="field"
       :disabled="disabled"
     />
+    <upload-component
+      v-else-if="isUpload"
+      v-model:value-model="field"
+      v-bind="attrs"
+      :disabled="disabled"
+    />
 
     <location-component
+      v-else-if="isLocationPoint"
+      v-model:value-model="field"
+      :disabled="disabled"
+    />
+    <custom-location-component
       v-else-if="isLocation"
-      v-model:field="field"
+      v-model:value-model="field"
+      :disabled="disabled"
+    />
+    <rich-text-editor-component
+      ref="richText"
+      v-else-if="isRichText"
+      v-model:value-model="field"
       :disabled="disabled"
     />
 
@@ -127,6 +136,14 @@ const singleImgComponent = defineAsyncComponent(
 
 const locationComponent = defineAsyncComponent(
   () => import('./locationComponent.vue')
+)
+
+const CustomLocationComponent = defineAsyncComponent(
+  () => import('./CustomLocationComponent.vue')
+)
+
+const RichTextEditorComponent = defineAsyncComponent(
+  () => import('./RichTextEditorComponentQuill.vue')
 )
 
 const props = defineProps<{
@@ -168,6 +185,16 @@ const requestOptions = async () => {
     }
   }
 }
+
+const richText = ref()
+watch(
+  () => field.value,
+  () => {
+    if (isRichText.value && richText.value) {
+      richText.value.updateValueModel(field.value)
+    }
+  }
+)
 
 defineExpose({
   options
