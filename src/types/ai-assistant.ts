@@ -72,6 +72,8 @@ export interface AiSendMessagePayload {
   file?: File
   /** 上传接口返回的解析摘要，供大模型与流式对话使用 */
   fileExcerpt?: string
+  /** 客户端已选文件元信息（Mock / 展示用） */
+  fileMeta?: AiFilePayload
 }
 
 export interface AiChatResponse {

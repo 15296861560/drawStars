@@ -15,18 +15,19 @@
       </el-tag>
     </div>
     <div class="input-card">
-      <el-input
-        ref="inputRef"
-        v-model="text"
-        type="textarea"
-        :rows="2"
-        :placeholder="$t('aiAssistant.inputPlaceholder')"
-        resize="none"
-        class="input-textarea"
-        @keydown="onKeydown"
-      />
-      <div class="input-toolbar">
-        <div class="toolbar-left">
+      <div class="input-row">
+        <el-input
+          ref="inputRef"
+          v-model="text"
+          type="textarea"
+          :rows="1"
+          :autosize="{ minRows: 1, maxRows: 6 }"
+          :placeholder="$t('aiAssistant.inputPlaceholder')"
+          resize="none"
+          class="input-textarea"
+          @keydown="onKeydown"
+        />
+        <div class="input-actions">
           <AiTooltip :content="$t('aiAssistant.voiceInput')" placement="top">
             <el-button
               class="tool-btn"
@@ -38,29 +39,28 @@
               <el-icon><Microphone /></el-icon>
             </el-button>
           </AiTooltip>
-          <el-upload
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="onFileChange"
+          <input
+            ref="fileInputRef"
+            type="file"
+            class="ai-file-input-hidden"
+            @change="onFileChange"
+          />
+          <AiTooltip :content="$t('aiAssistant.uploadFile')" placement="top">
+            <el-button class="tool-btn" circle @click="openFilePicker">
+              <el-icon><Paperclip /></el-icon>
+            </el-button>
+          </AiTooltip>
+          <el-button
+            class="send-btn"
+            circle
+            type="primary"
+            :loading="store.sending"
+            :disabled="!canSend"
+            @click="submit"
           >
-            <AiTooltip :content="$t('aiAssistant.uploadFile')" placement="top">
-              <el-button class="tool-btn" circle>
-                <el-icon><Paperclip /></el-icon>
-              </el-button>
-            </AiTooltip>
-          </el-upload>
+            <el-icon><Promotion /></el-icon>
+          </el-button>
         </div>
-        <el-button
-          class="send-btn"
-          type="primary"
-          round
-          :loading="store.sending"
-          :disabled="!canSend"
-          @click="submit"
-        >
-          <el-icon class="send-icon"><Promotion /></el-icon>
-          {{ $t('aiAssistant.send') }}
-        </el-button>
       </div>
     </div>
     <p v-if="speech.interimText.value" class="interim">
@@ -74,7 +74,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Microphone, Paperclip, Promotion } from '@element-plus/icons-vue'
-import type { UploadFile } from 'element-plus'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { aiAssistantStore } from '@/stores/ai-assistant'
@@ -87,6 +86,7 @@ const store = aiAssistantStore()
 const speech = useSpeechRecognition()
 const text = ref('')
 const inputRef = ref<{ focus: () => void; textarea?: HTMLTextAreaElement } | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
 const hints = listCapabilityHints()
 
 const canSend = computed(() => text.value.trim().length > 0 && !store.sending)
@@ -135,10 +135,24 @@ async function toggleVoice() {
   }
 }
 
-async function onFileChange(uploadFile: UploadFile) {
-  const raw = uploadFile.raw
-  if (!raw) return
-  await store.sendUserMessage(raw.name, { file: raw })
+function openFilePicker() {
+  fileInputRef.value?.click()
+}
+
+async function onFileChange(e: Event) {
+  const input = e.target as HTMLInputElement
+  const raw = input.files?.[0]
+  input.value = ''
+  if (!raw || store.sending) return
+  try {
+    await store.sendUserMessage(raw.name, { file: raw })
+  } catch {
+    ElMessage({
+      type: 'warning',
+      message: t('aiAssistant.uploadFailed'),
+      customClass: 'ai-assistant-message'
+    })
+  }
   focus()
 }
 
@@ -150,8 +164,8 @@ defineExpose({ focus })
 
 .ai-chat-input {
   flex-shrink: 0;
-  padding: 12px 14px 10px;
-  background: linear-gradient(180deg, transparent 0%, @ai-bg-sidebar 100%);
+  padding: 12px 16px 14px;
+  background: @ai-bg-chat;
   border-top: 1px solid @ai-border;
 }
 
@@ -159,54 +173,69 @@ defineExpose({ focus })
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 12px;
 
   .hint-label {
-    font-size: 11px;
+    font-size: 12px;
     color: @ai-text-muted;
     margin-right: 2px;
   }
 
   .hint-tag {
     cursor: pointer;
-    border-color: fade(@ai-primary, 25%);
-    color: @ai-primary-dark;
+    border: 1px solid @ai-border-strong;
+    background: @ai-bg-input;
+    color: @ai-text;
+    font-size: 12px;
+    padding: 0 12px;
+    height: 28px;
     transition: all 0.2s;
 
     &:hover {
-      background: fade(@ai-primary, 10%);
-      border-color: @ai-primary;
-      color: @ai-primary;
+      background: #fff;
+      border-color: fade(@ai-primary, 40%);
+      color: @ai-primary-dark;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
   }
 }
 
 .input-card {
-  background: #fff;
-  border: 1px solid @ai-border-strong;
-  border-radius: @ai-radius-md;
-  padding: 10px 12px;
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+  background: @ai-bg-input;
+  border: none;
+  border-radius: @ai-radius-xl;
+  padding: 6px 8px 6px 16px;
+  box-shadow: @ai-shadow-input;
   transition:
-    border-color 0.2s,
     box-shadow 0.2s;
 
   &:focus-within {
-    border-color: fade(@ai-primary, 45%);
-    box-shadow: 0 0 0 3px fade(@ai-primary, 12%);
+    box-shadow:
+      0 0 0 1px fade(@ai-primary, 30%),
+      0 4px 20px rgba(64, 158, 255, 0.12);
   }
 }
 
+.input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
 .input-textarea {
+  flex: 1;
+  min-width: 0;
+
   :deep(.el-textarea__inner) {
     border: none;
     box-shadow: none !important;
-    padding: 0;
+    padding: 8px 0;
     font-size: 14px;
     line-height: 1.5;
     background: transparent;
     color: @ai-text;
+    resize: none;
 
     &::placeholder {
       color: @ai-text-muted;
@@ -214,32 +243,28 @@ defineExpose({ focus })
   }
 }
 
-.input-toolbar {
+.input-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid @ai-border;
-}
-
-.toolbar-left {
-  display: flex;
-  gap: 4px;
+  gap: 2px;
+  flex-shrink: 0;
+  padding-bottom: 2px;
 }
 
 .tool-btn {
   color: @ai-text-secondary;
   border: none;
+  width: 34px;
+  height: 34px;
 
   &:hover {
-    color: @ai-primary;
-    background: fade(@ai-primary, 8%);
+    color: @ai-text;
+    background: rgba(0, 0, 0, 0.05);
   }
 
   &.is-recording {
     color: #fff !important;
-    background: linear-gradient(135deg, #f56c6c, #e85d5d) !important;
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
     animation: ai-rec-pulse 1.2s ease-in-out infinite;
   }
 }
@@ -247,31 +272,30 @@ defineExpose({ focus })
 @keyframes ai-rec-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(245, 108, 108, 0.4);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(245, 108, 108, 0);
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
   }
 }
 
 .send-btn {
-  padding: 8px 18px;
+  width: 36px;
+  height: 36px;
   background: @ai-gradient !important;
   border: none;
-  font-weight: 500;
-  box-shadow: 0 2px 10px rgba(64, 158, 255, 0.35);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  transition: transform 0.15s ease, opacity 0.15s ease;
 
   &:hover:not(:disabled) {
-    opacity: 0.92;
+    transform: scale(1.06);
+    opacity: 0.95;
   }
 
   &:disabled {
-    opacity: 0.5;
+    opacity: 0.35;
     box-shadow: none;
-  }
-
-  .send-icon {
-    margin-right: 4px;
+    background: @ai-text-muted !important;
   }
 }
 
@@ -281,24 +305,31 @@ defineExpose({ focus })
   gap: 8px;
   font-size: 12px;
   color: @ai-primary-dark;
-  margin: 8px 4px 0;
-  padding: 6px 10px;
-  background: fade(@ai-primary, 8%);
-  border-radius: @ai-radius-sm;
+  margin: 10px 4px 0;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: @ai-radius-full;
+  border: 1px solid fade(@ai-primary, 20%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .interim-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #f56c6c;
+  background: #ef4444;
   animation: ai-rec-pulse 1s ease infinite;
+  flex-shrink: 0;
 }
 
 .input-hint {
-  margin: 6px 4px 0;
+  margin: 8px 4px 0;
   font-size: 11px;
   color: @ai-text-muted;
-  text-align: right;
+  text-align: center;
+}
+
+.ai-file-input-hidden {
+  display: none;
 }
 </style>

@@ -67,7 +67,7 @@ function onSelect(id: string) {
 @import './ai-variables.less';
 
 .ai-sidebar {
-  width: 216px;
+  width: 220px;
   flex-shrink: 0;
   border-right: 1px solid @ai-border;
   background: @ai-bg-sidebar;
@@ -83,26 +83,25 @@ function onSelect(id: string) {
 .ai-sidebar-inner {
   height: 100%;
   overflow-y: auto;
-  padding: 8px 10px 12px;
+  padding: 10px 8px 12px;
 
   &::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: fade(@ai-primary, 25%);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: @ai-radius-full;
   }
 }
 
 .sidebar-header {
-  padding: 4px 8px 10px;
+  padding: 6px 10px 12px;
 }
 
 .sidebar-title {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   color: @ai-text-muted;
 }
 
@@ -110,56 +109,45 @@ function onSelect(id: string) {
   font-size: 11px;
   font-weight: 500;
   color: @ai-text-muted;
-  padding: 10px 8px 6px;
+  padding: 12px 10px 6px;
 }
 
 .conv-item {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 10px 10px;
+  gap: 10px;
+  padding: 10px 12px;
   border-radius: @ai-radius-md;
   cursor: pointer;
-  margin-bottom: 4px;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+  margin-bottom: 2px;
+  border: none;
+  transition: background 0.15s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: @ai-border;
+    background: rgba(0, 0, 0, 0.04);
   }
 
   &.active {
     background: #fff;
-    border-color: fade(@ai-primary, 35%);
-    box-shadow: 0 2px 10px rgba(64, 158, 255, 0.12);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 
     .conv-icon {
       color: @ai-primary;
-      background: fade(@ai-primary, 12%);
     }
 
     .conv-title {
-      color: @ai-primary-dark;
-    }
-
-    .conv-preview {
-      color: @ai-text-secondary;
+      color: @ai-text;
+      font-weight: 600;
     }
   }
 }
 
 .conv-icon {
   flex-shrink: 0;
-  margin-top: 2px;
+  margin-top: 1px;
   font-size: 16px;
   color: @ai-text-muted;
-  padding: 4px;
-  border-radius: @ai-radius-sm;
-  transition: color 0.2s, background 0.2s;
+  transition: color 0.15s;
 }
 
 .conv-text {

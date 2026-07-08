@@ -7,52 +7,71 @@
     <div class="toolbar-drag-hint" aria-hidden="true">
       <span /><span /><span />
     </div>
-    <div class="toolbar-left">
-      <AiTooltip :content="$t('aiAssistant.toggleSidebar')" placement="bottom">
-        <el-button
-          class="toolbar-btn"
-          text
-          circle
-          @click="store.sidebarCollapsed = !store.sidebarCollapsed"
+    <div class="toolbar-row">
+      <div class="toolbar-left">
+        <AiTooltip
+          :content="$t('aiAssistant.toggleSidebar')"
+          placement="bottom"
         >
-          <el-icon><Fold v-if="!store.sidebarCollapsed" /><Expand v-else /></el-icon>
-        </el-button>
-      </AiTooltip>
-      <div class="toolbar-brand">
-        <span class="brand-icon">
-          <el-icon><MagicStick /></el-icon>
-        </span>
-        <span class="toolbar-title">{{ store.activeConversation?.title || $t('aiAssistant.title') }}</span>
+          <el-button
+            class="toolbar-btn"
+            text
+            circle
+            @click="store.sidebarCollapsed = !store.sidebarCollapsed"
+          >
+            <el-icon
+              ><Fold v-if="!store.sidebarCollapsed" /><Expand v-else
+            /></el-icon>
+          </el-button>
+        </AiTooltip>
+        <div class="toolbar-brand">
+          <span class="toolbar-title">{{
+            store.activeConversation?.title || $t('aiAssistant.title')
+          }}</span>
+        </div>
+      </div>
+      <span class="toolbar-hint">{{ $t('aiAssistant.dragHint') }}</span>
+      <div class="toolbar-actions" @mousedown.stop>
+        <AiTooltip :content="$t('aiAssistant.toggleGroup')" placement="bottom">
+          <el-button
+            class="toolbar-btn"
+            text
+            circle
+            @click="store.groupExpanded = !store.groupExpanded"
+          >
+            <el-icon><Folder /></el-icon>
+          </el-button>
+        </AiTooltip>
+        <AiTooltip
+          :content="$t('aiAssistant.resetPosition')"
+          placement="bottom"
+        >
+          <el-button
+            class="toolbar-btn"
+            text
+            circle
+            @click="$emit('reset-layout')"
+          >
+            <el-icon><Refresh /></el-icon>
+          </el-button>
+        </AiTooltip>
+        <AiTooltip :content="$t('aiAssistant.newChat')" placement="bottom">
+          <el-button class="toolbar-btn" text circle @click="onNewChat">
+            <el-icon><Plus /></el-icon>
+          </el-button>
+        </AiTooltip>
+        <AiTooltip :content="$t('aiAssistant.close')" placement="bottom">
+          <el-button
+            class="toolbar-btn toolbar-btn--close"
+            text
+            circle
+            @click="store.closePanel()"
+          >
+            <el-icon><Close /></el-icon>
+          </el-button>
+        </AiTooltip>
       </div>
     </div>
-    <div class="toolbar-actions" @mousedown.stop>
-      <AiTooltip :content="$t('aiAssistant.toggleGroup')" placement="bottom">
-        <el-button
-          class="toolbar-btn"
-          text
-          circle
-          @click="store.groupExpanded = !store.groupExpanded"
-        >
-          <el-icon><Folder /></el-icon>
-        </el-button>
-      </AiTooltip>
-      <AiTooltip :content="$t('aiAssistant.resetPosition')" placement="bottom">
-        <el-button class="toolbar-btn" text circle @click="$emit('reset-layout')">
-          <el-icon><Refresh /></el-icon>
-        </el-button>
-      </AiTooltip>
-      <AiTooltip :content="$t('aiAssistant.newChat')" placement="bottom">
-        <el-button class="toolbar-btn toolbar-btn--primary" circle @click="onNewChat">
-          <el-icon><Plus /></el-icon>
-        </el-button>
-      </AiTooltip>
-      <AiTooltip :content="$t('aiAssistant.close')" placement="bottom">
-        <el-button class="toolbar-btn toolbar-btn--close" text circle @click="store.closePanel()">
-          <el-icon><Close /></el-icon>
-        </el-button>
-      </AiTooltip>
-    </div>
-    <span class="toolbar-hint">{{ $t('aiAssistant.dragHint') }}</span>
   </header>
 </template>
 
@@ -83,43 +102,54 @@ async function onNewChat() {
 
 .ai-panel-toolbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px 8px;
+  flex-direction: column;
+  padding: 12px 14px 10px;
   border-bottom: 1px solid @ai-border;
   cursor: move;
   user-select: none;
   flex-shrink: 0;
-  background: @ai-gradient-soft;
+  background: @ai-gradient-header;
   position: relative;
+}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .toolbar-drag-hint {
   position: absolute;
-  top: 4px;
+  top: 5px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 3px;
-  opacity: 0.35;
+  gap: 4px;
+  opacity: 0.3;
   pointer-events: none;
 
   span {
-    width: 20px;
-    height: 3px;
-    border-radius: 2px;
+    width: 24px;
+    height: 4px;
+    border-radius: @ai-radius-full;
     background: @ai-text-muted;
   }
 }
 
 .toolbar-hint {
-  position: absolute;
-  bottom: 2px;
-  right: 12px;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
   font-size: 10px;
   color: @ai-text-muted;
   pointer-events: none;
   opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
 }
 
 .toolbar-left {
@@ -127,7 +157,8 @@ async function onNewChat() {
   align-items: center;
   gap: 6px;
   min-width: 0;
-  flex: 1;
+  flex: 0 1 auto;
+  max-width: 38%;
 }
 
 .toolbar-brand {
@@ -139,25 +170,26 @@ async function onNewChat() {
 
 .brand-icon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: @ai-radius-sm;
   background: @ai-gradient;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.35);
+  font-size: 15px;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
 }
 
 .toolbar-title {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   color: @ai-text;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  letter-spacing: -0.01em;
 }
 
 .toolbar-actions {
@@ -173,18 +205,6 @@ async function onNewChat() {
   &:hover {
     color: @ai-primary;
     background: fade(@ai-primary, 8%);
-  }
-
-  &--primary {
-    background: @ai-gradient !important;
-    color: #fff !important;
-    border: none;
-    box-shadow: 0 2px 8px rgba(64, 158, 255, 0.35);
-
-    &:hover {
-      opacity: 0.92;
-      color: #fff !important;
-    }
   }
 
   &--close:hover {

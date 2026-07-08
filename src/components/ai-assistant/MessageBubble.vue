@@ -12,7 +12,7 @@
     >
       <el-icon :size="18">
         <UserFilled v-if="message.role === 'user'" />
-        <Service v-else />
+        <MagicStick v-else />
       </el-icon>
     </div>
     <div class="ai-msg-body">
@@ -69,12 +69,17 @@
       </div>
 
       <div v-else-if="message.type === 'file'" class="ai-msg-file">
-        <div class="file-icon-wrap">
-          <el-icon><Document /></el-icon>
+        <div class="file-icon-wrap" :class="`tone-${fileVisual.tone}`">
+          <el-icon :size="22">
+            <component :is="fileVisual.icon" />
+          </el-icon>
         </div>
         <div class="file-info">
-          <div class="name">{{ filePayload?.name }}</div>
-          <div class="meta">{{ formatSize(filePayload?.size) }}</div>
+          <div class="name">{{ filePayload?.name || message.content }}</div>
+          <div class="meta">
+            <span class="file-ext">{{ fileExtLabel }}</span>
+            <span v-if="filePayload?.size" class="file-size">{{ formatSize(filePayload.size) }}</span>
+          </div>
         </div>
       </div>
 
@@ -106,12 +111,12 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import {
   UserFilled,
-  Service,
+  MagicStick,
   Microphone,
-  Document,
   Cpu,
   ArrowDown
 } from '@element-plus/icons-vue'
+import { resolveFileVisual } from './file-icon'
 import type {
   AiChartPayload,
   AiFilePayload,
@@ -152,6 +157,10 @@ const showWaiting = computed(
 
 const voicePayload = computed(() => props.message.payload as AiVoicePayload | undefined)
 const filePayload = computed(() => props.message.payload as AiFilePayload | undefined)
+const fileVisual = computed(() =>
+  resolveFileVisual(filePayload.value?.name, filePayload.value?.mimeType)
+)
+const fileExtLabel = computed(() => fileVisual.value.ext.toUpperCase())
 const tablePayload = computed(() => props.message.payload as AiTablePayload | undefined)
 const chartPayload = computed(() => props.message.payload as AiChartPayload | undefined)
 const chartHeight = computed(() => chartPayload.value?.height ?? 200)
@@ -195,9 +204,9 @@ onBeforeUnmount(() => {
 
 .ai-msg-row {
   display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  animation: ai-msg-in 0.3s ease;
+  gap: 12px;
+  margin-bottom: 20px;
+  animation: ai-msg-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
   &.is-user {
     flex-direction: row-reverse;
@@ -205,20 +214,70 @@ onBeforeUnmount(() => {
     .ai-msg-body {
       align-items: flex-end;
       background: @ai-user-bubble;
-      border: 1px solid fade(@ai-primary, 18%);
-      border-bottom-right-radius: 4px;
+      border: none;
+      border-radius: @ai-radius-md @ai-radius-md 4px @ai-radius-md;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    }
+
+    .ai-msg-text,
+    .ai-msg-rich {
+      color: @ai-user-text;
+    }
+
+    .ai-msg-voice .voice-bar {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .ai-msg-voice .wave {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .ai-msg-voice .transcript {
+      color: rgba(255, 255, 255, 0.85);
     }
 
     .ai-msg-time {
       text-align: right;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .ai-msg-avatar {
+      display: none;
+    }
+
+    .ai-msg-file {
+      .file-icon-wrap {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      .name {
+        color: #fff;
+      }
+
+      .meta {
+        color: rgba(255, 255, 255, 0.78);
+      }
+
+      .file-ext {
+        background: rgba(255, 255, 255, 0.18);
+        color: #fff;
+      }
     }
   }
 
-  &.is-assistant .ai-msg-body {
-    background: @ai-assistant-bubble;
-    border: 1px solid @ai-border;
-    border-bottom-left-radius: 4px;
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  &.is-assistant {
+    .ai-msg-body {
+      background: @ai-assistant-bubble;
+      border: none;
+      padding: 4px 0 4px 0;
+      box-shadow: none;
+    }
+
+    .ai-msg-avatar {
+      margin-top: 2px;
+    }
   }
 }
 
@@ -235,8 +294,8 @@ onBeforeUnmount(() => {
 
 .ai-msg-avatar {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: @ai-radius-full;
   display: flex;
   align-items: center;
@@ -248,28 +307,36 @@ onBeforeUnmount(() => {
   }
 
   &.avatar-ai {
-    background: @ai-gradient-soft;
-    color: @ai-primary;
-    border: 1px solid fade(@ai-primary, 25%);
+    background: @ai-gradient;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
   }
 }
 
 .ai-msg-body {
-  max-width: 88%;
-  padding: 11px 14px;
+  max-width: 85%;
+  padding: 10px 14px;
   border-radius: @ai-radius-md;
   text-align: left;
 }
 
 .ai-msg-thinking {
-  margin-bottom: 10px;
-  border-radius: @ai-radius-sm;
-  border: 1px dashed fade(@ai-primary, 22%);
-  background: fade(@ai-primary, 5%);
+  margin-bottom: 12px;
+  border-radius: @ai-radius-md;
+  border: 1px solid @ai-border;
+  background: rgba(255, 255, 255, 0.8);
   overflow: hidden;
 
-  &.is-live .thinking-toggle {
-    color: @ai-primary-dark;
+  &.is-live {
+    border-color: fade(@ai-accent, 25%);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      fade(@ai-accent, 6%) 50%,
+      rgba(255, 255, 255, 0.9) 100%
+    );
+    background-size: 200% 100%;
+    animation: ai-shimmer 2.5s ease-in-out infinite;
   }
 }
 
@@ -394,15 +461,17 @@ onBeforeUnmount(() => {
 .ai-msg-text {
   white-space: pre-wrap;
   word-break: break-word;
-  line-height: 1.55;
-  font-size: 13px;
+  line-height: 1.65;
+  font-size: 14px;
   color: @ai-text;
+  letter-spacing: -0.01em;
 }
 
 .ai-msg-rich {
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.7;
   color: @ai-text;
+  letter-spacing: -0.01em;
 
   &.is-streaming::after {
     content: '';
@@ -502,29 +571,103 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 12px;
   padding: 4px 0;
+  min-width: 180px;
+  max-width: 100%;
 
   .file-icon-wrap {
-    width: 40px;
-    height: 40px;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
     border-radius: @ai-radius-sm;
-    background: fade(@ai-primary, 10%);
-    color: @ai-primary;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    transition: background 0.2s, color 0.2s;
+
+    &.tone-image {
+      background: fade(#10b981, 12%);
+      color: #059669;
+    }
+    &.tone-video {
+      background: fade(#8b5cf6, 12%);
+      color: #7c3aed;
+    }
+    &.tone-audio {
+      background: fade(#f59e0b, 14%);
+      color: #d97706;
+    }
+    &.tone-pdf {
+      background: fade(#ef4444, 12%);
+      color: #dc2626;
+    }
+    &.tone-word {
+      background: fade(#2563eb, 12%);
+      color: #1d4ed8;
+    }
+    &.tone-excel {
+      background: fade(#16a34a, 12%);
+      color: #15803d;
+    }
+    &.tone-ppt {
+      background: fade(#ea580c, 12%);
+      color: #c2410c;
+    }
+    &.tone-archive {
+      background: fade(#78716c, 12%);
+      color: #57534e;
+    }
+    &.tone-code {
+      background: fade(#6366f1, 12%);
+      color: #4f46e5;
+    }
+    &.tone-text {
+      background: fade(@ai-text-muted, 14%);
+      color: @ai-text-secondary;
+    }
+    &.tone-default {
+      background: fade(@ai-primary, 10%);
+      color: @ai-primary;
+    }
+  }
+
+  .file-info {
+    min-width: 0;
+    flex: 1;
   }
 
   .name {
     font-weight: 600;
     font-size: 13px;
     color: @ai-text;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
     color: @ai-text-muted;
-    margin-top: 2px;
+    margin-top: 4px;
+  }
+
+  .file-ext {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background: fade(@ai-text-muted, 12%);
+    color: @ai-text-secondary;
+    line-height: 1.4;
+  }
+
+  .file-size {
+    line-height: 1.4;
   }
 }
 
@@ -549,7 +692,7 @@ onBeforeUnmount(() => {
 }
 
 .ai-msg-time {
-  margin-top: 8px;
+  margin-top: 6px;
   font-size: 11px;
   color: @ai-text-muted;
 }

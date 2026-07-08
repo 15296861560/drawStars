@@ -153,6 +153,11 @@ export function buildAssistantReply(
     base.content = `<p>语音识别结果已收到。${base.content}</p>`
   }
 
+  if (userType === 'file' && !handler) {
+    base.content = `<p>已收到文件「${trimmed}」。</p><p>当前为 <em>Mock</em> 模式，已模拟解析完成。对接真实 API 后将返回文件摘要与问答。</p>`
+    base.capabilityId = 'file'
+  }
+
   return {
     ...base,
     id: uid(),

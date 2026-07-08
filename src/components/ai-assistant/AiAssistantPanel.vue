@@ -181,12 +181,13 @@ defineExpose({ resetLayout, panelRef, focusInput })
   display: flex;
   flex-direction: column;
   background: @ai-bg-panel;
-  border-radius: @ai-radius-lg;
+  border-radius: @ai-radius-xl;
   box-shadow: @ai-shadow-panel;
   overflow: hidden;
   min-width: 400px;
   min-height: 360px;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
 }
 
 .ai-panel-body {
@@ -234,17 +235,17 @@ defineExpose({ resetLayout, panelRef, focusInput })
 
 .ai-panel-enter-active {
   transition:
-    opacity 0.22s ease,
-    transform 0.28s cubic-bezier(0.34, 1.2, 0.64, 1);
+    opacity 0.25s ease,
+    transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .ai-panel-leave-active {
   transition:
     opacity 0.18s ease,
-    transform 0.2s ease;
+    transform 0.22s ease;
 }
 .ai-panel-enter-from,
 .ai-panel-leave-to {
   opacity: 0;
-  transform: scale(0.92) translateY(12px);
+  transform: scale(0.94) translateY(16px);
 }
 </style>

@@ -77,7 +77,11 @@ export async function sendChatMessage(
     }
   }
 
-  if (payload.file) {
+  if (payload.type === 'file' && payload.fileMeta) {
+    userMessage.type = 'file'
+    userMessage.content = payload.content || payload.fileMeta.name
+    userMessage.payload = { ...payload.fileMeta }
+  } else if (payload.file) {
     userMessage.type = 'file'
     userMessage.content = `上传文件：${payload.file.name}`
     userMessage.payload = {

@@ -72,33 +72,20 @@ watch(
 .ai-message-list {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 18px;
+  padding: 20px 20px 12px;
   min-height: 0;
   scroll-behavior: smooth;
-  background-color: @ai-bg-chat;
-  background-image: radial-gradient(
-      circle at 1px 1px,
-      fade(@ai-primary, 6%) 1px,
-      transparent 0
-    ),
-    radial-gradient(
-      circle at 100% 100%,
-      fade(@ai-primary, 4%) 0,
-      transparent 42%
-    );
-  background-size:
-    20px 20px,
-    100% 100%;
+  background: @ai-bg-chat;
 
   &::-webkit-scrollbar {
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: fade(@ai-text-muted, 40%);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: @ai-radius-full;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: fade(@ai-primary, 45%);
+    background: rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -107,36 +94,37 @@ watch(
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 200px;
-  padding: 24px;
+  min-height: 240px;
+  padding: 32px 24px;
   text-align: center;
 
   .empty-icon {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: @ai-radius-full;
-    background: @ai-gradient-soft;
-    color: @ai-primary;
+    background: @ai-gradient;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
-    border: 1px dashed fade(@ai-primary, 30%);
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
   }
 
   .empty-title {
-    margin: 0 0 6px;
-    font-size: 15px;
+    margin: 0 0 8px;
+    font-size: 18px;
     font-weight: 600;
     color: @ai-text;
+    letter-spacing: -0.02em;
   }
 
   .empty-desc {
     margin: 0;
-    font-size: 13px;
-    color: @ai-text-muted;
-    line-height: 1.5;
-    max-width: 260px;
+    font-size: 14px;
+    color: @ai-text-secondary;
+    line-height: 1.6;
+    max-width: 280px;
   }
 }
 
@@ -146,12 +134,13 @@ watch(
   gap: 10px;
   color: @ai-text-secondary;
   font-size: 13px;
-  padding: 10px 12px;
-  background: rgba(255, 255, 255, 0.7);
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.8);
   border-radius: @ai-radius-md;
   border: 1px solid @ai-border;
   width: fit-content;
   margin-bottom: 8px;
+  margin-left: 44px;
 }
 
 .typing-dots {

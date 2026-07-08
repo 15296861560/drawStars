@@ -197,6 +197,7 @@ export async function sendMessageStream(
     type: payload.type || 'text'
   }
   if (payload.fileExcerpt) body.fileExcerpt = payload.fileExcerpt
+  if (payload.fileMeta) body.fileMeta = payload.fileMeta
 
   const resp = await fetch(`${base}/api/ai-assistant/chat/stream`, {
     method: 'POST',
@@ -266,6 +267,7 @@ export async function sendMessage(
     type: payload.type || 'text'
   }
   if (payload.fileExcerpt) body.fileExcerpt = payload.fileExcerpt
+  if (payload.fileMeta) body.fileMeta = payload.fileMeta
 
   const res = await $axios(body, '/api/ai-assistant/chat')
   return unwrap<AiChatResponse>(res)

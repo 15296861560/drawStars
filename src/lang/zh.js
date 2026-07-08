@@ -249,6 +249,7 @@ export default {
     uploadFile: '上传文件',
     listening: '正在聆听',
     voiceFailed: '语音识别失败，已使用 Mock 文本',
+    uploadFailed: '文件上传失败，请重试',
     thinking: '正在思考…',
     thinkingProcess: '思考过程',
     tryHint: '试试',

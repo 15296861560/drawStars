@@ -251,6 +251,7 @@ export default {
     uploadFile: 'Upload file',
     listening: 'Listening',
     voiceFailed: 'Speech recognition failed, using mock text',
+    uploadFailed: 'File upload failed, please try again',
     thinking: 'Thinking…',
     thinkingProcess: 'Reasoning',
     tryHint: 'Try',

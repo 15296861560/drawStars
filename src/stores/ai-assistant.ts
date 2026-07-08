@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import type {
   AiConversation,
   AiFabPosition,
+  AiFilePayload,
   AiMessage,
   AiPanelLayout
 } from '@/types/ai-assistant'
@@ -115,7 +116,13 @@ export const aiAssistantStore = defineStore(
       }
 
       let fileExcerpt: string | undefined
+      let fileMeta: AiFilePayload | undefined
       if (options?.file) {
+        fileMeta = {
+          name: options.file.name,
+          size: options.file.size,
+          mimeType: options.file.type || 'application/octet-stream'
+        }
         const uploaded = await aiApi.uploadFile(options.file)
         fileExcerpt = uploaded.excerpt
       }
@@ -124,7 +131,8 @@ export const aiAssistantStore = defineStore(
         conversationId: convId,
         content: content.trim() || options?.file?.name || '',
         type: options?.type ?? (options?.file ? 'file' : 'text'),
-        fileExcerpt
+        fileExcerpt,
+        fileMeta
       }
 
       sending.value = true
@@ -143,6 +151,7 @@ export const aiAssistantStore = defineStore(
         role: 'user',
         type: payload.type ?? 'text',
         content: payload.content,
+        payload: fileMeta,
         createdAt: new Date().toISOString()
       })
 
