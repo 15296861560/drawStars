@@ -4,7 +4,14 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-pnpmfileChecksum: sha256-HoRXdpZ/TpPebRAKysGcNRvrZ9MEHkOoCqz+6tOHmCU=
+overrides:
+  '@intlify/shared': 11.4.2
+  '@intlify/message-compiler': 11.4.2
+  '@intlify/vite-plugin-vue-i18n>@intlify/shared': 11.4.2
+  '@intlify/bundle-utils>@intlify/shared': 11.4.2
+  '@intlify/bundle-utils>@intlify/message-compiler': 11.4.2
+
+pnpmfileChecksum: 2hqnvhzaltbsvt5le6cwq3qcfq
 
 importers:
 
@@ -60,7 +67,7 @@ importers:
         version: 4.6.4
       less-loader:
         specifier: ^11.1.0
-        version: 11.1.0(less@4.6.4)(webpack@5.105.4(postcss@8.5.8))
+        version: 11.1.0(less@4.6.4)(webpack@5.105.4(postcss@8.5.14))
       lint:
         specifier: ^1.2.2
         version: 1.2.2(@types/node@16.11.68)
@@ -87,7 +94,7 @@ importers:
         version: 1.15.7
       style-resources-loader:
         specifier: ^1.5.0
-        version: 1.5.0(webpack@5.105.4(postcss@8.5.8))
+        version: 1.5.0(webpack@5.105.4(postcss@8.5.14))
       tsparticles:
         specifier: ^2.6.0
         version: 2.6.0
@@ -131,6 +138,9 @@ importers:
       '@vitejs/plugin-vue-jsx':
         specifier: ^2.0.1
         version: 2.0.1(vite@3.1.8(less@4.6.4)(terser@5.47.1))(vue@3.5.34(typescript@5.6.2))
+      autoprefixer:
+        specifier: ^10.5.4
+        version: 10.5.4(postcss@8.5.14)
       babel-eslint:
         specifier: ^10.1.0
         version: 10.1.0(eslint@8.57.0)
@@ -149,6 +159,9 @@ importers:
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.14
       prettier:
         specifier: 3.3.3
         version: 3.3.3
@@ -1141,6 +1154,13 @@ packages:
     resolution: {integrity: sha512-mK8yQmJJy369cz0x2LJwhKD72tkTObBwhgR+3U8Ts8+wCSspED3ydXlWpsv1ZQ9g2iq4b+7EWli+ap2nTeUQog==}
     engines: {node: '>=16.0.0'}
 
+  autoprefixer@10.5.4:
+    resolution: {integrity: sha512-MaU0U/za7N3r6brxD4YB/l4NSrFzLPlANv6wEuQVaIPlD3L4W9rFcQPbL/EilY9BHhHvhfcz3gInDLrEtWT4EA==}
+    engines: {node: ^10 || ^12 || >=14}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
+
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
@@ -1172,6 +1192,11 @@ packages:
 
   baseline-browser-mapping@2.10.29:
     resolution: {integrity: sha512-Asa2krT+XTPZINCS+2QcyS8WTkObE77RwkydwF7h6DmnKqbvlalz93m/dnphUyCa6SWSP51VgtEUf2FN+gelFQ==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
+  baseline-browser-mapping@2.11.6:
+    resolution: {integrity: sha512-69D/imtToCsIcAl8WBS2YaRwA4jO/j0HhU+hELqMEu9f54MoUtI6+XH5mrKU8rEFNEk/Ui1I2MK4/JkWacclGw==}
     engines: {node: '>=6.0.0'}
     hasBin: true
 
@@ -1209,6 +1234,11 @@ packages:
 
   browserslist@4.28.2:
     resolution: {integrity: sha512-48xSriZYYg+8qXna9kwqjIVzuQxi+KYWp2+5nCYnYKPTr0LvD89Jqk2Or5ogxz0NUMfIjhh2lIUX/LyX9B4oIg==}
+    engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
+    hasBin: true
+
+  browserslist@4.28.7:
+    resolution: {integrity: sha512-JxV13hNrFxqjOc8alRbq9dK1MM79NEXYpma2B2J4wAtpWS5zIEIKqWPGCl7N4o7Uc7B7itylh7SuDujATRyyTw==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
@@ -1252,6 +1282,9 @@ packages:
 
   caniuse-lite@1.0.30001792:
     resolution: {integrity: sha512-hVLMUZFgR4JJ6ACt1uEESvQN1/dBVqPAKY0hgrV70eN3391K6juAfTjKZLKvOMsx8PxA7gsY1/tLMMTcfFLLpw==}
+
+  caniuse-lite@1.0.30001806:
+    resolution: {integrity: sha512-72Cuvd95zbSYPKq6Fhg8eDJRlzgWDf7/mtoZv6Qe/DYNCEBdNxoA3+rZAU2ZhGCpZlns3EssFavaZomckT5Uuw==}
 
   cfb@1.2.2:
     resolution: {integrity: sha512-KfdUZsSOw19/ObEWasvBP/Ac4reZvAGauZhs6S/gqNhXhI7cKwvlH7ulj+dOEYnca4bm4SGo8C1bTAQvnTjgQA==}
@@ -1567,6 +1600,9 @@ packages:
 
   electron-to-chromium@1.5.355:
     resolution: {integrity: sha512-LUPZhKzZPYSPme1jEYohpkA+ybYCJztr1quAdBd7E7h3+VOBVcKkwwtBJu41nrjawrRzfb8mtMfzWozoaK0ZIQ==}
+
+  electron-to-chromium@1.5.398:
+    resolution: {integrity: sha512-AsvhAxopJGh6museTDMIjn6JpDYOfgu4RLlygomt87MUwBUqTfd/1EiPtx10/LZE8xpTvkP2E9Gafq7lkLtodQ==}
 
   element-plus@2.14.0:
     resolution: {integrity: sha512-POgH+TtoreaEKWqYYAVQyE6i8rQMEFqAEublyF29dBA5yASWPLKY6EzfeqBTr2Uv26mPss4vSrMrNPyaK7LX5w==}
@@ -1997,6 +2033,9 @@ packages:
   frac@1.1.2:
     resolution: {integrity: sha512-w/XBfkibaTl3YDqASwfDUqkna4Z2p9cFSr1aHDt0WoMTECnRfBOv2WArlZILlqgWlmdIlALXGpM2AOhEk5W3IA==}
     engines: {node: '>=0.8'}
+
+  fraction.js@5.3.4:
+    resolution: {integrity: sha512-1X1NTtiJphryn/uLQz3whtY6jK3fTqoE3ohKs0tT+Ujr1W59oopxmoEh7Lu5p6vBaPbgoM0bzveAW4Qi5RyWDQ==}
 
   fragment-cache@0.2.1:
     resolution: {integrity: sha512-GMBAbW9antB8iZRHLoGw0b3HANt57diZYFO/HL1JGIC1MjKrdmhxvrJbupnVvpys0zsz7yBApXdQyfepKly2kA==}
@@ -2757,11 +2796,6 @@ packages:
   nan@2.26.2:
     resolution: {integrity: sha512-0tTvBTYkt3tdGw22nrAy50x7gpbGCCFH3AFcyS5WiUu7Eu4vWlri1woE6qHBSfy11vksDqkiwjOnlR7WV8G1Hw==}
 
-  nanoid@3.3.11:
-    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.12:
     resolution: {integrity: sha512-ZB9RH/39qpq5Vu6Y+NmUaFhQR6pp+M2Xt76XBnEwDaGcVAqhlvxrl3B2bKS5D3NH3QR76v3aSrKaF/Kiy7lEtQ==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -2807,6 +2841,10 @@ packages:
 
   node-releases@2.0.44:
     resolution: {integrity: sha512-5WUyunoPMsvvEhS8AxHtRzP+oA8UCkJ7YRxatWKjngndhDGLiqEVAQKWjFAiAiuL8zMRGzGSJxFnLetoa43qGQ==}
+
+  node-releases@2.0.51:
+    resolution: {integrity: sha512-wRNIrw4DmVLKQlbgOMdkMx27Wrpzes2hh5Jtbi2bjPd+4wJstWIqP5A+lscnqbm0xxmT5Bpg8Lec5ItEBwx6BQ==}
+    engines: {node: '>=18'}
 
   noop2@2.0.0:
     resolution: {integrity: sha512-2bu7Pfpf6uNqashWV8P7yYeutQ3XkLY9MBSYI5sOAFZxuWcW/uJfLbKj5m6SvMDT9U1Y0C+7UFG+7VSiIdXjtA==}
@@ -3065,10 +3103,6 @@ packages:
 
   postcss@8.5.14:
     resolution: {integrity: sha512-SoSL4+OSEtR99LHFZQiJLkT59C5B1amGO1NzTwj7TT1qCUgUO6hxOvzkOYxD+vMrXBM3XJIKzokoERdqQq/Zmg==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.8:
-    resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -5258,6 +5292,15 @@ snapshots:
       toml-eslint-parser: 0.10.1
       yaml-eslint-parser: 1.3.2
 
+  autoprefixer@10.5.4(postcss@8.5.14):
+    dependencies:
+      browserslist: 4.28.7
+      caniuse-lite: 1.0.30001806
+      fraction.js: 5.3.4
+      picocolors: 1.1.1
+      postcss: 8.5.14
+      postcss-value-parser: 4.2.0
+
   available-typed-arrays@1.0.7:
     dependencies:
       possible-typed-array-names: 1.1.0
@@ -5305,6 +5348,8 @@ snapshots:
   baseline-browser-mapping@2.10.11: {}
 
   baseline-browser-mapping@2.10.29: {}
+
+  baseline-browser-mapping@2.11.6: {}
 
   big.js@5.2.2: {}
 
@@ -5359,6 +5404,14 @@ snapshots:
       electron-to-chromium: 1.5.355
       node-releases: 2.0.44
       update-browserslist-db: 1.2.3(browserslist@4.28.2)
+
+  browserslist@4.28.7:
+    dependencies:
+      baseline-browser-mapping: 2.11.6
+      caniuse-lite: 1.0.30001806
+      electron-to-chromium: 1.5.398
+      node-releases: 2.0.51
+      update-browserslist-db: 1.2.3(browserslist@4.28.7)
 
   buffer-from@1.1.2: {}
 
@@ -5425,6 +5478,8 @@ snapshots:
   caniuse-lite@1.0.30001781: {}
 
   caniuse-lite@1.0.30001792: {}
+
+  caniuse-lite@1.0.30001806: {}
 
   cfb@1.2.2:
     dependencies:
@@ -5763,6 +5818,8 @@ snapshots:
   electron-to-chromium@1.5.328: {}
 
   electron-to-chromium@1.5.355: {}
+
+  electron-to-chromium@1.5.398: {}
 
   element-plus@2.14.0(vue@3.5.34(typescript@5.6.2)):
     dependencies:
@@ -6252,6 +6309,8 @@ snapshots:
 
   frac@1.1.2: {}
 
+  fraction.js@5.3.4: {}
+
   fragment-cache@0.2.1:
     dependencies:
       map-cache: 0.2.2
@@ -6696,7 +6755,7 @@ snapshots:
 
   jest-worker@27.4.5:
     dependencies:
-      '@types/node': 25.7.0
+      '@types/node': 16.11.68
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -6772,11 +6831,11 @@ snapshots:
 
   leaflet@1.9.4: {}
 
-  less-loader@11.1.0(less@4.6.4)(webpack@5.105.4(postcss@8.5.8)):
+  less-loader@11.1.0(less@4.6.4)(webpack@5.105.4(postcss@8.5.14)):
     dependencies:
       klona: 2.0.6
       less: 4.6.4
-      webpack: 5.105.4(postcss@8.5.8)
+      webpack: 5.105.4(postcss@8.5.14)
 
   less@4.6.4:
     dependencies:
@@ -7052,8 +7111,6 @@ snapshots:
 
   nan@2.26.2: {}
 
-  nanoid@3.3.11: {}
-
   nanoid@3.3.12: {}
 
   nanomatch@1.2.13:
@@ -7112,6 +7169,8 @@ snapshots:
   node-releases@2.0.36: {}
 
   node-releases@2.0.44: {}
+
+  node-releases@2.0.51: {}
 
   noop2@2.0.0: {}
 
@@ -7311,29 +7370,29 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-import@15.1.0(postcss@8.5.8):
+  postcss-import@15.1.0(postcss@8.5.14):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.11
 
-  postcss-js@4.1.0(postcss@8.5.8):
+  postcss-js@4.1.0(postcss@8.5.14):
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.5.8
+      postcss: 8.5.14
 
-  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.8)(yaml@2.8.3):
+  postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.14)(yaml@2.8.3):
     dependencies:
       lilconfig: 3.1.3
     optionalDependencies:
       jiti: 1.21.7
-      postcss: 8.5.8
+      postcss: 8.5.14
       yaml: 2.8.3
 
-  postcss-nested@6.2.0(postcss@8.5.8):
+  postcss-nested@6.2.0(postcss@8.5.14):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
       postcss-selector-parser: 6.1.2
 
   postcss-selector-parser@6.1.2:
@@ -7346,12 +7405,6 @@ snapshots:
   postcss@8.5.14:
     dependencies:
       nanoid: 3.3.12
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.8:
-    dependencies:
-      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -7775,13 +7828,13 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  style-resources-loader@1.5.0(webpack@5.105.4(postcss@8.5.8)):
+  style-resources-loader@1.5.0(webpack@5.105.4(postcss@8.5.14)):
     dependencies:
       glob: 7.2.3
       loader-utils: 2.0.4
       schema-utils: 2.7.1
       tslib: 2.8.1
-      webpack: 5.105.4(postcss@8.5.8)
+      webpack: 5.105.4(postcss@8.5.14)
 
   sucrase@3.35.1:
     dependencies:
@@ -7887,11 +7940,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.8
-      postcss-import: 15.1.0(postcss@8.5.8)
-      postcss-js: 4.1.0(postcss@8.5.8)
-      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.8)(yaml@2.8.3)
-      postcss-nested: 6.2.0(postcss@8.5.8)
+      postcss: 8.5.14
+      postcss-import: 15.1.0(postcss@8.5.14)
+      postcss-js: 4.1.0(postcss@8.5.14)
+      postcss-load-config: 6.0.1(jiti@1.21.7)(postcss@8.5.14)(yaml@2.8.3)
+      postcss-nested: 6.2.0(postcss@8.5.14)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.11
       sucrase: 3.35.1
@@ -7910,15 +7963,15 @@ snapshots:
       mkdirp: 1.0.4
       yallist: 4.0.0
 
-  terser-webpack-plugin@5.6.0(postcss@8.5.8)(webpack@5.105.4(postcss@8.5.8)):
+  terser-webpack-plugin@5.6.0(postcss@8.5.14)(webpack@5.105.4(postcss@8.5.14)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       jest-worker: 27.4.5
       schema-utils: 4.3.3
       terser: 5.47.1
-      webpack: 5.105.4(postcss@8.5.8)
+      webpack: 5.105.4(postcss@8.5.14)
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
 
   terser@5.47.1:
     dependencies:
@@ -8307,6 +8360,12 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
+  update-browserslist-db@1.2.3(browserslist@4.28.7):
+    dependencies:
+      browserslist: 4.28.7
+      escalade: 3.2.0
+      picocolors: 1.1.1
+
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
@@ -8360,7 +8419,7 @@ snapshots:
   vite@3.1.8(less@4.6.4)(terser@5.47.1):
     dependencies:
       esbuild: 0.15.18
-      postcss: 8.5.8
+      postcss: 8.5.14
       resolve: 1.22.11
       rollup: 2.78.0
     optionalDependencies:
@@ -8446,7 +8505,7 @@ snapshots:
 
   webpack-sources@3.4.1: {}
 
-  webpack@5.105.4(postcss@8.5.8):
+  webpack@5.105.4(postcss@8.5.14):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.9
@@ -8470,7 +8529,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
-      terser-webpack-plugin: 5.6.0(postcss@8.5.8)(webpack@5.105.4(postcss@8.5.8))
+      terser-webpack-plugin: 5.6.0(postcss@8.5.14)(webpack@5.105.4(postcss@8.5.14))
       watchpack: 2.5.1
       webpack-sources: 3.4.1
     transitivePeerDependencies:

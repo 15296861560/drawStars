@@ -180,4 +180,4 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
   })
 }
 
-export { $axios, $axiosGet }
+export { $axios, $axiosGet, requests }
