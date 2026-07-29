@@ -12,18 +12,18 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "manageHomePage",
+      homepage: 'manageHomePage',
       routes: [
-        { name: "notice", imgName: "notice" },
-        { name: "logs", imgName: "log" },
-        { name: "app", imgName: "app" },
-      ],
-    };
-  },
-};
+        { name: 'notice', imgName: 'notice' },
+        { name: 'logs', imgName: 'log' },
+        { name: 'app', imgName: 'app' }
+      ]
+    }
+  }
+}
 </script>

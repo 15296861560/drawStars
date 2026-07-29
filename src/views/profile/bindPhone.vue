@@ -10,7 +10,9 @@
   <div class="bind-phone-container">
     <div class="bind-phone-captcha" v-if="curStep === 'captcha'">
       <div class="bind-phone-row">
-        验证码将发送到手机<span class="font-bold">{{ userInfo.getUserInfo.phone }}</span>
+        验证码将发送到手机<span class="font-bold">{{
+          userInfo.getUserInfo.phone
+        }}</span>
       </div>
       <div class="bind-phone-row">
         <el-input v-model="captcha" placeholder="请输入验证码">

@@ -3,5 +3,5 @@
  * @param url
  */
 export const getAssetsImgFile = (url: string) => {
-  return new URL(`@/assets/img/${url}`, import.meta.url).href;
-};
+  return new URL(`@/assets/img/${url}`, import.meta.url).href
+}

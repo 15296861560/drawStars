@@ -4,7 +4,10 @@ export interface AiCapabilityHandler {
   id: string
   /** 匹配用户输入 */
   match: (text: string) => boolean
-  buildReply: (text: string, conversationId: string) => Omit<AiMessage, 'id' | 'createdAt'>
+  buildReply: (
+    text: string,
+    conversationId: string
+  ) => Omit<AiMessage, 'id' | 'createdAt'>
 }
 
 const uid = () => `msg-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
@@ -107,7 +110,8 @@ const capabilities: AiCapabilityHandler[] = [
       payload: {
         name: 'analysis-result.xlsx',
         size: 102400,
-        mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        mimeType:
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         url: '#'
       }
     })

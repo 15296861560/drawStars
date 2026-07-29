@@ -19,7 +19,8 @@ export function useBoundaryResize(options: {
 
   const onMove = (e: MouseEvent) => {
     if (!resizing) return
-    const maxW = options.maxWidth?.() ?? window.innerWidth - options.position.value.x - 8
+    const maxW =
+      options.maxWidth?.() ?? window.innerWidth - options.position.value.x - 8
     const maxH =
       options.maxHeight?.() ?? window.innerHeight - options.position.value.y - 8
     const w = Math.min(Math.max(minW, startW + e.clientX - startX), maxW)

@@ -103,137 +103,137 @@ import {
   reactive,
   defineAsyncComponent,
   watchEffect,
-  onMounted,
-} from "vue";
-import { useVModels } from "@vueuse/core";
-import type { AnyObject } from "@/types/global";
-import GridMap from "@/components/base/map/GridMap.vue";
+  onMounted
+} from 'vue'
+import { useVModels } from '@vueuse/core'
+import type { AnyObject } from '@/types/global'
+import GridMap from '@/components/base/map/GridMap.vue'
 
 const props = defineProps<{
-  field: AnyObject;
-  valueModel?: string;
-  search?: boolean;
-  disabled?: boolean;
-}>();
+  field: AnyObject
+  valueModel?: string
+  search?: boolean
+  disabled?: boolean
+}>()
 
 const emit = defineEmits<{
-  (e: "update:valueModel", value: string): void;
-}>();
+  (e: 'update:valueModel', value: string): void
+}>()
 
-const { valueModel } = useVModels(props, emit);
+const { valueModel } = useVModels(props, emit)
 
-const modelValue = ref("");
+const modelValue = ref('')
 
 const state = reactive({
   isShowMapDialog: false,
   isShowLatLngDialog: false,
   formInfo: {
-    code: "",
-    id: "",
-    name: "",
-    pcode: "",
-    pid: "",
-    point: "",
+    code: '',
+    id: '',
+    name: '',
+    pcode: '',
+    pid: '',
+    point: ''
   },
   latLngFormInfo: {
     centerPoint: {
-      lat: "",
-      lng: "",
+      lat: '',
+      lng: ''
     },
-    pointListString: "",
+    pointListString: '',
     point: [],
-    type: "",
-  },
-});
+    type: ''
+  }
+})
 
-const parseLatLng = (inputString) => {
+const parseLatLng = inputString => {
   // 清理输入，统一使用英文逗号和分号，并去掉方括号
   const cleanedInput = inputString
-    .replace(/[，；;]/g, ",")
-    .replace(/\[|\]/g, "");
+    .replace(/[，；;]/g, ',')
+    .replace(/\[|\]/g, '')
 
   // 将字符串分割成多个坐标对
-  const pairs = cleanedInput.split(",");
+  const pairs = cleanedInput.split(',')
 
   // 创建一个数组来保存转换后的对象
-  const pointList = [];
+  const pointList = []
 
   // 遍历坐标对，并构建对象
   for (let i = 0; i < pairs.length; i += 2) {
-    const lat = parseFloat(pairs[i]);
-    const lng = parseFloat(pairs[i + 1]);
+    const lat = parseFloat(pairs[i])
+    const lng = parseFloat(pairs[i + 1])
     if (!isNaN(lat) && !isNaN(lng)) {
-      pointList.push({ lat, lng });
+      pointList.push({ lat, lng })
     }
   }
   // 构建最终的 JSON 结构
-  return pointList;
-};
-const generateInputString = (result) => {
+  return pointList
+}
+const generateInputString = result => {
   // 验证结果是否具有rangePoint属性并且是一个数组
   if (!result || !Array.isArray(result)) {
-    return "";
+    return ''
   }
 
   // 构建输入字符串
-  const pointStrings = result.map((point) => {
-    return `[${point.lat},${point.lng}]`;
-  });
+  const pointStrings = result.map(point => {
+    return `[${point.lat},${point.lng}]`
+  })
 
   // 使用分号连接各个点
-  return pointStrings.join(";");
-};
+  return pointStrings.join(';')
+}
 
 const handleOpenLatLngDialog = () => {
   if (state.latLngFormInfo.type === 1) {
-    state.latLngFormInfo.centerPoint = state.latLngFormInfo.point[0];
-    state.latLngFormInfo.pointListString = "";
+    state.latLngFormInfo.centerPoint = state.latLngFormInfo.point[0]
+    state.latLngFormInfo.pointListString = ''
   } else {
     state.latLngFormInfo.pointListString =
       state.formInfo.point &&
-      generateInputString(JSON.parse(state.formInfo.point));
-    state.latLngFormInfo.centerPoint = { lat: "", lng: "" };
+      generateInputString(JSON.parse(state.formInfo.point))
+    state.latLngFormInfo.centerPoint = { lat: '', lng: '' }
   }
-  state.isShowLatLngDialog = true;
-};
+  state.isShowLatLngDialog = true
+}
 
-const handleCommonPoint = (data) => {
-  state.latLngFormInfo.point = data.point;
-  state.formInfo.point = JSON.stringify(data.point);
+const handleCommonPoint = data => {
+  state.latLngFormInfo.point = data.point
+  state.formInfo.point = JSON.stringify(data.point)
   state.latLngFormInfo.pointListString = generateInputString(
-    JSON.parse(state.formInfo.point),
-  );
-  const point = Array.isArray(data.point) ? data.point[0] : data.point;
-  modelValue.value = `${point.lat},${point.lng}`;
-};
+    JSON.parse(state.formInfo.point)
+  )
+  const point = Array.isArray(data.point) ? data.point[0] : data.point
+  modelValue.value = `${point.lat},${point.lng}`
+}
 
-const handleSetPointInfo = (data) => {
-  state.isShowMapDialog = false;
-  state.latLngFormInfo.type = data.type;
+const handleSetPointInfo = data => {
+  state.isShowMapDialog = false
+  state.latLngFormInfo.type = data.type
   switch (data.type) {
     case 1:
-      state.latLngFormInfo.centerPoint = data.centerPoint;
-      state.latLngFormInfo.point[0] = data.centerPoint;
-      state.formInfo.point = JSON.stringify(data.centerPoint);
-      modelValue.value = `${data.centerPoint.lat},${data.centerPoint.lng}`;
-      state.latLngFormInfo.pointListString = "";
-      break;
+      state.latLngFormInfo.centerPoint = data.centerPoint
+      state.latLngFormInfo.point[0] = data.centerPoint
+      state.formInfo.point = JSON.stringify(data.centerPoint)
+      modelValue.value = `${data.centerPoint.lat},${data.centerPoint.lng}`
+      state.latLngFormInfo.pointListString = ''
+      break
     case 2:
-      handleCommonPoint(data);
-      break;
+      handleCommonPoint(data)
+      break
     case 3:
-      handleCommonPoint(data);
-      break;
+      handleCommonPoint(data)
+      break
     default:
-      state.formInfo.point = "";
-      state.latLngFormInfo.point = [];
+      state.formInfo.point = ''
+      state.latLngFormInfo.point = []
       state.latLngFormInfo.centerPoint = {
-        lat: "",
-        lng: "",
-      };
-      state.latLngFormInfo.pointListString = "";
-      modelValue.value = "";
-      break;
+        lat: '',
+        lng: ''
+      }
+      state.latLngFormInfo.pointListString = ''
+      modelValue.value = ''
+      break
   }
 
   valueModel.value = JSON.stringify({
@@ -241,34 +241,34 @@ const handleSetPointInfo = (data) => {
     point:
       state.latLngFormInfo.type === 1
         ? [state.latLngFormInfo.centerPoint]
-        : state.latLngFormInfo.point,
-  });
-};
+        : state.latLngFormInfo.point
+  })
+}
 
 const handleSubmitLatLng = () => {
-  state.isShowLatLngDialog = false;
+  state.isShowLatLngDialog = false
   if (
     state.latLngFormInfo.centerPoint?.lng &&
     state.latLngFormInfo.centerPoint?.lat
   ) {
-    state.formInfo.point = JSON.stringify(state.latLngFormInfo.centerPoint);
-    modelValue.value = `${state.latLngFormInfo.centerPoint?.lat},${state.latLngFormInfo.centerPoint?.lng}`;
-    state.latLngFormInfo.type = 1;
+    state.formInfo.point = JSON.stringify(state.latLngFormInfo.centerPoint)
+    modelValue.value = `${state.latLngFormInfo.centerPoint?.lat},${state.latLngFormInfo.centerPoint?.lng}`
+    state.latLngFormInfo.type = 1
   } else {
     state.latLngFormInfo.centerPoint = {
-      lat: "",
-      lng: "",
-    };
-    state.formInfo.point = null;
-    modelValue.value = "";
+      lat: '',
+      lng: ''
+    }
+    state.formInfo.point = null
+    modelValue.value = ''
   }
   if (state.latLngFormInfo.pointListString) {
     state.latLngFormInfo.point = parseLatLng(
-      state.latLngFormInfo.pointListString,
-    );
-    state.formInfo.point = JSON.stringify(state.latLngFormInfo.point);
-    modelValue.value = `${state.latLngFormInfo.point[0]?.lat},${state.latLngFormInfo.point[0]?.lng}`;
-    state.latLngFormInfo.type = 3;
+      state.latLngFormInfo.pointListString
+    )
+    state.formInfo.point = JSON.stringify(state.latLngFormInfo.point)
+    modelValue.value = `${state.latLngFormInfo.point[0]?.lat},${state.latLngFormInfo.point[0]?.lng}`
+    state.latLngFormInfo.type = 3
   }
 
   valueModel.value = JSON.stringify({
@@ -276,22 +276,22 @@ const handleSubmitLatLng = () => {
     point:
       state.latLngFormInfo.type === 1
         ? [state.latLngFormInfo.centerPoint]
-        : state.latLngFormInfo.point,
-  });
-};
+        : state.latLngFormInfo.point
+  })
+}
 
 onMounted(() => {
   if (valueModel.value) {
-    const data = JSON.parse(valueModel.value);
-    state.formInfo.point = JSON.stringify(data?.point);
-    modelValue.value = `${data.point[0].lat},${data.point[0].lng}`;
-    Object.assign(state.latLngFormInfo, data);
+    const data = JSON.parse(valueModel.value)
+    state.formInfo.point = JSON.stringify(data?.point)
+    modelValue.value = `${data.point[0].lat},${data.point[0].lng}`
+    Object.assign(state.latLngFormInfo, data)
   }
-});
+})
 
 defineExpose({
-  modelValue,
-});
+  modelValue
+})
 </script>
 <style scoped lang="less">
 .simple-map-box {

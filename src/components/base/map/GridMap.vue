@@ -8,23 +8,23 @@ import {
   nextTick,
   ref,
   onBeforeUnmount,
-  toRefs,
-} from "vue";
-import type { AnyObject } from "@/types/global";
-import { mapInit, refreshLayer } from "@/utils/hooks/useLeafletMap";
-import "leaflet/dist/leaflet.css";
-import "leaflet.wmts";
-import "@geoman-io/leaflet-geoman-free";
-import "@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css";
+  toRefs
+} from 'vue'
+import type { AnyObject } from '@/types/global'
+import { mapInit, refreshLayer } from '@/utils/hooks/useLeafletMap'
+import 'leaflet/dist/leaflet.css'
+import 'leaflet.wmts'
+import '@geoman-io/leaflet-geoman-free'
+import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css'
 
 const props = defineProps<{
-  latLngInfo: AnyObject;
-}>();
-const { latLngInfo } = toRefs(props);
+  latLngInfo: AnyObject
+}>()
+const { latLngInfo } = toRefs(props)
 
 const emit = defineEmits<{
-  (e: "set-point-info", value: AnyObject): void;
-}>();
+  (e: 'set-point-info', value: AnyObject): void
+}>()
 
 const state = reactive<AnyObject>({
   Map: null,
@@ -39,44 +39,42 @@ const state = reactive<AnyObject>({
   polyline: null,
   pointInfo: {
     centerPoint: {
-      lat: "",
-      lng: "",
+      lat: '',
+      lng: ''
     },
     point: [],
-    type: "",
-  },
-});
+    type: ''
+  }
+})
 
-const iconAddr = new URL(
-  "@/assets/img/map/icon_dot_green.png",
-  import.meta.url,
-).href;
-const RefMap = ref(null);
+const iconAddr = new URL('@/assets/img/map/icon_dot_green.png', import.meta.url)
+  .href
+const RefMap = ref(null)
 
 const refreshMap = (layerName: string, isFitView?: boolean) => {
-  state[layerName] = refreshLayer(state.Map, state[layerName], isFitView);
-};
+  state[layerName] = refreshLayer(state.Map, state[layerName], isFitView)
+}
 
 //返回地图源
-const getMap = () => state.Map;
+const getMap = () => state.Map
 
 // 标点
-const drawing = ref(false);
+const drawing = ref(false)
 const toggleMarkerMode = () => {
-  polylineDrawing.value = false;
-  polygonDrawing.value = false;
-  drawing.value = !drawing.value;
+  polylineDrawing.value = false
+  polygonDrawing.value = false
+  drawing.value = !drawing.value
   if (drawing.value) {
-    handleRemoveLayer();
+    handleRemoveLayer()
     // 点击地图时的事件处理函数
-    state.Map.on("click", function (e: any) {
+    state.Map.on('click', function (e: any) {
       // 清除特定的图层
       if (state.marker) {
-        state.Map.removeLayer(state.marker);
+        state.Map.removeLayer(state.marker)
       }
       // 获取点击位置的经纬度
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
+      const lat = e.latlng.lat
+      const lng = e.latlng.lng
 
       // // 创建一个新的标记并添加到地图上
       state.marker = L.marker([lat, lng], {
@@ -86,198 +84,198 @@ const toggleMarkerMode = () => {
           shadowSize: [20, 20],
           iconAnchor: [20, 20],
           shadowAnchor: [4, 62],
-          popupAnchor: [-9, -16],
-        }),
-      }).addTo(state.Map);
+          popupAnchor: [-9, -16]
+        })
+      }).addTo(state.Map)
 
-      state.pointInfo.centerPoint.lng = lng;
-      state.pointInfo.centerPoint.lat = lat;
-      state.pointInfo.type = 1;
-    });
+      state.pointInfo.centerPoint.lng = lng
+      state.pointInfo.centerPoint.lat = lat
+      state.pointInfo.type = 1
+    })
   } else {
-    state.Map.off("click");
+    state.Map.off('click')
   }
-};
+}
 
 const disabledEditClick = (event: any) => {
-  state.polygon.pm.disable();
-  const coordinates = event.target._latlngs;
-  state.pointInfo.point = coordinates.flat();
-};
+  state.polygon.pm.disable()
+  const coordinates = event.target._latlngs
+  state.pointInfo.point = coordinates.flat()
+}
 const editDblclick = () => {
   if (polygonDrawing.value) {
-    state.polygon.pm.enable();
+    state.polygon.pm.enable()
   } else {
-    state.polyline.pm.enable();
+    state.polyline.pm.enable()
   }
-};
+}
 
 // 处理多边形数据回显
 const convertCoordinatesToDesiredFormat = (coordinates: AnyObject) => {
-  return coordinates?.map((point: AnyObject) => [point.lat, point.lng]);
-};
+  return coordinates?.map((point: AnyObject) => [point.lat, point.lng])
+}
 
 // 画线
-const polylineDrawing = ref(false);
+const polylineDrawing = ref(false)
 const togglePolylineMode = () => {
-  drawing.value = false;
-  polygonDrawing.value = false;
-  state.Map.off("click");
-  polylineDrawing.value = !polylineDrawing.value;
+  drawing.value = false
+  polygonDrawing.value = false
+  state.Map.off('click')
+  polylineDrawing.value = !polylineDrawing.value
   if (polylineDrawing.value) {
-    openDraw("Line");
+    openDraw('Line')
   } else {
-    state.Map.pm.disableDraw("Line");
+    state.Map.pm.disableDraw('Line')
   }
-};
+}
 
 // 画面
-const polygonDrawing = ref(false);
+const polygonDrawing = ref(false)
 const togglePolygonMode = () => {
-  drawing.value = false;
-  polylineDrawing.value = false;
-  state.Map.off("click");
-  polygonDrawing.value = !polygonDrawing.value;
+  drawing.value = false
+  polylineDrawing.value = false
+  state.Map.off('click')
+  polygonDrawing.value = !polygonDrawing.value
   if (polygonDrawing.value) {
-    openDraw("Polygon");
+    openDraw('Polygon')
   } else {
-    state.Map.pm.disableDraw("Polygon");
+    state.Map.pm.disableDraw('Polygon')
   }
-};
+}
 
 // 开启绘制功能
 const openDraw = (type: string) => {
-  const { point } = latLngInfo.value;
-  mapLoad();
+  const { point } = latLngInfo.value
+  mapLoad()
 
   if (point.length) {
-    state.Map.pm.enableGlobalEditMode();
+    state.Map.pm.enableGlobalEditMode()
   } else {
     // 启用绘制模式
     state.Map.pm.enableDraw(type, {
       snappable: true,
-      snapDistance: 20,
-    });
+      snapDistance: 20
+    })
   }
   // 启用绘制模式
   state.Map.pm.enableDraw(type, {
     snappable: true,
-    snapDistance: 20,
-  });
+    snapDistance: 20
+  })
   // 双击编辑
-  state.Map.on("dblclick", editMode);
-};
+  state.Map.on('dblclick', editMode)
+}
 
 // 开启编辑功能
 const editMode = () => {
   if (polygonDrawing.value || polylineDrawing.value) {
-    state.Map.pm.enableGlobalEditMode();
+    state.Map.pm.enableGlobalEditMode()
   }
-};
+}
 
 // 清除所以图层
 const handleRemoveLayer = () => {
   if (state.marker) {
-    state.Map.removeLayer(state.marker);
-    state.marker = null;
-    state.pointInfo.centerPoint = { lat: "", lng: "" };
-    state.pointInfo.type = "";
+    state.Map.removeLayer(state.marker)
+    state.marker = null
+    state.pointInfo.centerPoint = { lat: '', lng: '' }
+    state.pointInfo.type = ''
   }
   if (state.polyline) {
-    state.Map.removeLayer(state.polyline);
-    state.polyline = null;
+    state.Map.removeLayer(state.polyline)
+    state.polyline = null
   } else {
-    state.Map.pm.disableGlobalRemovalMode();
-    const allLayers = state.Map.pm.getGeomanDrawLayers();
+    state.Map.pm.disableGlobalRemovalMode()
+    const allLayers = state.Map.pm.getGeomanDrawLayers()
     allLayers.forEach((layer: any) => {
-      state.Map.removeLayer(layer);
-    });
+      state.Map.removeLayer(layer)
+    })
     if (polylineDrawing.value) {
       // 启用绘制模式
-      state.Map.pm.enableDraw("Line", {
+      state.Map.pm.enableDraw('Line', {
         snappable: true,
-        snapDistance: 20,
-      });
+        snapDistance: 20
+      })
     }
   }
   if (state.polygon) {
-    state.Map.removeLayer(state.polygon);
-    state.polygon = null;
+    state.Map.removeLayer(state.polygon)
+    state.polygon = null
   } else {
-    state.Map.pm.disableGlobalRemovalMode();
-    const allLayers = state.Map.pm.getGeomanDrawLayers();
+    state.Map.pm.disableGlobalRemovalMode()
+    const allLayers = state.Map.pm.getGeomanDrawLayers()
     allLayers.forEach((layer: any) => {
-      state.Map.removeLayer(layer);
-    });
+      state.Map.removeLayer(layer)
+    })
     if (polygonDrawing.value) {
       // 启用绘制模式
-      state.Map.pm.enableDraw("Polygon", {
+      state.Map.pm.enableDraw('Polygon', {
         snappable: true,
-        snapDistance: 20,
-      });
+        snapDistance: 20
+      })
     }
   }
-};
+}
 
 defineExpose({
   refreshMap,
-  getMap,
-});
+  getMap
+})
 
 // 自定义绘制样式
 const customDrawingStyle = () => {
   state.Map.pm.setPathOptions(
     {
-      color: "orange", // 线的颜色
-      fillColor: "green", // 填充的颜色
-      fillOpacity: 0.4, // 填充的透明度
+      color: 'orange', // 线的颜色
+      fillColor: 'green', // 填充的颜色
+      fillOpacity: 0.4 // 填充的透明度
     },
     {
-      ignoreShapes: ["Circle"], // 忽略某些图形的更改
-    },
-  );
-};
+      ignoreShapes: ['Circle'] // 忽略某些图形的更改
+    }
+  )
+}
 
 // 绘制完成的回调
 const pmCreate = (event: any) => {
-  const layer = event.layer;
-  state.shapeType = layer.pm.getShape(); // 获取绘制图形的类型
-  let coordinates = [];
+  const layer = event.layer
+  state.shapeType = layer.pm.getShape() // 获取绘制图形的类型
+  let coordinates = []
   // 根据绘制图形的类型获取坐标集合
   switch (state.shapeType) {
-    case "Polygon":
-      coordinates = layer.getLatLngs()[0];
-      state.pointInfo.point = coordinates;
-      state.pointInfo.type = 3;
-      break;
-    case "Line":
-      coordinates = layer.getLatLngs();
-      state.pointInfo.point = coordinates;
-      state.pointInfo.type = 2;
-      state.polygon = null;
-      break;
+    case 'Polygon':
+      coordinates = layer.getLatLngs()[0]
+      state.pointInfo.point = coordinates
+      state.pointInfo.type = 3
+      break
+    case 'Line':
+      coordinates = layer.getLatLngs()
+      state.pointInfo.point = coordinates
+      state.pointInfo.type = 2
+      state.polygon = null
+      break
     default:
-      break;
+      break
   }
-};
+}
 
 const mapLoad = () => {
   // 设置语言为中文
-  state.Map.pm.setLang("zh");
-  customDrawingStyle();
+  state.Map.pm.setLang('zh')
+  customDrawingStyle()
   // 监听绘制完成事件
-  state.Map.on("pm:create", pmCreate);
-};
+  state.Map.on('pm:create', pmCreate)
+}
 
 // 点位信息回显处理
 const handleSetPoint = () => {
   const {
     centerPoint: { lat, lng },
     point,
-    type,
-  } = latLngInfo.value;
+    type
+  } = latLngInfo.value
 
-  const latlngs = convertCoordinatesToDesiredFormat(point);
+  const latlngs = convertCoordinatesToDesiredFormat(point)
   switch (type) {
     case 1:
       if (lat && lng) {
@@ -289,89 +287,86 @@ const handleSetPoint = () => {
             shadowSize: [20, 20],
             iconAnchor: [20, 20],
             shadowAnchor: [4, 62],
-            popupAnchor: [-9, -16],
-          }),
-        }).addTo(state.Map);
-        state.Map.setView(state.marker.getLatLng());
-        state.pointInfo.centerPoint.lng = lng;
-        state.pointInfo.centerPoint.lat = lat;
+            popupAnchor: [-9, -16]
+          })
+        }).addTo(state.Map)
+        state.Map.setView(state.marker.getLatLng())
+        state.pointInfo.centerPoint.lng = lng
+        state.pointInfo.centerPoint.lat = lat
       }
-      break;
+      break
     case 2:
-      state.pointInfo.point = point;
+      state.pointInfo.point = point
       state.polyline = L.polyline(latlngs, {
-        color: "orange", // 线的颜色
-      }).addTo(state.Map);
+        color: 'orange' // 线的颜色
+      }).addTo(state.Map)
       // 将地图放大到多边形的位置
-      state.Map.fitBounds(state.polyline.getBounds());
+      state.Map.fitBounds(state.polyline.getBounds())
       // 双击开启编辑
-      state.polyline.on("dblclick", editDblclick);
+      state.polyline.on('dblclick', editDblclick)
       // 点击结束编辑
-      state.polyline.on("click", disabledEditClick);
-      break;
+      state.polyline.on('click', disabledEditClick)
+      break
     case 3:
-      state.pointInfo.point = point;
+      state.pointInfo.point = point
       state.polygon = L.polygon(latlngs, {
-        color: "orange", // 线的颜色
-        fillColor: "green", // 填充的颜色
-        fillOpacity: 0.4, // 填充的透明度
-      }).addTo(state.Map);
+        color: 'orange', // 线的颜色
+        fillColor: 'green', // 填充的颜色
+        fillOpacity: 0.4 // 填充的透明度
+      }).addTo(state.Map)
       // 将地图放大到多边形的位置
-      state.Map.fitBounds(state.polygon.getBounds());
+      state.Map.fitBounds(state.polygon.getBounds())
       // 双击开启编辑
-      state.polygon.on("dblclick", editDblclick);
+      state.polygon.on('dblclick', editDblclick)
       // 点击结束编辑
-      state.polygon.on("click", disabledEditClick);
-      break;
+      state.polygon.on('click', disabledEditClick)
+      break
     default:
-      break;
+      break
   }
-};
+}
 
 //初始化
 const handleInit = (): void => {
   nextTick(() => {
-    state.Map = mapInit("Map", 11);
-    state.gLayGroups = refreshLayer(state.Map, state.gLayGroups);
-    state.highlightLayGroups = refreshLayer(
-      state.Map,
-      state.highlightLayGroups,
-    );
-    handleSetPoint();
-  });
-};
+    state.Map = mapInit('Map', 11)
+    state.gLayGroups = refreshLayer(state.Map, state.gLayGroups)
+    state.highlightLayGroups = refreshLayer(state.Map, state.highlightLayGroups)
+    handleSetPoint()
+  })
+}
 
 // 保存点位信息
 const handleSavePoint = () => {
   if (state.marker) {
-    state.pointInfo.type = 1;
+    state.pointInfo.type = 1
   } else {
-    state.pointInfo.centerPoint = null;
+    state.pointInfo.centerPoint = null
   }
 
   if (state.polyline) {
     state.pointInfo.point = state.polyline
       ?.toGeoJSON()
-      .geometry.coordinates.map(([lng, lat]: any) => ({ lat, lng }));
-    state.pointInfo.type = 2;
+      .geometry.coordinates.map(([lng, lat]: any) => ({ lat, lng }))
+    state.pointInfo.type = 2
   }
 
   if (state.polygon) {
     state.pointInfo.point = state.polygon
       ?.toGeoJSON()
-      .geometry.coordinates[0].map(([lng, lat]: any) => ({ lat, lng }));
-    state.pointInfo.type = 3;
+      .geometry.coordinates[0].map(([lng, lat]: any) => ({ lat, lng }))
+    state.pointInfo.type = 3
   }
-  emit("set-point-info", state.pointInfo);
-};
+  emit('set-point-info', state.pointInfo)
+}
 
 onMounted(() => {
-  handleInit();
-});
+  handleInit()
+})
 
 onBeforeUnmount(() => {
-  state.MapLoading = false;
-});
+  state.MapLoading = false
+})
 </script>
 <template>
   <div v-loading="state.MapLoading" class="flex">
@@ -393,7 +388,7 @@ onBeforeUnmount(() => {
             ><Location
           /></el-icon>
           <span :class="drawing ? 'text-blue-500' : ''">{{
-            drawing ? "关闭标点" : "标点"
+            drawing ? '关闭标点' : '标点'
           }}</span>
         </div>
         <div
@@ -407,7 +402,7 @@ onBeforeUnmount(() => {
             ><EditPen
           /></el-icon>
           <span :class="polylineDrawing ? 'text-blue-500' : ''">
-            {{ polylineDrawing ? "关闭画线" : "画线" }}</span
+            {{ polylineDrawing ? '关闭画线' : '画线' }}</span
           >
         </div>
         <div
@@ -421,7 +416,7 @@ onBeforeUnmount(() => {
             ><Edit
           /></el-icon>
           <span :class="polygonDrawing ? 'text-blue-500' : ''">{{
-            polygonDrawing ? "关闭画面" : "画面"
+            polygonDrawing ? '关闭画面' : '画面'
           }}</span>
         </div>
       </div>

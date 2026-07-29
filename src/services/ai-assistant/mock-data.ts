@@ -197,7 +197,7 @@ export const MOCK_MESSAGES: Record<string, AiMessage[]> = {
       role: 'assistant',
       type: 'rich',
       content:
-        '<pre><code>import { ref } from \'vue\'\nconst count = ref(0)\nfunction inc() { count.value++ }</code></pre>',
+        "<pre><code>import { ref } from 'vue'\nconst count = ref(0)\nfunction inc() { count.value++ }</code></pre>",
       createdAt: iso(172800000),
       capabilityId: 'code'
     }

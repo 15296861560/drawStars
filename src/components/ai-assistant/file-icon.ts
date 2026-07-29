@@ -47,7 +47,9 @@ export function resolveFileVisual(
 
   if (
     /^image\//.test(mime) ||
-    ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'ico', 'heic'].includes(ext)
+    ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'ico', 'heic'].includes(
+      ext
+    )
   ) {
     return { icon: Picture, tone: 'image', ext: ext || 'img' }
   }

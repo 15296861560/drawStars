@@ -38,17 +38,14 @@
         </div>
       </div>
 
-      <div
-        v-if="showWaiting"
-        class="ai-msg-waiting"
-      >
-        <span class="typing-dots">
-          <span /><span /><span />
-        </span>
+      <div v-if="showWaiting" class="ai-msg-waiting">
+        <span class="typing-dots"> <span /><span /><span /> </span>
         {{ $t('aiAssistant.thinking') }}
       </div>
 
-      <div v-else-if="message.type === 'text'" class="ai-msg-text">{{ message.content }}</div>
+      <div v-else-if="message.type === 'text'" class="ai-msg-text">
+        {{ message.content }}
+      </div>
 
       <div
         v-else-if="message.type === 'rich' && message.content"
@@ -63,9 +60,13 @@
           <span class="voice-waves">
             <span class="wave" v-for="i in 5" :key="i" />
           </span>
-          <span class="duration">{{ voicePayload?.durationSec?.toFixed(1) ?? 0 }}″</span>
+          <span class="duration"
+            >{{ voicePayload?.durationSec?.toFixed(1) ?? 0 }}″</span
+          >
         </div>
-        <p class="transcript">{{ voicePayload?.transcript || message.content }}</p>
+        <p class="transcript">
+          {{ voicePayload?.transcript || message.content }}
+        </p>
       </div>
 
       <div v-else-if="message.type === 'file'" class="ai-msg-file">
@@ -78,14 +79,24 @@
           <div class="name">{{ filePayload?.name || message.content }}</div>
           <div class="meta">
             <span class="file-ext">{{ fileExtLabel }}</span>
-            <span v-if="filePayload?.size" class="file-size">{{ formatSize(filePayload.size) }}</span>
+            <span v-if="filePayload?.size" class="file-size">{{
+              formatSize(filePayload.size)
+            }}</span>
           </div>
         </div>
       </div>
 
-      <div v-else-if="message.type === 'table'" class="ai-msg-card ai-msg-table">
+      <div
+        v-else-if="message.type === 'table'"
+        class="ai-msg-card ai-msg-table"
+      >
         <p v-if="message.content" class="card-caption">{{ message.content }}</p>
-        <el-table :data="tablePayload?.rows || []" size="small" stripe class="inner-table">
+        <el-table
+          :data="tablePayload?.rows || []"
+          size="small"
+          stripe
+          class="inner-table"
+        >
           <el-table-column
             v-for="col in tablePayload?.columns || []"
             :key="col.prop"
@@ -96,9 +107,16 @@
         </el-table>
       </div>
 
-      <div v-else-if="message.type === 'chart'" class="ai-msg-card ai-msg-chart">
+      <div
+        v-else-if="message.type === 'chart'"
+        class="ai-msg-card ai-msg-chart"
+      >
         <p v-if="message.content" class="card-caption">{{ message.content }}</p>
-        <div ref="chartRef" class="chart-box" :style="{ height: chartHeight + 'px' }" />
+        <div
+          ref="chartRef"
+          class="chart-box"
+          :style="{ height: chartHeight + 'px' }"
+        />
       </div>
 
       <div class="ai-msg-time">{{ formatTime(message.createdAt) }}</div>
@@ -155,14 +173,22 @@ const showWaiting = computed(
     !thinkingText.value
 )
 
-const voicePayload = computed(() => props.message.payload as AiVoicePayload | undefined)
-const filePayload = computed(() => props.message.payload as AiFilePayload | undefined)
+const voicePayload = computed(
+  () => props.message.payload as AiVoicePayload | undefined
+)
+const filePayload = computed(
+  () => props.message.payload as AiFilePayload | undefined
+)
 const fileVisual = computed(() =>
   resolveFileVisual(filePayload.value?.name, filePayload.value?.mimeType)
 )
 const fileExtLabel = computed(() => fileVisual.value.ext.toUpperCase())
-const tablePayload = computed(() => props.message.payload as AiTablePayload | undefined)
-const chartPayload = computed(() => props.message.payload as AiChartPayload | undefined)
+const tablePayload = computed(
+  () => props.message.payload as AiTablePayload | undefined
+)
+const chartPayload = computed(
+  () => props.message.payload as AiChartPayload | undefined
+)
 const chartHeight = computed(() => chartPayload.value?.height ?? 200)
 
 function formatSize(size?: number) {
@@ -178,7 +204,12 @@ function formatTime(iso: string) {
 }
 
 function initChart() {
-  if (props.message.type !== 'chart' || !chartRef.value || !chartPayload.value?.option) return
+  if (
+    props.message.type !== 'chart' ||
+    !chartRef.value ||
+    !chartPayload.value?.option
+  )
+    return
   chartInst?.dispose()
   chartInst = echarts.init(chartRef.value)
   chartInst.setOption(chartPayload.value.option as echarts.EChartsOption)
@@ -538,11 +569,26 @@ onBeforeUnmount(() => {
     border-radius: 2px;
     animation: ai-voice-wave 0.8s ease-in-out infinite;
 
-    &:nth-child(1) { animation-delay: 0s; height: 6px; }
-    &:nth-child(2) { animation-delay: 0.1s; height: 10px; }
-    &:nth-child(3) { animation-delay: 0.2s; height: 14px; }
-    &:nth-child(4) { animation-delay: 0.15s; height: 8px; }
-    &:nth-child(5) { animation-delay: 0.25s; height: 12px; }
+    &:nth-child(1) {
+      animation-delay: 0s;
+      height: 6px;
+    }
+    &:nth-child(2) {
+      animation-delay: 0.1s;
+      height: 10px;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.2s;
+      height: 14px;
+    }
+    &:nth-child(4) {
+      animation-delay: 0.15s;
+      height: 8px;
+    }
+    &:nth-child(5) {
+      animation-delay: 0.25s;
+      height: 12px;
+    }
   }
 
   .transcript {
@@ -582,7 +628,9 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
 
     &.tone-image {
       background: fade(#10b981, 12%);

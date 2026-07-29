@@ -1,6 +1,8 @@
 <template>
   <el-tooltip
-    :content="store.panelOpen ? $t('aiAssistant.fabClose') : $t('aiAssistant.fabOpen')"
+    :content="
+      store.panelOpen ? $t('aiAssistant.fabClose') : $t('aiAssistant.fabOpen')
+    "
     placement="left"
     :show-after="500"
     :disabled="suppressTooltip"
@@ -157,7 +159,11 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: -8px;
   border-radius: @ai-radius-full;
-  background: radial-gradient(circle, fade(@ai-accent, 40%) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    fade(@ai-accent, 40%) 0%,
+    transparent 70%
+  );
   opacity: 0.35;
   pointer-events: none;
   transition:

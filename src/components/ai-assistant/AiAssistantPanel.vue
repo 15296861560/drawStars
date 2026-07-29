@@ -165,9 +165,13 @@ watch(
   }
 )
 
-watch(size, () => {
-  clampPanelToViewport()
-}, { deep: true })
+watch(
+  size,
+  () => {
+    clampPanelToViewport()
+  },
+  { deep: true }
+)
 
 defineExpose({ resetLayout, panelRef, focusInput })
 </script>

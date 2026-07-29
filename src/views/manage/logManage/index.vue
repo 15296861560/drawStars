@@ -6,21 +6,21 @@
       <el-tab-pane label="业务日志" name="business"></el-tab-pane>
       <el-tab-pane label="数据统计" name="statistics"></el-tab-pane>
     </el-tabs>
-    
+
     <router-view></router-view>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
-const activeTab = ref("login");
+const router = useRouter()
+const activeTab = ref('login')
 
-const handleTabClick = (tab) => {
-  router.push(`/home/manageHomePage/logs/${tab.paneName}`);
-};
+const handleTabClick = tab => {
+  router.push(`/home/manageHomePage/logs/${tab.paneName}`)
+}
 </script>
 
 <style scoped>

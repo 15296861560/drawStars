@@ -7,7 +7,11 @@ type SpeechRecognitionCtor = new () => {
   interimResults: boolean
   start: () => void
   stop: () => void
-  onresult: ((e: { results: { [i: number]: { [j: number]: { transcript: string } } } }) => void) | null
+  onresult:
+    | ((e: {
+        results: { [i: number]: { [j: number]: { transcript: string } } }
+      }) => void)
+    | null
   onerror: ((e: { error: string }) => void) | null
   onend: (() => void) | null
 }
@@ -58,7 +62,10 @@ export function useSpeechRecognition() {
       recognition.onresult = e => {
         const last = e.results[e.results.length - 1]
         const text = last[0]?.transcript || ''
-        if (last && (e.results as unknown as { isFinal?: boolean }).isFinal !== false) {
+        if (
+          last &&
+          (e.results as unknown as { isFinal?: boolean }).isFinal !== false
+        ) {
           interimText.value = text
         } else {
           interimText.value = text

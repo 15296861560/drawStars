@@ -158,15 +158,16 @@ export const aiAssistantStore = defineStore(
       try {
         if (aiApi.preferStream()) {
           streaming.value = true
-          assistantIdx = messages.value.push({
-            id: streamAssistantId,
-            conversationId: convId,
-            role: 'assistant',
-            type: 'rich',
-            content: '',
-            createdAt: new Date().toISOString(),
-            capabilityId: 'llm'
-          }) - 1
+          assistantIdx =
+            messages.value.push({
+              id: streamAssistantId,
+              conversationId: convId,
+              role: 'assistant',
+              type: 'rich',
+              content: '',
+              createdAt: new Date().toISOString(),
+              capabilityId: 'llm'
+            }) - 1
 
           const res = await aiApi.sendMessageStream(payload, {
             onUserMessage: msg => {
@@ -298,12 +299,7 @@ export const aiAssistantStore = defineStore(
   {
     persist: {
       key: 'drawstars-ai-assistant',
-      paths: [
-        'sidebarCollapsed',
-        'groupExpanded',
-        'panelLayout',
-        'fabPosition'
-      ]
+      paths: ['sidebarCollapsed', 'groupExpanded', 'panelLayout', 'fabPosition']
     }
   }
 )

@@ -10,7 +10,9 @@ import { ref } from 'vue'
 import AiAssistantFab from './AiAssistantFab.vue'
 import AiAssistantPanel from './AiAssistantPanel.vue'
 
-const panelComponentRef = ref<InstanceType<typeof AiAssistantPanel> | null>(null)
+const panelComponentRef = ref<InstanceType<typeof AiAssistantPanel> | null>(
+  null
+)
 </script>
 
 <style lang="less">

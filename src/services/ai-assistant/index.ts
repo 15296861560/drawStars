@@ -126,7 +126,9 @@ export async function mockVoiceToText(): Promise<string> {
   return samples[Math.floor(Math.random() * samples.length)]
 }
 
-export async function deleteConversation(conversationId: string): Promise<void> {
+export async function deleteConversation(
+  conversationId: string
+): Promise<void> {
   await delay(100)
   const idx = conversations.findIndex(c => c.id === conversationId)
   if (idx >= 0) conversations.splice(idx, 1)

@@ -13,11 +13,9 @@ import { apiInfoStore } from '@/stores/api-info'
 import { userInfoStore } from '@/stores/user-info'
 import * as mockService from '@/services/ai-assistant'
 
-const USE_MOCK =
-  import.meta.env.VITE_AI_ASSISTANT_MOCK !== 'false'
+const USE_MOCK = import.meta.env.VITE_AI_ASSISTANT_MOCK !== 'false'
 
-const USE_STREAM =
-  import.meta.env.VITE_AI_ASSISTANT_STREAM !== 'false'
+const USE_STREAM = import.meta.env.VITE_AI_ASSISTANT_STREAM !== 'false'
 
 function unwrap<T>(res: { status?: boolean; data?: T }): T {
   if (res?.status && res.data != null) return res.data
@@ -71,7 +69,10 @@ export async function createConversation(
   title?: string
 ): Promise<AiConversation> {
   if (USE_MOCK) return mockService.createConversation(title)
-  const res = await $axios({ title: title || '新对话' }, '/api/ai-assistant/conversations')
+  const res = await $axios(
+    { title: title || '新对话' },
+    '/api/ai-assistant/conversations'
+  )
   return unwrap<AiConversation>(res)
 }
 

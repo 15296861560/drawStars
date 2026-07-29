@@ -3,7 +3,9 @@
     <!--    <img class="user-avatar" :src="userAvatar" />-->
 
     <div class="msg-item" :class="{ 'msg-item__loading': msgInfo.loading }">
-      <div v-if="msgInfo.content.emphasize" class="msg-emphasize">{{ msgInfo.content.emphasize }}</div>
+      <div v-if="msgInfo.content.emphasize" class="msg-emphasize">
+        {{ msgInfo.content.emphasize }}
+      </div>
 
       <div class="msg-text" :class="{ 'msg-text__loading': msgInfo.loading }">
         <!-- {{ msgInfo.content.prefixContent }} -->
@@ -13,9 +15,16 @@
           <div
             v-for="item in msgInfo.content.operations"
             class="btn-operate"
-            :class="{ 'btn-operate__fill': item.isClick || item.status === 2 || msgInfo.id !== latestMsgId }"
-            @click="msgAction(msgInfo.content, item)">
-            <el-icon v-if="item.status === 1 && msgInfo.id === latestMsgId" class="is-loading">
+            :class="{
+              'btn-operate__fill':
+                item.isClick || item.status === 2 || msgInfo.id !== latestMsgId
+            }"
+            @click="msgAction(msgInfo.content, item)"
+          >
+            <el-icon
+              v-if="item.status === 1 && msgInfo.id === latestMsgId"
+              class="is-loading"
+            >
               <Loading />
             </el-icon>
 
@@ -50,14 +59,20 @@
           </div>
         </div> -->
         <div class="business-card" @click="msgTextLink('手动接报')">
-          <img class="business-card__icon" :src="getAssetsImgFile('assistant/like.png')" />
+          <img
+            class="business-card__icon"
+            :src="getAssetsImgFile('assistant/like.png')"
+          />
           <div class="business-card__content">
             <div class="card-title">手动接报</div>
             <div class="card-tip">多种数据源手动接报</div>
           </div>
         </div>
         <div class="business-card" @click="msgTextLink('事件日报')">
-          <img class="business-card__icon" :src="getAssetsImgFile('assistant/city.png')" />
+          <img
+            class="business-card__icon"
+            :src="getAssetsImgFile('assistant/city.png')"
+          />
           <div class="business-card__content">
             <div class="card-title">事件日报</div>
             <div class="card-tip">一键总结当日事件信息</div>
@@ -65,10 +80,16 @@
         </div>
       </div>
 
-      <div v-if="msgInfo.content.extContent" class="msg-text">{{ msgInfo.content.extContent }}</div>
+      <div v-if="msgInfo.content.extContent" class="msg-text">
+        {{ msgInfo.content.extContent }}
+      </div>
 
       <div v-if="msgInfo.content.btnExamples?.length" class="msg-btns">
-        <div v-for="item in msgInfo.content.btnExamples" class="msg-btn-example" @click="msgTextLink(item)">
+        <div
+          v-for="item in msgInfo.content.btnExamples"
+          class="msg-btn-example"
+          @click="msgTextLink(item)"
+        >
           {{ item }}
         </div>
       </div>
@@ -77,7 +98,8 @@
         <div
           v-for="item in msgInfo.content.examples"
           class="msg-example"
-          @click="msgTextLink(item, msgInfo.content.flag)">
+          @click="msgTextLink(item, msgInfo.content.flag)"
+        >
           {{ item }}
         </div>
       </div>
@@ -85,9 +107,13 @@
       <div
         v-for="extInfo in msgInfo.content.processList"
         v-if="msgInfo.content.processList?.length"
-        class="msg-process">
+        class="msg-process"
+      >
         <div class="ext-content ext-content__link">
-          <div class="process-status" :class="{ 'process-status__success': extInfo.template?.isSubmit }" />
+          <div
+            class="process-status"
+            :class="{ 'process-status__success': extInfo.template?.isSubmit }"
+          />
           {{ extInfo.name }}
         </div>
 
@@ -95,9 +121,16 @@
           <div
             v-for="item in extInfo.operations"
             class="btn-operate"
-            :class="{ 'btn-operate__fill': item.isClick || item.status === 2 || msgInfo.id !== latestMsgId }"
-            @click="msgAction(extInfo, item)">
-            <el-icon v-if="item.status === 1 && msgInfo.id === latestMsgId" class="is-loading">
+            :class="{
+              'btn-operate__fill':
+                item.isClick || item.status === 2 || msgInfo.id !== latestMsgId
+            }"
+            @click="msgAction(extInfo, item)"
+          >
+            <el-icon
+              v-if="item.status === 1 && msgInfo.id === latestMsgId"
+              class="is-loading"
+            >
               <Loading />
             </el-icon>
             {{ item.label || item.buttonName }}
@@ -107,67 +140,110 @@
 
       <div v-if="msgInfo.content.configList?.length" class="config-list">
         <div v-for="item in msgInfo.content.configList" class="w-full">
-          <div v-if="item.chartType === 1" v-html="converChartType1(item)"></div>
+          <div
+            v-if="item.chartType === 1"
+            v-html="converChartType1(item)"
+          ></div>
 
-          <div v-if="item.chartType === 2 && chartOption?.customSetting?.chartType === 'table'" class="chart-dom">
-            <div v-if="chartOption.title?.text" class="chart-dom__title">{{ chartOption.title?.text }}</div>
+          <div
+            v-if="
+              item.chartType === 2 &&
+              chartOption?.customSetting?.chartType === 'table'
+            "
+            class="chart-dom"
+          >
+            <div v-if="chartOption.title?.text" class="chart-dom__title">
+              {{ chartOption.title?.text }}
+            </div>
 
             <el-table
               ref="tableRef"
               :data="tableMsg.tableData"
               :stripe="chartOption.stripe"
               :border="chartOption.border"
-              :default-sort="{ prop: chartOption.customSetting.sortProp, order: chartOption.customSetting.sortOrder }">
+              :default-sort="{
+                prop: chartOption.customSetting.sortProp,
+                order: chartOption.customSetting.sortOrder
+              }"
+            >
               <el-table-column label="序号" width="80px" type="index" />
               <template v-for="item in chartOption.columnList">
                 <el-table-column
                   :label="item.label"
                   :prop="item.prop"
                   :show-overflow-tooltip="chartOption.showOverflowTooltip"
-                  :sortable="item.prop === chartOption.customSetting.sortProp" />
+                  :sortable="item.prop === chartOption.customSetting.sortProp"
+                />
               </template>
             </el-table>
 
-            <div v-if="chartOption.pagination?.isUse" class="__pagination" style="margin: 5px 0">
+            <div
+              v-if="chartOption.pagination?.isUse"
+              class="__pagination"
+              style="margin: 5px 0"
+            >
               <el-pagination
                 v-model:currentPage="tableMsg.pageNo"
                 v-model:page-size="tableMsg.pageSize"
                 layout="total,prev,pager,next,jumper"
                 :total="tableMsg.total"
-                @current-change="handleCurrentChange" />
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
 
           <div
-            v-if="item.chartType === 2 && chartOption?.customSetting?.chartType !== 'table'"
+            v-if="
+              item.chartType === 2 &&
+              chartOption?.customSetting?.chartType !== 'table'
+            "
             ref="chartRef"
-            class="chart-dom"></div>
+            class="chart-dom"
+          ></div>
         </div>
       </div>
 
       <div v-if="msgInfo.content.numberAllCount" class="number-all-count">
-        <div v-for="dataKey in Object.keys(msgInfo.content.numberAllCount)" class="data-card">
-          <img class="data-card__icon" :src="getAssetsImgFile(`assistant/low-${dataKey}.png`)" />
+        <div
+          v-for="dataKey in Object.keys(msgInfo.content.numberAllCount)"
+          class="data-card"
+        >
+          <img
+            class="data-card__icon"
+            :src="getAssetsImgFile(`assistant/low-${dataKey}.png`)"
+          />
           <div class="data-card__content">
-            <div class="card-title">{{ msgInfo.content.numberAllCount[dataKey] }}</div>
-            <div class="card-tip">{{ msgInfo.content.numberAllCountTip[dataKey] }}</div>
+            <div class="card-title">
+              {{ msgInfo.content.numberAllCount[dataKey] }}
+            </div>
+            <div class="card-tip">
+              {{ msgInfo.content.numberAllCountTip[dataKey] }}
+            </div>
           </div>
         </div>
       </div>
 
       <div v-if="msgInfo.content.files?.length" class="chat-files">
         <div v-for="item in msgInfo.content.files" class="chat-file">
-          <img class="chat-file__img" :src="getAssetsImgFile(`assistant/${getFileType(item)}.png`)" />
+          <img
+            class="chat-file__img"
+            :src="getAssetsImgFile(`assistant/${getFileType(item)}.png`)"
+          />
 
           <div class="file-info">
-            <div class="file-name" :title="item.fileName">{{ item.fileName }}</div>
+            <div class="file-name" :title="item.fileName">
+              {{ item.fileName }}
+            </div>
             <div class="file-tip">{{ item.size }}</div>
           </div>
         </div>
       </div>
 
       <div v-if="msgInfo.content.stop" class="msg-stop">
-        <img class="clock-icon" :src="getAssetsImgFile('assistant/clock.png')" />
+        <img
+          class="clock-icon"
+          :src="getAssetsImgFile('assistant/clock.png')"
+        />
         <span class="stop-tip">已停止生成</span>
       </div>
     </div>
@@ -181,7 +257,7 @@
 <script setup lang="ts">
 import { computed, ref, nextTick, toRefs, onMounted, reactive } from 'vue'
 import { IReactive } from '@/types'
-import { getAssetsImgFile } from "@/utils/tool";
+import { getAssetsImgFile } from '@/utils/tool'
 import { useSetEcharts } from '@/hooks/echarts'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
@@ -213,7 +289,10 @@ const processedPrefixContent = computed(() => {
 const userAvatar = computed(() => {
   if (!msgInfo.value?.role) {
     // return getAssetsImgFile('assistant/robot-avatar.png')
-    return systemSkin?.value?.ai_logo || getAssetsImgFile('assistant/robot-avatar.png')
+    return (
+      systemSkin?.value?.ai_logo ||
+      getAssetsImgFile('assistant/robot-avatar.png')
+    )
   } else {
     return getAssetsImgFile('assistant/user-default-avatar.png')
   }
@@ -278,7 +357,10 @@ const converChartType2 = (config: IReactive, chartDom: HTMLElement) => {
 
 const tableRef = ref()
 const handleTableSetting = (option: IReactive) => {
-  tableRef.value?.sort(option.customSetting.sortProp, option.customSetting.sortOrder)
+  tableRef.value?.sort(
+    option.customSetting.sortProp,
+    option.customSetting.sortOrder
+  )
 }
 
 const handleRecords = (chartOption: IReactive, records: Array<IReactive>) => {
@@ -297,9 +379,13 @@ const handleRecords = (chartOption: IReactive, records: Array<IReactive>) => {
   }
 
   if (chartOption.xAxis) {
-    chartOption.xAxis.data = resData.map((obj) => obj[chartOption.customSetting.dimensionality])
+    chartOption.xAxis.data = resData.map(
+      obj => obj[chartOption.customSetting.dimensionality]
+    )
   }
-  chartOption.series[0].data = resData.map((obj) => obj[chartOption.customSetting.indicator[0]])
+  chartOption.series[0].data = resData.map(
+    obj => obj[chartOption.customSetting.indicator[0]]
+  )
 }
 
 const getFileType = (file: IReactive) => {
@@ -330,7 +416,10 @@ const tableMsg = reactive({
 const handleCurrentChange = (e: number) => {
   tableMsg.pageNo = e
   tableMsg.tableData =
-    chartOption.value.data?.slice((tableMsg.pageNo - 1) * tableMsg.pageSize, tableMsg.pageNo * tableMsg.pageSize) || []
+    chartOption.value.data?.slice(
+      (tableMsg.pageNo - 1) * tableMsg.pageSize,
+      tableMsg.pageNo * tableMsg.pageSize
+    ) || []
 }
 
 onMounted(() => {

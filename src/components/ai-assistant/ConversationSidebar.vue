@@ -1,19 +1,15 @@
 <template>
-  <aside
-    class="ai-sidebar"
-    :class="{ collapsed: store.sidebarCollapsed }"
-  >
+  <aside class="ai-sidebar" :class="{ collapsed: store.sidebarCollapsed }">
     <div class="ai-sidebar-inner" v-show="!store.sidebarCollapsed">
       <div class="sidebar-header">
         <span class="sidebar-title">{{ $t('aiAssistant.title') }}</span>
       </div>
       <template v-if="store.groupExpanded">
-        <div
-          v-for="key in groupKeys"
-          :key="key"
-          class="ai-conv-group"
-        >
-          <div v-if="store.groupedConversations[key]?.length" class="group-label">
+        <div v-for="key in groupKeys" :key="key" class="ai-conv-group">
+          <div
+            v-if="store.groupedConversations[key]?.length"
+            class="group-label"
+          >
             {{ $t(`aiAssistant.group.${key}`) }}
           </div>
           <div

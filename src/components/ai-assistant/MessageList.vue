@@ -14,9 +14,7 @@
       :streaming="isStreamingMessage(msg.id)"
     />
     <div v-if="showGlobalTyping" class="ai-typing">
-      <span class="typing-dots">
-        <span /><span /><span />
-      </span>
+      <span class="typing-dots"> <span /><span /><span /> </span>
       {{ $t('aiAssistant.thinking') }}
     </div>
   </div>
@@ -31,8 +29,8 @@ import MessageBubble from './MessageBubble.vue'
 const store = aiAssistantStore()
 const listRef = ref<HTMLElement | null>(null)
 
-const hasStreamOutput = computed(
-  () => Boolean(store.streamContent || store.streamThinking)
+const hasStreamOutput = computed(() =>
+  Boolean(store.streamContent || store.streamThinking)
 )
 
 const showGlobalTyping = computed(

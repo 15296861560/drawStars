@@ -146,7 +146,7 @@
             :class="{
               'btn-send__disabled':
                 !sendInput && !sendLoading && !chatFiles.length,
-              'btn-send__pause': sendLoading,
+              'btn-send__pause': sendLoading
             }"
             @click="sendLoading ? stopListen() : sendMsg()"
           >
@@ -173,95 +173,95 @@ import {
   nextTick,
   watch,
   onUnmounted,
-  onMounted,
-} from "vue";
-import { getAssetsImgFile } from "@/utils/tool";
-import { ElMessage } from "element-plus";
-import { cloneDeep, debounce, throttle } from "lodash-es";
-import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
-import { v4 as uuidv4 } from "uuid";
+  onMounted
+} from 'vue'
+import { getAssetsImgFile } from '@/utils/tool'
+import { ElMessage } from 'element-plus'
+import { cloneDeep, debounce, throttle } from 'lodash-es'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
 
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
+import { userInfoStore } from '@/stores/user-info'
+const userInfo = userInfoStore()
 
 const props = defineProps({
-  width: { type: String, default: "45%" },
-});
+  width: { type: String, default: '45%' }
+})
 
-const MsgCard = defineAsyncComponent(() => import("./MsgCard.vue"));
+const MsgCard = defineAsyncComponent(() => import('./MsgCard.vue'))
 
 const groupInfo = reactive({
-  groupId: "",
-  groupName: "",
-  type: "",
-  flag: "",
-});
+  groupId: '',
+  groupName: '',
+  type: '',
+  flag: ''
+})
 
 watch(
   () => groupInfo.groupId,
-  (newVal) => {
+  newVal => {
     if (newVal && sendLoading.value) {
-      stopListen();
+      stopListen()
     }
     if (groupInfo.groupName) {
-      initMsgList();
+      initMsgList()
     } else {
-      msgList.value = [];
+      msgList.value = []
     }
-  },
-);
+  }
+)
 
-const emit = defineEmits(["msg-action", "msg-text-link", "create-group"]);
+const emit = defineEmits(['msg-action', 'msg-text-link', 'create-group'])
 
-const sendInput = ref();
+const sendInput = ref()
 
-const isFocusInput = ref(false);
+const isFocusInput = ref(false)
 
-const chatListRef = ref();
-const msgList = ref<Array<any>>([]);
+const chatListRef = ref()
+const msgList = ref<Array<any>>([])
 
 const latestMsgId = computed(() => {
-  return msgList.value?.findLast((item) => item.content?.taskId)?.id || "";
-});
+  return msgList.value?.findLast(item => item.content?.taskId)?.id || ''
+})
 
-const userId = computed(() => userInfo.getUserId || "");
+const userId = computed(() => userInfo.getUserId || '')
 
 const page = reactive({
   pageNo: 1,
   pageSize: 30,
-  total: 0,
-});
+  total: 0
+})
 const initMsgList = async () => {
-  msgList.value = [];
-  page.total = 0;
+  msgList.value = []
+  page.total = 0
 
   setTimeout(() => {
     chatListRef.value.scrollTo({
       top: chatListRef.value.scrollHeight,
-      behavior: "smooth",
-    });
-  }, 300);
-};
+      behavior: 'smooth'
+    })
+  }, 300)
+}
 
 /**语音开关 */
-const voiceStatus = ref(localStorage.getItem("chatVoiceStatus") === "true");
+const voiceStatus = ref(localStorage.getItem('chatVoiceStatus') === 'true')
 
 const handleVoiceSwitch = () => {
-  voiceStatus.value = !voiceStatus.value;
-  localStorage.setItem("chatVoiceStatus", `${voiceStatus.value}`);
+  voiceStatus.value = !voiceStatus.value
+  localStorage.setItem('chatVoiceStatus', `${voiceStatus.value}`)
   if (!voiceStatus.value) {
     //关闭语音播报功能
     if (finishStatus.value === 1) {
       //正在推送时，就只是暂停
-      speechSynthesis.pause();
+      speechSynthesis.pause()
     } else {
       //如果已经推送结束，清空状态
       if (speechSynthesis.speaking) {
         //但是还在讲话，loading不关
-        sendLoading.value = false;
+        sendLoading.value = false
       }
-      handleClearSpeech();
+      handleClearSpeech()
     }
   } else {
     //开启语音播报功能
@@ -269,205 +269,205 @@ const handleVoiceSwitch = () => {
       //如果在推送时，还有未讲完的语音
       if (speechSynthesis.pending) {
         //继续讲
-        speechSynthesis.resume();
+        speechSynthesis.resume()
       } else {
         //重新生成语音
-        handleJointText();
+        handleJointText()
       }
     } else {
       //当推送结束，清空状态
-      handleClearSpeech();
+      handleClearSpeech()
     }
   }
-};
+}
 
 /**上传文件 */
-const dialogUploadFileRef = ref();
-const uploadAccept = ref("*");
-const uploadType = ref();
+const dialogUploadFileRef = ref()
+const uploadAccept = ref('*')
+const uploadType = ref()
 const ACCEPT_TYPE = {
-  image: ".jpg,.jpeg,.png",
-  document: ".doc,.docx,.xls,.xlsx,.pdf",
-  audio: ".mp3,.m4a",
-};
-const triggerUpload = (type: "document" | "image" | "audio") => {
-  uploadType.value = type;
-  uploadAccept.value = ACCEPT_TYPE[type];
+  image: '.jpg,.jpeg,.png',
+  document: '.doc,.docx,.xls,.xlsx,.pdf',
+  audio: '.mp3,.m4a'
+}
+const triggerUpload = (type: 'document' | 'image' | 'audio') => {
+  uploadType.value = type
+  uploadAccept.value = ACCEPT_TYPE[type]
   nextTick(() => {
-    dialogUploadFileRef.value?.click();
-  });
-};
+    dialogUploadFileRef.value?.click()
+  })
+}
 
 const chatFiles = ref<
   Array<{
-    fileName: string;
-    filePath?: string;
-    error?: string;
-    size?: string;
-    isAnalysis: boolean;
+    fileName: string
+    filePath?: string
+    error?: string
+    size?: string
+    isAnalysis: boolean
   }>
->([]);
+>([])
 const uploadFile = async (e: any) => {
-  const formData = new FormData();
+  const formData = new FormData()
   const list: Array<{
-    fileName: string;
-    filePath?: string;
-    error?: string;
-    size?: string;
-    isAnalysis: boolean;
-  }> = [];
+    fileName: string
+    filePath?: string
+    error?: string
+    size?: string
+    isAnalysis: boolean
+  }> = []
   Object.values(e.target.files).forEach((file: any) => {
-    formData.append("files", file);
+    formData.append('files', file)
 
     list.push({
       fileName: file.name,
-      filePath: "",
-      error: "",
+      filePath: '',
+      error: '',
       size: `${(file.size / 1024).toFixed(2)}KB`,
-      isAnalysis: true,
-    });
-  });
-  chatFiles.value.push(...list);
-  formData.append("groupId", groupInfo.groupId);
-  formData.append("groupName", groupInfo.groupName);
+      isAnalysis: true
+    })
+  })
+  chatFiles.value.push(...list)
+  formData.append('groupId', groupInfo.groupId)
+  formData.append('groupName', groupInfo.groupName)
 
   const options = {
-    method: createRequest("assitant", "chatFileUpload"),
-    params: formData,
-  };
+    method: createRequest('assitant', 'chatFileUpload'),
+    params: formData
+  }
 
-  const res = await tryCatch(options);
+  const res = await tryCatch(options)
 
-  e.target.value = "";
+  e.target.value = ''
 
   if (res.code === 0) {
     res.data?.forEach((item: any) => {
-      const file = list.find((f) => f.fileName === item.fileName);
+      const file = list.find(f => f.fileName === item.fileName)
       if (file) {
-        file.filePath = item.filePath || "";
-        file.error = item.error || "";
-        file.isAnalysis = false;
+        file.filePath = item.filePath || ''
+        file.error = item.error || ''
+        file.isAnalysis = false
       }
-    });
+    })
 
-    const successSize = list.filter((item) => !item.error)?.length || 0;
+    const successSize = list.filter(item => !item.error)?.length || 0
     if (successSize) {
-      ElMessage.success(`${successSize}份对话文档处理完成`);
+      ElMessage.success(`${successSize}份对话文档处理完成`)
     }
 
-    chatFiles.value = cloneDeep(chatFiles.value);
+    chatFiles.value = cloneDeep(chatFiles.value)
   }
-};
+}
 
 const getFileType = (file: any) => {
-  const fileName = file.fileName?.toLocaleLowerCase() || "";
-  if (fileName.endsWith("docx") || fileName.endsWith("doc")) {
-    return "WORD";
+  const fileName = file.fileName?.toLocaleLowerCase() || ''
+  if (fileName.endsWith('docx') || fileName.endsWith('doc')) {
+    return 'WORD'
   }
-  if (fileName.endsWith("pdf") || fileName.endsWith("ppt")) {
-    return "PDF";
+  if (fileName.endsWith('pdf') || fileName.endsWith('ppt')) {
+    return 'PDF'
   }
-  if (fileName.endsWith("xls") || fileName.endsWith("xlsx")) {
-    return "EXCEL";
+  if (fileName.endsWith('xls') || fileName.endsWith('xlsx')) {
+    return 'EXCEL'
   }
-  if (fileName.endsWith("mp3") || fileName.endsWith("m4a")) {
-    return "audio-file";
+  if (fileName.endsWith('mp3') || fileName.endsWith('m4a')) {
+    return 'audio-file'
   }
-  if (fileName.endsWith("txt")) {
-    return "TXT";
+  if (fileName.endsWith('txt')) {
+    return 'TXT'
   }
 
   if (file.error) {
-    return "Fail";
+    return 'Fail'
   }
 
-  return "Fail";
-};
+  return 'Fail'
+}
 
 /**语音识别 */
-const listening = ref(false);
-let recognition: any = null;
+const listening = ref(false)
+let recognition: any = null
 
 const isEdge = () => {
-  return /Edg\//.test(navigator.userAgent) || /EdgA/i.test(navigator.userAgent);
-};
+  return /Edg\//.test(navigator.userAgent) || /EdgA/i.test(navigator.userAgent)
+}
 
 if (isEdge()) {
-  recognition = new (window as any).webkitSpeechRecognition();
+  recognition = new (window as any).webkitSpeechRecognition()
 }
-const audioBlob = ref();
+const audioBlob = ref()
 
-let recognitionText = "";
+let recognitionText = ''
 const onResult = debounce((event: { results: any }) => {
   recognitionText = (Object.values(event.results).at(-1) as Array<any>)[0]
-    .transcript;
-}, 1000);
+    .transcript
+}, 1000)
 
 const initSpeech = () => {
   if (!recognition) {
     // 不支持语音识别则走请求进行语音识别
-    let stream: MediaStream | null = null;
-    let mediaRecorder: MediaRecorder | null = null;
-    const supportedMimeType = "audio/webm;codecs=opus";
-    let recordedChunks: Array<any> = [];
+    let stream: MediaStream | null = null
+    let mediaRecorder: MediaRecorder | null = null
+    const supportedMimeType = 'audio/webm;codecs=opus'
+    let recordedChunks: Array<any> = []
     recognition = {
       start: async () => {
         stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
+          audio: true
+        })
 
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
+        mediaRecorder = new MediaRecorder(stream)
+        mediaRecorder.start()
 
         // 录音数据有变化，记录到 recordedChunks
         mediaRecorder.addEventListener(
-          "dataavailable",
+          'dataavailable',
           function (event: BlobEvent) {
             if (event.data.size) {
-              recordedChunks.push(event.data);
+              recordedChunks.push(event.data)
             }
-          },
-        );
+          }
+        )
 
-        mediaRecorder.addEventListener("stop", () => {
+        mediaRecorder.addEventListener('stop', () => {
           // 把录音转换成文件，可以下载
           audioBlob.value = new Blob(recordedChunks, {
-            type: supportedMimeType,
-          });
+            type: supportedMimeType
+          })
           // 释放 stream
-          stream?.getTracks().forEach((track) => track.stop());
-          stream = null;
+          stream?.getTracks().forEach(track => track.stop())
+          stream = null
 
-          const file = new window.File([audioBlob.value], "录音文件.webm", {
-            type: supportedMimeType,
-          });
+          const file = new window.File([audioBlob.value], '录音文件.webm', {
+            type: supportedMimeType
+          })
 
-          apiSpeechRecognition(file);
-        });
+          apiSpeechRecognition(file)
+        })
       },
       stop: () => {
-        mediaRecorder?.stop();
-        recordedChunks = [];
-      },
-    };
-    return;
+        mediaRecorder?.stop()
+        recordedChunks = []
+      }
+    }
+    return
   }
 
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = "zh-CN";
-  recognition.addEventListener("result", onResult);
-};
+  recognition.continuous = true
+  recognition.interimResults = true
+  recognition.lang = 'zh-CN'
+  recognition.addEventListener('result', onResult)
+}
 
 const apiSpeechRecognition = async (file: File) => {
-  const formData = new FormData();
-  formData.append("file", file);
+  const formData = new FormData()
+  formData.append('file', file)
   const options = {
-    method: createRequest("assitant", "speechRecognition"),
-    params: formData,
-  };
+    method: createRequest('assitant', 'speechRecognition'),
+    params: formData
+  }
 
-  const res = await tryCatch(options);
+  const res = await tryCatch(options)
   // if (res?.status === 200) {
   //   const msgItem = convertMsg({
   //     prefixContent: res.response,
@@ -479,200 +479,200 @@ const apiSpeechRecognition = async (file: File) => {
   if (res?.code === 0) {
     const msgItem = convertMsg({
       prefixContent: res.data,
-      role: 1,
-    });
-    appendMsgItem(msgItem);
-    userAsk(msgItem);
+      role: 1
+    })
+    appendMsgItem(msgItem)
+    userAsk(msgItem)
   }
-};
+}
 
-initSpeech();
+initSpeech()
 
 const triggerSpeech = () => {
   if (sendLoading.value) {
-    return;
+    return
   }
 
   if (listening.value) {
-    recognition?.stop();
-    listening.value = false;
-    console.log("停止输入。。。");
+    recognition?.stop()
+    listening.value = false
+    console.log('停止输入。。。')
     if (recognitionText) {
       const msgItem = convertMsg({
         prefixContent: recognitionText,
-        role: 1,
-      });
+        role: 1
+      })
 
-      appendMsgItem(msgItem);
-      userAsk(msgItem);
-      recognitionText = "";
+      appendMsgItem(msgItem)
+      userAsk(msgItem)
+      recognitionText = ''
     }
   } else {
-    recognition?.start();
-    listening.value = true;
-    console.log("开启输入。。。");
+    recognition?.start()
+    listening.value = true
+    console.log('开启输入。。。')
   }
-};
+}
 
 /**发送信息 */
-const sendLoading = ref(false);
+const sendLoading = ref(false)
 const sendMsg = () => {
   if ((!sendInput.value && !chatFiles.value?.length) || sendLoading.value) {
-    return;
+    return
   }
   const msgItem = convertMsg({
     prefixContent: sendInput.value,
-    role: 1,
-  });
+    role: 1
+  })
 
   if (chatFiles.value?.length) {
-    if (chatFiles.value.find((item) => item.error)) {
-      ElMessage.error("请先移除不支持的文件");
-      return;
+    if (chatFiles.value.find(item => item.error)) {
+      ElMessage.error('请先移除不支持的文件')
+      return
     }
-    if (chatFiles.value.find((item) => item.isAnalysis)) {
-      ElMessage.error("请先等待文件解析完成");
-      return;
+    if (chatFiles.value.find(item => item.isAnalysis)) {
+      ElMessage.error('请先等待文件解析完成')
+      return
     }
-    (msgItem.content as any).files = cloneDeep(chatFiles.value);
-    chatFiles.value = [];
+    ;(msgItem.content as any).files = cloneDeep(chatFiles.value)
+    chatFiles.value = []
   }
 
-  sendInput.value = "";
-  appendMsgItem(msgItem);
-  userAsk(msgItem);
-};
+  sendInput.value = ''
+  appendMsgItem(msgItem)
+  userAsk(msgItem)
+}
 
 const saveLastMsg = async (isStop = false) => {
-  const msgItem = msgList.value.at(-1) || {};
+  const msgItem = msgList.value.at(-1) || {}
   // isStop && (msgItem.content.stop = finishStatus.value === 1)
-  isStop && (msgItem.content.stop = true);
-  msgItem.loading = false;
+  isStop && (msgItem.content.stop = true)
+  msgItem.loading = false
 
   const options = {
-    method: createRequest("assitant", "addList"),
-    params: [msgItem],
-  };
-
-  const res = await tryCatch(options);
-  //先根据语音总开关，如果播报正在讲话时，不关闭状态
-  sendLoading.value = voiceStatus.value ? speechSynthesis.speaking : false;
-  if (res.code !== 0) {
-    msgItem.isFail = true;
-    return;
+    method: createRequest('assitant', 'addList'),
+    params: [msgItem]
   }
-};
+
+  const res = await tryCatch(options)
+  //先根据语音总开关，如果播报正在讲话时，不关闭状态
+  sendLoading.value = voiceStatus.value ? speechSynthesis.speaking : false
+  if (res.code !== 0) {
+    msgItem.isFail = true
+    return
+  }
+}
 
 const stopListen = async () => {
-  chatClient.removeAllListeners();
+  chatClient.removeAllListeners()
   chatClient.rebuild(
-    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`,
-  );
-  initChatListener();
-  await saveLastMsg(true);
-  handleClearSpeech();
-};
+    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`
+  )
+  initChatListener()
+  await saveLastMsg(true)
+  handleClearSpeech()
+}
 
 const userAsk = async (msgItem: any) => {
   if (groupInfo.groupId && !groupInfo.groupName) {
-    groupInfo.groupName = msgItem.content.prefixContent;
-    msgItem.groupName = msgItem.content.prefixContent;
-    groupInfo.type = msgItem.type;
-    groupInfo.flag = msgItem.flag;
-    emit("create-group", { ...groupInfo });
+    groupInfo.groupName = msgItem.content.prefixContent
+    msgItem.groupName = msgItem.content.prefixContent
+    groupInfo.type = msgItem.type
+    groupInfo.flag = msgItem.flag
+    emit('create-group', { ...groupInfo })
   }
 
-  msgItem.saveQuestion = true;
-  sendLoading.value = true;
+  msgItem.saveQuestion = true
+  sendLoading.value = true
 
-  chatClient.send(msgItem);
+  chatClient.send(msgItem)
   const rotMsgItem = convertMsg({
-    prefixContent: "",
-    role: 0,
-  });
-  appendMsgItem(rotMsgItem);
-};
+    prefixContent: '',
+    role: 0
+  })
+  appendMsgItem(rotMsgItem)
+}
 
 const updateLatestMsg = (content: string) => {
-  const msgItem = msgList.value.at(-1) || {};
-  msgItem.content.prefixContent += content;
-  scrollToBottom();
-};
+  const msgItem = msgList.value.at(-1) || {}
+  msgItem.content.prefixContent += content
+  scrollToBottom()
+}
 
 const appendMsgItem = (msgItem: any) => {
   if (!msgItem.id) {
-    msgItem.id = uuidv4().replace(/-/g, "");
+    msgItem.id = uuidv4().replace(/-/g, '')
   }
 
-  msgList.value.push(msgItem);
+  msgList.value.push(msgItem)
 
-  scrollToBottom();
-};
+  scrollToBottom()
+}
 
 const scrollToBottom = () => {
   nextTick(() => {
     chatListRef.value?.scrollTo({
       top: chatListRef.value?.scrollHeight,
-      behavior: "smooth",
-    });
-  });
-};
+      behavior: 'smooth'
+    })
+  })
+}
 
 const convertMsg = (msgObj: any) => {
-  const { prefixContent, role, operations } = msgObj;
+  const { prefixContent, role, operations } = msgObj
   const msg = {
     content: {
       prefixContent,
-      operations,
+      operations
     },
     isInit: false,
     role, // 角色：0-机器，1-用户
     userId: userId.value,
     groupId: groupInfo?.groupId,
     groupName: groupInfo?.groupName,
-    loading: !prefixContent && !role,
-  };
+    loading: !prefixContent && !role
+  }
 
-  return msg;
-};
+  return msg
+}
 
 /**消息动作 */
 const msgAction = (action: { extInfo: any; op: any; taskId: string }) => {
-  emit("msg-action", { ...action });
-};
+  emit('msg-action', { ...action })
+}
 const msgTextLink = async (link: string) => {
-  emit("msg-text-link", link);
-  if (["日志查询"].includes(link)) {
-    return;
+  emit('msg-text-link', link)
+  if (['日志查询'].includes(link)) {
+    return
   }
 
-  const lastMsgItem = msgList.value.at(-1) || {};
+  const lastMsgItem = msgList.value.at(-1) || {}
   if (lastMsgItem.loading) {
-    await stopListen();
+    await stopListen()
   }
 
   const msgItem = convertMsg({
     prefixContent: link,
-    role: 1,
-  });
-  appendMsgItem(msgItem);
+    role: 1
+  })
+  appendMsgItem(msgItem)
 
-  userAsk(msgItem);
-};
+  userAsk(msgItem)
+}
 
 const init = async () => {
-  msgList.value = [];
-};
+  msgList.value = []
+}
 
-const msgLoading = ref(false);
+const msgLoading = ref(false)
 const scrollChatList = throttle(async (e: any) => {
-  const scrollTop = e.target.scrollTop;
+  const scrollTop = e.target.scrollTop
   if (scrollTop !== 0 || msgList.value.length < page.pageSize) {
-    return;
+    return
   }
 
-  const topId = msgList.value[0]?.id;
-  const offset = msgList.value.length;
+  const topId = msgList.value[0]?.id
+  const offset = msgList.value.length
 
   // const options = {
   //   method: createRequest("assitant", "getChatHistoryPage"),
@@ -695,106 +695,106 @@ const scrollChatList = throttle(async (e: any) => {
 
   // 将滚动条设置到上次查看的位置
   nextTick(() => {
-    const msg = document.getElementById(topId);
-    msg?.scrollIntoView();
-  });
-}, 1000);
+    const msg = document.getElementById(topId)
+    msg?.scrollIntoView()
+  })
+}, 1000)
 
 /**问答语音播报 */
-const jointText = ref("");
-const currentText = ref("");
-const finishStatus = ref(0);
-const speechInterval = ref();
+const jointText = ref('')
+const currentText = ref('')
+const finishStatus = ref(0)
+const speechInterval = ref()
 const handleJointText = () => {
   if (currentText.value !== jointText.value) {
     //经过比对，未播报信息创建speechSynthesis
-    const text = jointText.value.substring(currentText.value.length);
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 3;
-    speechSynthesis.speak(utterance);
+    const text = jointText.value.substring(currentText.value.length)
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.rate = 3
+    speechSynthesis.speak(utterance)
     utterance.onend = function () {
       //播报结束后，关闭loading
-      sendLoading.value = speechSynthesis.speaking;
-    };
+      sendLoading.value = speechSynthesis.speaking
+    }
   }
-  currentText.value = jointText.value;
+  currentText.value = jointText.value
   if (finishStatus.value === 2) {
     //流式推送结束，不再轮巡
-    jointText.value = "";
-    currentText.value = "";
-    clearInterval(speechInterval.value);
-    speechInterval.value = null;
+    jointText.value = ''
+    currentText.value = ''
+    clearInterval(speechInterval.value)
+    speechInterval.value = null
   }
   if (finishStatus.value === 1) {
     //轮巡中的话需要定时取截取未播报的信息
-    clearInterval(speechInterval.value);
+    clearInterval(speechInterval.value)
     speechInterval.value = setInterval(() => {
-      handleJointText();
-    }, 2000);
+      handleJointText()
+    }, 2000)
   }
-};
+}
 const handleClearSpeech = (restStatus = true) => {
   if (restStatus) {
-    jointText.value = "";
-    currentText.value = "";
-    finishStatus.value = 0;
+    jointText.value = ''
+    currentText.value = ''
+    finishStatus.value = 0
   }
-  clearInterval(speechInterval.value);
-  speechInterval.value = null;
-  speechSynthesis.pause();
-  speechSynthesis.cancel();
-};
+  clearInterval(speechInterval.value)
+  speechInterval.value = null
+  speechSynthesis.pause()
+  speechSynthesis.cancel()
+}
 watch(
   () => finishStatus.value,
-  (n) => {
+  n => {
     if (n === 1 && voiceStatus.value) {
-      handleClearSpeech(false);
-      handleJointText();
+      handleClearSpeech(false)
+      handleJointText()
     }
-  },
-);
+  }
+)
 
 const clear = () => {
-  chatClient.removeAllListeners();
+  chatClient.removeAllListeners()
   chatClient.rebuild(
-    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`,
-  );
-  initChatListener();
-  msgList.value = [];
-  sendInput.value = "";
-  sendLoading.value = false;
-  handleClearSpeech();
-};
+    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`
+  )
+  initChatListener()
+  msgList.value = []
+  sendInput.value = ''
+  sendLoading.value = false
+  handleClearSpeech()
+}
 
-const chatClient = new ChatClient();
+const chatClient = new ChatClient()
 
 const initChatClient = () => {
   chatClient.createInstance(
-    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`,
-  );
-  initChatListener();
-};
+    `${VITE_CONFIG.VITE_APP_BASE_CONFIG.CHAT_WS_URL}/sys/websocket/chat`
+  )
+  initChatListener()
+}
 
 const initChatListener = () => {
-  chatClient.on(CHAT_EVENT.USER_ASK, (content) => {
-    updateLatestMsg(content);
-    finishStatus.value = 1;
-    jointText.value += content;
-  });
-  chatClient.on(CHAT_EVENT.OBJECT_ANSWER, (content) => {
-    msgList.value.splice(-1);
-    appendMsgItem(content);
-    saveLastMsg();
-  });
+  chatClient.on(CHAT_EVENT.USER_ASK, content => {
+    updateLatestMsg(content)
+    finishStatus.value = 1
+    jointText.value += content
+  })
+  chatClient.on(CHAT_EVENT.OBJECT_ANSWER, content => {
+    msgList.value.splice(-1)
+    appendMsgItem(content)
+    saveLastMsg()
+  })
   chatClient.on(CHAT_EVENT.USER_ASK_FINISH, async () => {
-    finishStatus.value = 2;
-    saveLastMsg();
-  });
+    finishStatus.value = 2
+    saveLastMsg()
+  })
   chatClient.on(CHAT_EVENT.REFRESH, async () => {
-    initMsgList();
-  });
-};
-initChatClient();
+    initMsgList()
+  })
+}
+initChatClient()
 
 defineExpose({
   init,
@@ -803,15 +803,15 @@ defineExpose({
   groupInfo,
   msgList,
   voiceStatus,
-  handleVoiceSwitch,
-});
+  handleVoiceSwitch
+})
 
 onMounted(() => {
-  window.addEventListener("beforeunload", () => {
-    speechSynthesis.pause();
-    speechSynthesis.cancel();
-  });
-});
+  window.addEventListener('beforeunload', () => {
+    speechSynthesis.pause()
+    speechSynthesis.cancel()
+  })
+})
 </script>
 
 <style scoped lang="less">
@@ -1040,19 +1040,19 @@ onMounted(() => {
       .upload-file__icon {
         width: 32px;
         height: 32px;
-        background: url("@/assets/img/assistant/upload-file.png") no-repeat;
+        background: url('@/assets/img/assistant/upload-file.png') no-repeat;
         background-size: 100%;
       }
       .upload-pic__icon {
         width: 32px;
         height: 32px;
-        background: url("@/assets/img/assistant/upload-pic.png") no-repeat;
+        background: url('@/assets/img/assistant/upload-pic.png') no-repeat;
         background-size: 100%;
       }
       .upload-audio__icon {
         width: 32px;
         height: 32px;
-        background: url("@/assets/img/assistant/upload-audio.png") no-repeat;
+        background: url('@/assets/img/assistant/upload-audio.png') no-repeat;
         background-size: 100%;
       }
       &:hover {
@@ -1064,7 +1064,7 @@ onMounted(() => {
         //   background-size: 100%;
         // }
         .upload-audio__icon {
-          background: url("@/assets/img/assistant/upload-audio__active.png")
+          background: url('@/assets/img/assistant/upload-audio__active.png')
             no-repeat;
           background-size: 100%;
         }

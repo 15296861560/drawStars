@@ -83,169 +83,169 @@ import {
   provide,
   nextTick,
   onMounted,
-  onUnmounted,
-} from "vue";
-import { debounce } from "lodash";
-import { getAssetsImgFile } from "@/utils/tool";
+  onUnmounted
+} from 'vue'
+import { debounce } from 'lodash'
+import { getAssetsImgFile } from '@/utils/tool'
 
 const BusinessGroup = defineAsyncComponent(
-  () => import("./components/BusinessGroup/index.vue"),
-);
+  () => import('./components/BusinessGroup/index.vue')
+)
 const AssistantChat = defineAsyncComponent(
-  () => import("./components/AssistantChat/index.vue"),
-);
+  () => import('./components/AssistantChat/index.vue')
+)
 
 const props = withDefaults(
   defineProps<{
-    title?: string;
+    title?: string
   }>(),
   {
-    title: "智能助手",
-  },
-);
-
-const { title } = toRefs(<IReactive>props);
-
-const emit = defineEmits(["close"]);
-
-const dialogVisible = ref(false);
-watch(dialogVisible, (newVal) => {
-  if (!newVal) {
-    chatRef.value?.clear();
-    businessGroupRef.value?.clear();
-    curBusinessType.value = "0";
-
-    emit("close");
+    title: '智能助手'
   }
-});
+)
 
-const pageLoading = ref(false);
+const { title } = toRefs(<IReactive>props)
 
-const aiName = ref("彗星");
+const emit = defineEmits(['close'])
 
-const businessGroupRef = ref();
-const chatRef = ref();
-const isMoving = ref(false);
+const dialogVisible = ref(false)
+watch(dialogVisible, newVal => {
+  if (!newVal) {
+    chatRef.value?.clear()
+    businessGroupRef.value?.clear()
+    curBusinessType.value = '0'
+
+    emit('close')
+  }
+})
+
+const pageLoading = ref(false)
+
+const aiName = ref('彗星')
+
+const businessGroupRef = ref()
+const chatRef = ref()
+const isMoving = ref(false)
 const openDialog = () => {
   if (isMoving.value || dialogVisible.value) {
-    return;
+    return
   }
-  dialogVisible.value = true;
+  dialogVisible.value = true
   setTimeout(() => {
-    chatRef.value?.init();
-    chatRef.value?.appendMsgItem(builtInMsg.init);
-    businessGroupRef.value?.addDialog();
-  }, 500);
-};
+    chatRef.value?.init()
+    chatRef.value?.appendMsgItem(builtInMsg.init)
+    businessGroupRef.value?.addDialog()
+  }, 500)
+}
 
-const msgTextLink = async (link: string) => {};
+const msgTextLink = async (link: string) => {}
 
 const createGroup = (groupInfo: IReactive) => {
-  businessGroupRef.value.groups.unshift(groupInfo);
-};
+  businessGroupRef.value.groups.unshift(groupInfo)
+}
 
 // 内置消息
 const builtInMsg = {
   init: {
     content: {
       emphasize: `您好，我是${aiName.value}`,
-      prefixContent: "你需要我如何帮助你呢？",
+      prefixContent: '你需要我如何帮助你呢？',
       showBusinessCards: true,
-      extContent: "试试这样和我说话：",
-      btnExamples: ["日志查询", "功能查询"],
+      extContent: '试试这样和我说话：',
+      btnExamples: ['日志查询', '功能查询']
     },
     role: 0,
     type: 3,
-    userId: "",
-    groupId: "",
-  },
-};
+    userId: '',
+    groupId: ''
+  }
+}
 
 const changeGroup = (groupInfo: IReactive) => {
   if (!chatRef.value) {
-    return;
+    return
   }
-  chatRef.value.groupInfo.groupId = groupInfo.groupId;
-  chatRef.value.groupInfo.groupName = groupInfo.groupName;
-};
+  chatRef.value.groupInfo.groupId = groupInfo.groupId
+  chatRef.value.groupInfo.groupName = groupInfo.groupName
+}
 
 const deleteGroup = (groupId: string) => {
   if (!groupId || groupId === chatRef.value.groupInfo.groupId) {
-    businessGroupRef.value?.createGroup();
+    businessGroupRef.value?.createGroup()
   }
-};
+}
 
 const addDialog = () => {
   nextTick(() => {
-    chatRef.value?.appendMsgItem(builtInMsg.init);
-  });
-};
+    chatRef.value?.appendMsgItem(builtInMsg.init)
+  })
+}
 
 /**拖拽移动 */
-const assitantRntryRef = ref();
+const assitantRntryRef = ref()
 
 const mousedown = (event: Event) => {
-  event.preventDefault();
+  event.preventDefault()
 
   setTimeout(() => {
-    isMoving.value = true;
-  }, 300);
+    isMoving.value = true
+  }, 300)
 
   document.onmousemove = function (e) {
-    const el = assitantRntryRef.value;
+    const el = assitantRntryRef.value
 
-    const left = Math.min(window.innerWidth - 64, e.pageX - 34);
-    const top = Math.min(window.innerHeight - 64, e.pageY - 28);
+    const left = Math.min(window.innerWidth - 64, e.pageX - 34)
+    const top = Math.min(window.innerHeight - 64, e.pageY - 28)
 
-    el.style.left = `${Math.max(0, left)}px`;
-    el.style.top = `${Math.max(0, top)}px`;
+    el.style.left = `${Math.max(0, left)}px`
+    el.style.top = `${Math.max(0, top)}px`
 
-    savePosition(left, top);
-  };
-};
+    savePosition(left, top)
+  }
+}
 
 const savePosition = debounce((left, top) => {
-  sessionStorage.setItem("inquireDataPosition", JSON.stringify({ left, top }));
-}, 300);
+  sessionStorage.setItem('inquireDataPosition', JSON.stringify({ left, top }))
+}, 300)
 
 const mouseup = () => {
-  document.onmousemove = () => {};
+  document.onmousemove = () => {}
   setTimeout(() => {
-    isMoving.value = false;
-  }, 300);
-};
+    isMoving.value = false
+  }, 300)
+}
 
-let temFlag = false;
+let temFlag = false
 const keyOpenDialog = (e: KeyboardEvent) => {
-  const code = e.code;
-  if (code === "Space") {
+  const code = e.code
+  if (code === 'Space') {
     if (temFlag) {
-      openDialog();
+      openDialog()
     }
-    temFlag = true;
+    temFlag = true
     setTimeout(() => {
-      temFlag = false;
-    }, 500);
+      temFlag = false
+    }, 500)
   }
-};
+}
 
 onMounted(() => {
-  const inquireDataPositionStr = sessionStorage.getItem("inquireDataPosition");
+  const inquireDataPositionStr = sessionStorage.getItem('inquireDataPosition')
   if (inquireDataPositionStr && assitantRntryRef.value) {
-    const inquireDataPosition = JSON.parse(inquireDataPositionStr);
+    const inquireDataPosition = JSON.parse(inquireDataPositionStr)
 
-    assitantRntryRef.value.style.left = `${Math.min(window.innerWidth - 80, inquireDataPosition.left)}px`;
-    assitantRntryRef.value.style.top = `${Math.min(window.innerHeight - 80, inquireDataPosition.top)}px`;
+    assitantRntryRef.value.style.left = `${Math.min(window.innerWidth - 80, inquireDataPosition.left)}px`
+    assitantRntryRef.value.style.top = `${Math.min(window.innerHeight - 80, inquireDataPosition.top)}px`
   }
 
-  window.addEventListener("keydown", keyOpenDialog);
-});
+  window.addEventListener('keydown', keyOpenDialog)
+})
 
 onUnmounted(() => {
-  window.removeEventListener("keydown", keyOpenDialog);
-});
+  window.removeEventListener('keydown', keyOpenDialog)
+})
 
-defineExpose({ openDialog });
+defineExpose({ openDialog })
 </script>
 
 <style scoped lang="less">
@@ -263,7 +263,7 @@ defineExpose({ openDialog });
   &__icon {
     width: 100%;
     height: 100%;
-    background: url("@/assets/img/assistant/assistant-icon__animation.png")
+    background: url('@/assets/img/assistant/assistant-icon__animation.png')
       no-repeat;
     background-size: contain;
     border-radius: 50%;
@@ -280,7 +280,7 @@ defineExpose({ openDialog });
       position: absolute;
       z-index: 2;
       &::before {
-        content: "";
+        content: '';
         animation: entry-ripple ease 3s infinite;
         width: 100%;
         height: 100%;
@@ -296,7 +296,7 @@ defineExpose({ openDialog });
   &__drag {
     width: 100%;
     height: 100%;
-    background: url("@/assets/img/assistant/assistant-icon__drag.png") no-repeat;
+    background: url('@/assets/img/assistant/assistant-icon__drag.png') no-repeat;
     background-size: contain;
   }
   .hover-show {

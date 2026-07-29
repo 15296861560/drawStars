@@ -26,7 +26,7 @@
               :key="item.key"
               class="assistant-dropdown-item"
               :class="{
-                'assistant-dropdown-item__active': item.key === curDirection,
+                'assistant-dropdown-item__active': item.key === curDirection
               }"
               @click="changeCurDirection(item.key)"
               >{{ item.name }}</el-dropdown-item
@@ -51,7 +51,7 @@
               class="dialog-record-dropdown-item"
               :class="{
                 'dialog-record-dropdown-item__active':
-                  curGroupId === item.groupId,
+                  curGroupId === item.groupId
               }"
               @click="changeGroup(item)"
             >
@@ -87,111 +87,109 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watch, nextTick, computed, onMounted } from "vue";
-import { getAssetsImgFile } from "@/utils/tool";
-import { useUserStore } from "@/stores/user";
-import { storeToRefs } from "pinia";
-import { ElMessage } from "element-plus";
-import { v4 as uuidv4 } from "uuid";
+import { ref, inject, watch, nextTick, computed, onMounted } from 'vue'
+import { getAssetsImgFile } from '@/utils/tool'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { ElMessage } from 'element-plus'
+import { v4 as uuidv4 } from 'uuid'
 
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
-const userId = computed(() => userInfo.getUserId || "");
+import { userInfoStore } from '@/stores/user-info'
+const userInfo = userInfoStore()
+const userId = computed(() => userInfo.getUserId || '')
 
 const emit = defineEmits([
-  "direction-change",
-  "change-group",
-  "delete-group",
-  "add-dialog",
-  "minimize-dialog",
-]);
+  'direction-change',
+  'change-group',
+  'delete-group',
+  'add-dialog',
+  'minimize-dialog'
+])
 
 const props = defineProps({
   businessDirections: {
     type: Array,
-    default: [],
-  },
-});
+    default: []
+  }
+})
 
 const selectedDirectionName = computed(() => {
-  const item = props.businessDirections.find(
-    (d) => d.key === curDirection.value,
-  );
-  return item?.name || "请选择";
-});
+  const item = props.businessDirections.find(d => d.key === curDirection.value)
+  return item?.name || '请选择'
+})
 
-const curDirection = ref("0");
+const curDirection = ref('0')
 
 const changeCurDirection = (newVal: string) => {
   if (curDirection.value === newVal) {
-    return;
+    return
   }
 
-  curDirection.value = newVal;
-  emit("direction-change", newVal);
-  createGroup();
-};
+  curDirection.value = newVal
+  emit('direction-change', newVal)
+  createGroup()
+}
 
-const curGroupId = ref("");
-const groups = ref<Array<any>>([]);
+const curGroupId = ref('')
+const groups = ref<Array<any>>([])
 
 const addDialog = () => {
-  createGroup();
+  createGroup()
 
-  emit("direction-change", "0");
-  emit("add-dialog");
+  emit('direction-change', '0')
+  emit('add-dialog')
 
-  curDirection.value = "0";
-};
+  curDirection.value = '0'
+}
 
 const minimizeDialog = () => {
-  emit("minimize-dialog");
-};
+  emit('minimize-dialog')
+}
 
 const createGroup = () => {
-  curGroupId.value = uuidv4().replace(/-/g, "");
+  curGroupId.value = uuidv4().replace(/-/g, '')
   const groupInfo = {
     groupId: curGroupId.value,
-    groupName: "",
-  };
-  emit("change-group", groupInfo);
-};
+    groupName: ''
+  }
+  emit('change-group', groupInfo)
+}
 const deleteAllDialog = async () => {
   if (await deleteGroup()) {
-    groups.value = [];
+    groups.value = []
   }
-};
+}
 const deleteSingleGroup = async (id: string, index: number) => {
   if (await deleteGroup(id)) {
-    await getListGroup(); // 强制刷新整个列表
+    await getListGroup() // 强制刷新整个列表
   }
-};
+}
 
-const deleteGroup = async (groupId = "") => {
-  ElMessage.success("删除成功");
-  return true;
-};
+const deleteGroup = async (groupId = '') => {
+  ElMessage.success('删除成功')
+  return true
+}
 
 const changeGroup = (groupInfo: any) => {
-  curGroupId.value = groupInfo.groupId;
-  curDirection.value = groupInfo.type || "0";
-  emit("direction-change", curDirection.value);
-  emit("change-group", groupInfo);
-};
+  curGroupId.value = groupInfo.groupId
+  curDirection.value = groupInfo.type || '0'
+  emit('direction-change', curDirection.value)
+  emit('change-group', groupInfo)
+}
 
 const getListGroup = async () => {
-  groups.value = res.data = [];
-};
+  groups.value = res.data = []
+}
 
 const clear = () => {
-  curDirection.value = "0";
-  curGroupId.value = "";
-};
+  curDirection.value = '0'
+  curGroupId.value = ''
+}
 
 onMounted(() => {
-  getListGroup();
-  addDialog();
-});
+  getListGroup()
+  addDialog()
+})
 
 defineExpose({
   curDirection,
@@ -199,8 +197,8 @@ defineExpose({
   addDialog,
   createGroup,
   clear,
-  curGroupId,
-});
+  curGroupId
+})
 </script>
 
 <style lang="less">
@@ -224,7 +222,7 @@ defineExpose({
     &__active {
       color: #409eff;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         left: 0px;
         top: 50%;
@@ -274,7 +272,7 @@ defineExpose({
     &__active {
       color: #409eff;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         left: 0px;
         top: 50%;

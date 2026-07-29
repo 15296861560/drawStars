@@ -85,7 +85,10 @@ const { t } = useI18n()
 const store = aiAssistantStore()
 const speech = useSpeechRecognition()
 const text = ref('')
-const inputRef = ref<{ focus: () => void; textarea?: HTMLTextAreaElement } | null>(null)
+const inputRef = ref<{
+  focus: () => void
+  textarea?: HTMLTextAreaElement
+} | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const hints = listCapabilityHints()
 
@@ -207,8 +210,7 @@ defineExpose({ focus })
   border-radius: @ai-radius-xl;
   padding: 6px 8px 6px 16px;
   box-shadow: @ai-shadow-input;
-  transition:
-    box-shadow 0.2s;
+  transition: box-shadow 0.2s;
 
   &:focus-within {
     box-shadow:
@@ -285,7 +287,9 @@ defineExpose({ focus })
   background: @ai-gradient !important;
   border: none;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-  transition: transform 0.15s ease, opacity 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
 
   &:hover:not(:disabled) {
     transform: scale(1.06);
