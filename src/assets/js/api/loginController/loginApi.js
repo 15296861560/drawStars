@@ -74,5 +74,7 @@ export default {
    * @return {*}
    * @author: lgy
    */
-  getCaptcha: param => $axiosGet(param, '/loginApi/getCaptcha')
+  getCaptcha: param => $axiosGet(param, '/loginApi/getCaptcha'),
+
+  resetPassword: param => $axios(param, '/loginApi/resetPassword')
 }

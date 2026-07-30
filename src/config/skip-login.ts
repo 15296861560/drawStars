@@ -5,7 +5,11 @@ const MOCK_TOKEN = 'skip-login-local-token'
 const MOCK_USER = {
   name: '本地预览（跳过登录）',
   userId: 1,
-  phone: ''
+  phone: '',
+  email: '',
+  avatar: '',
+  accountAlias: 'local-preview',
+  level: 1
 }
 
 /** 环境变量 VITE_SKIP_LOGIN=true 时启用：无需后端即可进入主界面 */

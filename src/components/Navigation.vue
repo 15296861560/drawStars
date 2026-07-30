@@ -64,7 +64,10 @@
       </el-dropdown>
 
       <el-dropdown class="profile">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link profile-link">
+          <el-avatar :size="28" :src="userAvatar || undefined" class="nav-avatar">
+            {{ (userName || 'U').slice(0, 1) }}
+          </el-avatar>
           {{ userName }}
           <el-icon class="el-icon--right">
             <ArrowDown />
@@ -140,6 +143,9 @@ export default {
     userName() {
       return userInfo.getUserName
     },
+    userAvatar() {
+      return userInfo.getAvatar
+    },
     showTopLayoutMenu() {
       const layout = layoutSettingsStore()
       return this.websiteInfo.isPC && layout.navType === 3
@@ -169,11 +175,11 @@ export default {
       })
     },
     toPersonalCenter() {
-      let toPath = '/home/personalCenter/personalProfile'
+      let toPath = '/home/personalCenter/basicInfo'
       this.toNewPath(toPath)
     },
     toChangePasswork() {
-      let toPath = '/home/personalCenter/changePassword'
+      let toPath = '/home/personalCenter/credentials'
       this.toNewPath(toPath)
     },
     toNewPath(toPath) {
@@ -196,8 +202,12 @@ export default {
         })
         return
       }
-      userInfo.changeUserInfo({})
-      userInfo.updateToken('')
+      if (userInfo.clearUserInfo) {
+        userInfo.clearUserInfo()
+      } else {
+        userInfo.changeUserInfo({})
+        userInfo.updateToken('')
+      }
 
       this.$router.push({
         path: '/login'
@@ -299,6 +309,17 @@ export default {
 
       .el-dropdown-link {
         outline: none;
+      }
+
+      .profile-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .nav-avatar {
+        flex-shrink: 0;
       }
     }
   }

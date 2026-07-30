@@ -26,6 +26,14 @@ export const RouterList = [
     }
   },
   {
+    path: '/forgetPassword',
+    name: '忘记密码',
+    component: () => import('@/views/login/forgetPassword.vue'),
+    meta: {
+      title: ['忘记密码']
+    }
+  },
+  {
     path: '/home',
     name: 'home',
     component: () => import('@/views/Index.vue'),

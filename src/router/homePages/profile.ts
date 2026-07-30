@@ -1,12 +1,4 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Autor: lgy
- * @Date: 2022-06-12 22:06:41
- * @LastEditors: lgy
- * @LastEditTime: 2023-02-06 23:50:42
- */
-/* 资料 */
+/* 资料 / 账号设置 */
 export default [
   {
     path: '/home/personalCenter',
@@ -16,33 +8,73 @@ export default [
       title: ['首页', '个人中心'],
       keepAlive: true
     },
+    redirect: '/home/personalCenter/basicInfo',
     children: [
       {
-        path: '/home/personalCenter/personalProfile',
-        name: '个人资料 ',
-        component: () => import('@/views/profile/personalProfile.vue'),
+        path: '/home/personalCenter/basicInfo',
+        name: '基础信息',
+        component: () => import('@/views/profile/basicInfo.vue'),
         meta: {
-          title: ['首页', '个人中心', '个人资料 '],
+          title: ['首页', '个人中心', '基础信息'],
           keepAlive: true
         }
+      },
+      {
+        path: '/home/personalCenter/credentials',
+        name: '登录凭证',
+        component: () => import('@/views/profile/credentials.vue'),
+        meta: {
+          title: ['首页', '个人中心', '登录凭证'],
+          keepAlive: true
+        }
+      },
+      {
+        path: '/home/personalCenter/oauthBind',
+        name: '第三方关联',
+        component: () => import('@/views/profile/oauthBind.vue'),
+        meta: {
+          title: ['首页', '个人中心', '第三方关联'],
+          keepAlive: true
+        }
+      },
+      {
+        path: '/home/personalCenter/notifySettings',
+        name: '通知设置',
+        component: () => import('@/views/profile/notifySettings.vue'),
+        meta: {
+          title: ['首页', '个人中心', '通知设置'],
+          keepAlive: true
+        }
+      },
+      {
+        path: '/home/personalCenter/roles',
+        redirect: '/home/personalCenter/basicInfo'
+      },
+      {
+        path: '/home/personalCenter/lifecycle',
+        name: '账号安全',
+        component: () => import('@/views/profile/lifecycle.vue'),
+        meta: {
+          title: ['首页', '个人中心', '账号安全'],
+          keepAlive: true
+        }
+      },
+      // 旧路径兼容
+      {
+        path: '/home/personalCenter/personalProfile',
+        redirect: '/home/personalCenter/basicInfo'
       },
       {
         path: '/home/personalCenter/changePassword',
-        name: '修改密码 ',
-        component: () => import('@/views/profile/changePassword.vue'),
-        meta: {
-          title: ['首页', '个人中心', '修改密码 '],
-          keepAlive: true
-        }
+        redirect: '/home/personalCenter/credentials'
       },
       {
         path: '/home/personalCenter/bindPhone',
-        name: '手机设置 ',
-        component: () => import('@/views/profile/bindPhone.vue'),
-        meta: {
-          title: ['首页', '个人中心', '手机设置 '],
-          keepAlive: true
-        }
+        redirect: '/home/personalCenter/credentials'
+      },
+      {
+        path: '/home/personalCenter/accountSettings',
+        redirect: '/home/personalCenter/credentials'
       }
     ]
   }

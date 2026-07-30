@@ -65,7 +65,14 @@ router.beforeEach((to, from) => {
 
   let hasLogin = true
 
-  if (to.path != '/login' && !userInfo.getUserId && !userInfo.getToken.value) {
+  const isPublicAuthPage =
+    to.path === '/login' ||
+    to.path === '/' ||
+    to.path === '/forgetPassword' ||
+    to.name === '登录' ||
+    to.name === '忘记密码'
+
+  if (!isPublicAuthPage && !userInfo.getUserId && !userInfo.getToken.value) {
     hasLogin = false
   }
 

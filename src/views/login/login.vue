@@ -388,7 +388,11 @@ export default {
       userInfo.changeUserInfo({
         name: userInfoData.name,
         userId: userInfoData.id,
-        phone: userInfoData.phone
+        phone: userInfoData.phone,
+        email: userInfoData.email,
+        avatar: userInfoData.avatar,
+        accountAlias: userInfoData.accountAlias,
+        level: userInfoData.level
       })
       userInfo.updateToken(userInfoData.token)
 

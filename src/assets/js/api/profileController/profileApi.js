@@ -1,16 +1,7 @@
-/*
- * @Description:
- * @Version: 2.0
- * @Autor: lgy
- * @Date: 2022-11-24 22:05:22
- * @LastEditors: lgy
- * @LastEditTime: 2023-02-17 00:04:20
- */
-/* 个人资料相关接口 */
+/* 个人资料 / 账号设置相关接口 */
 import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
 
 export default {
-  // 通过id查询个人信息
   queryUserInfo: id =>
     $axiosGet(
       {
@@ -19,10 +10,12 @@ export default {
       '/profileApi/queryUserInfo'
     ),
 
-  // 修改个人信息
   updateUserInfo: userInfo => $axios(userInfo, '/profileApi/updateUserInfo'),
 
-  // 修改密码
+  uploadAvatar: formData => $axios(formData, '/profileApi/uploadAvatar'),
+
+  deleteAvatar: param => $axios(param, '/profileApi/deleteAvatar'),
+
   changePassword: userInfo =>
     $axios(
       {
@@ -33,19 +26,61 @@ export default {
       '/profileApi/changePassword'
     ),
 
-  // 修改手机号码
-  changePhone: userInfo =>
-    $axios(
-      {
-        id: userInfo.id,
-        phone: userInfo.phone
-      },
-      '/profileApi/updateUserInfo'
-    ),
+  changePhone: param => $axios(param, '/profileApi/changePhone'),
 
-  // 获取验证码
+  unbindPhone: param => $axios(param, '/profileApi/unbindPhone'),
+
+  bindEmail: param => $axios(param, '/profileApi/bindEmail'),
+
+  changeEmail: param => $axios(param, '/profileApi/changeEmail'),
+
+  unbindEmail: param => $axios(param, '/profileApi/unbindEmail'),
+
   getCaptcha: param => $axios(param, '/profileApi/getCaptcha'),
 
-  // 验证验证码
-  verifyCaptcha: param => $axios(param, '/profileApi/verifyCaptcha')
+  verifyCaptcha: param => $axios(param, '/profileApi/verifyCaptcha'),
+
+  resetPassword: param => $axios(param, '/profileApi/resetPassword'),
+
+  updateLoginPrefs: param => $axios(param, '/profileApi/updateLoginPrefs'),
+
+  listOauthBinds: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/listOauthBinds'
+    ),
+
+  oauthBind: (platform, id) =>
+    $axiosGet(
+      {
+        id
+      },
+      `/profileApi/oauthBind/${platform}`
+    ),
+
+  oauthUnbind: param => $axios(param, '/profileApi/oauthUnbind'),
+
+  getNotifyPrefs: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/notifyPrefs'
+    ),
+
+  updateNotifyPrefs: param => $axios(param, '/profileApi/notifyPrefs'),
+
+  myRoles: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/myRoles'
+    ),
+
+  deactivateAccount: param => $axios(param, '/profileApi/deactivateAccount'),
+
+  deleteAccount: param => $axios(param, '/profileApi/deleteAccount')
 }

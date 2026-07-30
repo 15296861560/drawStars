@@ -4,7 +4,7 @@
       <li
         class="menu"
         :class="{ menu__active: curMenu === menu.path }"
-        v-for="(menu, index) in menus"
+        v-for="menu in menus"
         :key="menu.path"
         @click="toggleMenu(menu.path)"
       >
@@ -29,41 +29,43 @@ export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
-      curMenu: 'personalProfile'
+      curMenu: 'basicInfo'
     }
   },
   computed: {
     menus() {
       return [
-        { name: this.$t('personalProfile'), path: 'personalProfile' },
-        { name: this.$t('accountSettings'), path: 'accountSettings' },
-        { name: this.$t('changePassword'), path: 'changePassword' },
-        { name: this.$t('changePhone'), path: 'bindPhone' }
+        { name: this.$t('basicInfo'), path: 'basicInfo' },
+        { name: this.$t('credentials'), path: 'credentials' },
+        { name: this.$t('oauthBind'), path: 'oauthBind' },
+        { name: this.$t('notifySettings'), path: 'notifySettings' },
+        { name: this.$t('lifecycle'), path: 'lifecycle' }
       ]
     }
   },
-
-  mounted() {
-    this.init()
+  watch: {
+    $route: {
+      immediate: true,
+      handler() {
+        this.initData()
+      }
+    }
   },
-  activated() {},
+  mounted() {
+    this.initData()
+  },
   methods: {
-    init() {
-      this.initData()
-    },
     initData() {
-      let fullPath = this.$route.fullPath
-      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length, fullPath.length)
+      const fullPath = this.$route.fullPath.split('?')[0]
+      this.curMenu = fullPath.slice(PERSONAL_PREFIX.length) || 'basicInfo'
     },
     toggleMenu(menu) {
       this.curMenu = menu
-      let nextPath = PERSONAL_PREFIX + menu
+      const nextPath = PERSONAL_PREFIX + menu
       if (nextPath === this.$route.path) {
         return
       }
-      this.$router.push({
-        path: nextPath
-      })
+      this.$router.push({ path: nextPath })
     }
   }
 }
@@ -75,20 +77,20 @@ export default {
   .menu-list {
     display: flex;
     flex-direction: column;
-    width: 12.5rem /* 200/16 */;
+    width: 12.5rem;
     list-style: none;
-    font-size: 0.875rem /* 14/16 */;
-    padding: 0.5rem /* 8/16 */ 0;
+    font-size: 0.875rem;
+    padding: 0.5rem 0;
     background-color: @color-bg;
     border-radius: 4px;
-    margin-right: 1.25rem /* 20/16 */;
+    margin-right: 1.25rem;
     .menu {
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 4px;
-      height: 3rem /* 48/16 */;
-      line-height: 3rem /* 48/16 */;
+      height: 3rem;
+      line-height: 3rem;
       text-align: center;
       color: @color-text-secondary;
       cursor: pointer;
@@ -106,8 +108,8 @@ export default {
   }
 
   .container-right {
-    min-width: 62.5rem /* 1000/16 */;
-    min-height: 50rem /* 800/16 */;
+    min-width: 62.5rem;
+    min-height: 50rem;
     background-color: @color-bg;
   }
 }
@@ -115,16 +117,18 @@ export default {
 <i18n>
 {
   "en": {
-    "personalProfile": "Personal Profile",
-    "accountSettings": "Account Settings",
-    "changePassword": "Change Password",
-    "changePhone":"Phone Settings"
+    "basicInfo": "Basic Info",
+    "credentials": "Login Credentials",
+    "oauthBind": "Linked Accounts",
+    "notifySettings": "Notifications",
+    "lifecycle": "Account Security"
   },
   "zh": {
-     "personalProfile": "个人资料",
-    "accountSettings": "账号设置",
-    "changePassword": "修改密码",
-    "changePhone":"手机设置"
+    "basicInfo": "基础信息",
+    "credentials": "登录凭证",
+    "oauthBind": "第三方关联",
+    "notifySettings": "通知设置",
+    "lifecycle": "账号安全"
   }
 }
 </i18n>
