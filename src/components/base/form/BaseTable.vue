@@ -63,7 +63,8 @@
         v-if="pageTableOperate?.length"
         label="操作"
         fixed="right"
-        :width="tableOperateWidth"
+        :width="operateColumnWidth"
+        :min-width="operateColumnMinWidth"
       >
         <template #default="scope">
           <div class="table-operate-div">
@@ -102,7 +103,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, ref, toRefs } from 'vue'
+import { computed, defineAsyncComponent, ref, toRefs } from 'vue'
 import * as _Global from '@/types/global'
 import { useRoute } from 'vue-router'
 
@@ -131,6 +132,23 @@ const {
   tableName,
   tableOperate
 } = toRefs(props.options as _Global.TableOption)
+
+/** 操作列按按钮数量自适应；显式配置 tableOperateWidth 时优先使用 */
+const operateColumnWidth = computed(() => {
+  if (tableOperateWidth?.value != null && tableOperateWidth.value !== '') {
+    return tableOperateWidth.value
+  }
+  const count = pageTableOperate?.value?.length || 0
+  // 每个 link 按钮约 48px + 左右内边距
+  return Math.max(88, count * 48 + 24)
+})
+
+const operateColumnMinWidth = computed(() => {
+  if (tableOperateWidth?.value != null && tableOperateWidth.value !== '') {
+    return undefined
+  }
+  return operateColumnWidth.value
+})
 
 //是否展示按钮
 const handleShowButton = (
@@ -173,6 +191,14 @@ const handleDisabledButton = (
   }
   .table-operation {
     display: flex;
+  }
+
+  .table-operate-div {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
   }
 
   &__pagination {

@@ -1,7 +1,7 @@
 <template>
   <div class="log-container">
     <el-row class="mb40" :gutter="20">
-      <el-col :span="20">
+      <el-col :span="22">
         <div class="flex">
           <search-item
             v-for="item in searchItems"
@@ -16,7 +16,7 @@
           ></search-item>
         </div>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="2">
         <div class="flex justify-end">
           <el-button type="primary" @click="query">{{
             $t('btn.search')
@@ -184,8 +184,8 @@ const tableOptions = reactive({
   tableName: '操作日志',
   tableFields: [
     { fieldName: 'username', label: '操作用户', width: 120 },
-    { fieldName: 'operation', label: '操作类型', width: 120 },
-    { fieldName: 'method', label: '请求方法', width: 150 },
+    { fieldName: 'operation', label: '操作类型', minWidth: 150 },
+    { fieldName: 'method', label: '请求方法', minWidth: 150 },
     { fieldName: 'params', label: '请求参数', width: 200, slotName: 'params' },
     { fieldName: 'ip', label: 'IP地址', width: 150 },
     { fieldName: 'status', label: '状态', width: 100 },

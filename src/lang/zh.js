@@ -270,6 +270,11 @@ export default {
   aside: {
     homePage: '首页',
     module: '模块',
+    logManage: '日志管理',
+    operationLog: '操作日志',
+    businessLog: '业务日志',
+    apiLog: '接口日志',
+    performanceLog: '性能日志',
     test: '测试',
     moreThanOne: '一级以上权限',
     moreThanTwo: '二级以上权限',

@@ -17,6 +17,7 @@ import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
 
 // 配置埋点
 import '@/plugins/umami/umami.js'
+import { installTracker } from '@/plugins/tracker'
 // 加载高德地图
 import '@/plugins/amap/index.js'
 
@@ -30,6 +31,7 @@ export default (app: _Vue.App<Element>) => {
   app.use(Particles)
 
   installStore(app)
+  installTracker()
   if (isSkipLoginMode()) {
     applySkipLoginSession()
   }

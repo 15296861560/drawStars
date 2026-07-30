@@ -274,6 +274,11 @@ export default {
   aside: {
     homePage: 'Home Page',
     module: 'Module',
+    logManage: 'Log Management',
+    operationLog: 'Operation Logs',
+    businessLog: 'Business Logs',
+    apiLog: 'API Logs',
+    performanceLog: 'Performance Logs',
     test: 'Test',
     moreThanOne: 'More than one level of authority',
     moreThanTwo: 'More than twwo level of authority',

@@ -50,7 +50,7 @@ export interface TableOption {
   showSelection?: boolean
   pageTableOperate?: Array<Operate>
   tableOperate?: Array<Operate>
-  tableOperateWidth: string | number
+  tableOperateWidth?: string | number
   tableData: Array<AnyObject>
   rowKey?: string
   tableName?: string

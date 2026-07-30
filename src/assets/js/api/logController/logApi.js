@@ -13,6 +13,13 @@ export default {
   // 查询业务日志
   queryBusinessLogs: params => $axiosGet(params, '/logApi/queryBusinessLogs'),
 
+  // 查询接口日志
+  queryApiLogs: params => $axiosGet(params, '/logApi/queryApiLogs'),
+
+  // 查询性能日志
+  queryPerformanceLogs: params =>
+    $axiosGet(params, '/logApi/queryPerformanceLogs'),
+
   // 获取日志统计
   getLogStatistics: params => $axiosGet(params, '/logApi/getLogStatistics'),
 
@@ -20,8 +27,15 @@ export default {
   deleteLog: id => $axiosGet({ id }, '/logApi/deleteLog'),
 
   // 批量删除日志
-  batchDeleteLogs: ids => $axiosGet({ ids }, '/logApi/batchDeleteLogs'),
+  batchDeleteLogs: ids =>
+    $axiosGet(
+      { ids: Array.isArray(ids) ? ids.join(',') : ids },
+      '/logApi/batchDeleteLogs'
+    ),
 
   // 导出日志
-  exportLogs: params => $axiosGet(params, '/logApi/exportLogs')
+  exportLogs: params => $axiosGet(params, '/logApi/exportLogs'),
+
+  // 前端埋点上报
+  track: params => $axios(params, '/logApi/track')
 }

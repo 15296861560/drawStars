@@ -41,6 +41,24 @@
               >{{ $t(item.name) }}</el-menu-item
             >
           </el-sub-menu>
+          <el-sub-menu index="logs">
+            <template #title>
+              <el-icon><Document /></el-icon>
+              <span>{{ $t('aside.logManage') }}</span>
+            </template>
+            <el-menu-item index="/home/logs/operation">{{
+              $t('aside.operationLog')
+            }}</el-menu-item>
+            <el-menu-item index="/home/logs/business">{{
+              $t('aside.businessLog')
+            }}</el-menu-item>
+            <el-menu-item index="/home/logs/api">{{
+              $t('aside.apiLog')
+            }}</el-menu-item>
+            <el-menu-item index="/home/logs/performance">{{
+              $t('aside.performanceLog')
+            }}</el-menu-item>
+          </el-sub-menu>
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Avatar /></el-icon>
