@@ -89,6 +89,76 @@ export default {
       this.areaOption = chartData.areaOption
       this.lineOption = chartData.lineOption
       this.pieOption = chartData.pieOption
+      this.loadAnalyticsCharts()
+    },
+    async loadAnalyticsCharts() {
+      try {
+        const analyticsApi = (
+          await import('@/assets/js/api/analyticsController/analyticsApi.js')
+        ).default
+        const res = await analyticsApi.getHomeCharts()
+        if (!res?.status || !res.data) return
+
+        const pageviews = res.data.pageviews || []
+        const referrers = res.data.referrers || []
+        const echarts = await import('echarts')
+
+        this.areaOption = {
+          ...chartData.areaOption,
+          title: {
+            ...chartData.areaOption.title,
+            text: '访问量',
+            subtext: '近7日真实数据'
+          },
+          xAxis: {
+            ...chartData.areaOption.xAxis,
+            data: pageviews.map(i => String(i.t).slice(5))
+          },
+          series: [
+            {
+              ...chartData.areaOption.series[0],
+              data: pageviews.map(i => i.y),
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#56ad66' },
+                  { offset: 0.5, color: 'rgba(98, 199, 98, 0.3)' },
+                  { offset: 1, color: 'rgba(98, 199, 98, 0.1)' }
+                ])
+              }
+            }
+          ]
+        }
+
+        this.pieOption = {
+          ...chartData.pieOption,
+          title: {
+            ...chartData.pieOption.title,
+            text: '用户访问来源',
+            subtext: '近7日真实数据'
+          },
+          series: [
+            {
+              ...chartData.pieOption.series[0],
+              data: (referrers.length
+                ? referrers
+                : [{ name: '暂无数据', value: 0 }]
+              ).map(i => ({
+                name: i.name || i.x,
+                value: i.value ?? i.y
+              }))
+            }
+          ]
+        }
+
+        this.$nextTick(() => {
+          if (this.pieOption?.series?.[0]?.data?.length) {
+            clearInterval(this.dataTimer)
+            this.autoTooltip(this.pieOption)
+          }
+        })
+      } catch (e) {
+        console.warn('loadAnalyticsCharts failed', e)
+      }
     },
     // 模拟更新数据
     updateChartData() {

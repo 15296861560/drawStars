@@ -1,0 +1,93 @@
+/* Umami 风格仪表盘主题变量（对齐 umami styles/variables.css） */
+.umami-dashboard {
+  --umami-gray50: #ffffff;
+  --umami-gray75: #fafafa;
+  --umami-gray100: #f5f5f5;
+  --umami-gray200: #eaeaea;
+  --umami-gray300: #e1e1e1;
+  --umami-gray400: #cacaca;
+  --umami-gray500: #b3b3b3;
+  --umami-gray600: #8e8e8e;
+  --umami-gray700: #6e6e6e;
+  --umami-gray800: #4b4b4b;
+  --umami-gray900: #2c2c2c;
+  --umami-primary: #2680eb;
+  --umami-primary-dark: #0d66d0;
+  --umami-green: #268e6c;
+  --umami-green-light: #2d9d78;
+  --umami-red: #d7373f;
+  --umami-font-xl: 36px;
+  --umami-font-lg: 24px;
+  --umami-font-md: 16px;
+  --umami-font-sm: 14px;
+  --umami-font-xs: 12px;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 30px 30px;
+  background: var(--umami-gray50);
+  color: var(--umami-gray900);
+  border-radius: 4px;
+  min-height: 70vh;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  box-sizing: border-box;
+}
+
+.umami-dashboard *,
+.umami-dashboard *:before,
+.umami-dashboard *:after {
+  box-sizing: border-box;
+}
+
+/* 弱化 Element Plus，贴近 Umami 控件 */
+.umami-dashboard {
+  :deep(.el-select .el-input__wrapper),
+  :deep(.el-date-editor.el-input__wrapper) {
+    box-shadow: 0 0 0 1px var(--umami-gray500) inset;
+    background: var(--umami-gray50);
+    border-radius: 4px;
+    min-height: 32px;
+  }
+
+  :deep(.el-select .el-input__wrapper:hover),
+  :deep(.el-date-editor.el-input__wrapper:hover) {
+    box-shadow: 0 0 0 1px var(--umami-gray700) inset;
+  }
+
+  :deep(.el-select .el-input__wrapper.is-focus),
+  :deep(.el-date-editor.el-input__wrapper.is-focus) {
+    box-shadow: 0 0 0 1px var(--umami-primary) inset !important;
+  }
+
+  :deep(.el-input__inner),
+  :deep(.el-select__placeholder),
+  :deep(.el-select__selected-item) {
+    color: var(--umami-gray900);
+    font-size: 14px;
+  }
+
+  :deep(.el-button.is-circle) {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    background: var(--umami-gray100);
+    color: var(--umami-gray900);
+
+    &:hover {
+      background: var(--umami-gray200);
+      color: var(--umami-gray900);
+    }
+  }
+
+  :deep(.el-button.is-link) {
+    color: var(--umami-primary);
+    font-weight: 600;
+
+    &:hover {
+      color: var(--umami-primary-dark);
+    }
+  }
+}

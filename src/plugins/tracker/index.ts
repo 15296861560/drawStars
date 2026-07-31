@@ -1,13 +1,20 @@
 /**
- * 基础数据埋点：路由页面访问 + 自定义事件上报到后端 logApi/track
- *（与 umami 并存，业务日志可在「业务日志」中查看）
+ * 基础数据埋点：路由页面访问上报到 analyticsApi/collect（Umami 风格）
+ * 同时兼容业务日志 track（可选）
  */
 import router from '@/router'
-import { requests } from '@/assets/js/axios-api/axios-config.js'
-import { apiInfoStore } from '@/stores/api-info'
+import analyticsApi from '@/assets/js/api/analyticsController/analyticsApi.js'
+import { umamiConfig } from '@/plugins/umami/umami-config'
 import { userInfoStore } from '@/stores/user-info'
 
 let installed = false
+let lastPath = ''
+
+function getWebsiteId() {
+  return process.env.NODE_ENV === 'production'
+    ? umamiConfig.dataWebsiteIdProduction
+    : umamiConfig.dataWebsiteIdDev
+}
 
 function getUsername() {
   try {
@@ -16,28 +23,6 @@ function getUsername() {
   } catch {
     return ''
   }
-}
-
-function postTrack(payload: Record<string, unknown>) {
-  try {
-    const base = apiInfoStore().getURL.value || ''
-    // 静默上报，失败不弹 toast
-    requests.post(`${base}/logApi/track`, payload).catch(() => {})
-  } catch {
-    // ignore
-  }
-}
-
-export function trackEvent(event: string, extra: Record<string, unknown> = {}) {
-  postTrack({
-    type: 'click',
-    event: String(event || '').slice(0, 200),
-    path: typeof window !== 'undefined' ? window.location.pathname : '',
-    title: typeof document !== 'undefined' ? document.title : '',
-    module: 'frontend',
-    username: getUsername(),
-    extra
-  })
 }
 
 export function trackPageview(to?: {
@@ -49,19 +34,48 @@ export function trackPageview(to?: {
     to?.fullPath ||
     to?.path ||
     (typeof window !== 'undefined' ? window.location.pathname : '')
+  if (!path || path === lastPath) return
+  lastPath = path
+
   const metaTitle = to?.meta?.title
   const title = metaTitle
     ? (Array.isArray(metaTitle) ? metaTitle : [metaTitle]).join(' / ')
     : typeof document !== 'undefined'
       ? document.title
       : ''
-  postTrack({
+
+  analyticsApi.collectSilent({
     type: 'pageview',
-    event: 'pageview',
-    path,
-    title,
-    module: 'frontend',
-    username: getUsername()
+    payload: {
+      website: getWebsiteId(),
+      hostname:
+        typeof window !== 'undefined' ? window.location.hostname : 'localhost',
+      screen:
+        typeof window !== 'undefined'
+          ? `${window.screen.width}x${window.screen.height}`
+          : '',
+      language: typeof navigator !== 'undefined' ? navigator.language : '',
+      url: path,
+      referrer:
+        typeof document !== 'undefined' ? document.referrer || '' : '',
+      title,
+      username: getUsername()
+    }
+  })
+}
+
+export function trackEvent(event: string, extra: Record<string, unknown> = {}) {
+  analyticsApi.collectSilent({
+    type: 'event',
+    payload: {
+      website: getWebsiteId(),
+      hostname:
+        typeof window !== 'undefined' ? window.location.hostname : 'localhost',
+      url: typeof window !== 'undefined' ? window.location.pathname : '',
+      event_type: 'custom',
+      event_value: String(event || '').slice(0, 50),
+      ...extra
+    }
   })
 }
 

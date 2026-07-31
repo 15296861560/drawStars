@@ -279,6 +279,8 @@ export default {
     businessLog: 'Business Logs',
     apiLog: 'API Logs',
     performanceLog: 'Performance Logs',
+    trafficStats: 'Analytics',
+    websiteConfig: 'Website Config',
     test: 'Test',
     moreThanOne: 'More than one level of authority',
     moreThanTwo: 'More than twwo level of authority',

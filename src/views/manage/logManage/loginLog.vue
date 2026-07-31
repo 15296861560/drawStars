@@ -106,8 +106,16 @@ const searchItems = computed(() => [
 
 // 查询方法
 async function query() {
+  const range = Array.isArray(searchInfo.timeRange)
+    ? searchInfo.timeRange
+    : []
   const params = {
-    ...searchInfo,
+    username: searchInfo.username || undefined,
+    ip: searchInfo.ip || undefined,
+    status: searchInfo.status || undefined,
+    startTime: range[0] || searchInfo.startTime || undefined,
+    endTime: range[1] || searchInfo.endTime || undefined,
+    timeRange: range.length >= 2 ? range : undefined,
     curPage: pageInfo.curPage,
     pageSize: pageInfo.pageSize
   }
@@ -123,9 +131,13 @@ async function query() {
 
 // 重置方法
 const reset = () => {
-  Object.keys(searchInfo).forEach(key => {
-    searchInfo[key] = ''
-  })
+  searchInfo.username = ''
+  searchInfo.ip = ''
+  searchInfo.status = ''
+  searchInfo.timeRange = []
+  searchInfo.startTime = ''
+  searchInfo.endTime = ''
+  pageInfo.curPage = 1
   query()
 }
 

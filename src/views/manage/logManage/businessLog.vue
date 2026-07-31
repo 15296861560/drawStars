@@ -54,6 +54,7 @@ const searchInfo = reactive({
   module: '',
   type: '',
   operator: '',
+  timeRange: [],
   startTime: '',
   endTime: ''
 })
@@ -119,8 +120,16 @@ const searchItems = computed(() => [
 
 // 查询方法
 async function query() {
+  const range = Array.isArray(searchInfo.timeRange)
+    ? searchInfo.timeRange
+    : []
   const params = {
-    ...searchInfo,
+    module: searchInfo.module || undefined,
+    type: searchInfo.type || undefined,
+    operator: searchInfo.operator || undefined,
+    startTime: range[0] || searchInfo.startTime || undefined,
+    endTime: range[1] || searchInfo.endTime || undefined,
+    timeRange: range.length >= 2 ? range : undefined,
     curPage: pageInfo.curPage,
     pageSize: pageInfo.pageSize
   }
@@ -136,9 +145,13 @@ async function query() {
 
 // 重置方法
 const reset = () => {
-  Object.keys(searchInfo).forEach(key => {
-    searchInfo[key] = ''
-  })
+  searchInfo.module = ''
+  searchInfo.type = ''
+  searchInfo.operator = ''
+  searchInfo.timeRange = []
+  searchInfo.startTime = ''
+  searchInfo.endTime = ''
+  pageInfo.curPage = 1
   query()
 }
 

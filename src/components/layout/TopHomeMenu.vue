@@ -43,6 +43,9 @@
       <el-menu-item index="/home/logs/performance">{{
         $t('aside.performanceLog')
       }}</el-menu-item>
+      <el-menu-item index="/home/logs/traffic">{{
+        $t('aside.trafficStats')
+      }}</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="sub-test">
       <template #title>

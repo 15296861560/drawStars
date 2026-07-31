@@ -275,6 +275,8 @@ export default {
     businessLog: '业务日志',
     apiLog: '接口日志',
     performanceLog: '性能日志',
+    trafficStats: '访问分析',
+    websiteConfig: '网站配置',
     test: '测试',
     moreThanOne: '一级以上权限',
     moreThanTwo: '二级以上权限',
