@@ -121,5 +121,33 @@ export default [
     meta: {
       title: ['首页', '工具模块', '网络质量']
     }
+  },
+  {
+    path: '/home/toolHomePage/infoAnalysis',
+    name: '信息分析',
+    component: () => import('@/views/tools/infoAnalysis/index.vue'),
+    meta: {
+      title: ['首页', '工具模块', '信息分析'],
+      keepAlive: true
+    },
+    children: [
+      {
+        path: '/home/toolHomePage/infoAnalysis/idCard',
+        name: '身份证信息分析',
+        component: () => import('@/views/tools/infoAnalysis/idCard/index.vue'),
+        meta: {
+          title: ['首页', '工具模块', '信息分析', '身份证信息分析']
+        }
+      },
+      {
+        path: '/home/toolHomePage/infoAnalysis/phoneLocation',
+        name: '手机号码归属地',
+        component: () =>
+          import('@/views/tools/infoAnalysis/phoneLocation/index.vue'),
+        meta: {
+          title: ['首页', '工具模块', '信息分析', '手机号码归属地']
+        }
+      }
+    ]
   }
 ]

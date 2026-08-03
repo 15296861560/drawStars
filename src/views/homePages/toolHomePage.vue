@@ -53,7 +53,8 @@ export default {
         'translate',
         'pay',
         'compress',
-        'networkStrength'
+        'networkStrength',
+        'infoAnalysis'
       ]
     }
   }

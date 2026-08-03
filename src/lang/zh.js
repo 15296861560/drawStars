@@ -40,7 +40,8 @@ export default {
         alipay: '支付宝'
       },
       compress: '压缩代码',
-      networkStrength: '网络质量'
+      networkStrength: '网络质量',
+      infoAnalysis: '信息分析'
     },
     componentsHomePage: {
       dragAndDropComponents: '可视化拖拽组件',

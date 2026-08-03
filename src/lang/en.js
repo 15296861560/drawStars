@@ -40,7 +40,8 @@ export default {
         alipay: 'Alipay'
       },
       compress: 'Compressed code',
-      networkStrength: 'Network Strength'
+      networkStrength: 'Network Strength',
+      infoAnalysis: 'Info Analysis'
     },
     componentsHomePage: {
       dragAndDropComponents: 'Visual drag and drop component',
