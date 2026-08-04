@@ -12,6 +12,15 @@ export default {
     lab: 'Lab',
     case: 'Case',
     resource: 'Resource Center',
+    manage: 'Manage',
+    manageHomePage: {
+      user: 'Users',
+      role: 'Roles',
+      menu: 'Menus',
+      notice: 'Notices',
+      logs: 'Logs',
+      app: 'Apps'
+    },
     echartHomePage: {
       basicBar: 'Basic Histogram',
       basicLine: 'Basic Line',
@@ -226,6 +235,7 @@ export default {
     inputBalance: 'Please enter the balance',
     inputPhone: 'Please enter your mobile phone number',
     inputName: 'Please enter a name',
+    inputTitle: 'Please enter a title',
     inputType: 'Please enter the type',
     inputIcon: 'Please enter icon link',
     inputAdress: 'Please enter the address',
@@ -237,7 +247,9 @@ export default {
     balance: 'Balance',
     operate: 'Operate',
     phone: 'Phone Number',
-    level: 'Level'
+    level: 'Level',
+    title: 'Title',
+    type: 'Type'
   },
   aiAssistant: {
     title: 'AI Voice Assistant',

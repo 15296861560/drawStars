@@ -235,7 +235,8 @@ const getAllData = async () => {
 
   const result = await appApi.queryAppList(params)
   if (result.status) {
-    dataList = result.data.map(item => {
+    const records = result.data?.records || result.data || []
+    dataList = (Array.isArray(records) ? records : []).map(item => {
       item.create_time = new Date(item.create_time).toLocaleString()
       item.update_time = new Date(item.update_time).toLocaleString()
       return item

@@ -12,6 +12,15 @@ export default {
     lab: '实验室',
     case: '例子',
     resource: '资料库',
+    manage: '管理中心',
+    manageHomePage: {
+      user: '用户管理',
+      role: '角色管理',
+      menu: '菜单配置',
+      notice: '通知管理',
+      logs: '日志管理',
+      app: '应用管理'
+    },
     echartHomePage: {
       basicBar: '基础柱状图',
       basicLine: '基础折线图',
@@ -224,6 +233,7 @@ export default {
     inputBalance: '请输入余额',
     inputPhone: '请输入手机号码',
     inputName: '请输入名称',
+    inputTitle: '请输入标题',
     inputType: '请输入类型',
     inputIcon: '请输入图标链接',
     inputAdress: '请输入地址',
@@ -235,7 +245,9 @@ export default {
     balance: '余额',
     operate: '操作',
     phone: '手机号码',
-    level: '等级'
+    level: '等级',
+    title: '标题',
+    type: '类型'
   },
   aiAssistant: {
     title: 'AI 语音助手',

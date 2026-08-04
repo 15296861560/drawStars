@@ -29,6 +29,51 @@
             </template>
           </el-menu-item>
 
+          <!-- RBAC 动态菜单优先 -->
+          <template v-if="rbacMenus.length">
+            <template v-for="item in rbacMenus" :key="'rbac-' + item.id">
+              <el-sub-menu
+                v-if="item.children && item.children.length"
+                :index="'rbac-' + item.id"
+              >
+                <template #title>
+                  <el-icon><Setting /></el-icon>
+                  <span>{{ item.name }}</span>
+                </template>
+                <template
+                  v-for="child in item.children"
+                  :key="'rbac-c-' + child.id"
+                >
+                  <el-sub-menu
+                    v-if="child.children && child.children.length"
+                    :index="'rbac-' + child.id"
+                  >
+                    <template #title>{{ child.name }}</template>
+                    <el-menu-item
+                      v-for="leaf in child.children"
+                      :key="'rbac-l-' + leaf.id"
+                      :index="leaf.path || 'rbac-' + leaf.id"
+                      >{{ leaf.name }}</el-menu-item
+                    >
+                  </el-sub-menu>
+                  <el-menu-item
+                    v-else
+                    :index="child.path || 'rbac-' + child.id"
+                    >{{ child.name }}</el-menu-item
+                  >
+                </template>
+              </el-sub-menu>
+              <el-menu-item
+                v-else-if="item.path"
+                :index="item.path"
+              >
+                <el-icon><Menu /></el-icon>
+                <template #title>{{ item.name }}</template>
+              </el-menu-item>
+            </template>
+          </template>
+
+          <template v-else>
           <el-sub-menu index="1">
             <template #title>
               <el-icon><Shop /></el-icon>
@@ -62,6 +107,7 @@
               $t('aside.trafficStats')
             }}</el-menu-item>
           </el-sub-menu>
+          </template>
           <el-sub-menu index="2">
             <template #title>
               <el-icon><Avatar /></el-icon>
@@ -112,6 +158,7 @@
 <script>
 import { getHomePathList } from '@/utils/home-path-list'
 import { layoutSettingsStore } from '@/stores/layout-settings'
+import { permissionStore } from '@/stores/permission'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
@@ -130,6 +177,12 @@ export default {
   computed: {
     layout() {
       return layoutSettingsStore()
+    },
+    rbacMenus() {
+      const store = permissionStore()
+      return (store.menus || []).filter(
+        m => m.path !== '/home/homepage' && m.type !== 3
+      )
     },
     menuBg() {
       return this.layout.isDarkAside ? '#282c34' : '#ffffff'
@@ -256,6 +309,10 @@ export default {
   mounted() {
     this.getHomePages()
     this.initDynamicRouter()
+    const perm = permissionStore()
+    if (!perm.loaded && !perm.menus?.length) {
+      perm.loadPermission().catch(() => {})
+    }
   }
 }
 </script>

@@ -19,6 +19,9 @@ export default {
     return {
       homepage: 'manageHomePage',
       routes: [
+        { name: 'user', imgName: 'app' },
+        { name: 'role', imgName: 'app' },
+        { name: 'menu', imgName: 'app' },
         { name: 'notice', imgName: 'notice' },
         { name: 'logs', imgName: 'log' },
         { name: 'app', imgName: 'app' }

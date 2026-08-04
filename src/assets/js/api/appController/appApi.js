@@ -56,7 +56,11 @@ const appApi = {
    * @returns {Promise} - 返回升级结果
    */
   upgradeApp: data =>
-    requests({ url: `/api/appApi/upgrade/${id}`, data, method: 'post' }),
+    requests({
+      url: `/api/appApi/upgrade/${data.id}`,
+      data,
+      method: 'post'
+    }),
 
   /**
    * 发布应用

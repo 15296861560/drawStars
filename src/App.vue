@@ -29,9 +29,11 @@ import { RouterView, useRouter } from 'vue-router'
 import AiAssistantHost from '@/components/ai-assistant/AiAssistantHost.vue'
 
 import { userInfoStore } from '@/stores/user-info'
+import { permissionStore } from '@/stores/permission'
 import { isSkipLoginMode } from '@/config/skip-login'
 
 const userInfo = userInfoStore()
+const permission = permissionStore()
 
 // @ts-ignore
 import NoProgress from 'nprogress'
@@ -45,7 +47,7 @@ NoProgress.configure({
 
 const router = useRouter()
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   // 首次进入站点时 from 为 START_LOCATION，path 常与「/」别名目标相同，
   // 若仅判断 to.path === from.path 会误跳过守卫，导致跳过登录时无法从 / 跳到主页
   if (to.path === from.path && from.matched.length > 0) {
@@ -76,8 +78,29 @@ router.beforeEach((to, from) => {
     hasLogin = false
   }
 
+  if (!hasLogin) {
+    NoProgress.done()
+    return { path: '/login' }
+  }
+
+  // 已登录：加载权限并校验 meta.permission
+  if (!isPublicAuthPage && (userInfo.getUserId || userInfo.getToken.value)) {
+    if (!permission.loaded) {
+      try {
+        await permission.loadPermission()
+      } catch (_e) {
+        // ignore — fallback menus
+      }
+    }
+    const need = to.meta?.permission
+    if (need && !permission.hasPermission(need)) {
+      NoProgress.done()
+      return { path: '/home/homepage', replace: true }
+    }
+  }
+
   NoProgress.done()
-  return hasLogin ? true : { path: '/login' }
+  return true
 })
 
 router.afterEach(() => {

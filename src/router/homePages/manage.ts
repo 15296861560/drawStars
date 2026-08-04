@@ -26,6 +26,33 @@ export default [
     }
   },
   {
+    path: '/home/manageHomePage/user',
+    name: '用户管理',
+    component: () => import('@/views/manage/userManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '用户管理'],
+      permission: 'system:user:list'
+    }
+  },
+  {
+    path: '/home/manageHomePage/role',
+    name: '角色管理',
+    component: () => import('@/views/manage/roleManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '角色管理'],
+      permission: 'system:role:list'
+    }
+  },
+  {
+    path: '/home/manageHomePage/menu',
+    name: '菜单配置',
+    component: () => import('@/views/manage/menuManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '菜单配置'],
+      permission: 'system:menu:list'
+    }
+  },
+  {
     path: '/home/manageHomePage/logs',
     redirect: '/home/manageHomePage/logs/login',
     name: '日志管理',

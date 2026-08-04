@@ -35,8 +35,11 @@ export interface DialogOption {
 
 export interface Operate {
   label: string
+  tip?: string
+  icon?: any
   color?: string
   type?: string
+  plain?: boolean
   action: Function
   show?: Function
   disabled?: Function
@@ -50,8 +53,8 @@ export interface TableOption {
   showSelection?: boolean
   pageTableOperate?: Array<Operate>
   tableOperate?: Array<Operate>
+  tableTools?: Array<Operate>
   tableOperateWidth?: string | number
-  tableData: Array<AnyObject>
   rowKey?: string
   tableName?: string
   [key: string]: any
@@ -62,5 +65,7 @@ export interface PageInfo {
   pageSize: number
   total: number
   curPageChange: Function
-  layout: string
+  sizeChange?: Function
+  layout?: string
+  pageSizes?: number[]
 }

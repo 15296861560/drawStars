@@ -13,6 +13,41 @@
       <el-icon><HomeFilled /></el-icon>
       <span>{{ $t('aside.homePage') }}</span>
     </el-menu-item>
+    <template v-if="rbacMenus.length">
+      <template v-for="item in rbacMenus" :key="'tm-' + item.id">
+        <el-sub-menu
+          v-if="item.children && item.children.length"
+          :index="'tm-' + item.id"
+        >
+          <template #title>
+            <span>{{ item.name }}</span>
+          </template>
+          <template v-for="child in item.children" :key="'tmc-' + child.id">
+            <el-sub-menu
+              v-if="child.children && child.children.length"
+              :index="'tm-' + child.id"
+            >
+              <template #title>{{ child.name }}</template>
+              <el-menu-item
+                v-for="leaf in child.children"
+                :key="'tml-' + leaf.id"
+                :index="leaf.path || 'tm-' + leaf.id"
+                >{{ leaf.name }}</el-menu-item
+              >
+            </el-sub-menu>
+            <el-menu-item
+              v-else
+              :index="child.path || 'tm-' + child.id"
+              >{{ child.name }}</el-menu-item
+            >
+          </template>
+        </el-sub-menu>
+        <el-menu-item v-else-if="item.path" :index="item.path">
+          {{ item.name }}
+        </el-menu-item>
+      </template>
+    </template>
+    <template v-else>
     <el-sub-menu index="sub-mod">
       <template #title>
         <el-icon><Shop /></el-icon>
@@ -47,6 +82,7 @@
         $t('aside.trafficStats')
       }}</el-menu-item>
     </el-sub-menu>
+    </template>
     <el-sub-menu index="sub-test">
       <template #title>
         <el-icon><Avatar /></el-icon>
@@ -91,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   HomeFilled,
@@ -106,6 +142,8 @@ import {
 } from '@element-plus/icons-vue'
 import { getHomePathList } from '@/utils/home-path-list'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import { permissionStore } from '@/stores/permission'
+import { storeToRefs } from 'pinia'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
 
@@ -115,6 +153,15 @@ const router = useRouter()
 const pathList = ref(getHomePathList())
 const defaultActive = ref('/home/homepage')
 const userData = ref({ level: 3 })
+
+const perm = permissionStore()
+const { menus: permMenus } = storeToRefs(perm)
+const rbacMenus = computed(() =>
+  (permMenus.value || []).filter(
+    (m: { path?: string | null; type?: number }) =>
+      m.path !== '/home/homepage' && m.type !== 3
+  )
+)
 
 function levelDown() {
   if (userData.value.level > 1) {
@@ -174,6 +221,9 @@ function handleSelect(path: string) {
 
 onMounted(() => {
   defaultActive.value = route.fullPath
+  if (!perm.loaded && !perm.menus?.length) {
+    perm.loadPermission().catch(() => {})
+  }
   if (userData.value.level > 1 && !router.hasRoute('测试页1')) {
     router.addRoute('home', {
       path: '/home/test1',

@@ -12,6 +12,7 @@ interface UserInfo {
   avatar?: string
   accountAlias?: string
   level?: number
+  roles?: string[]
 }
 
 export const userInfoStore = defineStore(
@@ -24,7 +25,8 @@ export const userInfoStore = defineStore(
       email: '',
       avatar: '',
       accountAlias: '',
-      level: 1
+      level: 1,
+      roles: [] as string[]
     }) as UserInfo
     const token = ref('')
     const getUserInfo = computed(() => userInfo)
@@ -43,6 +45,9 @@ export const userInfoStore = defineStore(
       if (newVal.accountAlias !== undefined)
         userInfo.accountAlias = String(newVal.accountAlias || '')
       if (newVal.level !== undefined) userInfo.level = Number(newVal.level) || 1
+      if (newVal.roles !== undefined) {
+        userInfo.roles = Array.isArray(newVal.roles) ? newVal.roles : []
+      }
     }
 
     function updateToken(newVal: string) {
@@ -57,6 +62,7 @@ export const userInfoStore = defineStore(
       userInfo.avatar = ''
       userInfo.accountAlias = ''
       userInfo.level = 1
+      userInfo.roles = []
       token.value = ''
     }
 

@@ -62,6 +62,7 @@
 import { onMounted, ref, reactive } from 'vue'
 import formatDate from '@/utils/commom/formatDate.js'
 import { findReq } from '@/assets/js/api'
+import { userInfoStore } from '@/stores/user-info'
 
 defineProps({
   showMessageBox: { type: Boolean, required: false, default: true }
@@ -99,7 +100,12 @@ let notifyList = reactive([])
 
 const getMyAllNotify = async () => {
   const queryMyAllNotify = findReq('notifyController', 'queryMyAllNotify')
-  const res = await queryMyAllNotify()
+  const userInfo = userInfoStore()
+  const userId = userInfo.getUserId
+  if (!userId) {
+    return
+  }
+  const res = await queryMyAllNotify({ userId })
   if (!res.status || !res.data) {
     return
   }

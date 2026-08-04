@@ -396,8 +396,12 @@ export default {
       })
       userInfo.updateToken(userInfoData.token)
 
-      this.$router.push({
-        path: '/home/homepage'
+      import('@/stores/permission').then(({ permissionStore }) => {
+        permissionStore()
+          .loadPermission()
+          .finally(() => {
+            this.$router.push({ path: '/home/homepage' })
+          })
       })
     },
     toRegister() {

@@ -140,13 +140,13 @@ const typeOptions = ref([
 const searchItems = computed(() => [
   {
     field: 'title',
-    label: '标题',
+    label: $t('text.title'),
     placeholder: $t('placeholder.inputTitle'),
     type: 'input'
   },
   {
     field: 'type',
-    label: '类型',
+    label: $t('text.type'),
     placeholder: $t('placeholder.inputType'),
     type: 'select',
     options: typeOptions.value

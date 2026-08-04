@@ -71,6 +71,9 @@ export default {
         userInfo.changeUserInfo({})
         userInfo.updateToken('')
       }
+      import('@/stores/permission').then(({ permissionStore }) => {
+        permissionStore().clearPermission()
+      })
       this.$router.push('/login')
     }
   }
