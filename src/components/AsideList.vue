@@ -120,14 +120,6 @@
               <el-icon><Avatar /></el-icon>
               <span>{{ $t('aside.test') }}</span>
             </template>
-            <el-menu-item-group title="权限示例">
-              <el-menu-item v-if="userData.level > 1" index="/home/test1">{{
-                $t('aside.moreThanOne')
-              }}</el-menu-item>
-              <el-menu-item v-if="userData.level > 2" index="/home/test2">{{
-                $t('aside.moreThanTwo')
-              }}</el-menu-item>
-            </el-menu-item-group>
             <el-menu-item-group title="测试页面">
               <el-menu-item index="outSide"
                 ><el-icon><Link /></el-icon
@@ -137,24 +129,6 @@
             <el-menu-item-group title="模拟错误">
               <el-menu-item index="undefinedError">未定义错误模拟</el-menu-item>
             </el-menu-item-group>
-          </el-sub-menu>
-          <el-sub-menu index="3">
-            <template #title>
-              <el-icon><User /></el-icon>
-              <span>{{ $t('aside.power') }}</span>
-            </template>
-            <el-menu-item index="levelDown"
-              ><el-icon><CaretBottom /></el-icon
-              >{{ $t('aside.levelDown') }}</el-menu-item
-            >
-            <el-menu-item index="levelUp" route="{}"
-              ><el-icon><CaretTop /></el-icon
-              >{{ $t('aside.levelUp') }}</el-menu-item
-            >
-            <el-menu-item disabled
-              ><el-icon><DCaret /></el-icon
-              >{{ $t('aside.curLevel') + userData.level }}</el-menu-item
-            >
           </el-sub-menu>
         </el-menu>
       </el-col>
@@ -168,17 +142,12 @@ import { layoutSettingsStore } from '@/stores/layout-settings'
 import { permissionStore } from '@/stores/permission'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
 import MenuIcon from '@/components/layout/MenuIcon.vue'
-import Test1 from '@/views/pages/test1.vue'
-import Test2 from '@/views/pages/test2.vue'
 export default {
   name: 'AsideList',
   components: { MenuIcon },
   inject: ['websiteInfo'],
   data() {
     return {
-      userData: {
-        level: 3
-      },
       defaultActive: '/home/homepage',
       pathList: []
     }
@@ -204,51 +173,11 @@ export default {
     }
   },
   methods: {
-    levelDown() {
-      this.userData.level > 1 && this.userData.level--
-      if (this.userData.level < 3 && this.$router.hasRoute('测试页2')) {
-        this.$router.removeRoute('测试页2')
-      }
-      if (this.userData.level < 2 && this.$router.hasRoute('测试页1')) {
-        this.$router.removeRoute('测试页1')
-      }
-    },
-    levelUp() {
-      this.userData.level < 9 && this.userData.level++
-      if (this.userData.level > 1 && !this.$router.hasRoute('测试页1')) {
-        this.$router.addRoute('home', {
-          path: '/home/test1',
-          name: '测试页1',
-          component: Test1,
-          meta: {
-            title: ['首页', '测试页1'],
-            keepAlive: true
-          }
-        })
-      }
-      if (this.userData.level > 2 && !this.$router.hasRoute('测试页2')) {
-        this.$router.addRoute('home', {
-          path: '/home/test2',
-          name: '测试页2',
-          component: Test2,
-          meta: {
-            title: ['首页', '测试页2'],
-            keepAlive: true
-          }
-        })
-      }
-    },
     handleSelect(path) {
       if (!path) {
         return
       }
       switch (path) {
-        case 'levelDown':
-          this.levelDown()
-          break
-        case 'levelUp':
-          this.levelUp()
-          break
         case 'outSide':
           this.toOutSide()
           break
@@ -288,36 +217,10 @@ export default {
     getHomePages() {
       this.pathList = getHomePathList()
       this.defaultActive = this.$route.fullPath
-    },
-    // 初始化动态路由
-    initDynamicRouter() {
-      if (this.userData.level > 1 && !this.$router.hasRoute('测试页1')) {
-        this.$router.addRoute('home', {
-          path: '/home/test1',
-          name: '测试页1',
-          component: Test1,
-          meta: {
-            title: ['首页', '测试页1'],
-            keepAlive: true
-          }
-        })
-      }
-      if (this.userData.level > 2 && !this.$router.hasRoute('测试页2')) {
-        this.$router.addRoute('home', {
-          path: '/home/test2',
-          name: '测试页2',
-          component: Test2,
-          meta: {
-            title: ['首页', '测试页2'],
-            keepAlive: true
-          }
-        })
-      }
     }
   },
   mounted() {
     this.getHomePages()
-    this.initDynamicRouter()
     const perm = permissionStore()
     if (!perm.loaded && !perm.menus?.length) {
       perm.loadPermission().catch(() => {})

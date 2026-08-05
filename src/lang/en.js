@@ -126,7 +126,6 @@ export default {
     reset: 'Reset',
     saving: 'Saving to local storage...',
     resetting: 'Clearing saved layout and reloading...',
-    permExample: 'Permission demo',
     testPages: 'Test pages'
   },
   dependence: {
@@ -298,14 +297,6 @@ export default {
     trafficStats: 'Analytics',
     websiteConfig: 'Website Config',
     test: 'Test',
-    moreThanOne: 'More than one level of authority',
-    moreThanTwo: 'More than twwo level of authority',
-    externalLinks: '	External links',
-    testPageOne: 'Test page 1',
-    testPageTwo: 'Test page 2',
-    power: 'Authority',
-    levelDown: 'Reduce Level',
-    levelUp: 'Increase Level',
-    curLevel: 'Current  Level'
+    externalLinks: 'External links'
   }
 }

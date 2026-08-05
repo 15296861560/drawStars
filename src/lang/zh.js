@@ -126,7 +126,6 @@ export default {
     reset: '重置配置',
     saving: '正在保存到本地，请稍候...',
     resetting: '正在清除设置缓存并刷新，请稍候...',
-    permExample: '权限示例',
     testPages: '测试页面'
   },
   dependence: {
@@ -294,14 +293,6 @@ export default {
     trafficStats: '访问分析',
     websiteConfig: '网站配置',
     test: '测试',
-    moreThanOne: '一级以上权限',
-    moreThanTwo: '二级以上权限',
-    externalLinks: '外链',
-    testPageOne: '测试页一',
-    testPageTwo: '测试页二',
-    power: '权限',
-    levelDown: '降低权限',
-    levelUp: '提高权限',
-    curLevel: '当前权限等级'
+    externalLinks: '外链'
   }
 }
