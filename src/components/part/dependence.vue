@@ -54,14 +54,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/* 与更新日志卡片对齐：标题 5vh + 上下边距 4vh + 11 行 × 5vh */
 .dependence {
   display: flex;
   width: 100%;
+  height: calc(5vh + 4vh + 55vh);
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
   .title-row {
     display: flex;
+    flex-shrink: 0;
     padding-left: 2vw;
     align-items: center;
     height: 5vh;
@@ -73,7 +76,8 @@ export default {
     }
   }
   .dependence-main {
-    display: block;
+    flex: 1;
+    min-height: 0;
     padding-left: 2vw;
     padding-right: 2vw;
     margin-top: 2vh;

@@ -36,7 +36,7 @@ const commitInfoList = reactive([])
 async function getCommitInfoList() {
   const accout = 15296861560
   const warehouse = 'drawStars'
-  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits`
+  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits?sha=vue3`
   let res = await axios.get(url).catch(e => {
     showTips('error', e.toString())
   })
@@ -61,15 +61,18 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+/* 与依赖信息卡片对齐：标题 5vh + 上下边距 4vh + 11 行 × 5vh */
 .commit {
   display: flex;
   width: 100%;
+  height: calc(5vh + 4vh + 55vh);
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
   text-align: left;
   .title-row {
     display: flex;
+    flex-shrink: 0;
     padding-left: 2vw;
     align-items: center;
     height: 5vh;
@@ -81,7 +84,9 @@ onMounted(() => {
     }
   }
   .commit-main {
-    display: block;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     padding-left: 2vw;
     padding-right: 2vw;
     margin-top: 2vh;
