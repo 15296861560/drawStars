@@ -2,8 +2,8 @@
   <div class="statistics-container">
     <el-row :gutter="20">
       <el-col :span="6" v-for="item in summaryData" :key="item.title">
-        <el-card shadow="hover">
-          <div class="statistic-item">
+        <el-card shadow="hover" class="summary-card" v-loading="loading">
+          <div class="statistic-item" :class="{ invisible: loading }">
             <div class="title">{{ item.title }}</div>
             <div class="value">{{ item.value }}</div>
             <div class="compare">
@@ -19,15 +19,15 @@
 
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :span="12">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="chart-card" v-loading="loading">
           <div class="chart-title">登录统计</div>
-          <div ref="loginChart" style="height: 300px"></div>
+          <div ref="loginChart" class="chart-box"></div>
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="chart-card" v-loading="loading">
           <div class="chart-title">操作统计</div>
-          <div ref="operationChart" style="height: 300px"></div>
+          <div ref="operationChart" class="chart-box"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -38,6 +38,8 @@
 import { ref, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import logApi from '@/assets/js/api/logController/logApi.js'
+
+const loading = ref(false)
 
 const summaryData = ref([
   { title: '今日登录', value: 0, trend: 0 },
@@ -50,35 +52,38 @@ const loginChart = ref(null)
 const operationChart = ref(null)
 
 onMounted(async () => {
-  // 获取统计数据
-  const result = await logApi.getLogStatistics()
-  if (result.status) {
-    summaryData.value = [
-      {
-        title: '今日登录',
-        value: result.data.todayLogin,
-        trend: result.data.loginTrend || 0
-      },
-      {
-        title: '今日操作',
-        value: result.data.todayOperation,
-        trend: result.data.operationTrend || 0
-      },
-      {
-        title: '异常登录',
-        value: result.data.errorLogin,
-        trend: result.data.errorLoginTrend || 0
-      },
-      {
-        title: '异常操作',
-        value: result.data.errorOperation,
-        trend: result.data.errorOperationTrend || 0
-      }
-    ]
+  loading.value = true
+  try {
+    const result = await logApi.getLogStatistics()
+    if (result.status) {
+      summaryData.value = [
+        {
+          title: '今日登录',
+          value: result.data.todayLogin,
+          trend: result.data.loginTrend || 0
+        },
+        {
+          title: '今日操作',
+          value: result.data.todayOperation,
+          trend: result.data.operationTrend || 0
+        },
+        {
+          title: '异常登录',
+          value: result.data.errorLogin,
+          trend: result.data.errorLoginTrend || 0
+        },
+        {
+          title: '异常操作',
+          value: result.data.errorOperation,
+          trend: result.data.errorOperationTrend || 0
+        }
+      ]
 
-    // 初始化图表
-    initLoginChart(result.data?.charts?.loginChart)
-    initOperationChart(result.data?.charts?.operationChart)
+      initLoginChart(result.data?.charts?.loginChart)
+      initOperationChart(result.data?.charts?.operationChart)
+    }
+  } finally {
+    loading.value = false
   }
 })
 
@@ -165,8 +170,21 @@ function initOperationChart(data) {
 </script>
 
 <style scoped lang="less">
+.summary-card {
+  min-height: 118px;
+
+  :deep(.el-card__body) {
+    min-height: 86px;
+  }
+}
+
 .statistic-item {
   text-align: center;
+
+  &.invisible {
+    visibility: hidden;
+  }
+
   .title {
     font-size: 14px;
     color: #909399;
@@ -185,9 +203,20 @@ function initOperationChart(data) {
     }
   }
 }
+
+.chart-card {
+  :deep(.el-card__body) {
+    min-height: 360px;
+  }
+}
+
 .chart-title {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 20px;
+}
+
+.chart-box {
+  height: 300px;
 }
 </style>

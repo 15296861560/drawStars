@@ -6,7 +6,7 @@
       @view-rules="showRules = true"
     />
 
-    <el-row :gutter="16" class="stats-row mb20">
+    <el-row :gutter="16" class="stats-row mb20" v-loading="statsLoading">
       <el-col :xs="24" :sm="8">
         <el-card shadow="hover">
           <div class="stat-label">今日获得</div>
@@ -46,12 +46,18 @@ import { userInfoStore } from '@/stores/user-info'
 const userStore = userInfoStore()
 const showHistory = ref(false)
 const showRules = ref(false)
+const statsLoading = ref(false)
 const { statistics, refresh } = usePointsStatistics()
 const { init } = usePointsInit(Number(userStore.getUserId) || 1)
 
 onMounted(async () => {
   await init()
-  await refresh(Number(userStore.getUserId) || 1)
+  statsLoading.value = true
+  try {
+    await refresh(Number(userStore.getUserId) || 1)
+  } finally {
+    statsLoading.value = false
+  }
 })
 </script>
 
