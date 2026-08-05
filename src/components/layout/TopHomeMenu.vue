@@ -20,6 +20,7 @@
           :index="'tm-' + item.id"
         >
           <template #title>
+            <menu-icon :name="item.icon" />
             <span>{{ item.name }}</span>
           </template>
           <template v-for="child in item.children" :key="'tmc-' + child.id">
@@ -27,23 +28,31 @@
               v-if="child.children && child.children.length"
               :index="'tm-' + child.id"
             >
-              <template #title>{{ child.name }}</template>
+              <template #title>
+                <menu-icon :name="child.icon" />
+                <span>{{ child.name }}</span>
+              </template>
               <el-menu-item
                 v-for="leaf in child.children"
                 :key="'tml-' + leaf.id"
                 :index="leaf.path || 'tm-' + leaf.id"
-                >{{ leaf.name }}</el-menu-item
               >
+                <menu-icon :name="leaf.icon" />
+                <span>{{ leaf.name }}</span>
+              </el-menu-item>
             </el-sub-menu>
             <el-menu-item
               v-else
               :index="child.path || 'tm-' + child.id"
-              >{{ child.name }}</el-menu-item
             >
+              <menu-icon :name="child.icon" />
+              <span>{{ child.name }}</span>
+            </el-menu-item>
           </template>
         </el-sub-menu>
         <el-menu-item v-else-if="item.path" :index="item.path">
-          {{ item.name }}
+          <menu-icon :name="item.icon" />
+          <span>{{ item.name }}</span>
         </el-menu-item>
       </template>
     </template>
@@ -144,6 +153,7 @@ import { getHomePathList } from '@/utils/home-path-list'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
 import { permissionStore } from '@/stores/permission'
 import { storeToRefs } from 'pinia'
+import MenuIcon from '@/components/layout/MenuIcon.vue'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
 

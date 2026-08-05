@@ -51,6 +51,7 @@ import {
 } from '@/assets/js/notify/notify-config.js'
 import { userInfoStore } from '@/stores/user-info'
 import { notifyStore } from '@/stores/notify'
+import { pointsStore } from '@/stores/points'
 import { isSkipLoginMode } from '@/config/skip-login'
 
 const userInfo = userInfoStore()
@@ -169,6 +170,15 @@ export default {
       } catch (e) {
         console.warn('[notify] init failed', e)
       }
+    },
+    async initPoints() {
+      try {
+        const uid = Number(userInfo.getUserId) || 0
+        if (!uid && !isSkipLoginMode()) return
+        await pointsStore().init(uid || 1)
+      } catch (e) {
+        console.warn('[points] init failed', e)
+      }
     }
   },
   watch: {
@@ -213,6 +223,7 @@ export default {
     } else {
       notifyStore().fetchUnreadCount()
     }
+    this.initPoints()
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.isComputer)

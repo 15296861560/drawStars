@@ -10,9 +10,10 @@
     />
 
     <span v-else-if="type === TABLE_ITEM_TYPE.select">{{
-      options?.find(o => o[config?.valueKey || 'value'] === field)?.[
-        config?.labelKey || 'label'
-      ]
+      options?.find(
+        o =>
+          String(o[config?.valueKey || 'value']) === String(field)
+      )?.[config?.labelKey || 'label']
     }}</span>
 
     <img
@@ -75,3 +76,14 @@ const onSwitchChange = (val: string | number | boolean) => {
   emit('change', val)
 }
 </script>
+
+<style scoped lang="less">
+/* 行内展示，避免树形表格中块级 div 把展开箭头与文字拆成两行 */
+.base-table-item {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+</style>

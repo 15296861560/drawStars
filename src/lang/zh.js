@@ -17,6 +17,9 @@ export default {
       user: '用户管理',
       role: '角色管理',
       menu: '菜单配置',
+      points: '积分管理',
+      pointsRules: '规则配置',
+      pointsLevels: '等级配置',
       notice: '通知管理',
       logs: '日志管理',
       app: '应用管理'

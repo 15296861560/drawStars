@@ -43,62 +43,12 @@
       :tree-props="{ children: 'children' }"
     ></base-table>
 
-    <el-dialog
-      v-model="formVisible"
-      :title="formMode === 'create' ? '新增菜单' : '编辑菜单'"
-      width="560px"
-      destroy-on-close
-    >
-      <el-form :model="form" label-width="90px">
-        <el-form-item label="上级ID">
-          <el-input-number v-model="form.parentId" :min="0" />
-        </el-form-item>
-        <el-form-item label="名称">
-          <el-input v-model="form.name" />
-        </el-form-item>
-        <el-form-item label="类型">
-          <el-select v-model="form.type" class="w-full">
-            <el-option label="目录" :value="1" />
-            <el-option label="菜单" :value="2" />
-            <el-option label="按钮" :value="3" />
-          </el-select>
-        </el-form-item>
-        <el-form-item v-if="form.type !== 3" label="路径">
-          <el-input v-model="form.path" placeholder="/home/..." />
-        </el-form-item>
-        <el-form-item label="组件">
-          <el-input v-model="form.component" placeholder="可选" />
-        </el-form-item>
-        <el-form-item label="权限码">
-          <el-input
-            v-model="form.permission"
-            placeholder="如 system:user:create"
-          />
-        </el-form-item>
-        <el-form-item label="图标">
-          <el-input v-model="form.icon" />
-        </el-form-item>
-        <el-form-item label="排序">
-          <el-input-number v-model="form.sort" :min="0" />
-        </el-form-item>
-        <el-form-item label="可见">
-          <el-select v-model="form.visible" class="w-full">
-            <el-option label="是" :value="1" />
-            <el-option label="否" :value="0" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="form.status" class="w-full">
-            <el-option label="启用" :value="1" />
-            <el-option label="停用" :value="0" />
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="formVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitForm">确定</el-button>
-      </template>
-    </el-dialog>
+    <base-dialog
+      ref="dialogRef"
+      :options="dialogOptions"
+      :title="dialogTitle"
+      @confirm="loadTree"
+    />
   </div>
 </template>
 
@@ -113,7 +63,7 @@ import {
 import { ElMessageBox } from 'element-plus'
 import menuApi from '@/assets/js/api/menuController/menuApi.js'
 import { showTips } from '@/utils/message/showTips.js'
-import { tableFields } from './config/schema'
+import { tableFields, dialogFields } from './config/schema'
 import { permissionStore } from '@/stores/permission'
 import i18n from '@/lang/index.js'
 
@@ -126,6 +76,9 @@ const BaseTable = defineAsyncComponent(
 const SearchItem = defineAsyncComponent(
   () => import('@/components/base/SearchItem/index.vue')
 )
+const BaseDialog = defineAsyncComponent(
+  () => import('@/components/base/form/BaseDialog.vue')
+)
 
 const searchInfo = reactive({
   keyword: '',
@@ -134,22 +87,8 @@ const searchInfo = reactive({
 })
 const tableData = ref([])
 const rawTree = ref([])
-
-const formVisible = ref(false)
-const formMode = ref('create')
-const form = reactive({
-  id: null,
-  parentId: 0,
-  name: '',
-  type: 2,
-  path: '',
-  component: '',
-  permission: '',
-  icon: '',
-  sort: 0,
-  visible: 1,
-  status: 1
-})
+const dialogRef = ref()
+const dialogTitle = ref('新增菜单')
 
 const typeOptions = [
   { label: '目录', value: 1 },
@@ -263,12 +202,43 @@ const reset = () => {
   applyFilter()
 }
 
-const openCreate = parentId => {
-  formMode.value = 'create'
-  Object.assign(form, {
-    id: null,
-    parentId: parentId || 0,
-    name: '',
+const confirmMethod = async data => {
+  const payload = { ...data }
+  let res
+  if (payload.id) {
+    res = await menuApi.update(payload)
+  } else {
+    delete payload.id
+    res = await menuApi.create(payload)
+  }
+  if (!res?.status) {
+    return res || { status: false, msg: '保存失败' }
+  }
+  showTips('success', '保存成功')
+  // 侧边栏菜单来自 permission 缓存，保存后立即刷新
+  try {
+    await perm.loadPermission()
+  } catch (_) {
+    /* ignore */
+  }
+  return { status: true, msg: 'ok', data: res.data }
+}
+
+const initMethod = async params => {
+  const { id } = params
+  const res = await menuApi.getDetail(id)
+  if (!res?.status) {
+    return res || { status: false, msg: '加载失败', data: null }
+  }
+  const row = res.data
+  return { status: true, msg: 'ok', data: [row] }
+}
+
+const dialogOptions = reactive({
+  fieldList: dialogFields,
+  confirmMethod,
+  confirmParams: {
+    parentId: 0,
     type: 2,
     path: '',
     component: '',
@@ -277,42 +247,36 @@ const openCreate = parentId => {
     sort: 0,
     visible: 1,
     status: 1
-  })
-  formVisible.value = true
+  },
+  initMethod,
+  initParams: {},
+  disabled: false,
+  labelPosition: 'left'
+})
+
+const openCreate = parentId => {
+  dialogTitle.value = '新增菜单'
+  dialogOptions.disabled = false
+  dialogOptions.confirmParams = {
+    parentId: parentId || 0,
+    type: 2,
+    path: '',
+    component: '',
+    permission: '',
+    icon: '',
+    sort: 0,
+    visible: 1,
+    status: 1
+  }
+  dialogOptions.initParams = {}
+  dialogRef.value?.opentDialog()
 }
 
 const openEdit = row => {
-  formMode.value = 'edit'
-  Object.assign(form, {
-    id: row.id,
-    parentId: row.parentId ?? 0,
-    name: row.name,
-    type: row.type,
-    path: row.path || '',
-    component: row.component || '',
-    permission: row.permission || '',
-    icon: row.icon || '',
-    sort: row.sort ?? 0,
-    visible: row.visible ?? 1,
-    status: row.status ?? 1
-  })
-  formVisible.value = true
-}
-
-const submitForm = async () => {
-  let res
-  if (formMode.value === 'create') {
-    res = await menuApi.create({ ...form })
-  } else {
-    res = await menuApi.update({ ...form })
-  }
-  if (res.status) {
-    showTips('success', '保存成功')
-    formVisible.value = false
-    loadTree()
-  } else {
-    showTips('error', res.msg || '保存失败')
-  }
+  dialogTitle.value = '编辑菜单'
+  dialogOptions.disabled = false
+  dialogOptions.initParams = { id: row.id }
+  dialogRef.value?.opentDialog()
 }
 
 const handleDelete = async row => {
@@ -327,6 +291,11 @@ const handleDelete = async row => {
   const res = await menuApi.delete(row.id)
   if (res.status) {
     showTips('success', '删除成功')
+    try {
+      await perm.loadPermission()
+    } catch (_) {
+      /* ignore */
+    }
     loadTree()
   } else {
     showTips('error', res.msg || '删除失败')
@@ -371,15 +340,16 @@ onMounted(loadTree)
 
 <style scoped lang="less">
 .menu-tree-table {
-  /* 树形表格：展开箭头与名称同一行垂直居中 */
-  :deep(.el-table__body .el-table__cell .cell) {
+  /* 仅首列（名称）横向排布展开箭头与文字，避免影响操作列 */
+  :deep(.el-table__body .el-table__row > .el-table__cell:first-child .cell) {
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
     line-height: 1.5;
   }
 
-  :deep(.el-table__indent) {
+  :deep(.el-table__indent),
+  :deep(.el-table__placeholder) {
     flex-shrink: 0;
   }
 
@@ -391,17 +361,6 @@ onMounted(loadTree)
     height: 1.5em;
     margin-right: 6px;
     vertical-align: middle;
-  }
-
-  :deep(.el-table__placeholder) {
-    flex-shrink: 0;
-  }
-
-  :deep(.el-table__body .el-table__cell .cell > div) {
-    display: inline-flex;
-    align-items: center;
-    min-width: 0;
-    line-height: inherit;
   }
 }
 </style>

@@ -10,4 +10,6 @@ interface ImportMetaEnv {
   readonly VITE_SKIP_LOGIN?: string
   /** 为 false 时 AI 助手走真实 API（未实现前仍回退 Mock） */
   readonly VITE_AI_ASSISTANT_MOCK?: string
+  /** 为 false 时积分模块走真实 API */
+  readonly VITE_POINTS_MOCK?: string
 }

@@ -20,6 +20,12 @@ export interface Field {
   hideTable?: boolean
   width?: string | number
   minWidth?: string | number
+  /** 编辑态禁用（如唯一编码） */
+  disableOnEdit?: boolean
+  disabled?: boolean
+  readonly?: boolean
+  defaultVal?: any
+  attrs?: AnyObject
   [key: string]: any
 }
 

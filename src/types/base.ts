@@ -10,6 +10,8 @@ export type IComponentType =
   | 'date'
   | 'radio'
   | 'checkbox'
+  | 'switch'
+  | 'icon'
   | 'img'
   | 'upload'
   | 'location'
@@ -25,6 +27,8 @@ export enum ComponentType {
   date = 'date',
   radio = 'radio',
   checkbox = 'checkbox',
+  switch = 'switch',
+  icon = 'icon',
   img = 'img',
   upload = 'upload',
   location = 'location',

@@ -17,6 +17,9 @@ export default {
       user: 'Users',
       role: 'Roles',
       menu: 'Menus',
+      points: 'Points',
+      pointsRules: 'Points Rules',
+      pointsLevels: 'Points Levels',
       notice: 'Notices',
       logs: 'Logs',
       app: 'Apps'

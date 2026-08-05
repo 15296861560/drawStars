@@ -3,7 +3,7 @@
     <el-input-number
       v-if="isNumber"
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       controls-position="right"
       :readonly="readonly"
       :disabled="disabled"
@@ -12,8 +12,8 @@
     <el-input
       v-else-if="isTextarea"
       v-model="field"
-      v-bind="$attrs"
-      :autosize="{ minRows: 1 }"
+      v-bind="mergedAttrs"
+      :autosize="{ minRows: 2 }"
       type="textarea"
       :readonly="readonly"
       :disabled="disabled"
@@ -21,8 +21,9 @@
 
     <el-select
       v-else-if="isSelect"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       v-model="field"
+      class="w-full"
       :disabled="disabled"
     >
       <el-option
@@ -36,7 +37,7 @@
     <el-cascader
       v-else-if="isSelectCascade"
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       :disabled="disabled"
       :readonly="readonly"
     />
@@ -44,7 +45,7 @@
     <el-date-picker
       v-else-if="isDate"
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       :disabled="disabled"
       :readonly="readonly"
     />
@@ -52,7 +53,7 @@
     <el-radio-group
       v-else-if="isRadio"
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       :disabled="disabled"
       :readonly="readonly"
     >
@@ -69,7 +70,7 @@
     <el-checkbox-group
       v-else-if="isCheckBox"
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       :disabled="disabled"
       :readonly="readonly"
     >
@@ -80,6 +81,20 @@
         :value="item[config?.valueKey] || item?.value"
       />
     </el-checkbox-group>
+
+    <el-switch
+      v-else-if="isSwitch"
+      v-model="field"
+      v-bind="mergedAttrs"
+      :disabled="disabled"
+    />
+
+    <icon-picker-component
+      v-else-if="isIcon"
+      v-model:field="field"
+      :disabled="disabled"
+      :max-size-mb="attrs?.maxSizeMB"
+    />
 
     <single-img-component
       v-else-if="isImg"
@@ -96,11 +111,13 @@
     <location-component
       v-else-if="isLocationPoint"
       v-model:value-model="field"
+      :field="{}"
       :disabled="disabled"
     />
     <custom-location-component
       v-else-if="isLocation"
       v-model:value-model="field"
+      :field="{}"
       :disabled="disabled"
     />
     <rich-text-viewer
@@ -114,13 +131,14 @@
       ref="richText"
       v-else-if="isRichText"
       v-model:value-model="field"
+      :field="{}"
       :disabled="disabled"
     />
 
     <el-input
       v-else
       v-model="field"
-      v-bind="$attrs"
+      v-bind="mergedAttrs"
       :readonly="readonly"
       :disabled="disabled"
     />
@@ -137,7 +155,8 @@ import {
   toRefs,
   defineAsyncComponent,
   ref,
-  watch
+  watch,
+  useAttrs
 } from 'vue'
 import type { AnyObject } from '@/types/global'
 import { useVModels } from '@vueuse/core'
@@ -168,6 +187,10 @@ const UploadComponent = defineAsyncComponent(
   () => import('./UploadComponent.vue')
 )
 
+const IconPickerComponent = defineAsyncComponent(
+  () => import('./IconPickerComponent.vue')
+)
+
 const props = defineProps<{
   field: string | number | boolean | string[] | any
   type?: string
@@ -184,9 +207,15 @@ const emit = defineEmits<{
   (e: 'update:field', value: string | number | boolean | string[] | any): void
 }>()
 
+const fallthroughAttrs = useAttrs()
 const { type, apiMethod, apiParams, config, disabled, readonly, options, attrs } =
   toRefs(props)
 const { field } = useVModels(props, emit)
+
+const mergedAttrs = computed(() => ({
+  ...(fallthroughAttrs || {}),
+  ...(attrs?.value || {})
+}))
 
 const isNumber = computed(() => type?.value === ComponentType.inputNumber)
 const isTextarea = computed(() => type?.value === ComponentType.textarea)
@@ -195,6 +224,8 @@ const isSelectCascade = computed(() => type?.value === ComponentType.cascade)
 const isDate = computed(() => type?.value === ComponentType.date)
 const isRadio = computed(() => type?.value === ComponentType.radio)
 const isCheckBox = computed(() => type?.value === ComponentType.checkbox)
+const isSwitch = computed(() => type?.value === ComponentType.switch)
+const isIcon = computed(() => type?.value === ComponentType.icon)
 const isImg = computed(() => type?.value === ComponentType.img)
 const isUpload = computed(() => type?.value === ComponentType.upload)
 const isLocation = computed(() => type?.value === ComponentType.location)

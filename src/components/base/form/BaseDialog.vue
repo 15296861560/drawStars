@@ -1,5 +1,15 @@
 <template>
-  <el-dialog v-model="dialogVisible" v-bind="$attrs" draggable overflow>
+  <el-dialog
+    v-model="dialogVisible"
+    width="50vw"
+    align-center
+    class="base-dialog"
+    draggable
+    overflow
+    destroy-on-close
+    append-to-body
+    v-bind="$attrs"
+  >
     <el-form
       v-if="dialogVisible"
       ref="formRef"
@@ -9,7 +19,8 @@
       :label-position="options.labelPosition || 'right'"
     >
       <el-form-item
-        v-for="field in fieldList"
+        v-for="field in visibleFields"
+        :key="field.fieldName"
         :label="field.label"
         :prop="field.fieldName"
       >
@@ -18,8 +29,8 @@
           :type="field.type"
           :rule="field.rule"
           :placeholder="field.placeholder"
-          :readonly="options.readonly"
-          :disabled="options.disabled"
+          :readonly="options.readonly || field.readonly"
+          :disabled="isFieldDisabled(field)"
           :options="field.options"
           :config="field.config"
           :attrs="field.attrs"
@@ -39,10 +50,15 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, defineAsyncComponent, watch, toRefs } from 'vue'
+import { ref, reactive, defineAsyncComponent, watch, toRefs, computed } from 'vue'
 import { useVModels } from '@vueuse/core'
-import type { AnyObject, DialogOption } from '@/types/global'
+import type { AnyObject, DialogOption, Field } from '@/types/global'
 import { showTips } from '@/utils/message/showTips.js'
+
+defineOptions({
+  inheritAttrs: false
+})
+
 const BaseFormItem = defineAsyncComponent(
   () => import('./BaseFormItem/index.vue')
 )
@@ -63,14 +79,26 @@ const { fieldList } = useVModels(props.options, emit)
 
 const formInfo = reactive<AnyObject>({})
 
+const visibleFields = computed(() =>
+  (fieldList.value || []).filter((f: Field) => !f.hideDialog)
+)
+
 const rules = reactive<AnyObject>({})
-fieldList.value.forEach(field => {
+fieldList.value.forEach((field: Field) => {
   if (field.rule) {
     rules[field.fieldName] = field.rule
   }
 })
 
 const formRef = ref()
+
+const isEditMode = computed(() => !!options.value.initParams?.id)
+
+function isFieldDisabled(field: Field) {
+  if (options.value.disabled || field.disabled) return true
+  if (field.disableOnEdit && isEditMode.value) return true
+  return false
+}
 
 const cancel = () => {
   const formEl = formRef.value
@@ -79,8 +107,9 @@ const cancel = () => {
   }
   formEl.resetFields()
   dialogVisible.value = false
-  fieldList.value.forEach(element => {
-    formInfo[element.fieldName] = element.defaultVal || ''
+  fieldList.value.forEach((element: Field) => {
+    formInfo[element.fieldName] =
+      element.defaultVal !== undefined ? element.defaultVal : ''
   })
   // 清除编辑态主键，避免残留到下次新增
   delete formInfo.id
@@ -137,8 +166,9 @@ const init = async () => {
   // 先清空旧主键，避免新增误带上次编辑 id
   delete formInfo.id
 
-  fieldList.value.forEach(element => {
-    formInfo[element.fieldName] = element.defaultVal ?? ''
+  fieldList.value.forEach((element: Field) => {
+    formInfo[element.fieldName] =
+      element.defaultVal !== undefined ? element.defaultVal : ''
   })
 
   // 新增时用 confirmParams 作为初始默认值
@@ -164,7 +194,7 @@ const init = async () => {
       return
     }
 
-    const data = res.data[0]
+    const data = Array.isArray(res.data) ? res.data[0] : res.data
     if (!data) {
       return
     }
@@ -172,13 +202,17 @@ const init = async () => {
     if (data.id != null) {
       formInfo.id = data.id
     }
-    fieldList.value.forEach(element => {
+    fieldList.value.forEach((element: Field) => {
       if (element.fieldName.endsWith('time')) {
         formInfo[element.fieldName] = new Date(
           data[element.fieldName]
         ).toLocaleString()
+      } else if (data[element.fieldName] !== undefined) {
+        formInfo[element.fieldName] = data[element.fieldName]
+      } else if (element.defaultVal !== undefined) {
+        formInfo[element.fieldName] = element.defaultVal
       } else {
-        formInfo[element.fieldName] = data[element.fieldName] ?? ''
+        formInfo[element.fieldName] = ''
       }
     })
   }
@@ -198,3 +232,45 @@ defineExpose({
   opentDialog
 })
 </script>
+
+<style lang="less">
+.base-dialog.el-dialog {
+  max-width: 96vw;
+  max-height: 70vh;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+
+  .el-dialog__header {
+    flex-shrink: 0;
+  }
+
+  .el-dialog__title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .el-dialog__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  .el-dialog__footer {
+    flex-shrink: 0;
+  }
+
+  .el-form-item {
+    margin-bottom: 18px;
+  }
+}
+
+/* 遮罩层内水平垂直居中（配合 align-center） */
+.el-overlay-dialog:has(> .base-dialog) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

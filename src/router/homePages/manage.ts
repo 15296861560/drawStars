@@ -53,6 +53,53 @@ export default [
     }
   },
   {
+    path: '/home/manageHomePage/points',
+    redirect: '/home/manageHomePage/points/overview',
+    name: '积分管理',
+    component: () => import('@/views/manage/pointsManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '积分管理'],
+      permission: 'system:points:list'
+    },
+    children: [
+      {
+        path: 'overview',
+        name: '积分概览',
+        component: () => import('@/views/manage/pointsManage/overview.vue'),
+        meta: {
+          title: ['首页', '管理中心', '积分管理', '概览']
+        }
+      },
+      {
+        path: 'adjust',
+        name: '新增积分',
+        component: () => import('@/views/manage/pointsManage/adjust.vue'),
+        meta: {
+          title: ['首页', '管理中心', '积分管理', '新增积分'],
+          permission: 'system:points:operate'
+        }
+      },
+      {
+        path: 'rules',
+        name: '积分规则配置',
+        component: () => import('@/views/manage/pointsManage/rules.vue'),
+        meta: {
+          title: ['首页', '管理中心', '积分管理', '规则配置'],
+          permission: 'system:points:list'
+        }
+      },
+      {
+        path: 'levels',
+        name: '积分等级配置',
+        component: () => import('@/views/manage/pointsManage/levels.vue'),
+        meta: {
+          title: ['首页', '管理中心', '积分管理', '等级配置'],
+          permission: 'system:points:list'
+        }
+      }
+    ]
+  },
+  {
     path: '/home/manageHomePage/logs',
     redirect: '/home/manageHomePage/logs/login',
     name: '日志管理',

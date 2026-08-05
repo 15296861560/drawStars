@@ -59,6 +59,15 @@ export default [
           keepAlive: true
         }
       },
+      {
+        path: '/home/personalCenter/points',
+        name: '我的积分',
+        component: () => import('@/views/profile/points.vue'),
+        meta: {
+          title: ['首页', '个人中心', '我的积分'],
+          keepAlive: true
+        }
+      },
       // 旧路径兼容
       {
         path: '/home/personalCenter/personalProfile',

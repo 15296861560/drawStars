@@ -37,7 +37,7 @@
                 :index="'rbac-' + item.id"
               >
                 <template #title>
-                  <el-icon><Setting /></el-icon>
+                  <menu-icon :name="item.icon" />
                   <span>{{ item.name }}</span>
                 </template>
                 <template
@@ -48,26 +48,33 @@
                     v-if="child.children && child.children.length"
                     :index="'rbac-' + child.id"
                   >
-                    <template #title>{{ child.name }}</template>
+                    <template #title>
+                      <menu-icon :name="child.icon" />
+                      <span>{{ child.name }}</span>
+                    </template>
                     <el-menu-item
                       v-for="leaf in child.children"
                       :key="'rbac-l-' + leaf.id"
                       :index="leaf.path || 'rbac-' + leaf.id"
-                      >{{ leaf.name }}</el-menu-item
                     >
+                      <menu-icon :name="leaf.icon" />
+                      <template #title>{{ leaf.name }}</template>
+                    </el-menu-item>
                   </el-sub-menu>
                   <el-menu-item
                     v-else
                     :index="child.path || 'rbac-' + child.id"
-                    >{{ child.name }}</el-menu-item
                   >
+                    <menu-icon :name="child.icon" />
+                    <template #title>{{ child.name }}</template>
+                  </el-menu-item>
                 </template>
               </el-sub-menu>
               <el-menu-item
                 v-else-if="item.path"
                 :index="item.path"
               >
-                <el-icon><Menu /></el-icon>
+                <menu-icon :name="item.icon" />
                 <template #title>{{ item.name }}</template>
               </el-menu-item>
             </template>
@@ -160,10 +167,12 @@ import { getHomePathList } from '@/utils/home-path-list'
 import { layoutSettingsStore } from '@/stores/layout-settings'
 import { permissionStore } from '@/stores/permission'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import MenuIcon from '@/components/layout/MenuIcon.vue'
 import Test1 from '@/views/pages/test1.vue'
 import Test2 from '@/views/pages/test2.vue'
 export default {
   name: 'AsideList',
+  components: { MenuIcon },
   inject: ['websiteInfo'],
   data() {
     return {

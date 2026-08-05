@@ -36,6 +36,7 @@ export default {
     menus() {
       return [
         { name: this.$t('basicInfo'), path: 'basicInfo' },
+        { name: this.$t('points'), path: 'points' },
         { name: this.$t('credentials'), path: 'credentials' },
         { name: this.$t('oauthBind'), path: 'oauthBind' },
         { name: this.$t('notifySettings'), path: 'notifySettings' },
@@ -111,6 +112,8 @@ export default {
     min-width: 62.5rem;
     min-height: 50rem;
     background-color: @color-bg;
+    border-radius: 4px;
+    overflow: hidden;
   }
 }
 </style>
@@ -118,6 +121,7 @@ export default {
 {
   "en": {
     "basicInfo": "Basic Info",
+    "points": "My Points",
     "credentials": "Login Credentials",
     "oauthBind": "Linked Accounts",
     "notifySettings": "Notifications",
@@ -125,6 +129,7 @@ export default {
   },
   "zh": {
     "basicInfo": "基础信息",
+    "points": "我的积分",
     "credentials": "登录凭证",
     "oauthBind": "第三方关联",
     "notifySettings": "通知设置",

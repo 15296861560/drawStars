@@ -68,6 +68,14 @@
       destroy-on-close
       append-to-body
     >
+      <el-alert
+        v-if="bindIsSuperAdmin"
+        type="info"
+        :closable="false"
+        show-icon
+        class="mb16"
+        title="超级管理员默认拥有全部菜单权限，无需手动勾选"
+      />
       <el-tree
         ref="treeRef"
         :data="menuTree"
@@ -75,15 +83,22 @@
         node-key="id"
         :props="{ label: 'name', children: 'children' }"
         default-expand-all
+        :disabled="bindIsSuperAdmin"
       />
       <template #footer>
-        <el-button type="primary" @click="submitBind">确 定</el-button>
-        <el-button @click="bindVisible = false">取 消</el-button>
+        <el-button
+          v-if="!bindIsSuperAdmin"
+          type="primary"
+          @click="submitBind"
+          >确 定</el-button
+        >
+        <el-button @click="bindVisible = false">{{
+          bindIsSuperAdmin ? '关 闭' : '取 消'
+        }}</el-button>
       </template>
     </el-dialog>
   </div>
 </template>
-
 <script setup>
 import { nextTick, onMounted, reactive, ref, defineAsyncComponent } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -148,6 +163,7 @@ const formRules = {
 
 const bindVisible = ref(false)
 const bindRoleId = ref(null)
+const bindIsSuperAdmin = ref(false)
 const menuTree = ref([])
 const treeRef = ref()
 
@@ -250,6 +266,7 @@ const submitForm = async () => {
 
 const openBind = async row => {
   bindRoleId.value = row.id
+  bindIsSuperAdmin.value = row.code === 'super_admin'
   const [treeRes, idsRes] = await Promise.all([
     menuApi.getTree(),
     roleApi.getMenuIds(row.id)
@@ -262,6 +279,11 @@ const openBind = async row => {
 }
 
 const submitBind = async () => {
+  if (bindIsSuperAdmin.value) {
+    ElMessage.info('超级管理员默认拥有全部菜单权限')
+    bindVisible.value = false
+    return
+  }
   const checked = treeRef.value?.getCheckedKeys(false) || []
   const half = treeRef.value?.getHalfCheckedKeys() || []
   const menuIds = [...checked, ...half]
@@ -455,3 +477,9 @@ const tableOptions = reactive({
 
 onMounted(query)
 </script>
+
+<style scoped>
+.mb16 {
+  margin-bottom: 16px;
+}
+</style>

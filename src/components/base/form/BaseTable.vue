@@ -1,5 +1,8 @@
 <template>
-  <div class="base-table">
+  <div
+    class="base-table"
+    :class="rootClass"
+  >
     <div
       v-if="hasToolbar"
       class="base-table__toolbar"
@@ -193,8 +196,12 @@ const tableAttrs = computed(() => {
   const raw = { ...attrs } as Record<string, unknown>
   delete raw.selectionCount
   delete raw['selection-count']
+  // class 挂到根节点，便于父组件 scoped 样式命中
+  delete raw.class
   return raw
 })
+
+const rootClass = computed(() => attrs.class as string | Record<string, boolean> | unknown)
 
 const defaultPage = ref({
   layout: 'total, sizes, prev, pager, next, jumper',

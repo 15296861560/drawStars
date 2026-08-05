@@ -22,6 +22,7 @@ export default {
         { name: 'user', imgName: 'app' },
         { name: 'role', imgName: 'app' },
         { name: 'menu', imgName: 'app' },
+        { name: 'points', imgName: 'app' },
         { name: 'notice', imgName: 'notice' },
         { name: 'logs', imgName: 'log' },
         { name: 'app', imgName: 'app' }
