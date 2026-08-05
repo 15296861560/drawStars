@@ -73,6 +73,7 @@ const pageInfo = reactive({
 
 // 业务模块选项
 const moduleOptions = [
+  { label: '前端应用', value: 'frontend' },
   { label: '用户管理', value: 'user' },
   { label: '角色管理', value: 'role' },
   { label: '权限管理', value: 'permission' },
@@ -82,9 +83,12 @@ const moduleOptions = [
 
 // 日志类型选项
 const logTypeOptions = [
-  { label: '业务日志', value: 'business' },
-  { label: '系统日志', value: 'system' },
-  { label: '异常日志', value: 'error' }
+  { label: '页面访问', value: 'pageview', type: 'primary' },
+  { label: '点击事件', value: 'click', type: 'warning' },
+  { label: '自定义事件', value: 'event', type: 'info' },
+  { label: '业务日志', value: 'business', type: 'success' },
+  { label: '系统日志', value: 'system', type: 'info' },
+  { label: '异常日志', value: 'error', type: 'danger' }
 ]
 
 // 搜索项配置
@@ -105,9 +109,9 @@ const searchItems = computed(() => [
   },
   {
     field: 'operator',
-    label: '操作人',
-    type: 'input',
-    placeholder: '请输入操作人'
+    label: '操作用户',
+    type: 'user',
+    placeholder: '请选择操作用户'
   },
   {
     field: 'timeRange',
@@ -195,15 +199,27 @@ const tableOptions = reactive({
   tableData,
   tableName: '业务日志',
   tableFields: [
-    { fieldName: 'module', label: '业务模块', width: 120 },
-    { fieldName: 'type', label: '日志类型', width: 120 },
+    {
+      fieldName: 'module',
+      label: '业务模块',
+      width: 120,
+      type: 'select',
+      options: moduleOptions
+    },
+    {
+      fieldName: 'type',
+      label: '日志类型',
+      width: 120,
+      type: 'tag',
+      options: logTypeOptions
+    },
     { fieldName: 'title', label: '日志标题', width: 200 },
     {
       fieldName: 'content',
       label: '日志内容',
       slotName: 'content'
     },
-    { fieldName: 'operator', label: '操作人', width: 120 },
+    { fieldName: 'operator', label: '操作用户', width: 120 },
     { fieldName: 'create_time', label: '操作时间', width: 180 }
   ],
   showIndex: false,
@@ -230,17 +246,19 @@ const tableOptions = reactive({
 
 // 查看详情
 const handleView = row => {
+  const moduleLabel =
+    moduleOptions.find(o => o.value === row.module)?.label || row.module || '-'
+  const typeLabel =
+    logTypeOptions.find(o => o.value === row.type)?.label || row.type || '-'
   ElMessageBox.alert(
     `
     <div class="log-detail">
-      <p><strong>业务类型：</strong>${row.businessType}</p>
-      <p><strong>操作用户：</strong>${row.username}</p>
-      <p><strong>操作内容：</strong>${row.operation}</p>
-      <p><strong>请求参数：</strong>${row.params}</p>
-      <p><strong>IP地址：</strong>${row.ip}</p>
-      <p><strong>状态：</strong>${row.status}</p>
-      ${row.errorMsg ? `<p><strong>错误信息：</strong>${row.errorMsg}</p>` : ''}
-      <p><strong>操作时间：</strong>${row.create_time}</p>
+      <p><strong>业务模块：</strong>${moduleLabel}</p>
+      <p><strong>日志类型：</strong>${typeLabel}</p>
+      <p><strong>日志标题：</strong>${row.title || '-'}</p>
+      <p><strong>日志内容：</strong>${row.content || '-'}</p>
+      <p><strong>操作用户：</strong>${row.operator || '-'}</p>
+      <p><strong>操作时间：</strong>${row.create_time || '-'}</p>
     </div>
   `,
     '业务日志详情',

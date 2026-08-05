@@ -3,7 +3,26 @@
     <div class="search-item__label">{{ label || '关键词' }}</div>
     <div class="search-item__control">
       <el-select
-        v-if="type === SEARCH_ITEM_TYPE.select"
+        v-if="type === SEARCH_ITEM_TYPE.user"
+        v-model="field"
+        filterable
+        clearable
+        :filter-method="userFilterMethod"
+        :loading="userLoading"
+        :placeholder="placeholder || `请选择${label}`"
+        v-bind="$attrs"
+        class="search-item__field"
+        @visible-change="onUserVisibleChange"
+      >
+        <el-option
+          v-for="item in userOptions"
+          :key="item.id"
+          :label="item.label"
+          :value="item.displayName"
+        />
+      </el-select>
+      <el-select
+        v-else-if="type === SEARCH_ITEM_TYPE.select"
         v-model="field"
         :placeholder="placeholder || `请选择${label}`"
         v-bind="$attrs"
@@ -41,9 +60,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { onMounted, toRefs } from 'vue'
 import type { AnyObject } from '@/types/global'
 import { useVModels } from '@vueuse/core'
+import { useUserSelectOptions } from '@/composables/useUserSelectOptions'
 
 const props = defineProps<{
   field: string | number | boolean | string[] | any
@@ -68,8 +88,28 @@ const { field } = useVModels(props, emit)
 const SEARCH_ITEM_TYPE = {
   input: 'input',
   select: 'select',
-  daterange: 'daterange'
+  daterange: 'daterange',
+  user: 'user'
 }
+
+const {
+  options: userOptions,
+  loading: userLoading,
+  ensureLoaded: ensureUsersLoaded,
+  filterMethod: userFilterMethod
+} = useUserSelectOptions()
+
+function onUserVisibleChange(visible: boolean) {
+  if (visible && props.type === SEARCH_ITEM_TYPE.user) {
+    void ensureUsersLoaded()
+  }
+}
+
+onMounted(() => {
+  if (props.type === SEARCH_ITEM_TYPE.user) {
+    void ensureUsersLoaded()
+  }
+})
 </script>
 <style scoped lang="less">
 .search-item {

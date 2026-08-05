@@ -10,11 +10,17 @@
     />
 
     <span v-else-if="type === TABLE_ITEM_TYPE.select">{{
-      options?.find(
-        o =>
-          String(o[config?.valueKey || 'value']) === String(field)
-      )?.[config?.labelKey || 'label']
+      matchedOption?.[config?.labelKey || 'label']
     }}</span>
+
+    <el-tag
+      v-else-if="type === TABLE_ITEM_TYPE.tag"
+      size="small"
+      :type="tagType"
+      disable-transitions
+    >
+      {{ tagLabel }}
+    </el-tag>
 
     <img
       v-else-if="type === TABLE_ITEM_TYPE.img"
@@ -70,6 +76,32 @@ const { type, config, disabled, options } = toRefs(props)
 const fieldModel = computed({
   get: () => props.field,
   set: val => emit('update:field', val)
+})
+
+const matchedOption = computed(() => {
+  const list = options?.value
+  if (!list?.length) return undefined
+  const valueKey = config?.value?.valueKey || 'value'
+  return list.find(o => String(o[valueKey]) === String(props.field))
+})
+
+const tagLabel = computed(() => {
+  const labelKey = config?.value?.labelKey || 'label'
+  if (matchedOption.value?.[labelKey] != null) {
+    return String(matchedOption.value[labelKey])
+  }
+  if (props.field === '' || props.field == null) return '-'
+  return String(props.field)
+})
+
+const tagType = computed(() => {
+  const fromOption = matchedOption.value?.type
+  if (fromOption) return fromOption
+  const map = config?.value?.tagTypeMap as Record<string, string> | undefined
+  if (map && props.field != null && map[String(props.field)]) {
+    return map[String(props.field)]
+  }
+  return 'info'
 })
 
 const onSwitchChange = (val: string | number | boolean) => {

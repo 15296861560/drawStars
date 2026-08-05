@@ -77,8 +77,8 @@ const searchItems = computed(() => [
   {
     field: 'username',
     label: '用户名',
-    type: 'input',
-    placeholder: '请输入用户名'
+    type: 'user',
+    placeholder: '请选择用户'
   },
   {
     field: 'ip',

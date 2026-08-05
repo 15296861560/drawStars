@@ -149,6 +149,7 @@ import { ElMessageBox } from 'element-plus'
 import userManageApi from '@/assets/js/api/userManageController/userManageApi.js'
 import roleApi from '@/assets/js/api/roleController/roleApi.js'
 import { showTips } from '@/utils/message/showTips.js'
+import { invalidateUserSelectCache } from '@/composables/useUserSelectOptions'
 import { tableFields } from './config/schema'
 import { permissionStore } from '@/stores/permission'
 import i18n from '@/lang/index.js'
@@ -299,6 +300,7 @@ const submitForm = async () => {
   if (res.status) {
     showTips('success', '保存成功')
     formVisible.value = false
+    invalidateUserSelectCache()
     query()
   } else {
     showTips('error', res.msg || '保存失败')
@@ -362,6 +364,7 @@ const handleDelete = async row => {
   const res = await userManageApi.delete(row.id)
   if (res.status) {
     showTips('success', '删除成功')
+    invalidateUserSelectCache()
     query()
   } else {
     showTips('error', res.msg || '删除失败')

@@ -74,18 +74,19 @@ const pageInfo = reactive({
 
 // 操作类型选项
 const operationOptions = [
-  { label: '新增', value: 'insert' },
-  { label: '修改', value: 'update' },
-  { label: '删除', value: 'delete' },
-  { label: '查询', value: 'select' },
-  { label: '登录', value: 'login' },
-  { label: '登出', value: 'logout' }
+  { label: '新增', value: 'insert', type: 'success' },
+  { label: '修改', value: 'update', type: 'warning' },
+  { label: '删除', value: 'delete', type: 'danger' },
+  { label: '查询', value: 'select', type: 'info' },
+  { label: '登录', value: 'login', type: 'primary' },
+  { label: '登出', value: 'logout', type: 'info' },
+  { label: '其他', value: 'other', type: 'info' }
 ]
 
 // 状态选项
 const statusOptions = [
-  { label: '成功', value: 'success' },
-  { label: '失败', value: 'fail' }
+  { label: '成功', value: 'success', type: 'success' },
+  { label: '失败', value: 'fail', type: 'danger' }
 ]
 
 // 搜索项配置
@@ -93,8 +94,8 @@ const searchItems = computed(() => [
   {
     field: 'username',
     label: '操作用户',
-    type: 'input',
-    placeholder: '请输入用户名'
+    type: 'user',
+    placeholder: '请选择操作用户'
   },
   {
     field: 'operation',
@@ -137,7 +138,13 @@ async function query() {
 
   const result = await logApi.queryOperationLogs(params)
   if (result.status) {
-    tableData.value = result.data.list
+    tableData.value = (result.data.list || []).map(row => ({
+      ...row,
+      message:
+        row.status === 'fail' || row.status === 'error'
+          ? row.errorMsg || row.msg || ''
+          : row.msg || ''
+    }))
     pageInfo.total = result.data.total
   } else {
     showTips('error', result.msg)
@@ -197,17 +204,25 @@ const tableOptions = reactive({
   tableName: '操作日志',
   tableFields: [
     { fieldName: 'username', label: '操作用户', width: 120 },
-    { fieldName: 'operation', label: '操作类型', minWidth: 150 },
-    { fieldName: 'method', label: '请求方法', minWidth: 150 },
+    {
+      fieldName: 'operation',
+      label: '操作类型',
+      width: 100,
+      type: 'tag',
+      options: operationOptions
+    },
+    { fieldName: 'method', label: '请求方法', width: 100 },
+    { fieldName: 'originalUrl', label: '请求接口', minWidth: 200 },
     { fieldName: 'params', label: '请求参数', width: 200, slotName: 'params' },
     { fieldName: 'ip', label: 'IP地址', width: 150 },
-    { fieldName: 'status', label: '状态', width: 100 },
-    { fieldName: 'msg', label: '消息' },
     {
-      fieldName: 'errorMsg',
-      label: '错误信息',
-      slotName: 'errorMsg'
+      fieldName: 'status',
+      label: '状态',
+      width: 100,
+      type: 'tag',
+      options: statusOptions
     },
+    { fieldName: 'message', label: '消息', minWidth: 160 },
     { fieldName: 'create_time', label: '操作时间', width: 180 }
   ],
   showIndex: false,
@@ -234,17 +249,22 @@ const tableOptions = reactive({
 
 // 查看详情
 const handleView = row => {
+  const operationLabel =
+    operationOptions.find(o => o.value === row.operation)?.label ||
+    row.operation ||
+    '-'
   ElMessageBox.alert(
     `
     <div class="log-detail">
-      <p><strong>操作用户：</strong>${row.username}</p>
-      <p><strong>操作类型：</strong>${row.operation}</p>
-      <p><strong>请求方法：</strong>${row.method}</p>
-      <p><strong>请求参数：</strong>${row.params}</p>
-      <p><strong>IP地址：</strong>${row.ip}</p>
-      <p><strong>状态：</strong>${row.status}</p>
-      ${row.errorMsg ? `<p><strong>错误信息：</strong>${row.errorMsg}</p>` : ''}
-      <p><strong>操作时间：</strong>${row.create_time}</p>
+      <p><strong>操作用户：</strong>${row.username || '-'}</p>
+      <p><strong>操作类型：</strong>${operationLabel}</p>
+      <p><strong>请求方法：</strong>${row.method || '-'}</p>
+      <p><strong>请求接口：</strong>${row.originalUrl || '-'}</p>
+      <p><strong>请求参数：</strong>${row.params || '-'}</p>
+      <p><strong>IP地址：</strong>${row.ip || '-'}</p>
+      <p><strong>状态：</strong>${row.status || '-'}</p>
+      <p><strong>消息：</strong>${row.message || '-'}</p>
+      <p><strong>操作时间：</strong>${row.create_time || '-'}</p>
     </div>
   `,
     '操作日志详情',
