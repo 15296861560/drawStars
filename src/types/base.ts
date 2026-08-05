@@ -11,7 +11,10 @@ export type IComponentType =
   | 'radio'
   | 'checkbox'
   | 'img'
+  | 'upload'
   | 'location'
+  | 'locationPoint'
+  | 'richText'
 
 export enum ComponentType {
   input = 'input',
@@ -23,5 +26,8 @@ export enum ComponentType {
   radio = 'radio',
   checkbox = 'checkbox',
   img = 'img',
-  location = 'location'
+  upload = 'upload',
+  location = 'location',
+  locationPoint = 'locationPoint',
+  richText = 'richText'
 }

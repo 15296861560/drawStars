@@ -89,7 +89,7 @@
     <upload-component
       v-else-if="isUpload"
       v-model:value-model="field"
-      v-bind="attrs"
+      v-bind="attrs || {}"
       :disabled="disabled"
     />
 
@@ -102,6 +102,13 @@
       v-else-if="isLocation"
       v-model:value-model="field"
       :disabled="disabled"
+    />
+    <rich-text-viewer
+      v-else-if="isRichText && disabled"
+      :html="field"
+      bordered
+      max-height="35vh"
+      min-height="180px"
     />
     <rich-text-editor-component
       ref="richText"
@@ -124,7 +131,14 @@
 /**
  * 通用表单元素组件
  * */
-import { computed, onMounted, toRefs, defineAsyncComponent } from 'vue'
+import {
+  computed,
+  onMounted,
+  toRefs,
+  defineAsyncComponent,
+  ref,
+  watch
+} from 'vue'
 import type { AnyObject } from '@/types/global'
 import { useVModels } from '@vueuse/core'
 import { showTips } from '@/utils/message/showTips.js'
@@ -146,6 +160,14 @@ const RichTextEditorComponent = defineAsyncComponent(
   () => import('./RichTextEditorComponentQuill.vue')
 )
 
+const RichTextViewer = defineAsyncComponent(
+  () => import('../RichTextViewer.vue')
+)
+
+const UploadComponent = defineAsyncComponent(
+  () => import('./UploadComponent.vue')
+)
+
 const props = defineProps<{
   field: string | number | boolean | string[] | any
   type?: string
@@ -155,13 +177,14 @@ const props = defineProps<{
   disabled?: boolean
   readonly?: boolean
   options?: Array<AnyObject>
+  attrs?: AnyObject
 }>()
 
 const emit = defineEmits<{
   (e: 'update:field', value: string | number | boolean | string[] | any): void
 }>()
 
-const { type, apiMethod, apiParams, config, disabled, readonly, options } =
+const { type, apiMethod, apiParams, config, disabled, readonly, options, attrs } =
   toRefs(props)
 const { field } = useVModels(props, emit)
 
@@ -173,7 +196,12 @@ const isDate = computed(() => type?.value === ComponentType.date)
 const isRadio = computed(() => type?.value === ComponentType.radio)
 const isCheckBox = computed(() => type?.value === ComponentType.checkbox)
 const isImg = computed(() => type?.value === ComponentType.img)
+const isUpload = computed(() => type?.value === ComponentType.upload)
 const isLocation = computed(() => type?.value === ComponentType.location)
+const isLocationPoint = computed(
+  () => type?.value === ComponentType.locationPoint
+)
+const isRichText = computed(() => type?.value === ComponentType.richText)
 
 const requestOptions = async () => {
   if (apiMethod?.value) {
@@ -189,9 +217,11 @@ const requestOptions = async () => {
 const richText = ref()
 watch(
   () => field.value,
-  () => {
-    if (isRichText.value && richText.value) {
-      richText.value.updateValueModel(field.value)
+  val => {
+    if (!isRichText.value || !richText.value) return
+    const current = richText.value.editorRef?.innerHTML
+    if (val !== current) {
+      richText.value.updateValueModel(val || '')
     }
   }
 )

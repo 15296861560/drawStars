@@ -37,13 +37,20 @@
         <FullScreen />
       </el-icon>
       <!-- 消息 -->
-      <el-icon
-        class="message u-icon"
-        :title="$t('navigation.message')"
-        @click="toSeeMessage"
+      <el-badge
+        :value="unreadCount"
+        :hidden="!unreadCount"
+        :max="99"
+        class="message-badge"
       >
-        <Message />
-      </el-icon>
+        <el-icon
+          class="message u-icon"
+          :title="$t('navigation.message')"
+          @click="toSeeMessage"
+        >
+          <Message />
+        </el-icon>
+      </el-badge>
       <!-- 选择语言 -->
       <el-dropdown
         class="selectLang"
@@ -109,9 +116,11 @@ import messageSide from '@/views/message/messageSide.vue'
 import errorLog from '@/components/part/errorLog.vue'
 import TopHomeMenu from '@/components/layout/TopHomeMenu.vue'
 import { layoutSettingsStore } from '@/stores/layout-settings'
+import { notifyStore } from '@/stores/notify'
 
 const settingInfo = settingInfoStore()
 const userInfo = userInfoStore()
+const notifyInfo = notifyStore()
 
 export default {
   name: 'Navigation',
@@ -149,10 +158,17 @@ export default {
     showTopLayoutMenu() {
       const layout = layoutSettingsStore()
       return this.websiteInfo.isPC && layout.navType === 3
+    },
+    unreadCount() {
+      return notifyInfo.unreadCount
     }
   },
   methods: {
-    initMessage() {},
+    initMessage() {
+      if (userInfo.getUserId) {
+        notifyInfo.fetchUnreadCount()
+      }
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
       console.log(key)
@@ -211,6 +227,7 @@ export default {
       import('@/stores/permission').then(({ permissionStore }) => {
         permissionStore().clearPermission()
       })
+      notifyInfo.clear()
 
       this.$router.push({
         path: '/login'
@@ -264,7 +281,9 @@ export default {
     }
   },
   watch: {},
-  mounted() {}
+  mounted() {
+    this.initMessage()
+  }
 }
 </script>
 
@@ -293,8 +312,16 @@ export default {
       cursor: pointer;
     }
 
-    .message {
+    .message-badge {
       margin-left: 1vw;
+      line-height: 1;
+
+      :deep(.el-badge__content) {
+        transform: translateY(-4px) translateX(8px);
+      }
+    }
+
+    .message {
       cursor: pointer;
     }
 

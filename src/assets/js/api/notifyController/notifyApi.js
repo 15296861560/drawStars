@@ -1,64 +1,50 @@
 /*
- * @Description:
- * @Version: 2.0
- * @Autor: lgy
- * @Date: 2022-07-25 00:05:13
- * @LastEditors: lgy
- * @LastEditTime: 2023-06-15 23:48:10
+ * @Description: 站内信 / 用户通知接口
  */
-/* 通知相关接口 */
 import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
 
 export default {
   /**
-   * @description: 发送通知
-   * @param {
-   * } params
-   * @return {*}
-   * @author: lgy
+   * 发送通知
+   * @param {{ receiveId?: number|string, receiveIds?: Array<number|string>, notifyType?: string, notifyMsg?: string, content?: string }} params
    */
   sendNotify: params => $axios(params, '/notifyApi/sendNotify'),
 
-  // 通过id查询通知详情
-  queryNotifyById: id => $axiosGet({ id }, '/notifyApi/queryNotifyById'),
+  /** 通过 id 查询通知详情 */
+  queryNotifyById: id =>
+    $axiosGet({ notifyId: id }, '/notifyApi/queryNotifyById'),
 
   /**
-   * @description: 查询某种类型通知
-   * @param {
-   * notifyType:string
-   * } params
-   * @return {*}
-   * @author: lgy
+   * 查询某种类型通知
+   * @param {{ notifyType: string }} params
    */
   queryNotifyByType: params =>
     $axiosGet(params, '/notifyApi/queryNotifyByType'),
 
-  /**
-   * @description: 查询所有通知
-   * @param {
-   * } params
-   * @return {*}
-   * @author: lgy
-   */
-  queryAllNotify: params => $axiosGet(params, '/notifyApi/queryAllNotify'),
+  /** 查询所有通知 */
+  queryAllNotify: params => $axiosGet(params || {}, '/notifyApi/queryAllNotify'),
 
   /**
-   * @description: 查询某用户收到的所有通知
-   * @param {
-   * } params
-   * @return {*}
-   * @author: lgy
+   * 查询当前用户收到的通知（支持筛选与分页）
+   * @param {{ userId?: number|string, status?: 'all'|'read'|'unread', curPage?: number, pageSize?: number }} params
    */
-  queryMyAllNotify: params => $axiosGet(params, '/notifyApi/queryMyAllNotify'),
+  queryMyAllNotify: params =>
+    $axiosGet(params || {}, '/notifyApi/queryMyAllNotify'),
 
   /**
-   * @description: 查询某用户收到的某种类型通知
-   * @param {
-   * notifyType:string
-   * } params
-   * @return {*}
-   * @author: lgy
+   * 查询当前用户某类型通知
+   * @param {{ notifyType: string, userId?: number|string }} params
    */
   queryMyNotifyByType: params =>
-    $axiosGet(params, '/notifyApi/queryMyNotifyByType')
+    $axiosGet(params, '/notifyApi/queryMyNotifyByType'),
+
+  /** 未读数量 */
+  getUnreadCount: params =>
+    $axiosGet(params || {}, '/notifyApi/unreadCount'),
+
+  /** 单条已读 */
+  markRead: params => $axios(params, '/notifyApi/markRead'),
+
+  /** 全部已读 */
+  markAllRead: params => $axios(params || {}, '/notifyApi/markAllRead')
 }

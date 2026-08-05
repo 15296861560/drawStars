@@ -50,9 +50,11 @@ import {
   WEBSITE_CHANNEL
 } from '@/assets/js/notify/notify-config.js'
 import { userInfoStore } from '@/stores/user-info'
+import { notifyStore } from '@/stores/notify'
 import { isSkipLoginMode } from '@/config/skip-login'
 
 const userInfo = userInfoStore()
+const SITE_NOTIFY_TYPES = ['site', 'system', 'notice', 'message']
 
 export default {
   components: {
@@ -75,7 +77,8 @@ export default {
       websiteInfo: {
         isPC: true, // 判断是否是电脑
         isCollapse: false // 侧边栏是否收缩
-      }
+      },
+      _notifyPushHandler: null
     }
   },
   computed: {
@@ -99,10 +102,73 @@ export default {
         item => userAgent.indexOf(item) == -1
       ) // 不包含手机型号则视为PC
     },
+    onNotifyPush(payload) {
+      const store = notifyStore()
+      if (payload && typeof payload === 'object') {
+        store.prependFromPush({
+          id: payload.id || `ws_${Date.now()}`,
+          content:
+            payload.content ||
+            payload.msg ||
+            payload.title ||
+            (typeof payload === 'string' ? payload : ''),
+          tag: payload.tag || payload.notifyType || '系统',
+          notifyType: payload.notifyType,
+          createTime: payload.createTime || Date.now(),
+          isRead: false
+        })
+      } else {
+        store.fetchUnreadCount()
+      }
+    },
+    bindNotifyListeners() {
+      if (!this.$notify || this._notifyPushHandler) return
+      this._notifyPushHandler = data => this.onNotifyPush(data)
+
+      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
+        this.$notify.on(evt, this._notifyPushHandler)
+      })
+
+      SITE_NOTIFY_TYPES.forEach(type => {
+        this.$notify.addNotifyCallback(
+          type,
+          WEBSITE_CHANNEL,
+          this._notifyPushHandler
+        )
+      })
+    },
+    unbindNotifyListeners() {
+      if (!this.$notify || !this._notifyPushHandler) return
+      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
+        this.$notify.off?.(evt, this._notifyPushHandler)
+      })
+      SITE_NOTIFY_TYPES.forEach(type => {
+        try {
+          this.$notify.deleteCallback?.(
+            type,
+            WEBSITE_CHANNEL,
+            this._notifyPushHandler
+          )
+        } catch (_) {
+          /* ignore */
+        }
+      })
+      this._notifyPushHandler = null
+    },
     async initNotify() {
-      await this.$notify.createInstance(NOTIFY_URL)
-      await this.$notify.login(userInfo.getToken.value)
-      this.$notify.joinChannel(WEBSITE_CHANNEL)
+      try {
+        await this.$notify.createInstance(NOTIFY_URL)
+        const token =
+          userInfo.getToken?.value != null
+            ? userInfo.getToken.value
+            : userInfo.getToken
+        await this.$notify.login(token)
+        await this.$notify.joinChannel(WEBSITE_CHANNEL)
+        this.bindNotifyListeners()
+        notifyStore().fetchUnreadCount()
+      } catch (e) {
+        console.warn('[notify] init failed', e)
+      }
     }
   },
   watch: {
@@ -144,6 +210,8 @@ export default {
 
     if (!isSkipLoginMode()) {
       this.initNotify()
+    } else {
+      notifyStore().fetchUnreadCount()
     }
   },
   beforeUnmount() {
@@ -151,6 +219,7 @@ export default {
     if (this._layoutAfterEach) {
       this._layoutAfterEach()
     }
+    this.unbindNotifyListeners()
   }
 }
 </script>
