@@ -103,21 +103,30 @@ const $axios = function (params, methodURL, config = { method: 'post' }) {
         let errObj = JSON.parse(JSON.stringify(err))
         if (errObj.response) {
           let status = errObj.response.status
+          const bizMsg =
+            err.response?.data?.msg ||
+            err.response?.data?.message ||
+            (Array.isArray(err.response?.data?.message)
+              ? err.response.data.message.join('; ')
+              : '')
           switch (status) {
             case 400:
-              showError('400(Bad request):请求无效 ')
+              showError(bizMsg || '400(Bad request):请求无效 ')
               break
             case 404:
-              showError('404(Not Found):请求的资源不存在')
+              showError(bizMsg || '404(Not Found):请求的资源不存在')
               break
             case 500:
-              showError('500(Internal Server Error):内部服务器错误')
+              showError(bizMsg || '500(Internal Server Error):内部服务器错误')
               break
             case 504:
-              showError('504(Gateway Time-out):请求超时')
+              showError(bizMsg || '504(Gateway Time-out):请求超时')
               break
             default:
-              showError(errObj.message)
+              showError(bizMsg || errObj.message)
+          }
+          if (bizMsg) {
+            err.message = bizMsg
           }
         } else {
           showError(errObj.message)
