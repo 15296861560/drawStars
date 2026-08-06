@@ -25,6 +25,7 @@ export default {
       role: 'Roles',
       menu: 'Menus',
       points: 'Points',
+      task: 'Tasks',
       pointsRules: 'Points Rules',
       pointsLevels: 'Points Levels',
       notice: 'Notices',
@@ -293,6 +294,9 @@ export default {
       earlier: 'Earlier'
     }
   },
+  taskHall: 'Task Hall',
+  myTasks: 'My Tasks',
+  taskAchievements: 'Task Achievements',
   aside: {
     homePage: 'Home Page',
     module: 'Module',

@@ -67,6 +67,7 @@
       width="520px"
       destroy-on-close
       append-to-body
+      @opened="onBindDialogOpened"
     >
       <el-alert
         v-if="bindIsSuperAdmin"
@@ -77,13 +78,15 @@
         title="超级管理员默认拥有全部菜单权限，无需手动勾选"
       />
       <el-tree
+        v-if="bindVisible"
         ref="treeRef"
+        :key="bindRoleId"
         :data="menuTree"
         show-checkbox
         node-key="id"
-        :props="{ label: 'name', children: 'children' }"
-        default-expand-all
-        :disabled="bindIsSuperAdmin"
+        :props="treeProps"
+        :default-expand-all="false"
+        :default-checked-keys="[]"
       />
       <template #footer>
         <el-button
@@ -100,7 +103,14 @@
   </div>
 </template>
 <script setup>
-import { nextTick, onMounted, reactive, ref, defineAsyncComponent } from 'vue'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  defineAsyncComponent
+} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Search,
@@ -165,7 +175,40 @@ const bindVisible = ref(false)
 const bindRoleId = ref(null)
 const bindIsSuperAdmin = ref(false)
 const menuTree = ref([])
+const bindMenuIds = ref([])
 const treeRef = ref()
+
+const treeProps = computed(() => ({
+  label: 'name',
+  children: 'children',
+  disabled: bindIsSuperAdmin.value ? 'disabled' : undefined
+}))
+
+/** 仅收集角色已绑定的叶子节点，避免父节点 ID 触发级联全选 */
+function collectBoundLeafKeys(nodes, idSet, out = []) {
+  for (const node of nodes || []) {
+    const children = node.children
+    if (Array.isArray(children) && children.length) {
+      collectBoundLeafKeys(children, idSet, out)
+      continue
+    }
+    const id = Number(node.id)
+    if (idSet.has(id)) {
+      out.push(node.id)
+    }
+  }
+  return out
+}
+
+function markTreeDisabled(nodes, disabled) {
+  return (nodes || []).map(node => ({
+    ...node,
+    disabled,
+    children: node.children?.length
+      ? markTreeDisabled(node.children, disabled)
+      : node.children
+  }))
+}
 
 const formatTime = ts => {
   if (!ts) return '-'
@@ -271,11 +314,21 @@ const openBind = async row => {
     menuApi.getTree(),
     roleApi.getMenuIds(row.id)
   ])
-  menuTree.value = treeRes.status ? treeRes.data || [] : []
+  const tree = treeRes.status ? treeRes.data || [] : []
+  menuTree.value = bindIsSuperAdmin.value
+    ? markTreeDisabled(tree, true)
+    : tree
+  bindMenuIds.value = idsRes.status
+    ? (idsRes.data || []).map(id => Number(id)).filter(n => Number.isFinite(n))
+    : []
   bindVisible.value = true
+}
+
+const onBindDialogOpened = async () => {
   await nextTick()
-  const ids = idsRes.status ? idsRes.data || [] : []
-  treeRef.value?.setCheckedKeys(ids)
+  const idSet = new Set(bindMenuIds.value)
+  const leafKeys = collectBoundLeafKeys(menuTree.value, idSet)
+  treeRef.value?.setCheckedKeys(leafKeys, true)
 }
 
 const submitBind = async () => {
@@ -284,9 +337,10 @@ const submitBind = async () => {
     bindVisible.value = false
     return
   }
+  // 保存全选节点 + 半选父节点，保证目录权限完整
   const checked = treeRef.value?.getCheckedKeys(false) || []
   const half = treeRef.value?.getHalfCheckedKeys() || []
-  const menuIds = [...checked, ...half]
+  const menuIds = [...new Set([...checked, ...half].map(id => Number(id)))]
   const res = await roleApi.bindMenus({
     roleId: bindRoleId.value,
     menuIds

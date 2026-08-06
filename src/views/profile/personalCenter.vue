@@ -37,6 +37,9 @@ export default {
       return [
         { name: this.$t('basicInfo'), path: 'basicInfo' },
         { name: this.$t('points'), path: 'points' },
+        { name: this.$t('taskHall'), path: 'taskHall' },
+        { name: this.$t('myTasks'), path: 'myTasks' },
+        { name: this.$t('taskAchievements'), path: 'taskAchievements' },
         { name: this.$t('credentials'), path: 'credentials' },
         { name: this.$t('oauthBind'), path: 'oauthBind' },
         { name: this.$t('notifySettings'), path: 'notifySettings' },
@@ -122,6 +125,9 @@ export default {
   "en": {
     "basicInfo": "Basic Info",
     "points": "My Points",
+    "taskHall": "Task Hall",
+    "myTasks": "My Tasks",
+    "taskAchievements": "Achievements",
     "credentials": "Login Credentials",
     "oauthBind": "Linked Accounts",
     "notifySettings": "Notifications",
@@ -130,6 +136,9 @@ export default {
   "zh": {
     "basicInfo": "基础信息",
     "points": "我的积分",
+    "taskHall": "任务大厅",
+    "myTasks": "我的任务",
+    "taskAchievements": "成就墙",
     "credentials": "登录凭证",
     "oauthBind": "第三方关联",
     "notifySettings": "通知设置",

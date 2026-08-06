@@ -132,13 +132,13 @@ DateFormet.getWeekDay = function (et) {
       S: date.getMilliseconds() // 毫秒
     }
     let week = {
-      0: '\u65e5',
-      1: '\u4e00',
-      2: '\u4e8c',
-      3: '\u4e09',
-      4: '\u56db',
-      5: '\u4e94',
-      6: '\u516d'
+      0: '日',
+      1: '一',
+      2: '二',
+      3: '三',
+      4: '四',
+      5: '五',
+      6: '六'
     }
     if (/(y+)/.test(fmt)) {
       fmt = fmt.replace(
@@ -151,8 +151,8 @@ DateFormet.getWeekDay = function (et) {
         RegExp.$1,
         (RegExp.$1.length > 1
           ? RegExp.$1.length > 2
-            ? '\u661f\u671f'
-            : '\u5468'
+            ? '星期'
+            : '周'
           : '') + week[date.getDay() + '']
       )
     }

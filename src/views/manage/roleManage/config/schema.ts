@@ -5,6 +5,7 @@ export const allFields = [
     type: 'text',
     width: 100,
     align: 'center',
+    hideTable: true,
     hideDialog: true
   },
   {

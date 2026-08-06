@@ -100,6 +100,71 @@ export default [
     ]
   },
   {
+    path: '/home/manageHomePage/task',
+    redirect: '/home/manageHomePage/task/overview',
+    name: '任务管理',
+    component: () => import('@/views/manage/taskManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '任务管理'],
+      permission: 'system:task:list'
+    },
+    children: [
+      {
+        path: 'overview',
+        name: '任务概览',
+        component: () => import('@/views/manage/taskManage/overview.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '任务概览']
+        }
+      },
+      {
+        path: 'list',
+        name: '任务列表',
+        component: () => import('@/views/manage/taskManage/list.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '任务列表'],
+          permission: 'system:task:list'
+        }
+      },
+      {
+        path: 'audit',
+        name: '任务审核',
+        component: () => import('@/views/manage/taskManage/audit.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '任务审核'],
+          permission: 'system:task:audit'
+        }
+      },
+      {
+        path: 'shipping',
+        name: '奖励发放',
+        component: () => import('@/views/manage/taskManage/shipping.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '奖励发放'],
+          permission: 'system:task:operate'
+        }
+      },
+      {
+        path: 'categories',
+        name: '分类管理',
+        component: () => import('@/views/manage/taskManage/categories.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '分类管理'],
+          permission: 'system:task:operate'
+        }
+      },
+      {
+        path: 'templates',
+        name: '奖励模板',
+        component: () => import('@/views/manage/taskManage/templates.vue'),
+        meta: {
+          title: ['首页', '管理中心', '任务管理', '奖励模板'],
+          permission: 'system:task:operate'
+        }
+      }
+    ]
+  },
+  {
     path: '/home/manageHomePage/logs',
     redirect: '/home/manageHomePage/logs/login',
     name: '日志管理',

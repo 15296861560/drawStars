@@ -358,7 +358,6 @@
                 {{ formatDate(row.createdAt) || '-' }}
               </template>
             </el-table-column>
-            <el-table-column prop="id" label="ID" width="100" />
           </el-table>
         </el-card>
       </el-tab-pane>

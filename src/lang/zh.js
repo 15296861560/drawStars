@@ -25,6 +25,7 @@ export default {
       role: '角色管理',
       menu: '菜单配置',
       points: '积分管理',
+      task: '任务管理',
       pointsRules: '规则配置',
       pointsLevels: '等级配置',
       notice: '通知管理',
@@ -289,6 +290,9 @@ export default {
       earlier: '更早'
     }
   },
+  taskHall: '任务大厅',
+  myTasks: '我的任务',
+  taskAchievements: '任务成就',
   aside: {
     homePage: '首页',
     module: '模块',

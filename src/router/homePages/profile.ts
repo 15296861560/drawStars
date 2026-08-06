@@ -68,6 +68,33 @@ export default [
           keepAlive: true
         }
       },
+      {
+        path: '/home/personalCenter/taskHall',
+        name: '任务大厅(个人)',
+        component: () => import('@/views/task/hall.vue'),
+        meta: {
+          title: ['首页', '个人中心', '任务大厅'],
+          keepAlive: true
+        }
+      },
+      {
+        path: '/home/personalCenter/myTasks',
+        name: '我的任务(个人)',
+        component: () => import('@/views/task/my.vue'),
+        meta: {
+          title: ['首页', '个人中心', '我的任务'],
+          keepAlive: true
+        }
+      },
+      {
+        path: '/home/personalCenter/taskAchievements',
+        name: '任务成就(个人)',
+        component: () => import('@/views/task/achievements.vue'),
+        meta: {
+          title: ['首页', '个人中心', '成就墙'],
+          keepAlive: true
+        }
+      },
       // 旧路径兼容
       {
         path: '/home/personalCenter/personalProfile',

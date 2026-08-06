@@ -107,6 +107,7 @@
         :fixed="resolveOperateFixed"
         align="center"
         :width="operateColumnWidth"
+        :min-width="operateColumnMinWidth"
       >
         <template #default="scope">
           <div class="base-table__row-ops">
@@ -169,6 +170,7 @@ import {
   computed,
   defineAsyncComponent,
   nextTick,
+  onMounted,
   ref,
   toRefs,
   useAttrs,
@@ -241,18 +243,74 @@ const resolveOperateFixed = computed(() => {
   return val
 })
 
-const operateColumnWidth = computed(() => {
-  if (tableOperateWidth?.value != null && tableOperateWidth.value !== '') {
-    return tableOperateWidth.value
+const measuredOperateWidth = ref(0)
+
+function estimateLabelWidth(label: string) {
+  let w = 0
+  for (const ch of String(label || '')) {
+    w += /[\u4e00-\u9fff]/.test(ch) ? 14 : 8
   }
+  return w
+}
+
+function estimateOperateWidth() {
   const list = pageTableOperate?.value || []
+  if (!list.length) return 88
   const iconCount = list.filter((o: AnyObject) => o.icon).length
   if (iconCount && iconCount === list.length) {
-    return Math.max(120, iconCount * 36 + 24)
+    return Math.max(88, iconCount * 32 + 24)
   }
-  const count = list.length || 0
-  return Math.max(88, count * 48 + 24)
+  let content = 0
+  for (const o of list as AnyObject[]) {
+    if (o.icon) {
+      content += 32
+    } else {
+      content += Math.max(28, estimateLabelWidth(o.label) + 8)
+    }
+    content += 4
+  }
+  return Math.max(88, content + 20)
+}
+
+const hasExplicitOperateWidth = computed(() => {
+  const w = tableOperateWidth?.value
+  return w != null && w !== '' && w !== 'auto'
 })
+
+const operateColumnMinWidth = computed(() => {
+  if (hasExplicitOperateWidth.value) return undefined
+  return estimateOperateWidth()
+})
+
+const operateColumnWidth = computed(() => {
+  if (hasExplicitOperateWidth.value) {
+    return tableOperateWidth?.value
+  }
+  if (measuredOperateWidth.value > 0) {
+    return measuredOperateWidth.value
+  }
+  return estimateOperateWidth()
+})
+
+function measureOperateColumn() {
+  nextTick(() => {
+    const root = tableRef.value?.$el as HTMLElement | undefined
+    if (!root) return
+    const nodes = root.querySelectorAll('.base-table__row-ops')
+    let max = 0
+    nodes.forEach(node => {
+      const el = node as HTMLElement
+      max = Math.max(max, el.scrollWidth, el.offsetWidth)
+    })
+    if (max > 0) {
+      const next = Math.ceil(max + 24)
+      if (next !== measuredOperateWidth.value) {
+        measuredOperateWidth.value = next
+        doLayout()
+      }
+    }
+  })
+}
 
 /** 已设 width 时不再设 min-width，避免 Element Plus 列宽计算错乱 */
 const resolveMinWidth = (fields: AnyObject) => {
@@ -289,9 +347,25 @@ const doLayout = () => {
 
 watch(
   () => tableData?.value,
-  () => doLayout(),
+  () => {
+    doLayout()
+    if (!hasExplicitOperateWidth.value) measureOperateColumn()
+  },
   { deep: true }
 )
+
+watch(
+  () => pageTableOperate?.value,
+  () => {
+    measuredOperateWidth.value = 0
+    if (!hasExplicitOperateWidth.value) measureOperateColumn()
+  },
+  { deep: true }
+)
+
+onMounted(() => {
+  if (!hasExplicitOperateWidth.value) measureOperateColumn()
+})
 
 defineExpose({ tableRef, doLayout })
 </script>

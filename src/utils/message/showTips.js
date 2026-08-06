@@ -41,7 +41,7 @@ const AXIOS_STATUS_RE = /^Request failed with status code (\d+)$/i
  * Prefer backend business message over axios default status text.
  */
 function getRequestErrorMessage(error, fallback) {
-  const fb = fallback || '\u8bf7\u6c42\u5931\u8d25'
+  const fb = fallback || '请求失败'
   if (error == null) return fb
   if (typeof error === 'string') {
     return AXIOS_STATUS_RE.test(error.trim()) ? fb : error

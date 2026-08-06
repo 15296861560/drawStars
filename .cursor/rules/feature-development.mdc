@@ -1,0 +1,39 @@
+---
+description: 功能开发规范：按 PRD/UI 实现，遵守 ESLint/Prettier，优先复用 base 组件，兼顾高并发/性能/安全
+alwaysApply: true
+---
+
+# 功能开发规范
+
+## 需求与 UI
+
+- 有 `prd/` 或需求文档：先读再写，按验收标准交付；范围外不实现
+- 功能调整与所属需求文档不一致/冲突时：同步修改对应 PRD，并记版本变更
+- 有 UI（设计稿/截图/Figma）：功能正确的同时对齐布局、间距、状态样式
+- 仅调样式时不改无关逻辑
+
+## 组件复用
+
+顺序：**复用 → 扩展（保持兼容） → 新增**
+
+优先：`src/components/base/`（BaseDialog、BaseFormItem、BaseTable、SearchForm、UserSearchSelect 等），其次业务组件与 Element Plus / draw-stars-ui。
+
+禁止在已有能力旁平行新建同类组件。
+
+## 代码风格
+
+严格遵循 `.eslintrc.js` 与 `.prettierrc.cjs`：
+
+- 无分号、单引号、`trailingComma: none`、`arrowParens: avoid`、LF、printWidth 80
+- 改动后对相关文件保证 `npm run lint` 通过
+
+## 高并发、性能、安全
+
+- **高并发**：写操作防重提交；搜索/筛选防抖；忽略过期响应；敏感资源以服务端校验/幂等为准
+- **性能**：列表分页或 `VirtualList`；按需加载；避免首屏狂请求与热路径重计算；重型组件及时 dispose
+- **安全**：RBAC 前后端一致；禁用户输入 `v-html`；不泄露 Token/秘钥；输入与上传做校验；敏感参数不放 URL
+
+## 实现纪律
+
+- 对齐邻近 `views/manage` 等现有写法
+- 不做需求外重构；不确定先问

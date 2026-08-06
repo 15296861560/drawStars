@@ -100,12 +100,12 @@ const $axios = function (params, methodURL, config = { method: 'post' }) {
         const hideTip = config.hideErrorTip || data.code === 'TOKEN-FAIL'
         if (!data.status && !hideTip) {
           // 统一配置请求成功但接口报错时的提示
-          showTips('error', data.msg || '\u8bf7\u6c42\u5931\u8d25')
+          showTips('error', data.msg || '请求失败')
         }
         resolve(data)
       })
       .catch(err => {
-        rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
+        rejectWithBizMessage(err, '请求失败').catch(reject)
       })
   })
   return promise
@@ -160,10 +160,10 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
             resolve(data)
           })
           .catch(err => {
-            rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
+            rejectWithBizMessage(err, '请求失败').catch(reject)
           })
       } catch (err) {
-        rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
+        rejectWithBizMessage(err, '请求失败').catch(reject)
       }
     }
     void run()

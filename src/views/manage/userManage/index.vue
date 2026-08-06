@@ -405,7 +405,8 @@ const tableOptions = reactive({
   showIndex: false,
   showSelection: false,
   pageTableOperate,
-  tableOperateWidth: '280'
+  // 操作列宽度按按钮文案实测适配
+  operateFixed: 'right'
 })
 
 onMounted(async () => {
