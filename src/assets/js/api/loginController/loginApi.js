@@ -55,13 +55,15 @@ export default {
   verifyLogin: async () => {
     const searchParams = new URLSearchParams(window.location.search)
     const accessToken = searchParams.get('accessToken')
+    const params = {}
+    if (accessToken) {
+      params.accessToken = accessToken
+    }
 
-    const res = await $axiosGet(
-      {
-        accessToken
-      },
-      '/loginApi/verifyLogin'
-    )
+    // 未登录/退出后探测会话是预期失败，由调用方静默处理，不弹全局错误
+    const res = await $axiosGet(params, '/loginApi/verifyLogin', {
+      hideErrorTip: true
+    })
     return res
   },
 

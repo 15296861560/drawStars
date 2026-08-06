@@ -96,11 +96,13 @@ const $axios = function (params, methodURL, config = { method: 'post' }) {
         timeout: params.timeout || 30000
       })
       .then(res => {
-        if (!res.data.status) {
+        const data = res.data || {}
+        const hideTip = config.hideErrorTip || data.code === 'TOKEN-FAIL'
+        if (!data.status && !hideTip) {
           // 统一配置请求成功但接口报错时的提示
-          showTips('error', res.data.msg || '\u8bf7\u6c42\u5931\u8d25')
+          showTips('error', data.msg || '\u8bf7\u6c42\u5931\u8d25')
         }
-        resolve(res.data)
+        resolve(data)
       })
       .catch(err => {
         rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
@@ -144,10 +146,18 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
           )
           .then(res => {
             res.status === 200 && apiObj.afterFetch(res, realURL, options)
-            if (res.data && res.data.status === false && res.data.msg) {
-              showTips('error', res.data.msg)
+            const data = res.data || {}
+            const hideTip =
+              options.hideErrorTip || data.code === 'TOKEN-FAIL'
+            if (
+              !hideTip &&
+              data &&
+              data.status === false &&
+              data.msg
+            ) {
+              showTips('error', data.msg)
             }
-            resolve(res.data)
+            resolve(data)
           })
           .catch(err => {
             rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)

@@ -431,6 +431,15 @@ export default {
       if (isSkipLoginMode()) {
         return
       }
+      const searchParams = new URLSearchParams(window.location.search)
+      const accessToken = searchParams.get('accessToken')
+      const user = userInfoStore()
+      const token =
+        user.getToken?.value != null ? user.getToken.value : user.getToken
+      // 退出登录后无凭证，无需探测会话（避免 verifyLogin 返回 fail 弹错）
+      if (!accessToken && !token) {
+        return
+      }
       const verifyLogin = findReq('loginController', 'verifyLogin')
       const res = await verifyLogin()
       if (!res.status) {
