@@ -59,6 +59,24 @@ export const RouterList = [
       ...homePages
     ]
   },
+  {
+    path: '/survey/fill/:shareCode',
+    name: '填写问卷',
+    component: () => import('@/views/survey/fill/index.vue'),
+    meta: {
+      title: ['填写问卷'],
+      public: true
+    }
+  },
+  {
+    path: '/survey/result/:responseId',
+    name: '问卷结果',
+    component: () => import('@/views/survey/result/index.vue'),
+    meta: {
+      title: ['问卷结果'],
+      public: true
+    }
+  },
   // 所有未定义路由，全部重定向到404页
   {
     path: '/:pathMatch(.*)*',

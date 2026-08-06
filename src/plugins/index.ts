@@ -18,8 +18,8 @@ import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
 // 配置埋点
 import '@/plugins/umami/umami.js'
 import { installTracker } from '@/plugins/tracker'
-// 加载高德地图
-import '@/plugins/amap/index.js'
+// 高德地图（仅导入模块；实际拉 Key 须在 pinia 安装后）
+import { installAmap } from '@/plugins/amap/index.js'
 
 // 消除新特性的告警信息
 import 'default-passive-events'
@@ -31,6 +31,8 @@ export default (app: _Vue.App<Element>) => {
   app.use(Particles)
 
   installStore(app)
+  // Pinia 就绪后再拉高德 Key，避免 getActivePinia 报错
+  installAmap()
   installTracker()
   if (isSkipLoginMode()) {
     applySkipLoginSession()

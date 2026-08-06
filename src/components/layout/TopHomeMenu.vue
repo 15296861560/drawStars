@@ -92,6 +92,24 @@
       }}</el-menu-item>
     </el-sub-menu>
     </template>
+    <el-sub-menu index="sub-survey">
+      <template #title>
+        <el-icon><Document /></el-icon>
+        <span>{{ $t('aside.surveyManage') }}</span>
+      </template>
+      <el-menu-item index="/home/survey">{{
+        $t('aside.surveyList')
+      }}</el-menu-item>
+      <el-menu-item index="/home/survey/create">{{
+        $t('aside.surveyCreate')
+      }}</el-menu-item>
+      <el-menu-item index="/home/survey/template">{{
+        $t('aside.surveyTemplate')
+      }}</el-menu-item>
+      <el-menu-item index="/home/survey/question-bank">{{
+        $t('aside.surveyQuestionBank')
+      }}</el-menu-item>
+    </el-sub-menu>
     <el-sub-menu index="sub-test">
       <template #title>
         <el-icon><Avatar /></el-icon>

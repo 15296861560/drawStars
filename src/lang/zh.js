@@ -13,6 +13,13 @@ export default {
     case: '例子',
     resource: '资料库',
     manage: '管理中心',
+    survey: '问卷管理',
+    surveyHomePage: {
+      list: '问卷列表',
+      create: '新建问卷',
+      template: '模板管理',
+      questionBank: '题库管理'
+    },
     manageHomePage: {
       user: '用户管理',
       role: '角色管理',
@@ -293,6 +300,11 @@ export default {
     trafficStats: '访问分析',
     websiteConfig: '网站配置',
     test: '测试',
+    surveyManage: '问卷管理',
+    surveyList: '问卷列表',
+    surveyCreate: '新建问卷',
+    surveyTemplate: '模板管理',
+    surveyQuestionBank: '题库管理',
     externalLinks: '外链'
   }
 }

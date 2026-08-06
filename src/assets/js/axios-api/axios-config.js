@@ -11,7 +11,7 @@ import axios from 'axios'
 import { apiInfoStore } from '@/stores/api-info'
 import { userInfoStore } from '@/stores/user-info'
 
-import { ElMessage } from 'element-plus'
+import { showTips, getRequestErrorMessage } from '@/utils/message/showTips.js'
 
 import router from '@/router'
 
@@ -73,11 +73,14 @@ requests.interceptors.response.use(
   }
 )
 
-const showError = function (errorMessage) {
-  ElMessage({
-    type: 'error',
-    message: errorMessage
-  })
+const rejectWithBizMessage = function (err, fallback) {
+  const bizMsg = getRequestErrorMessage(err, fallback)
+  showTips('error', bizMsg)
+  const next = new Error(bizMsg)
+  next.response = err && err.response
+  next.code = err && err.code
+  next.config = err && err.config
+  return Promise.reject(next)
 }
 
 const $axios = function (params, methodURL, config = { method: 'post' }) {
@@ -95,43 +98,12 @@ const $axios = function (params, methodURL, config = { method: 'post' }) {
       .then(res => {
         if (!res.data.status) {
           // 统一配置请求成功但接口报错时的提示
-          showError(res.data.msg)
+          showTips('error', res.data.msg || '\u8bf7\u6c42\u5931\u8d25')
         }
         resolve(res.data)
       })
       .catch(err => {
-        let errObj = JSON.parse(JSON.stringify(err))
-        if (errObj.response) {
-          let status = errObj.response.status
-          const bizMsg =
-            err.response?.data?.msg ||
-            err.response?.data?.message ||
-            (Array.isArray(err.response?.data?.message)
-              ? err.response.data.message.join('; ')
-              : '')
-          switch (status) {
-            case 400:
-              showError(bizMsg || '400(Bad request):请求无效 ')
-              break
-            case 404:
-              showError(bizMsg || '404(Not Found):请求的资源不存在')
-              break
-            case 500:
-              showError(bizMsg || '500(Internal Server Error):内部服务器错误')
-              break
-            case 504:
-              showError(bizMsg || '504(Gateway Time-out):请求超时')
-              break
-            default:
-              showError(bizMsg || errObj.message)
-          }
-          if (bizMsg) {
-            err.message = bizMsg
-          }
-        } else {
-          showError(errObj.message)
-        }
-        reject(err)
+        rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
       })
   })
   return promise
@@ -172,21 +144,20 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
           )
           .then(res => {
             res.status === 200 && apiObj.afterFetch(res, realURL, options)
+            if (res.data && res.data.status === false && res.data.msg) {
+              showTips('error', res.data.msg)
+            }
             resolve(res.data)
           })
           .catch(err => {
-            let errStr = JSON.stringify(err)
-            showError(errStr)
-            reject(err)
+            rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
           })
       } catch (err) {
-        let errStr = JSON.stringify(err)
-        showError(errStr)
-        reject(err)
+        rejectWithBizMessage(err, '\u8bf7\u6c42\u5931\u8d25').catch(reject)
       }
     }
     void run()
   })
 }
 
-export { $axios, $axiosGet, requests }
+export { $axios, $axiosGet, requests, getRequestErrorMessage }

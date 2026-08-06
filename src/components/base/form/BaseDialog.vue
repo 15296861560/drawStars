@@ -10,8 +10,9 @@
     append-to-body
     v-bind="$attrs"
   >
+    <slot v-if="$slots.default" :form="formInfo" :close="cancel" />
     <el-form
-      v-if="dialogVisible"
+      v-else-if="dialogVisible"
       ref="formRef"
       :model="formInfo"
       label-width="auto"
@@ -28,29 +29,49 @@
           v-model:field="formInfo[field.fieldName]"
           :type="field.type"
           :rule="field.rule"
-          :placeholder="field.placeholder"
           :readonly="options.readonly || field.readonly"
           :disabled="isFieldDisabled(field)"
           :options="field.options"
           :config="field.config"
-          :attrs="field.attrs"
+          :attrs="{
+            ...(field.attrs || {}),
+            ...(field.placeholder ? { placeholder: field.placeholder } : {})
+          }"
           class="w-full"
         />
+        <div v-if="field.hint" class="field-hint">{{ field.hint }}</div>
       </el-form-item>
     </el-form>
 
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="cancel">取消</el-button>
-        <el-button type="primary" @click="confirm" :loading="confirmLoading">
-          确认
-        </el-button>
-      </div>
+    <template v-if="!options.hideFooter" #footer>
+      <slot name="footer" :form="formInfo" :close="cancel" :confirm="confirm">
+        <div class="dialog-footer">
+          <el-button @click="cancel">{{
+            options.cancelText || '取消'
+          }}</el-button>
+          <el-button
+            v-if="!options.hideConfirm"
+            type="primary"
+            :loading="confirmLoading"
+            @click="confirm"
+          >
+            {{ options.confirmText || '确认' }}
+          </el-button>
+        </div>
+      </slot>
     </template>
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, defineAsyncComponent, watch, toRefs, computed } from 'vue'
+import {
+  ref,
+  reactive,
+  defineAsyncComponent,
+  watch,
+  toRefs,
+  computed,
+  useSlots
+} from 'vue'
 import { useVModels } from '@vueuse/core'
 import type { AnyObject, DialogOption, Field } from '@/types/global'
 import { showTips } from '@/utils/message/showTips.js'
@@ -59,18 +80,21 @@ defineOptions({
   inheritAttrs: false
 })
 
+const slots = useSlots()
+
 const BaseFormItem = defineAsyncComponent(
   () => import('./BaseFormItem/index.vue')
 )
 
 const emit = defineEmits<{
   (e: 'confirm'): void
+  (e: 'update:modelValue', value: boolean): void
+  (e: 'close'): void
 }>()
-
-const dialogVisible = ref(false)
 
 const props = defineProps<{
   options: DialogOption
+  modelValue?: boolean
 }>()
 
 const { options } = toRefs(props)
@@ -79,16 +103,29 @@ const { fieldList } = useVModels(props.options, emit)
 
 const formInfo = reactive<AnyObject>({})
 
+const dialogVisible = ref(false)
+
 const visibleFields = computed(() =>
-  (fieldList.value || []).filter((f: Field) => !f.hideDialog)
+  (fieldList.value || []).filter((f: Field) => {
+    if (f.hideDialog) return false
+    if (typeof f.visibleWhen === 'function') {
+      return !!f.visibleWhen(formInfo)
+    }
+    return true
+  })
 )
 
 const rules = reactive<AnyObject>({})
-fieldList.value.forEach((field: Field) => {
-  if (field.rule) {
-    rules[field.fieldName] = field.rule
-  }
-})
+function rebuildRules() {
+  Object.keys(rules).forEach(k => delete rules[k])
+  ;(fieldList.value || []).forEach((field: Field) => {
+    if (field.rule) {
+      rules[field.fieldName] = field.rule
+    }
+  })
+}
+rebuildRules()
+watch(fieldList, rebuildRules, { deep: true })
 
 const formRef = ref()
 
@@ -102,76 +139,80 @@ function isFieldDisabled(field: Field) {
 
 const cancel = () => {
   const formEl = formRef.value
-  if (!formEl) {
-    return
+  if (formEl) {
+    formEl.resetFields()
   }
-  formEl.resetFields()
   dialogVisible.value = false
-  fieldList.value.forEach((element: Field) => {
+  ;(fieldList.value || []).forEach((element: Field) => {
     formInfo[element.fieldName] =
       element.defaultVal !== undefined ? element.defaultVal : ''
   })
-  // 清除编辑态主键，避免残留到下次新增
   delete formInfo.id
+  emit('update:modelValue', false)
+  emit('close')
 }
 
 const confirmLoading = ref(false)
 const confirm = async () => {
   const formEl = formRef.value
+  const runConfirm = async () => {
+    if (options.value.confirmMethod) {
+      const defaults = options.value.confirmParams || {}
+      const params: AnyObject = { ...formInfo }
+      if (
+        (params.id === undefined || params.id === null || params.id === '') &&
+        options.value.initParams?.id
+      ) {
+        params.id = options.value.initParams.id
+      }
+      Object.keys(defaults).forEach(key => {
+        if (
+          params[key] === undefined ||
+          params[key] === null ||
+          params[key] === ''
+        ) {
+          params[key] = defaults[key]
+        }
+      })
+
+      confirmLoading.value = true
+      try {
+        const res = await options.value.confirmMethod(params)
+        if (!res.status) {
+          if (res.msg) showTips('error', res.msg)
+          return
+        }
+      } finally {
+        confirmLoading.value = false
+      }
+    }
+
+    emit('confirm')
+    cancel()
+  }
+
+  // 自定义插槽内容且无表单时，直接确认
+  if (!formEl && slots.default) {
+    await runConfirm()
+    return
+  }
   if (!formEl) {
     return
   }
   formEl.validate(async (valid: any) => {
     if (valid) {
-      if (options.value.confirmMethod) {
-        // 默认参数仅补齐空值，避免覆盖用户已编辑内容
-        const defaults = options.value.confirmParams || {}
-        const params: AnyObject = { ...formInfo }
-        // 编辑态：确保带上 id（schema 通常不含 id 字段）
-        if (
-          (params.id === undefined || params.id === null || params.id === '') &&
-          options.value.initParams?.id
-        ) {
-          params.id = options.value.initParams.id
-        }
-        Object.keys(defaults).forEach(key => {
-          if (
-            params[key] === undefined ||
-            params[key] === null ||
-            params[key] === ''
-          ) {
-            params[key] = defaults[key]
-          }
-        })
-
-        confirmLoading.value = true
-        try {
-          const res = await options.value.confirmMethod(params)
-          if (!res.status) {
-            showTips('error', res.msg)
-            return
-          }
-        } finally {
-          confirmLoading.value = false
-        }
-      }
-
-      emit('confirm')
-      cancel()
+      await runConfirm()
     }
   })
 }
 
 const init = async () => {
-  // 先清空旧主键，避免新增误带上次编辑 id
   delete formInfo.id
-
-  fieldList.value.forEach((element: Field) => {
+  ;(fieldList.value || []).forEach((element: Field) => {
     formInfo[element.fieldName] =
       element.defaultVal !== undefined ? element.defaultVal : ''
   })
 
-  // 新增时用 confirmParams 作为初始默认值
   const defaults = options.value.confirmParams || {}
   Object.keys(defaults).forEach(key => {
     if (
@@ -180,6 +221,14 @@ const init = async () => {
       formInfo[key] === ''
     ) {
       formInfo[key] = defaults[key]
+    }
+  })
+
+  // 打开前注入的初始值（如编辑回填）
+  const seed = options.value.seedParams || {}
+  Object.keys(seed).forEach(key => {
+    if (seed[key] !== undefined) {
+      formInfo[key] = seed[key]
     }
   })
 
@@ -198,11 +247,10 @@ const init = async () => {
     if (!data) {
       return
     }
-    // 保留后端返回的主键
     if (data.id != null) {
       formInfo.id = data.id
     }
-    fieldList.value.forEach((element: Field) => {
+    ;(fieldList.value || []).forEach((element: Field) => {
       if (element.fieldName.endsWith('time')) {
         formInfo[element.fieldName] = new Date(
           data[element.fieldName]
@@ -225,11 +273,29 @@ const opentDialog = () => {
 watch(dialogVisible, v => {
   if (v) {
     init()
+  } else {
+    emit('update:modelValue', false)
+    emit('close')
   }
 })
 
+watch(
+  () => props.modelValue,
+  v => {
+    if (v === undefined) return
+    if (v && !dialogVisible.value) {
+      dialogVisible.value = true
+    } else if (!v && dialogVisible.value) {
+      dialogVisible.value = false
+    }
+  }
+)
+
 defineExpose({
-  opentDialog
+  opentDialog,
+  formInfo,
+  cancel,
+  confirm
 })
 </script>
 
@@ -264,6 +330,13 @@ defineExpose({
 
   .el-form-item {
     margin-bottom: 18px;
+  }
+
+  .field-hint {
+    margin-top: 4px;
+    color: #909399;
+    font-size: 12px;
+    line-height: 1.4;
   }
 }
 

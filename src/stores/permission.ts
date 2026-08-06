@@ -5,6 +5,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import menuApi from '@/assets/js/api/menuController/menuApi.js'
 import { userInfoStore } from '@/stores/user-info'
+import { isSkipLoginMode } from '@/config/skip-login'
 
 export interface MenuNode {
   id: number
@@ -29,6 +30,7 @@ export const permissionStore = defineStore(
 
     function hasPermission(code?: string | string[]) {
       if (!code) return true
+      if (isSkipLoginMode()) return true
       if (isSuperAdmin.value) return true
       const codes = Array.isArray(code) ? code : [code]
       if (!codes.length) return true

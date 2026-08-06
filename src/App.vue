@@ -14,10 +14,21 @@ const errorLog = errorLogStore()
 const instance = getCurrentInstance()
 const app = instance?.appContext.app
 app.config.errorHandler = (err, vm, info) => {
+  const message =
+    (err && typeof err === 'object' && err.message) ||
+    (typeof err === 'string' ? err : String(err || 'Unknown error'))
+  // 避免递归更新类错误再次写入日志，放大异常捕获弹窗的更新风暴
+  if (String(message).includes('Maximum recursive updates')) {
+    console.error(err)
+    return
+  }
   const url = window.location.href
+  const stack =
+    (err && typeof err === 'object' && err.stack) ||
+    (typeof err === 'string' ? err : '')
   nextTick(() => {
     errorLog.addErrorLog({
-      err,
+      err: { message: String(message), stack: String(stack || '') },
       vm,
       info,
       url
@@ -72,7 +83,11 @@ router.beforeEach(async (to, from) => {
     to.path === '/' ||
     to.path === '/forgetPassword' ||
     to.name === '登录' ||
-    to.name === '忘记密码'
+    to.name === '忘记密码' ||
+    to.path.startsWith('/survey/fill') ||
+    to.path.startsWith('/survey/result') ||
+    to.name === '填写问卷' ||
+    to.name === '问卷结果'
 
   if (!isPublicAuthPage && !userInfo.getUserId && !userInfo.getToken.value) {
     hasLogin = false
@@ -120,6 +135,12 @@ router.afterEach(() => {
 </template>
 <style lang="less">
 @import './assets/styles/global.less';
+
+html,
+body,
+#app {
+  height: 100%;
+}
 
 .all-enter-active,
 .all-leave-active {

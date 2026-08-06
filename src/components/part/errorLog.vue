@@ -9,10 +9,11 @@
     <el-dialog
       v-model="dialogTableVisible"
       append-to-body
+      destroy-on-close
       title="异常捕获"
       width="70%"
     >
-      <el-table :data="errorLogs">
+      <el-table v-if="dialogTableVisible" :data="errorLogs">
         <el-table-column label="报错路由">
           <template #default="scope">
             <a :href="scope.row.url" target="_blank">
@@ -23,7 +24,10 @@
         <el-table-column label="错误信息">
           <template #default="scope">
             <el-tag type="danger">
-              {{ scope.row.err?.message }}
+              {{
+                scope.row.err?.message ||
+                (typeof scope.row.err === 'string' ? scope.row.err : '（无消息）')
+              }}
             </el-tag>
           </template>
         </el-table-column>

@@ -13,6 +13,13 @@ export default {
     case: 'Case',
     resource: 'Resource Center',
     manage: 'Manage',
+    survey: 'Survey',
+    surveyHomePage: {
+      list: 'Survey List',
+      create: 'Create Survey',
+      template: 'Templates',
+      questionBank: 'Question Bank'
+    },
     manageHomePage: {
       user: 'Users',
       role: 'Roles',
@@ -297,6 +304,11 @@ export default {
     trafficStats: 'Analytics',
     websiteConfig: 'Website Config',
     test: 'Test',
+    surveyManage: 'Survey',
+    surveyList: 'Survey List',
+    surveyCreate: 'Create Survey',
+    surveyTemplate: 'Templates',
+    surveyQuestionBank: 'Question Bank',
     externalLinks: 'External links'
   }
 }

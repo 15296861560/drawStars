@@ -1,8 +1,25 @@
-// 时间格式化
+/**
+ * 时间格式化，默认 yyyy-MM-dd HH:mm:ss
+ * @param {Date|string|number|null|undefined} date
+ * @param {string} [format]
+ */
 function formatDate(date, format) {
-  let newDate = date || new Date()
-  newDate = new Date(date)
-  let map = {
+  if (date === null || date === undefined || date === '') {
+    return ''
+  }
+  let newDate
+  if (date instanceof Date) {
+    newDate = date
+  } else if (typeof date === 'number') {
+    // 10 位按秒，13 位按毫秒
+    newDate = new Date(date < 1e12 ? date * 1000 : date)
+  } else {
+    newDate = new Date(date)
+  }
+  if (Number.isNaN(newDate.getTime())) {
+    return String(date)
+  }
+  const map = {
     y: newDate.getFullYear(),
     M: newDate.getMonth() + 1,
     d: newDate.getDate(),
@@ -10,8 +27,7 @@ function formatDate(date, format) {
     m: newDate.getMinutes(),
     s: newDate.getSeconds()
   }
-  for (let i in map) {
-    // 判断一个属性是定义在对象本身而不是继承自原型链
+  for (const i in map) {
     if (Object.prototype.hasOwnProperty.call(map, i)) {
       if (map[i] < 10) {
         map[i] = '0' + map[i]
@@ -19,20 +35,19 @@ function formatDate(date, format) {
     }
   }
   format = format || 'yyyy-MM-dd HH:mm:ss'
-  let reg = new RegExp('y+|M+|d+|H+|m+|s+', 'g')
-  let regY = new RegExp('y')
-  format = format.replace(reg, function (val) {
+  const reg = /y+|M+|d+|H+|m+|s+/g
+  const regY = /y/
+  return format.replace(reg, function (val) {
     let old = val
     if (regY.test(val)) {
-      let y = '' + map.y
-      let l = 4 - val.length
+      const y = '' + map.y
+      const l = 4 - val.length
       old = y.substr(l)
     } else {
-      let key = val.substr(0, 1)
+      const key = val.substr(0, 1)
       old = map[key]
     }
     return old
   })
-  return format
 }
 export default formatDate

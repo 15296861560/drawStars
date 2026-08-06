@@ -66,6 +66,7 @@ import {
   createPolygonGraphic,
   refreshLayer
 } from '@/utils/hooks/useAMap'
+import { ensureAmapReady } from '@/plugins/amap/index.js'
 import { EditPen } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
@@ -104,33 +105,38 @@ const handleSave = (): void => {
   emit('handle-items', state.lnglat)
 }
 
-const handleInitMap = (): void => {
-  nextTick(() => {
-    state.AMap = new AMap.Map(simpleMapRef.value, AMapOptions())
-    state.AMapLoading = true
+const handleInitMap = async (): Promise<void> => {
+  try {
+    await ensureAmapReady()
+  } catch (e: any) {
+    ElMessage.error(e?.message || '高德地图初始化失败')
+    return
+  }
+  await nextTick()
+  state.AMap = new AMap.Map(simpleMapRef.value, AMapOptions())
+  state.AMapLoading = true
 
-    state.AMap.on('click', (ev: any) => {
-      if (drawToolInfo.drawingState) {
-        return
-      }
-      let { lng, lat } = ev.lnglat
-      handleAddMarker(lng, lat, true)
-      handleSave()
-    })
-
-    state.AMap.on('complete', async () => {
-      state.AMapLoading = false
-      // 地图图块加载完成后触发
-      state.gLayGroups = refreshLayer(state.AMap, state.gLayGroups)
-      state.highlightLayGroups = refreshLayer(
-        state.AMap,
-        state.highlightLayGroups
-      )
-      polyEditorTool()
-    })
-
-    handleInitData()
+  state.AMap.on('click', (ev: any) => {
+    if (drawToolInfo.drawingState) {
+      return
+    }
+    let { lng, lat } = ev.lnglat
+    handleAddMarker(lng, lat, true)
+    handleSave()
   })
+
+  state.AMap.on('complete', async () => {
+    state.AMapLoading = false
+    // 地图图块加载完成后触发
+    state.gLayGroups = refreshLayer(state.AMap, state.gLayGroups)
+    state.highlightLayGroups = refreshLayer(
+      state.AMap,
+      state.highlightLayGroups
+    )
+    polyEditorTool()
+  })
+
+  handleInitData()
 }
 
 const handleAddMarker = (

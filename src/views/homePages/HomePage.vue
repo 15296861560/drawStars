@@ -76,7 +76,8 @@ export default {
         { name: 'multimedia', path: '/home/multimediaHomePage' },
         { name: 'lab', path: '/home/labHomePage' },
         { name: 'case', path: '/home/caseHomePage' },
-        { name: 'resource', path: '/home/resourceHomePage' }
+        { name: 'resource', path: '/home/resourceHomePage' },
+        { name: 'survey', path: '/home/surveyHomePage' }
       ],
       areaOption: {},
       lineOption: {},
