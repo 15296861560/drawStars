@@ -15,8 +15,6 @@ import Particles from 'particles.vue3'
 import installDirectives from '@/utils/directives'
 import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
 
-// 配置埋点
-import '@/plugins/umami/umami.js'
 import { installTracker } from '@/plugins/tracker'
 // 高德地图（仅导入模块；实际拉 Key 须在 pinia 安装后）
 import { installAmap } from '@/plugins/amap/index.js'

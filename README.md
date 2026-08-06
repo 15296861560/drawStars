@@ -12,7 +12,7 @@
 - **图表与地图**：ECharts、Leaflet、百度地图 / 高德地图
 - **网络与数据**：axios（含请求缓存）、Mock.js、WebSocket、xlsx
 - **多媒体与实时**：Video.js、Agora RTC/RTM
-- **其他**：vue-i18n、nprogress、umami 埋点、`@vueuse/core`、Sortable.js、lodash
+- **其他**：vue-i18n、nprogress、`@vueuse/core`、Sortable.js、lodash
 
 ## 环境要求
 
@@ -168,7 +168,6 @@ nssm set <服务名称> AppDirectory <路径>
 - [sqlite](https://www.sqlite.net.cn/)（浏览器端 SQLite 实践）
 - [Agora](https://www.agora.io/cn/)
 - [SortableJS](https://github.com/SortableJS/Sortable)
-- [umami 埋点](https://umami.is/docs)
 - [nprogress](https://github.com/rstacruz/nprogress)
 - [NSSM](https://nssm.cc/commands)
 

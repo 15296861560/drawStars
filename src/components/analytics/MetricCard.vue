@@ -106,15 +106,17 @@ const changeClass = computed(() => {
   min-height: 96px;
   padding: 12px 14px;
   cursor: pointer;
-  border: 1px solid var(--umami-gray300, #e1e1e1);
+  border: 1px solid #e1e1e1;
   border-radius: 8px;
-  background: var(--umami-gray50, #fff);
+  background: #fff;
   box-sizing: border-box;
   text-align: center;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:hover {
-    border-color: var(--umami-gray400, #cacaca);
+    border-color: #cacaca;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
 }
@@ -122,7 +124,7 @@ const changeClass = computed(() => {
 .label {
   font-size: 13px;
   font-weight: 600;
-  color: var(--umami-gray800, #4b4b4b);
+  color: #4b4b4b;
   white-space: nowrap;
   line-height: 1.2;
 }
@@ -141,7 +143,7 @@ const changeClass = computed(() => {
   line-height: 1.1;
   font-weight: 700;
   white-space: nowrap;
-  color: var(--umami-gray900, #2c2c2c);
+  color: #2c2c2c;
   letter-spacing: -0.02em;
 }
 
@@ -162,16 +164,16 @@ const changeClass = computed(() => {
   }
 
   &.good {
-    color: var(--umami-green, #268e6c);
+    color: #268e6c;
     background: rgba(38, 142, 108, 0.1);
   }
   &.bad {
-    color: var(--umami-red, #d7373f);
+    color: #d7373f;
     background: rgba(215, 55, 63, 0.1);
   }
   &.flat {
-    color: var(--umami-gray500, #b3b3b3);
-    background: var(--umami-gray100, #f5f5f5);
+    color: #b3b3b3;
+    background: #f5f5f5;
   }
 }
 </style>

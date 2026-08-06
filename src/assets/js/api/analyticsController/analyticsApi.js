@@ -1,7 +1,11 @@
 /*
- * @Description: 网站流量统计（Umami 风格）
+ * @Description: 网站流量统计
  */
-import { $axios, $axiosGet, requests } from '@/assets/js/axios-api/axios-config.js'
+import {
+  $axios,
+  $axiosGet,
+  requests
+} from '@/assets/js/axios-api/axios-config.js'
 import { apiInfoStore } from '@/stores/api-info'
 
 export default {
@@ -11,7 +15,9 @@ export default {
   collectSilent(params) {
     try {
       const base = apiInfoStore().getURL.value || ''
-      return requests.post(`${base}/analyticsApi/collect`, params).catch(() => {})
+      return requests
+        .post(`${base}/analyticsApi/collect`, params)
+        .catch(() => {})
     } catch {
       return Promise.resolve()
     }

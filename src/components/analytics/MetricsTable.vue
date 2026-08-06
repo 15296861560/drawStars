@@ -53,7 +53,7 @@ function formatPercent(z?: number) {
   font-size: 14px;
   display: flex;
   flex-direction: column;
-  color: var(--umami-gray900, #2c2c2c);
+  color: #2c2c2c;
 }
 
 .header {
@@ -99,7 +99,7 @@ function formatPercent(z?: number) {
   left: 0;
   height: 30px;
   opacity: 0.1;
-  background: var(--umami-primary, #2680eb);
+  background: #2680eb;
   z-index: 0;
   transition: width 0.4s ease;
 }
@@ -128,13 +128,13 @@ function formatPercent(z?: number) {
   position: relative;
   z-index: 1;
   width: 50px;
-  color: var(--umami-gray600, #8e8e8e);
-  border-left: 1px solid var(--umami-gray600, #8e8e8e);
+  color: #8e8e8e;
+  border-left: 1px solid #8e8e8e;
   padding-left: 10px;
 }
 
 .empty {
-  color: var(--umami-gray500, #b3b3b3);
+  color: #b3b3b3;
   padding: 40px 0;
   text-align: center;
   font-size: 14px;
@@ -142,7 +142,7 @@ function formatPercent(z?: number) {
 
 .more {
   margin-top: 12px;
-  color: var(--umami-primary, #2680eb);
+  color: #2680eb;
   cursor: pointer;
   font-size: 14px;
   display: inline-flex;
@@ -151,7 +151,7 @@ function formatPercent(z?: number) {
   font-weight: 600;
 
   &:hover {
-    color: var(--umami-primary-dark, #0d66d0);
+    color: #0d66d0;
   }
 
   .arrow {

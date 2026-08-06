@@ -1,19 +1,23 @@
 /**
- * 基础数据埋点：路由页面访问上报到 analyticsApi/collect（Umami 风格）
- * 同时兼容业务日志 track（可选）
+ * 基础数据埋点：路由页面访问上报到 analyticsApi/collect
  */
 import router from '@/router'
 import analyticsApi from '@/assets/js/api/analyticsController/analyticsApi.js'
-import { umamiConfig } from '@/plugins/umami/umami-config'
 import { userInfoStore } from '@/stores/user-info'
+
+/** 与后端 analytics 站点配置对应的 websiteId */
+const WEBSITE_ID = {
+  production: '840178da-f09b-4420-a4c6-68e2b13555ff',
+  development: 'e4daa6d4-3c40-427e-9224-f02464076f49'
+}
 
 let installed = false
 let lastPath = ''
 
 function getWebsiteId() {
   return process.env.NODE_ENV === 'production'
-    ? umamiConfig.dataWebsiteIdProduction
-    : umamiConfig.dataWebsiteIdDev
+    ? WEBSITE_ID.production
+    : WEBSITE_ID.development
 }
 
 function getUsername() {
