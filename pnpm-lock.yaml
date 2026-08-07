@@ -51,8 +51,8 @@ importers:
         specifier: ^1.0.3
         version: 1.0.3(typescript@5.6.2)
       drawstarts-notify:
-        specifier: ^0.0.7
-        version: 0.0.7
+        specifier: ^0.2.0
+        version: 0.2.0
       echarts:
         specifier: ^5.4.0
         version: 5.4.0
@@ -1638,8 +1638,8 @@ packages:
   draw-stars-ui@1.0.3:
     resolution: {integrity: sha512-OuIzhBay2TIC/zw0vCiHbZCY36h/n4m7N/dsQRObuaEO3bDWMEJpo/Ho30Z3WjBvXu3RyCSFCwY2Fjj+NAmZoA==}
 
-  drawstarts-notify@0.0.7:
-    resolution: {integrity: sha512-AfJGYLST/Hes0wuZqwOOimfQ8hwFmnnmZdQEDrDjKAukvsN5wJQUi0Z8+Odaes+CQAYJxdWnfc2rdzLBOAVXqw==}
+  drawstarts-notify@0.2.0:
+    resolution: {integrity: sha512-aIZxwulMNZOntLD019xEKbQWBrxPWiG7zjHHuSRK9vyJoGXKZ/rabNEgyXjTqg+8Fzpo5gR8jboxfxNaoV2v3w==}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -6028,10 +6028,9 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  drawstarts-notify@0.0.7:
+  drawstarts-notify@0.2.0:
     dependencies:
       eventemitter3: 5.0.4
-      lodash: 4.18.1
 
   dunder-proto@1.0.1:
     dependencies:

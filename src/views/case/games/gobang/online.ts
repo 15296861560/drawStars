@@ -11,9 +11,30 @@ type Handler = (msg: OnlineMessage, memberId: string) => void
 function resolveNotifyClient(): any {
   const mod: any = notifySdk as any
   if (mod?.notifyClient?.createInstance) return mod.notifyClient
-  if (mod?.default?.notifyClient?.createInstance) return mod.default.notifyClient
+  if (mod?.default?.notifyClient?.createInstance)
+    return mod.default.notifyClient
   if (typeof mod?.createInstance === 'function') return mod
   throw new Error('drawstarts-notify client not found')
+}
+
+/** 兼容 0.0.x boolean 与 0.2.0 RequestFeedback */
+function isSuccess(res: any): boolean {
+  if (res == null || res === false) return false
+  if (res === true) return true
+  if (typeof res === 'object' && 'status' in res) return !!res.status
+  return true
+}
+
+function isClientReady(client: any): boolean {
+  return !!(client?.ready ?? client?.isReady)
+}
+
+function isClientLoggedIn(client: any): boolean {
+  return !!(client?.loggedIn ?? client?.isLogin)
+}
+
+function resolveClientUserId(client: any): string {
+  return String(client?.currentUserId || client?.userId || '')
 }
 
 export class GobangOnline {
@@ -37,19 +58,20 @@ export class GobangOnline {
     this.client = resolveNotifyClient()
     const user = userInfoStore()
     const tokenRaw: any = user.getToken
-    const token = (tokenRaw && tokenRaw.value != null ? tokenRaw.value : tokenRaw) || ''
+    const token =
+      (tokenRaw && tokenRaw.value != null ? tokenRaw.value : tokenRaw) || ''
 
-    if (!this.client.isReady) {
+    if (!isClientReady(this.client)) {
       await this.client.createInstance(NOTIFY_URL)
     }
-    if (!this.client.isLogin) {
+    if (!isClientLoggedIn(this.client)) {
       const ok = await this.client.login(token)
-      if (!ok) {
+      if (!isSuccess(ok)) {
         throw new Error('notify login failed')
       }
     }
 
-    const uid = this.client.userId || user.getUserId || ''
+    const uid = resolveClientUserId(this.client) || user.getUserId || ''
     this.account = String(uid || randomAccount())
     this.transport = 'notify'
   }
@@ -64,7 +86,7 @@ export class GobangOnline {
     this.channelName = `gobang_${roomCode}`
 
     const joined = await this.client.joinChannel(this.channelName)
-    if (!joined) {
+    if (!isSuccess(joined)) {
       throw new Error('joinChannel failed')
     }
 

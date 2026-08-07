@@ -49,6 +49,7 @@ import {
   NOTIFY_URL,
   WEBSITE_CHANNEL
 } from '@/assets/js/notify/notify-config.js'
+import { EVENT } from 'drawstarts-notify'
 import { userInfoStore } from '@/stores/user-info'
 import { notifyStore } from '@/stores/notify'
 import { pointsStore } from '@/stores/points'
@@ -105,17 +106,32 @@ export default {
     },
     onNotifyPush(payload) {
       const store = notifyStore()
-      if (payload && typeof payload === 'object') {
+      // 兼容 notifyMsg 解析结果 / 完整 Notify / SYS 消息 data 包裹
+      const body =
+        payload && typeof payload === 'object'
+          ? payload.data && typeof payload.data === 'object'
+            ? {
+                ...payload.data,
+                notifyType: payload.notifyType || payload.data.notifyType
+              }
+            : payload
+          : null
+      if (body && typeof body === 'object') {
+        const content =
+          body.content ||
+          body.msg ||
+          body.title ||
+          (typeof body.notifyMsg === 'string' ? body.notifyMsg : '')
+        if (!content && body.id == null) {
+          store.fetchUnreadCount()
+          return
+        }
         store.prependFromPush({
-          id: payload.id || `ws_${Date.now()}`,
-          content:
-            payload.content ||
-            payload.msg ||
-            payload.title ||
-            (typeof payload === 'string' ? payload : ''),
-          tag: payload.tag || payload.notifyType || '系统',
-          notifyType: payload.notifyType,
-          createTime: payload.createTime || Date.now(),
+          id: body.id || body.messageId || `ws_${Date.now()}`,
+          content,
+          tag: body.tag || body.notifyType || '系统',
+          notifyType: body.notifyType,
+          createTime: body.createTime || Date.now(),
           isRead: false
         })
       } else {
@@ -126,7 +142,12 @@ export default {
       if (!this.$notify || this._notifyPushHandler) return
       this._notifyPushHandler = data => this.onNotifyPush(data)
 
-      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
+      const sysEvents = [
+        EVENT.SYS_PLATFORM,
+        EVENT.SYS_CHANNEL,
+        EVENT.SYS_SINGLE
+      ]
+      sysEvents.forEach(evt => {
         this.$notify.on(evt, this._notifyPushHandler)
       })
 
@@ -140,9 +161,11 @@ export default {
     },
     unbindNotifyListeners() {
       if (!this.$notify || !this._notifyPushHandler) return
-      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
-        this.$notify.off?.(evt, this._notifyPushHandler)
-      })
+      ;[EVENT.SYS_PLATFORM, EVENT.SYS_CHANNEL, EVENT.SYS_SINGLE].forEach(
+        evt => {
+          this.$notify.off?.(evt, this._notifyPushHandler)
+        }
+      )
       SITE_NOTIFY_TYPES.forEach(type => {
         try {
           this.$notify.deleteCallback?.(
@@ -158,12 +181,18 @@ export default {
     },
     async initNotify() {
       try {
-        await this.$notify.createInstance(NOTIFY_URL)
+        await this.$notify.createInstance(NOTIFY_URL, {
+          autoReconnect: true,
+          autoAck: true
+        })
         const token =
           userInfo.getToken?.value != null
             ? userInfo.getToken.value
             : userInfo.getToken
-        await this.$notify.login(token)
+        const loginRes = await this.$notify.login(token)
+        if (loginRes && loginRes.status === false) {
+          throw new Error(loginRes.message || 'notify login failed')
+        }
         await this.$notify.joinChannel(WEBSITE_CHANNEL)
         this.bindNotifyListeners()
         notifyStore().fetchUnreadCount()

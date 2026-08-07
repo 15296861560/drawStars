@@ -13,7 +13,11 @@
 
       <div class="toolbar-row" v-if="mode === 'ai'">
         <span>难度</span>
-        <el-select v-model="aiLevel" :disabled="status === 'playing'" style="width: 110px">
+        <el-select
+          v-model="aiLevel"
+          :disabled="status === 'playing'"
+          style="width: 110px"
+        >
           <el-option label="简单" value="easy" />
           <el-option label="中等" value="medium" />
           <el-option label="困难" value="hard" />
@@ -43,9 +47,8 @@
           离开房间
         </el-button>
         <span v-if="onlineJoined" class="room-tip">
-          房间 {{ roomCode }} · {{ isHost ? '房主(黑)' : '客人(白)' }}
-          · {{ peerReady ? '对方已就位' : '等待对方' }}
-          · {{ transportLabel }}
+          房间 {{ roomCode }} · {{ isHost ? '房主(黑)' : '客人(白)' }} ·
+          {{ peerReady ? '对方已就位' : '等待对方' }} · {{ transportLabel }}
         </span>
       </div>
     </div>
@@ -81,7 +84,11 @@
             {{ status === 'idle' ? '开始游戏' : '重新开局' }}
           </el-button>
           <el-button @click="undo" :disabled="!canUndo">悔棋</el-button>
-          <el-button type="warning" @click="surrender" :disabled="status !== 'playing'">
+          <el-button
+            type="warning"
+            @click="surrender"
+            :disabled="status !== 'playing'"
+          >
             认输
           </el-button>
         </div>
@@ -89,11 +96,7 @@
         <div class="history">
           <div class="status-title">落子记录</div>
           <div class="history-list" ref="historyRef">
-            <div
-              v-for="item in historyText"
-              :key="item"
-              class="history-item"
-            >
+            <div v-for="item in historyText" :key="item" class="history-item">
               {{ item }}
             </div>
             <div v-if="!historyText.length" class="history-empty">暂无记录</div>
@@ -104,7 +107,10 @@
           <p>规则：15×15 棋盘，先连成五子者胜。</p>
           <p v-if="mode === 'local'">本地模式：双人轮流落子。</p>
           <p v-if="mode === 'ai'">人机模式：可选难度与执子颜色。</p>
-          <p v-if="mode === 'online'">联机模式：通过 drawstarts-notify 通知频道创建/加入房间对战（需通知服务 ws://localhost:8031/ 可用）。</p>
+          <p v-if="mode === 'online'">
+            联机模式：通过 drawstarts-notify
+            通知频道创建/加入房间对战（需通知服务 ws://localhost:8030/ 可用）。
+          </p>
         </div>
       </aside>
     </div>
@@ -123,7 +129,15 @@ import {
   placeStone
 } from './gameLogic'
 import { GobangOnline, randomRoomCode } from './online'
-import type { AiLevel, Cell, GameMode, GameStatus, Move, OnlineMessage, Side } from './types'
+import type {
+  AiLevel,
+  Cell,
+  GameMode,
+  GameStatus,
+  Move,
+  OnlineMessage,
+  Side
+} from './types'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const historyRef = ref<HTMLElement | null>(null)
@@ -147,7 +161,7 @@ const isHost = ref(false)
 const peerReady = ref(false)
 const myOnlineSide = ref<Side>('b')
 let online: GobangOnline | null = null
-let pendingUndo = false
+let _pendingUndo = false
 let pendingRestart = false
 
 const pixelSize = 640
@@ -419,12 +433,15 @@ function runAiTurn() {
   const boardSnapshot = boards.value.map(r => r.slice()) as Cell[][]
   const level = aiLevel.value
 
-  setTimeout(() => {
-    const move = getAiMove(boardSnapshot, side, level)
-    aiThinking.value = false
-    if (!move || status.value !== 'playing') return
-    applyMove(move.x, move.y, side)
-  }, level === 'hard' ? 180 : 80)
+  setTimeout(
+    () => {
+      const move = getAiMove(boardSnapshot, side, level)
+      aiThinking.value = false
+      if (!move || status.value !== 'playing') return
+      applyMove(move.x, move.y, side)
+    },
+    level === 'hard' ? 180 : 80
+  )
 }
 
 function undo() {
@@ -432,7 +449,7 @@ function undo() {
 
   if (mode.value === 'online') {
     if (!online) return
-    pendingUndo = true
+    _pendingUndo = true
     online.send({ type: 'undo' })
     showTips('info', '已发起悔棋请求，等待对方确认')
     return
@@ -564,7 +581,10 @@ function handleOnlineMessage(msg: OnlineMessage, _memberId: string) {
     case 'hello':
       peerReady.value = true
       if (onlineJoined.value) {
-        online?.send({ type: 'ready', payload: { role: isHost.value ? 'host' : 'guest' } })
+        online?.send({
+          type: 'ready',
+          payload: { role: isHost.value ? 'host' : 'guest' }
+        })
       }
       break
     case 'ready':
@@ -602,7 +622,7 @@ function handleOnlineMessage(msg: OnlineMessage, _memberId: string) {
       } else {
         showTips('warning', '对方拒绝悔棋')
       }
-      pendingUndo = false
+      _pendingUndo = false
       break
     case 'restart':
       ElMessageBoxConfirmRestart()
