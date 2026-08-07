@@ -19,17 +19,25 @@ import reqCache from './cache.js'
 
 const DEFAULT_TIMEOUT = 1000 * 60 * 2
 
-let api_base_url = ''
-if (process.env.NODE_ENV === 'production') {
-  api_base_url = 'http://127.0.0.1:8010/'
-}
+// 生产环境走当前站点同源 /api（由 Nginx 反代到后端），避免写死 127.0.0.1 导致跨域
+const api_base_url = ''
 
 let hasSyncedProdApiUrl = false
 
 const getApiInfo = () => {
   const apiInfo = apiInfoStore()
-  if (!hasSyncedProdApiUrl && process.env.NODE_ENV === 'production') {
-    apiInfo.changeApi('')
+  if (!hasSyncedProdApiUrl && import.meta.env.PROD) {
+    const current = String(apiInfo.url || '')
+    // 纠正本地/旧缓存里的绝对地址，统一为同源 /api
+    if (
+      !current ||
+      current === '/' ||
+      /^https?:\/\//i.test(current) ||
+      current.includes('127.0.0.1') ||
+      current.includes('localhost')
+    ) {
+      apiInfo.changeApi('/api')
+    }
     hasSyncedProdApiUrl = true
   }
   return apiInfo

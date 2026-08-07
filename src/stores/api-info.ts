@@ -13,7 +13,7 @@ export const apiInfoStore = defineStore(
   'apiInfo',
   () => {
     const url = ref('/api')
-    const getURL = computed(() => url)
+    const getURL = computed(() => url.value)
     function changeApi(newVal: string) {
       url.value = newVal
     }
