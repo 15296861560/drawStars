@@ -13,7 +13,8 @@ export const apiInfoStore = defineStore(
   'apiInfo',
   () => {
     const url = ref('/api')
-    const getURL = computed(() => url.value)
+    // 返回 ref 本身，配合调用方 apiInfo.getURL.value（Pinia 解包后仍是 Ref）
+    const getURL = computed(() => url)
     function changeApi(newVal: string) {
       url.value = newVal
     }
