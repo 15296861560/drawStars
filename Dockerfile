@@ -3,8 +3,8 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json pnpm-lock.yaml .pnpmfile.cjs ./
+RUN pnpm install --no-frozen-lockfile
 COPY . .
 RUN pnpm build
 
