@@ -8,10 +8,11 @@ server {
 
     client_max_body_size 50m;
 
-    # 用变量做反代，避免启动时 api 尚未就绪导致 nginx 直接退出
+    # 变量 + rewrite：启动时不强制解析 api，且去掉 /api 前缀再转发
     location /api/ {
-        set $backend "http://${API_UPSTREAM}";
-        proxy_pass $backend/;
+        set $upstream_host "${API_UPSTREAM}";
+        rewrite ^/api/(.*)$ /$1 break;
+        proxy_pass http://$upstream_host;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -20,8 +21,9 @@ server {
     }
 
     location /uploadImg/ {
-        set $backend "http://${API_UPSTREAM}";
-        proxy_pass $backend/;
+        set $upstream_host "${API_UPSTREAM}";
+        rewrite ^/uploadImg/(.*)$ /$1 break;
+        proxy_pass http://$upstream_host;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
