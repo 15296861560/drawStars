@@ -1,3 +1,5 @@
+resolver 127.0.0.11 valid=10s ipv6=off;
+
 server {
     listen 80;
     server_name _;
@@ -6,8 +8,10 @@ server {
 
     client_max_body_size 50m;
 
+    # 用变量做反代，避免启动时 api 尚未就绪导致 nginx 直接退出
     location /api/ {
-        proxy_pass http://${API_UPSTREAM}/;
+        set $backend "http://${API_UPSTREAM}";
+        proxy_pass $backend/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
@@ -16,7 +20,8 @@ server {
     }
 
     location /uploadImg/ {
-        proxy_pass http://${API_UPSTREAM}/;
+        set $backend "http://${API_UPSTREAM}";
+        proxy_pass $backend/;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
