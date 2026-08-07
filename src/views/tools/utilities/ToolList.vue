@@ -41,7 +41,7 @@
         </el-sub-menu>
       </el-menu>
 
-      <div class="mt10 w-per100">
+      <div class="mt10 w-per100 utilities-router">
         <router-view />
       </div>
     </div>
@@ -94,7 +94,23 @@ export default {
   }
 }
 </script>
-<style></style>
+<style scoped>
+.g-list-normal {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.utilities-router {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+</style>
 <i18n>
 {
   "en": {

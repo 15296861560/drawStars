@@ -1,287 +1,417 @@
 <template>
-  <div>
+  <div class="g-flex-column border-normal utilities-page">
     <div class="importAndExport">
-      <div class="action-row">
-        <input type="file" @input="importFile" ref="file" hidden />
+      <div class="m-block m-block--compact">
+        <div class="m-block-title m-block-title--compact">
+          Excel 导入 / 导出示例
+        </div>
+        <div class="m-tip">
+          支持 .xlsx / .xls /
+          .csv。可先「加载示例数据」或「下载模板」，再尝试导入与导出。
+        </div>
+      </div>
 
+      <div class="action-row">
+        <input
+          type="file"
+          accept=".xlsx,.xls,.csv"
+          @change="importFile"
+          ref="file"
+          hidden
+        />
         <el-button type="primary" size="small" @click="selectFile">{{
           $t('btn.import')
         }}</el-button>
-        <el-button type="primary" size="small" @click="exportFile">{{
-          $t('btn.export')
-        }}</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="!tableTdData.length"
+          @click="exportFile"
+          >{{ $t('btn.export') }}</el-button
+        >
+        <el-button type="primary" size="small" @click="loadDemoData">
+          加载示例数据
+        </el-button>
         <el-button type="primary" size="small" @click="getTemplate">{{
           $t('btn.getTemplate')
         }}</el-button>
-        <el-button type="primary" size="small" @click="printPage">{{
-          $t('btn.print')
-        }}</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="!tableTdData.length"
+          @click="printPage"
+          >{{ $t('btn.print') }}</el-button
+        >
+      </div>
+
+      <div class="m-example-panel">
+        <div class="m-example-title">核心代码示意</div>
+        <pre class="m-code-pre">{{ coreCode }}</pre>
       </div>
 
       <div class="showTable" ref="printcontent">
         <div class="table-th bg-gray-white">
           <table width="100%" cellspacing="0" cellpadding="0" align="center">
             <tr>
-              <th style="width: 20%">
-                {{ tableThData[0] }}
-              </th>
-              <th style="width: 20%">
-                {{ tableThData[1] }}
-              </th>
-              <th style="width: 20%">
-                {{ tableThData[2] }}
-              </th>
-              <th style="width: 20%">
-                {{ tableThData[3] }}
-              </th>
-              <th style="width: 20%">
-                {{ tableThData[4] }}
+              <th
+                v-for="(th, thIndex) in tableThData"
+                :key="thIndex"
+                style="width: 20%"
+              >
+                {{ th }}
               </th>
             </tr>
           </table>
         </div>
         <div class="table-body">
-          <table width="100%" cellspacing="0" cellpadding="0" align="center">
+          <table
+            v-if="singelTableTdData.length"
+            width="100%"
+            cellspacing="0"
+            cellpadding="0"
+            align="center"
+          >
             <tr v-for="(item, index) in singelTableTdData" :key="index">
-              <td style="width: 20%">{{ index + 1 }}</td>
+              <td style="width: 20%">
+                {{ (currentPage - 1) * pageSize + index + 1 }}
+              </td>
               <td style="width: 20%">{{ item.Name }}</td>
               <td style="width: 20%">{{ item.Code }}</td>
               <td style="width: 20%">{{ item.CreateTime }}</td>
               <td style="width: 20%">{{ item.UpdateTime }}</td>
             </tr>
           </table>
+          <div v-else class="m-empty">
+            暂无数据，请导入 Excel 或点击「加载示例数据」
+          </div>
         </div>
       </div>
 
-      <div style="width: 100%; text-align: center">
+      <div class="pager-wrap">
         <el-pagination
           background
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :total="totalCount"
-          :current-page.sync="currentPage"
+          v-model:current-page="currentPage"
           @current-change="handleCurrentChange"
           :page-size="pageSize"
-        >
-        </el-pagination>
+        />
       </div>
     </div>
   </div>
 </template>
 <script>
 import * as XLSX from 'xlsx'
+import { ElMessage } from 'element-plus'
+
+const ALLOWED_EXT = ['.xlsx', '.xls', '.csv']
+
+function pad2(n) {
+  return String(n).padStart(2, '0')
+}
+
+function formatDate(date) {
+  return (
+    date.getFullYear() +
+    '-' +
+    pad2(date.getMonth() + 1) +
+    '-' +
+    pad2(date.getDate()) +
+    ' ' +
+    pad2(date.getHours()) +
+    ':' +
+    pad2(date.getMinutes()) +
+    ':' +
+    pad2(date.getSeconds())
+  )
+}
+
+function createDemoRows() {
+  const now = Date.now()
+  return Array.from({ length: 28 }, (_, i) => {
+    const create = new Date(now - (28 - i) * 86400000)
+    const update = new Date(create.getTime() + 3600000)
+    return {
+      Name: '示例项目-' + (i + 1),
+      Code: 'CODE-' + pad2(i + 1),
+      CreateTime: formatDate(create),
+      UpdateTime: formatDate(update)
+    }
+  })
+}
 
 export default {
   data() {
     return {
-      inputData: {},
       tableThData: ['序号', '名称', '编码', '创建时间', '更新时间'],
       tableTdData: [],
       singelTableTdData: [],
-      excel_data: null,
       currentPage: 1,
       pageSize: 14,
-      printing: false
+      importing: false,
+      coreCode:
+        '// 导入\n' +
+        "const wb = XLSX.read(buffer, { type: 'array' })\n" +
+        'const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])\n\n' +
+        '// 导出\n' +
+        'const sheet = XLSX.utils.json_to_sheet(rows)\n' +
+        'const wbOut = XLSX.utils.book_new()\n' +
+        "XLSX.utils.book_append_sheet(wbOut, sheet, 'sheet')\n" +
+        "XLSX.writeFile(wbOut, 'exportdata.xlsx')"
     }
   },
   computed: {
-    // 总条数
     totalCount() {
       return this.tableTdData.length
     }
   },
   watch: {
-    // 当前页数
     currentPage(newVal) {
-      this.singelTableTdData = this.tableTdData.slice(
-        (newVal - 1) * this.pageSize,
-        newVal * this.pageSize
-      )
+      this.updatePageData(newVal)
+    },
+    tableTdData() {
+      this.updatePageData(this.currentPage)
     }
   },
   methods: {
-    importFile(_e) {
-      let file = this.$refs.file.files[0]
-
-      this.getFile(file).then(res => {
-        this.tableTdData = res
-        // 显示第一页数据
-        this.singelTableTdData = this.tableTdData.slice(0, this.pageSize)
-      })
-    },
-    exportFile() {
-      let sheet = XLSX.utils.json_to_sheet(this.tableTdData)
-      this.openDownloadDialog(
-        this.sheet2blob(sheet, 'sheet'),
-        'exportdata.xlsx'
+    updatePageData(page) {
+      const start = (page - 1) * this.pageSize
+      this.singelTableTdData = this.tableTdData.slice(
+        start,
+        start + this.pageSize
       )
     },
     selectFile() {
+      this.$refs.file.value = ''
       this.$refs.file.click()
     },
+    getExt(name) {
+      const idx = String(name || '').lastIndexOf('.')
+      return idx >= 0 ? name.slice(idx).toLowerCase() : ''
+    },
+    async importFile() {
+      if (this.importing) return
+      const file = this.$refs.file.files[0]
+      if (!file) return
+      const ext = this.getExt(file.name)
+      if (!ALLOWED_EXT.includes(ext)) {
+        ElMessage.warning('仅支持 ' + ALLOWED_EXT.join(' / ') + ' 文件')
+        return
+      }
+      this.importing = true
+      try {
+        const rows = await this.getFile(file)
+        this.tableTdData = Array.isArray(rows) ? rows : []
+        this.currentPage = 1
+        this.updatePageData(1)
+        ElMessage.success('导入成功，共 ' + this.tableTdData.length + ' 行')
+      } catch (e) {
+        ElMessage.error('导入失败：' + (e && e.message ? e.message : e))
+      } finally {
+        this.importing = false
+      }
+    },
+    exportFile() {
+      if (!this.tableTdData.length) {
+        ElMessage.warning('暂无可导出数据')
+        return
+      }
+      const sheet = XLSX.utils.json_to_sheet(this.tableTdData)
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, sheet, 'sheet')
+      XLSX.writeFile(workbook, 'exportdata.xlsx')
+      ElMessage.success('导出成功')
+    },
+    loadDemoData(showTip = true) {
+      this.tableTdData = createDemoRows()
+      this.currentPage = 1
+      this.updatePageData(1)
+      if (showTip) {
+        ElMessage.success('已加载示例数据')
+      }
+    },
     getFile(f) {
-      let promise = new Promise((resolve, reject) => {
-        let reader = new FileReader()
-
-        let binary = ''
-
-        let wb // 读取完成的数据
-
-        let outdata
-
-        reader.onload = function (_e) {
-          let bytes = new Uint8Array(reader.result)
-
-          let length = bytes.byteLength
-
-          for (let i = 0; i < length; i++) {
-            binary += String.fromCharCode(bytes[i])
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = function (e) {
+          try {
+            const data = new Uint8Array(e.target.result)
+            const wb = XLSX.read(data, { type: 'array' })
+            const sheet = wb.Sheets[wb.SheetNames[0]]
+            const outdata = XLSX.utils.sheet_to_json(sheet)
+            resolve(outdata)
+          } catch (err) {
+            reject(err)
           }
-
-          wb = XLSX.read(binary, {
-            type: 'binary'
-          })
-
-          // outdata就是excel导入的数据
-          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]) // excel 数据再处理
-
-          resolve(outdata)
         }
-        try {
-          reader.readAsArrayBuffer(f)
-        } catch (e) {
-          reject(e)
+        reader.onerror = function () {
+          reject(new Error('文件读取失败'))
         }
+        reader.readAsArrayBuffer(f)
       })
-
-      return promise
     },
-
-    openDownloadDialog(url, saveName) {
-      if (typeof url === 'object' && url instanceof Blob) {
-        url = URL.createObjectURL(url) // 创建blob地址
-      }
-      let aLink = document.createElement('a')
-      aLink.href = url
-      aLink.download = saveName || '默认文件名.xlsx' // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
-      let event
-      if (window.MouseEvent) {
-        event = new MouseEvent('click')
-      } else {
-        event = document.createEvent('MouseEvents')
-        event.initMouseEvent(
-          'click',
-          true,
-          false,
-          window,
-          0,
-          0,
-          0,
-          0,
-          0,
-          false,
-          false,
-          false,
-          false,
-          0,
-          null
-        )
-      }
-      aLink.dispatchEvent(event)
-    },
-    sheet2blob(sheet, sheetName) {
-      sheetName = sheetName || '默认名'
-      let workbook = {
-        SheetNames: [sheetName],
-        Sheets: {}
-      }
-      workbook.Sheets[sheetName] = sheet
-      // 生成excel的配置项
-      let wopts = {
-        bookType: 'xlsx', // 要生成的文件类型
-        bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
-        type: 'binary'
-      }
-      let wbout = XLSX.write(workbook, wopts)
-      let blob = new Blob([this.sToBuffer(wbout)], {
-        type: 'application/octet-stream'
-      })
-      return blob
-    },
-    // 字符串转ArrayBuffer
-
-    sToBuffer(s) {
-      let buf = new ArrayBuffer(s.length)
-      let view = new Uint8Array(buf)
-      for (let i = 0; i != s.length; ++i) {
-        view[i] = s.charCodeAt(i) & 0xff
-      }
-      return buf
-    },
-
     printPage() {
-      let el = this.$refs.printcontent
-      let iframe = document.createElement('IFRAME')
-      let doc = null
+      if (!this.tableTdData.length) {
+        ElMessage.warning('暂无可打印数据')
+        return
+      }
+      const el = this.$refs.printcontent
+      const iframe = document.createElement('iframe')
       iframe.setAttribute('id', 'print-iframe')
-      // 设置样式，可视区域不可见
       iframe.setAttribute(
         'style',
-        'position:absolute;width:0px;height:0px;left:-100vw;top:-100vh;'
+        'position:absolute;width:0;height:0;left:-100vw;top:-100vh;'
       )
       document.body.appendChild(iframe)
-      doc = iframe.contentWindow.document
-      // 写入打印内容
+      const doc = iframe.contentWindow.document
       doc.write('<div>' + el.innerHTML + '</div>')
       doc.close()
       iframe.contentWindow.focus()
-      // 调用打印功能
       iframe.contentWindow.print()
       document.body.removeChild(iframe)
-      // 调用打印功能
-      // window.print();
     },
-    handleCurrentChange(_currentPage) {},
+    handleCurrentChange(page) {
+      this.updatePageData(page)
+    },
     getTemplate() {
-      window.location.href = '/static/导入模板.xlsx'
+      const templateRows = [
+        {
+          Name: '示例名称',
+          Code: 'CODE-01',
+          CreateTime: '2026-01-01 10:00:00',
+          UpdateTime: '2026-01-02 11:00:00'
+        }
+      ]
+      const sheet = XLSX.utils.json_to_sheet(templateRows)
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, sheet, 'template')
+      XLSX.writeFile(workbook, '导入模板.xlsx')
+      ElMessage.success('模板已下载')
     }
   },
-  created() {}
+  created() {
+    this.loadDemoData(false)
+  }
 }
 </script>
 <style lang="less" scoped>
+.utilities-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+}
+
 .importAndExport {
   display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   border: 2px solid #f0f0f0;
   border-radius: 5px;
   padding: 1vw;
   flex-direction: column;
   justify-content: space-between;
+  overflow-x: hidden;
+
+  .m-block--compact {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  .m-block-title--compact {
+    margin-bottom: 12px;
+  }
+
   .action-row {
     display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 2vh;
-    .mr-2vw {
-      margin-right: 2vw;
-    }
+    max-width: 100%;
+  }
+
+  .m-tip {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+
+  .m-example-panel {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .m-example-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .m-code-pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+    color: #c7254e;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 100%;
+  }
+
+  .pager-wrap {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin-top: 12px;
+    overflow-x: hidden;
   }
 }
 
 .showTable {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   border: 2px solid #f0f0f0;
   border-radius: 5px;
+  overflow-x: hidden;
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
   .table-th {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0 0;
     th {
       color: #666666;
       padding: 0.5vh 0;
       font-weight: bold;
+      word-break: break-all;
     }
   }
 
   .table-body {
-    height: 50vh;
-    overflow: hidden;
+    min-height: 30vh;
+    max-height: 50vh;
+    overflow-x: hidden;
+    overflow-y: auto;
     td {
-      // color: #00f8ff;
       padding: 0.05rem 0;
       border: 1px solid #f0f0f0;
       text-align: center;
@@ -290,6 +420,12 @@ export default {
       height: 4vh;
       line-height: 4vh;
     }
+  }
+
+  .m-empty {
+    padding: 48px 16px;
+    text-align: center;
+    color: #999;
   }
 }
 </style>
