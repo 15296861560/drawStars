@@ -12,19 +12,20 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "multimediaHomePage",
+      homepage: 'multimediaHomePage',
       routes: [
-        { name: "simpleUse", imgName: "simple" },
-        { name: "camera", imgName: "camera" },
-        { name: "pictureEditing", imgName: "crop" },
-        { name: "processVideo", imgName: "processVideo" },
-      ],
-    };
-  },
-};
+        { name: 'simpleUse', imgName: 'simple' },
+        { name: 'camera', imgName: 'camera' },
+        { name: 'pictureEditing', imgName: 'crop' },
+        { name: 'processVideo', imgName: 'processVideo' },
+        { name: 'video', imgName: 'video' }
+      ]
+    }
+  }
+}
 </script>

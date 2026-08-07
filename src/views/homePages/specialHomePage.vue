@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
@@ -20,15 +20,15 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "specialHomePage",
-      imgSrc: "special/",
-      routes: ["transition", "animation", "words", "drag"],
-    };
-  },
-};
+      homepage: 'specialHomePage',
+      imgSrc: 'special/',
+      routes: ['transition', 'animation', 'words', 'drag']
+    }
+  }
+}
 </script>

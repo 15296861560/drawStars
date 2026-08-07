@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:22
@@ -39,11 +39,15 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="购买数量">
-          <el-input v-model="goods.qty" placeholder="请输入购买数量" ref="qty"></el-input>
+          <el-input
+            v-model="goods.qty"
+            placeholder="请输入购买数量"
+            ref="qty"
+          ></el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button  type="primary" @click="pay">
+          <el-button type="primary" @click="pay">
             <span>支付</span>
           </el-button>
         </el-form-item>
@@ -52,27 +56,28 @@
   </div>
 </template>
 <script>
-import { toPay } from "@/assets/js/api/payController/payApi.js";
+import { findReq } from '@/assets/js/api'
+const toPay = findReq('payController', 'toPay')
+
 export default {
   data() {
     return {
       goods: {
         outTradeNo: new Date().getTime(),
-        subject: "商品a",
+        subject: '商品a',
         price: 0.01,
         qty: 1,
-        detail: "商品a是。。。",
-      },
-    };
+        detail: '商品a是。。。'
+      }
+    }
   },
   methods: {
     init() {},
     async pay() {
-      toPay({ goods: this.goods }).then((res) => {
-        window.open(res.data);
-      });
-    },
-  },
-};
+      const res = await toPay({ goods: this.goods })
+      window.open(res.data)
+    }
+  }
+}
 </script>
 <style></style>

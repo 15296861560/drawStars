@@ -1,0 +1,79 @@
+// AI 助手设计令牌 — 参考 ChatGPT / Gemini / 豆包 等主流助手风格
+@ai-primary: #409eff;
+@ai-primary-light: #66b1ff;
+@ai-primary-dark: #337ecc;
+@ai-accent: #6366f1;
+@ai-accent-soft: #818cf8;
+
+@ai-gradient: linear-gradient(135deg, #6366f1 0%, #409eff 45%, #38bdf8 100%);
+@ai-gradient-orb: linear-gradient(
+  135deg,
+  #818cf8 0%,
+  #409eff 40%,
+  #22d3ee 100%
+);
+@ai-gradient-soft: linear-gradient(
+  180deg,
+  rgba(255, 255, 255, 0.95) 0%,
+  rgba(248, 250, 252, 0.98) 100%
+);
+@ai-gradient-header: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+
+@ai-bg-panel: rgba(255, 255, 255, 0.92);
+@ai-bg-sidebar: #f4f4f5;
+@ai-bg-chat: #f7f7f8;
+@ai-bg-input: #ffffff;
+@ai-border: rgba(0, 0, 0, 0.06);
+@ai-border-strong: rgba(0, 0, 0, 0.1);
+
+@ai-text: #0d0d0d;
+@ai-text-secondary: #676767;
+@ai-text-muted: #9b9b9b;
+
+@ai-radius-sm: 10px;
+@ai-radius-md: 14px;
+@ai-radius-lg: 20px;
+@ai-radius-xl: 24px;
+@ai-radius-full: 999px;
+
+@ai-z-fab: 9999;
+@ai-z-panel: 10000;
+@ai-z-popper: 10050;
+@ai-z-message: 10051;
+
+@ai-shadow-panel:
+  0 0 0 1px rgba(0, 0, 0, 0.04),
+  0 24px 48px rgba(0, 0, 0, 0.12),
+  0 8px 16px rgba(0, 0, 0, 0.06);
+@ai-shadow-fab:
+  0 4px 14px rgba(99, 102, 241, 0.35),
+  0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+@ai-shadow-input:
+  0 0 0 1px rgba(0, 0, 0, 0.06),
+  0 4px 16px rgba(0, 0, 0, 0.06);
+
+@ai-user-bubble: #409eff;
+@ai-user-text: #ffffff;
+@ai-assistant-bubble: transparent;
+
+// 通用动画
+@keyframes ai-shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes ai-orb-glow {
+  0%,
+  100% {
+    filter: hue-rotate(0deg);
+    transform: scale(1);
+  }
+  50% {
+    filter: hue-rotate(12deg);
+    transform: scale(1.02);
+  }
+}

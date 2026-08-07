@@ -5,16 +5,16 @@
         <input type="file" @input="importFile" ref="file" hidden />
 
         <el-button type="primary" size="small" @click="selectFile">{{
-          $t("btn.import")
+          $t('btn.import')
         }}</el-button>
         <el-button type="primary" size="small" @click="exportFile">{{
-          $t("btn.export")
+          $t('btn.export')
         }}</el-button>
         <el-button type="primary" size="small" @click="getTemplate">{{
-          $t("btn.getTemplate")
+          $t('btn.getTemplate')
         }}</el-button>
         <el-button type="primary" size="small" @click="printPage">{{
-          $t("btn.print")
+          $t('btn.print')
         }}</el-button>
       </div>
 
@@ -68,104 +68,108 @@
   </div>
 </template>
 <script>
-import * as XLSX from "xlsx";
+import * as XLSX from 'xlsx'
 
 export default {
   data() {
     return {
       inputData: {},
-      tableThData: ["序号", "名称", "编码", "创建时间", "更新时间"],
+      tableThData: ['序号', '名称', '编码', '创建时间', '更新时间'],
       tableTdData: [],
       singelTableTdData: [],
       excel_data: null,
       currentPage: 1,
       pageSize: 14,
-      printing: false,
-    };
+      printing: false
+    }
   },
   computed: {
-    //总条数
+    // 总条数
     totalCount() {
-      return this.tableTdData.length;
-    },
+      return this.tableTdData.length
+    }
   },
   watch: {
     // 当前页数
     currentPage(newVal) {
       this.singelTableTdData = this.tableTdData.slice(
         (newVal - 1) * this.pageSize,
-        newVal * this.pageSize,
-      );
-    },
+        newVal * this.pageSize
+      )
+    }
   },
   methods: {
-    importFile(e) {
-      let file = this.$refs.file.files[0];
+    importFile(_e) {
+      let file = this.$refs.file.files[0]
 
-      this.getFile(file).then((res) => {
-        this.tableTdData = res;
-        //显示第一页数据
-        this.singelTableTdData = this.tableTdData.slice(0, this.pageSize);
-      });
+      this.getFile(file).then(res => {
+        this.tableTdData = res
+        // 显示第一页数据
+        this.singelTableTdData = this.tableTdData.slice(0, this.pageSize)
+      })
     },
     exportFile() {
-      let sheet = XLSX.utils.json_to_sheet(this.tableTdData);
-      this.openDownloadDialog(this.sheet2blob(sheet, "sheet"), "exportdata.xlsx");
+      let sheet = XLSX.utils.json_to_sheet(this.tableTdData)
+      this.openDownloadDialog(
+        this.sheet2blob(sheet, 'sheet'),
+        'exportdata.xlsx'
+      )
     },
     selectFile() {
-      this.$refs.file.click();
+      this.$refs.file.click()
     },
     getFile(f) {
       let promise = new Promise((resolve, reject) => {
-        let reader = new FileReader();
+        let reader = new FileReader()
 
-        let binary = "";
+        let binary = ''
 
-        let wb; //读取完成的数据
+        let wb // 读取完成的数据
 
-        let outdata;
+        let outdata
 
-        reader.onload = function (e) {
-          let bytes = new Uint8Array(reader.result);
+        reader.onload = function (_e) {
+          let bytes = new Uint8Array(reader.result)
 
-          let length = bytes.byteLength;
+          let length = bytes.byteLength
 
           for (let i = 0; i < length; i++) {
-            binary += String.fromCharCode(bytes[i]);
+            binary += String.fromCharCode(bytes[i])
           }
 
           wb = XLSX.read(binary, {
-            type: "binary",
-          });
+            type: 'binary'
+          })
 
           // outdata就是excel导入的数据
-          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); // excel 数据再处理
+          outdata = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]) // excel 数据再处理
 
-          resolve(outdata);
-        };
-        try {
-          reader.readAsArrayBuffer(f);
-        } catch (e) {
-          reject(e);
+          resolve(outdata)
         }
-      });
+        try {
+          reader.readAsArrayBuffer(f)
+        } catch (e) {
+          reject(e)
+        }
+      })
 
-      return promise;
+      return promise
     },
 
     openDownloadDialog(url, saveName) {
-      if (typeof url == "object" && url instanceof Blob) {
-        url = URL.createObjectURL(url); // 创建blob地址
+      if (typeof url === 'object' && url instanceof Blob) {
+        url = URL.createObjectURL(url) // 创建blob地址
       }
-      let aLink = document.createElement("a");
-      aLink.href = url;
-      aLink.download = saveName || "默认文件名.xlsx"; // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
-      let event;
-      if (window.MouseEvent) event = new MouseEvent("click");
-      else {
-        event = document.createEvent("MouseEvents");
+      let aLink = document.createElement('a')
+      aLink.href = url
+      aLink.download = saveName || '默认文件名.xlsx' // HTML5新增的属性，指定保存文件名，可以不要后缀，注意，file:///模式下不会生效
+      let event
+      if (window.MouseEvent) {
+        event = new MouseEvent('click')
+      } else {
+        event = document.createEvent('MouseEvents')
         event.initMouseEvent(
-          "click",
+          'click',
           true,
           false,
           window,
@@ -179,66 +183,70 @@ export default {
           false,
           false,
           0,
-          null,
-        );
+          null
+        )
       }
-      aLink.dispatchEvent(event);
+      aLink.dispatchEvent(event)
     },
     sheet2blob(sheet, sheetName) {
-      sheetName = sheetName || "默认名";
+      sheetName = sheetName || '默认名'
       let workbook = {
         SheetNames: [sheetName],
-        Sheets: {},
-      };
-      workbook.Sheets[sheetName] = sheet;
+        Sheets: {}
+      }
+      workbook.Sheets[sheetName] = sheet
       // 生成excel的配置项
       let wopts = {
-        bookType: "xlsx", // 要生成的文件类型
+        bookType: 'xlsx', // 要生成的文件类型
         bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
-        type: "binary",
-      };
-      let wbout = XLSX.write(workbook, wopts);
-      let blob = new Blob([this.sToBuffer(wbout)], { type: "application/octet-stream" });
-      return blob;
+        type: 'binary'
+      }
+      let wbout = XLSX.write(workbook, wopts)
+      let blob = new Blob([this.sToBuffer(wbout)], {
+        type: 'application/octet-stream'
+      })
+      return blob
     },
     // 字符串转ArrayBuffer
 
     sToBuffer(s) {
-      let buf = new ArrayBuffer(s.length);
-      let view = new Uint8Array(buf);
-      for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-      return buf;
+      let buf = new ArrayBuffer(s.length)
+      let view = new Uint8Array(buf)
+      for (let i = 0; i != s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xff
+      }
+      return buf
     },
 
     printPage() {
-      var el = this.$refs.printcontent;
-      let iframe = document.createElement("IFRAME");
-      var doc = null;
-      iframe.setAttribute("id", "print-iframe");
-      //设置样式，可视区域不可见
+      let el = this.$refs.printcontent
+      let iframe = document.createElement('IFRAME')
+      let doc = null
+      iframe.setAttribute('id', 'print-iframe')
+      // 设置样式，可视区域不可见
       iframe.setAttribute(
-        "style",
-        "position:absolute;width:0px;height:0px;left:-100vw;top:-100vh;",
-      );
-      document.body.appendChild(iframe);
-      doc = iframe.contentWindow.document;
-      //写入打印内容
-      doc.write("<div>" + el.innerHTML + "</div>");
-      doc.close();
-      iframe.contentWindow.focus();
-      //调用打印功能
-      iframe.contentWindow.print();
-      document.body.removeChild(iframe);
-      //调用打印功能
+        'style',
+        'position:absolute;width:0px;height:0px;left:-100vw;top:-100vh;'
+      )
+      document.body.appendChild(iframe)
+      doc = iframe.contentWindow.document
+      // 写入打印内容
+      doc.write('<div>' + el.innerHTML + '</div>')
+      doc.close()
+      iframe.contentWindow.focus()
+      // 调用打印功能
+      iframe.contentWindow.print()
+      document.body.removeChild(iframe)
+      // 调用打印功能
       // window.print();
     },
-    handleCurrentChange(currentPage) {},
+    handleCurrentChange(_currentPage) {},
     getTemplate() {
-      window.location.href = "/static/导入模板.xlsx";
-    },
+      window.location.href = '/static/导入模板.xlsx'
+    }
   },
-  created() {},
-};
+  created() {}
+}
 </script>
 <style lang="less" scoped>
 .importAndExport {

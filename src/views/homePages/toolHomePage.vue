@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-05-23 23:28:07
@@ -15,7 +15,7 @@
             <img class="m-home-img" src="@/assets/img/png/lodash.png" />
           </div>
           <div>
-            <p class="m-p">{{ $t("homePage.toolHomePage.Lodash") }}</p>
+            <p class="m-p">{{ $t('homePage.toolHomePage.Lodash') }}</p>
           </div>
         </div>
       </router-link>
@@ -25,7 +25,7 @@
             <img class="m-home-img" src="@/assets/img/png/agora.png" />
           </div>
           <div>
-            <p class="m-p">{{ $t("homePage.toolHomePage.agora") }}</p>
+            <p class="m-p">{{ $t('homePage.toolHomePage.agora') }}</p>
           </div>
         </div>
       </router-link>
@@ -41,13 +41,22 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      routes: ["chat","utilities", "practice", "translate", "pay", "compress","networkStrength"],
-    };
-  },
-};
+      routes: [
+        'chat',
+        'utilities',
+        'practice',
+        'translate',
+        'pay',
+        'compress',
+        'networkStrength',
+        'infoAnalysis'
+      ]
+    }
+  }
+}
 </script>

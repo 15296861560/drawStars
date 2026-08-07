@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
@@ -25,7 +25,9 @@
               <span class="m-badge">Result</span>
 
               {
-              <div class="u-strong-red">&emsp;"string": "{{ data.string }}"</div>
+              <div class="u-strong-red">
+                &emsp;"string": "{{ data.string }}"
+              </div>
               }
 
               <div class="m-refresh">
@@ -47,7 +49,9 @@
               <span class="m-badge">Result</span>
 
               {
-              <div class="u-strong-red">&emsp;"string": "{{ data.string }}"</div>
+              <div class="u-strong-red">
+                &emsp;"string": "{{ data.string }}"
+              </div>
               }
 
               <div class="m-refresh">
@@ -61,21 +65,21 @@
   </div>
 </template>
 <script>
-import Mock from "mockjs";
+import Mock from 'mockjs'
 export default {
   data() {
     return {
-      data: "",
-    };
+      data: ''
+    }
   },
   methods: {
     refresh() {
       this.data = Mock.mock({
-        "string|1-10": "★",
-      });
-      console.log(this.data.string);
-    },
-  },
-};
+        'string|1-10': '★'
+      })
+      console.log(this.data.string)
+    }
+  }
+}
 </script>
 <style></style>

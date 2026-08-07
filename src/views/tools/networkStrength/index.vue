@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2023-06-25 22:46:31
@@ -8,7 +8,11 @@
 -->
 <template>
   <div>
-    <gauge echartId="gauge" :chartData="gaugeData" class="m-echart-standard"></gauge>
+    <gauge
+      echartId="gauge"
+      :chartData="gaugeData"
+      class="m-echart-standard"
+    ></gauge>
 
     <div class="network-info">
       <h2>网络：{{ effectiveType }}</h2>
@@ -17,40 +21,42 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref, reactive, watch, computed, nextTick } from "vue";
-import Gauge from "@/components/echarts/Gauge.vue";
+import { onMounted, reactive, computed } from 'vue'
+import Gauge from '@/components/echarts/Gauge.vue'
 
-let connection = reactive({});
+let connection = reactive({})
 
 const effectiveType = computed(() => {
-  return connection?.effectiveType;
-});
+  return connection?.effectiveType
+})
 const rtt = computed(() => {
-  return connection?.rtt;
-});
+  return connection?.rtt
+})
 const downlink = computed(() => {
-  return connection?.downlink;
-});
+  return connection?.downlink
+})
 
 const gaugeData = computed(() => {
   return {
-    unit: "MB/S",
+    unit: 'MB/S',
     data: [
       {
-        name: "网速",
-        value: downlink,
-      },
-    ],
-  };
-});
+        name: '网速',
+        value: downlink
+      }
+    ]
+  }
+})
 
 onMounted(() => {
   const conn =
-    navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  connection.effectiveType = conn.effectiveType;
-  connection.rtt = conn.rtt;
-  connection.downlink = conn.downlink;
-});
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection
+  connection.effectiveType = conn.effectiveType
+  connection.rtt = conn.rtt
+  connection.downlink = conn.downlink
+})
 </script>
 <style scoped>
 .network-info {

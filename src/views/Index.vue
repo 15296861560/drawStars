@@ -1,13 +1,19 @@
 <template>
-  <div>
+  <div
+    class="index-root"
+    :class="{ 'layout-fixed-header': layout.fixedHeader }"
+  >
     <el-container>
-      <el-aside class="g-aside" :style="width" v-if="websiteInfo.isPC"
+      <el-aside class="g-aside" :style="width" v-if="showAside"
         ><asideList ref="asideList"></asideList
       ></el-aside>
       <el-container>
-        <el-header>
-          <!-- 导航栏 -->
-          <navigation :titleData="$route.meta.title" ref="navigation"></navigation>
+        <el-header class="site-header" height="auto">
+          <navigation
+            :titleData="$route.meta.title"
+            ref="navigation"
+          ></navigation>
+          <layout-tags-view v-if="layout.tagsView" />
         </el-header>
         <el-main class="g-main">
           <div style="min-height: calc(100vh - 180px)">
@@ -21,83 +27,212 @@
             </router-view>
           </div>
 
-          <el-footer class="g-footer">
+          <el-footer v-show="layout.footerVisible" class="g-footer">
             <myfooter></myfooter>
           </el-footer>
         </el-main>
       </el-container>
     </el-container>
+    <layout-settings-drawer />
   </div>
 </template>
 
 <script>
-import AsideList from "@/components/AsideList.vue";
-import Navigation from "@/components/Navigation.vue";
-import Myfooter from "@/components/Myfooter.vue";
-import { useRouter, useRoute } from "vue-router";
-import { NOTIFY_URL, WEBSITE_CHANNEL } from "@/assets/js/notify/notify-config.js";
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
+import AsideList from '@/components/AsideList.vue'
+import Navigation from '@/components/Navigation.vue'
+import Myfooter from '@/components/Myfooter.vue'
+import LayoutTagsView from '@/components/layout/LayoutTagsView.vue'
+import LayoutSettingsDrawer from '@/components/layout/LayoutSettingsDrawer.vue'
+import { layoutSettingsStore } from '@/stores/layout-settings'
+import { useRoute } from 'vue-router'
+import {
+  NOTIFY_URL,
+  WEBSITE_CHANNEL
+} from '@/assets/js/notify/notify-config.js'
+import { userInfoStore } from '@/stores/user-info'
+import { notifyStore } from '@/stores/notify'
+import { pointsStore } from '@/stores/points'
+import { isSkipLoginMode } from '@/config/skip-login'
+
+const userInfo = userInfoStore()
+const SITE_NOTIFY_TYPES = ['site', 'system', 'notice', 'message']
 
 export default {
   components: {
     AsideList,
     Navigation,
     Myfooter,
+    LayoutTagsView,
+    LayoutSettingsDrawer
   },
   provide() {
     return {
-      websiteInfo: this.websiteInfo,
-    };
+      websiteInfo: this.websiteInfo
+    }
   },
   data() {
     return {
-      width: "width:200px;",
-      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
-      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
+      width: 'width:200px;',
+      screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
       websiteInfo: {
-        isPC: true, //判断是否是电脑
-        isCollapse: false, // 侧边栏是否收缩
+        isPC: true, // 判断是否是电脑
+        isCollapse: false // 侧边栏是否收缩
       },
-    };
+      _notifyPushHandler: null
+    }
   },
   computed: {
     $route() {
-      let route = useRoute();
+      let route = useRoute()
 
-      return route;
+      return route
     },
+    layout() {
+      return layoutSettingsStore()
+    },
+    showAside() {
+      return this.websiteInfo.isPC && this.layout.navType !== 3
+    }
   },
   methods: {
     isComputer() {
-      let userAgent = navigator.userAgent;
-      let phoneList = ["Android", "iPhone", "SymbianOS"];
-      this.websiteInfo.isPC = phoneList.every((item) => userAgent.indexOf(item) == -1); //不包含手机型号则视为PC
+      let userAgent = navigator.userAgent
+      let phoneList = ['Android', 'iPhone', 'SymbianOS']
+      this.websiteInfo.isPC = phoneList.every(
+        item => userAgent.indexOf(item) == -1
+      ) // 不包含手机型号则视为PC
     },
-    async initNotify() {
-      await this.$notify.createInstance(NOTIFY_URL);
-      await this.$notify.login(userInfo.getToken.value);
-      this.$notify.joinChannel(WEBSITE_CHANNEL);
-    },
-  },
-  watch: {
-    "websiteInfo.isCollapse"(val) {
-      if (val) {
-        this.width = "width:50px;";
+    onNotifyPush(payload) {
+      const store = notifyStore()
+      if (payload && typeof payload === 'object') {
+        store.prependFromPush({
+          id: payload.id || `ws_${Date.now()}`,
+          content:
+            payload.content ||
+            payload.msg ||
+            payload.title ||
+            (typeof payload === 'string' ? payload : ''),
+          tag: payload.tag || payload.notifyType || '系统',
+          notifyType: payload.notifyType,
+          createTime: payload.createTime || Date.now(),
+          isRead: false
+        })
       } else {
-        this.width = "width:200px;";
+        store.fetchUnreadCount()
       }
     },
+    bindNotifyListeners() {
+      if (!this.$notify || this._notifyPushHandler) return
+      this._notifyPushHandler = data => this.onNotifyPush(data)
+
+      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
+        this.$notify.on(evt, this._notifyPushHandler)
+      })
+
+      SITE_NOTIFY_TYPES.forEach(type => {
+        this.$notify.addNotifyCallback(
+          type,
+          WEBSITE_CHANNEL,
+          this._notifyPushHandler
+        )
+      })
+    },
+    unbindNotifyListeners() {
+      if (!this.$notify || !this._notifyPushHandler) return
+      ;['SYS_PLATFORM', 'SYS_CHANNEL', 'SYS_SINGLE'].forEach(evt => {
+        this.$notify.off?.(evt, this._notifyPushHandler)
+      })
+      SITE_NOTIFY_TYPES.forEach(type => {
+        try {
+          this.$notify.deleteCallback?.(
+            type,
+            WEBSITE_CHANNEL,
+            this._notifyPushHandler
+          )
+        } catch (_) {
+          /* ignore */
+        }
+      })
+      this._notifyPushHandler = null
+    },
+    async initNotify() {
+      try {
+        await this.$notify.createInstance(NOTIFY_URL)
+        const token =
+          userInfo.getToken?.value != null
+            ? userInfo.getToken.value
+            : userInfo.getToken
+        await this.$notify.login(token)
+        await this.$notify.joinChannel(WEBSITE_CHANNEL)
+        this.bindNotifyListeners()
+        notifyStore().fetchUnreadCount()
+      } catch (e) {
+        console.warn('[notify] init failed', e)
+      }
+    },
+    async initPoints() {
+      try {
+        const uid = Number(userInfo.getUserId) || 0
+        if (!uid && !isSkipLoginMode()) return
+        await pointsStore().init(uid || 1)
+      } catch (e) {
+        console.warn('[points] init failed', e)
+      }
+    }
+  },
+  watch: {
+    'websiteInfo.isCollapse'(val) {
+      if (val) {
+        this.width = 'width:50px;'
+      } else {
+        this.width = 'width:200px;'
+      }
+    },
+    'layout.navType'(n) {
+      if (n === 2) {
+        this.websiteInfo.isCollapse = true
+      } else if (n === 1) {
+        this.websiteInfo.isCollapse = false
+      }
+    },
+    'layout.tagsView'(on) {
+      if (!on) {
+        this.layout.clearVisitedViews()
+      }
+    },
+    'layout.dynamicTitle'() {
+      this.layout.applyDocumentTitle(this.$route)
+    }
   },
   mounted() {
-    let that = this;
-    this.isComputer();
-    window.addEventListener("resize", this.isComputer);
-    if (this.websiteInfo.isCollapse) this.width = "width:50px;";
+    this.isComputer()
+    window.addEventListener('resize', this.isComputer)
+    if (this.websiteInfo.isCollapse) {
+      this.width = 'width:50px;'
+    }
 
-    this.initNotify();
+    this.layout.applyThemeFromState()
+    this._layoutAfterEach = this.$router.afterEach(to => {
+      this.layout.addVisitedView(to)
+      this.layout.applyDocumentTitle(to)
+    })
+
+    if (!isSkipLoginMode()) {
+      this.initNotify()
+    } else {
+      notifyStore().fetchUnreadCount()
+    }
+    this.initPoints()
   },
-};
+  beforeUnmount() {
+    window.removeEventListener('resize', this.isComputer)
+    if (this._layoutAfterEach) {
+      this._layoutAfterEach()
+    }
+    this.unbindNotifyListeners()
+  }
+}
 </script>
 
 <style>
@@ -159,5 +294,19 @@ export default {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(255, 0, 0, 0.4);
+}
+
+.index-root.layout-fixed-header .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.06);
+}
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 </style>

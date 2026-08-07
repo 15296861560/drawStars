@@ -40,155 +40,155 @@
   </div>
 </template>
 <script>
-import RTMClient from "./rtm-client";
-import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
-import { showTips } from "@/utils/message/showTips.js";
+import RTMClient from './rtm-client'
+import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
+import { showTips } from '@/utils/message/showTips.js'
 
 export default {
   data() {
     return {
-      appId: "",
+      appId: '',
       rtmClient: null,
       localUser: {
-        accountName: "",
-        channelName: "",
+        accountName: '',
+        channelName: ''
       },
-      msg: "",
+      msg: '',
       msgList: [],
-      rtmToken: "",
-      loading: true,
-    };
+      rtmToken: '',
+      loading: true
+    }
   },
   created() {
-    this.init();
+    this.init()
   },
   methods: {
     async init() {
-      await this.getAppID();
-      this.loading = false;
+      await this.getAppID()
+      this.loading = false
     },
     async getAppID() {
-      let res = await $axiosGet({}, "/agoraApi/getAppID");
+      let res = await $axiosGet({}, '/agoraApi/getAppID')
       if (res.status) {
-        this.appId = res.data;
-        this.rtmClient = new RTMClient();
+        this.appId = res.data
+        this.rtmClient = new RTMClient()
       } else {
-        showTips("error", "getAppID fail");
+        showTips('error', 'getAppID fail')
       }
 
-      return this.appId;
+      return this.appId
     },
     async getRTMToken() {
-      this.loading = true;
+      this.loading = true
       let res = await $axios(
         { account: this.localUser.accountName },
-        "/agoraApi/getRTMToken"
-      );
+        '/agoraApi/getRTMToken'
+      )
       if (res.status) {
-        this.rtmToken = res.data;
-        this.initClient();
+        this.rtmToken = res.data
+        this.initClient()
       } else {
-        showTips("error", res.data);
+        showTips('error', res.data)
       }
-      this.loading = false;
+      this.loading = false
     },
     async initClient() {
-      let rtm = this.rtmClient;
+      let rtm = this.rtmClient
 
       try {
-        await rtm.login(this.localUser.accountName, this.rtmToken, this.appId);
-        rtm._logined = true;
-        this.initRTMListen();
-        this.joinChannel();
+        await rtm.login(this.localUser.accountName, this.rtmToken, this.appId)
+        rtm._logined = true
+        this.initRTMListen()
+        this.joinChannel()
       } catch (err) {
-        showTips("error", err);
+        showTips('error', err)
       }
     },
     logout() {
-      this.rtmClient.logout();
+      this.rtmClient.logout()
     },
     initRTMListen() {
-      let rtm = this.rtmClient;
-      rtm.on("ConnectionStateChanged", (newState, reason) => {
-        console.log("reason", reason);
-        if (newState === "ABORTED") {
-          if (reason === "REMOTE_LOGIN") {
-            console.log("You have already been kicked off!");
+      let rtm = this.rtmClient
+      rtm.on('ConnectionStateChanged', (newState, reason) => {
+        console.log('reason', reason)
+        if (newState === 'ABORTED') {
+          if (reason === 'REMOTE_LOGIN') {
+            console.log('You have already been kicked off!')
           }
         }
-      });
+      })
 
-      rtm.on("MessageFromPeer", async (message, peerId) => {
-        console.log(message);
-      });
+      rtm.on('MessageFromPeer', async (message, _peerId) => {
+        console.log(message)
+      })
 
-      rtm.on("MemberJoined", ({ channelName, args }) => {
-        const memberId = args[0];
-        console.log("channel ", channelName, " member: ", memberId, " joined");
-      });
+      rtm.on('MemberJoined', ({ channelName, args }) => {
+        const memberId = args[0]
+        console.log('channel ', channelName, ' member: ', memberId, ' joined')
+      })
 
-      rtm.on("MemberLeft", ({ channelName, args }) => {
-        const memberId = args[0];
-        console.log("channel ", channelName, " member: ", memberId, " joined");
-      });
+      rtm.on('MemberLeft', ({ channelName, args }) => {
+        const memberId = args[0]
+        console.log('channel ', channelName, ' member: ', memberId, ' joined')
+      })
 
-      rtm.on("ChannelMessage", async ({ channelName, args }) => {
-        const [message, memberId] = args;
+      rtm.on('ChannelMessage', async ({ channelName, args }) => {
+        const [message, memberId] = args
 
         console.log(
-          "channel ",
+          'channel ',
           channelName,
-          ", messsage: ",
+          ', messsage: ',
           message.text,
-          ", memberId: ",
+          ', memberId: ',
           memberId
-        );
+        )
 
-        if (message.messageType === "IMAGE") {
-          const blob = await rtm.client.downloadMedia(message.mediaId);
-          blobToImage(blob, (image) => {
+        if (message.messageType === 'IMAGE') {
+          const blob = await rtm.client.downloadMedia(message.mediaId)
+          blobToImage(blob, image => {
             let msgObj = {
               accountName: memberId,
               channelMessage: message.text,
               channelName: channelName,
-              msgType: "IMAGE",
-              imgSrc: image.src,
-            };
-            this.msgList.push(msgObj);
-          });
+              msgType: 'IMAGE',
+              imgSrc: image.src
+            }
+            this.msgList.push(msgObj)
+          })
         } else {
           let msgObj = {
             accountName: memberId,
             channelMessage: message.text,
-            channelName: channelName,
-          };
-          this.msgList.push(msgObj);
+            channelName: channelName
+          }
+          this.msgList.push(msgObj)
         }
-      });
+      })
     },
     joinChannel() {
-      const channelName = this.localUser.channelName;
+      const channelName = this.localUser.channelName
       this.rtmClient
         .joinChannel(channelName)
         .then(() => {
-          this.rtmClient.channels[channelName].joined = true;
+          this.rtmClient.channels[channelName].joined = true
         })
-        .catch((err) => {
-          showTips("error", err);
-        });
+        .catch(err => {
+          showTips('error', err)
+        })
     },
     sendMsg() {
-      let rtm = this.rtmClient;
-      const channelName = this.localUser.channelName;
+      let rtm = this.rtmClient
+      const channelName = this.localUser.channelName
       if (!rtm._logined) {
-        showTips("error", "Please Login First");
-        return;
+        showTips('error', 'Please Login First')
+        return
       }
       if (
         !rtm.channels[channelName] ||
         (rtm.channels[channelName] && !rtm.channels[channelName].joined)
       ) {
-        showTips("error", "Please Join First");
+        showTips('error', 'Please Join First')
       }
 
       rtm
@@ -197,17 +197,17 @@ export default {
           let msgObj = {
             accountName: rtm.accountName,
             channelMessage: this.msg,
-            channelName: channelName,
-          };
-          this.msgList.push(msgObj);
-          this.msg = "";
+            channelName: channelName
+          }
+          this.msgList.push(msgObj)
+          this.msg = ''
         })
-        .catch((err) => {
-          showTips("error", err);
-        });
-    },
-  },
-};
+        .catch(err => {
+          showTips('error', err)
+        })
+    }
+  }
+}
 </script>
 <style scoped lang="less">
 .chat-room {

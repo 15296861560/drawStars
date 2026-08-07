@@ -1,8 +1,23 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.node.json",
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "playwright.config.*"],
+  "include": [
+    "vitest.config.*",
+    "cypress.config.*",
+    "playwright.config.*",
+    "types/vite-plugin-vue-i18n.d.ts"
+  ],
   "compilerOptions": {
-    "composite": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": [],
     "types": ["node"]
   }
 }

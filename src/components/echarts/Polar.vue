@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { echartMixin } from "../mixin/echartMixin";
+import { echartMixin } from '../mixin/echartMixin'
 export default {
   mixins: [echartMixin],
   methods: {
@@ -13,62 +13,62 @@ export default {
         // color: ["#02FCFB"],
         // 提示框
         tooltip: {
-          trigger: "item",
-          formatter: newVal.tooltip + "<br/>{a}：{c}%",
+          trigger: 'item',
+          formatter: newVal.tooltip + '<br/>{a}：{c}%'
         },
-        //标题
+        // 标题
         title: {
-          text: newVal.data + "%",
+          text: newVal.data + '%',
           subtext: newVal.tooltip,
           textStyle: {
-            color: "aqua",
+            color: 'aqua',
             fontSize: 32,
-            fontWeight: "bold",
-            fontFamily: this.fontFamily,
+            fontWeight: 'bold',
+            fontFamily: this.fontFamily
           },
           subtextStyle: {
-            color: "aqua",
+            color: 'aqua',
             fontSize: 24,
-            fontWeight: "bold",
-            fontFamily: this.fontFamily,
+            fontWeight: 'bold',
+            fontFamily: this.fontFamily
           },
-          left: "center",
-          top: "center",
+          left: 'center',
+          top: 'center'
         },
         angleAxis: {
           max: 100,
-          show: false,
+          show: false
         },
         radiusAxis: {
-          type: "category",
+          type: 'category',
 
           axisLine: {
-            show: false,
-          },
+            show: false
+          }
         },
         polar: {
-          radius: "100%",
-          center: ["50%", "50%"],
+          radius: '100%',
+          center: ['50%', '50%']
         },
         series: [
           {
-            type: "bar",
+            type: 'bar',
             data: newVal.data,
             showBackground: true,
             // 该系列使用的坐标系
-            coordinateSystem: "polar",
+            coordinateSystem: 'polar',
             name: newVal.name,
-            stack: "a",
+            stack: 'a',
             roundCap: true,
             barWidth: 12,
             itemStyle: {
               barBorderRadius: 10,
-              color: "#02FCFB",
-            },
-          },
-        ],
-      };
-    },
-  },
-};
+              color: '#02FCFB'
+            }
+          }
+        ]
+      }
+    }
+  }
+}
 </script>

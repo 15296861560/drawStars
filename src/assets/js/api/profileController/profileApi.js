@@ -1,110 +1,86 @@
-/*
- * @Description: 
- * @Version: 2.0
- * @Autor: lgy
- * @Date: 2022-11-24 22:05:22
- * @LastEditors: lgy
- * @LastEditTime: 2023-02-17 00:04:20
- */
-/*个人资料相关接口*/
-import {
-  $axios,
-  $axiosGet
-} from "@/assets/js/axios-api/axios-config.js";
+/* 个人资料 / 账号设置相关接口 */
+import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
 
-// 通过id查询个人信息
-function queryUserInfo(id) {
-  return new Promise((resolve, reject) => {
-    let params = {
-      id
-    };
-    $axiosGet(params, "/profileApi/queryUserInfo").then((res) => {
-      resolve(res)
-    }).catch(e => {
-      reject(e)
-    });
-  })
+export default {
+  queryUserInfo: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/queryUserInfo'
+    ),
+
+  updateUserInfo: userInfo => $axios(userInfo, '/profileApi/updateUserInfo'),
+
+  uploadAvatar: formData => $axios(formData, '/profileApi/uploadAvatar'),
+
+  deleteAvatar: param => $axios(param, '/profileApi/deleteAvatar'),
+
+  changePassword: userInfo =>
+    $axios(
+      {
+        id: userInfo.id,
+        password: userInfo.password,
+        newPassword: userInfo.newPassword
+      },
+      '/profileApi/changePassword'
+    ),
+
+  changePhone: param => $axios(param, '/profileApi/changePhone'),
+
+  unbindPhone: param => $axios(param, '/profileApi/unbindPhone'),
+
+  bindEmail: param => $axios(param, '/profileApi/bindEmail'),
+
+  changeEmail: param => $axios(param, '/profileApi/changeEmail'),
+
+  unbindEmail: param => $axios(param, '/profileApi/unbindEmail'),
+
+  getCaptcha: param => $axios(param, '/profileApi/getCaptcha'),
+
+  verifyCaptcha: param => $axios(param, '/profileApi/verifyCaptcha'),
+
+  resetPassword: param => $axios(param, '/profileApi/resetPassword'),
+
+  updateLoginPrefs: param => $axios(param, '/profileApi/updateLoginPrefs'),
+
+  listOauthBinds: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/listOauthBinds'
+    ),
+
+  oauthBind: (platform, id) =>
+    $axiosGet(
+      {
+        id
+      },
+      `/profileApi/oauthBind/${platform}`
+    ),
+
+  oauthUnbind: param => $axios(param, '/profileApi/oauthUnbind'),
+
+  getNotifyPrefs: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/notifyPrefs'
+    ),
+
+  updateNotifyPrefs: param => $axios(param, '/profileApi/notifyPrefs'),
+
+  myRoles: id =>
+    $axiosGet(
+      {
+        id
+      },
+      '/profileApi/myRoles'
+    ),
+
+  deactivateAccount: param => $axios(param, '/profileApi/deactivateAccount'),
+
+  deleteAccount: param => $axios(param, '/profileApi/deleteAccount')
 }
-
-// 修改个人信息
-function updateUserInfo(userInfo) {
-  return new Promise((resolve, reject) => {
-    $axios(userInfo, "/profileApi/updateUserInfo").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
-}
-
-// 修改密码
-function changePassword(userInfo) {
-  let params = {
-    id: userInfo.id,
-    password: userInfo.password,
-    newPassword: userInfo.newPassword
-  }
-  return new Promise((resolve, reject) => {
-    $axios(params, "/profileApi/changePassword").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
-}
-
-// 修改手机号码
-function changePhone(userInfo) {
-  let params = {
-    id: userInfo.id,
-    phone: userInfo.phone,
-  }
-  return new Promise((resolve, reject) => {
-    $axios(params, "/profileApi/updateUserInfo").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
-}
-
-// 获取验证码
-function getCaptcha(param) {
-  return new Promise((resolve, reject) => {
-    $axios(param, "/profileApi/getCaptcha").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
-}
-
-// 验证验证码
-function verifyCaptcha(param) {
-  return new Promise((resolve, reject) => {
-    $axios(param, "/profileApi/verifyCaptcha").then((res) => {
-      if (res.status) {
-        resolve(res)
-      } else {
-        reject(res)
-      }
-    });
-  })
-}
-
-export {
-  queryUserInfo,
-  updateUserInfo,
-  changePassword,
-  changePhone,
-  getCaptcha,
-  verifyCaptcha
-};

@@ -1,31 +1,31 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:23
  * @LastEditors: lgy
- * @LastEditTime: 2023-06-20 23:54:59
+ * @LastEditTime: 2023-07-22 23:55:07
 -->
 <template>
   <div>
     <div class="m-map-search">
       <label
-        >{{ $t("module.echarts.baiduMap.area")
+        >{{ $t('module.echarts.baiduMap.area')
         }}<el-input v-model="location" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.keyWord")
+        {{ $t('module.echarts.baiduMap.keyWord')
         }}<el-input v-model="keyword" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.longitude") }}
+        {{ $t('module.echarts.baiduMap.longitude') }}
         <el-input v-model="markerPo.lat" class="m-map-search-input"
       /></label>
 
       <label>
-        {{ $t("module.echarts.baiduMap.latitude") }}
+        {{ $t('module.echarts.baiduMap.latitude') }}
         <el-input v-model="markerPo.lng" class="m-map-search-input"
       /></label>
     </div>
@@ -33,11 +33,11 @@
     <baidu-map
       class="map"
       ref="map"
-      :apiKey="apiKey"
       :center="point"
       :zoom="13"
       :enableMapClick="true"
       :enableWheelZoom="true"
+      v-if="mapReady"
     >
       <!--点标注-->
       <bm-marker :point="markerPo" :show="true">
@@ -51,13 +51,22 @@
       <bm-scale-control :show="true" :offset="[100, 800]"></bm-scale-control>
 
       <!-- 地图类型控件 -->
-      <bm-map-type-control :show="true" :offset="[100, 30]"></bm-map-type-control>
+      <bm-map-type-control
+        :show="true"
+        :offset="[100, 30]"
+      ></bm-map-type-control>
 
       <!-- 定位控件 -->
-      <bm-location-control :show="true" :offset="[1000, 800]"></bm-location-control>
+      <bm-location-control
+        :show="true"
+        :offset="[1000, 800]"
+      ></bm-location-control>
 
       <!-- 城市列表控件 -->
-      <bm-city-list-control :show="true" :offset="[1000, 30]"></bm-city-list-control>
+      <bm-city-list-control
+        :show="true"
+        :offset="[1000, 30]"
+      ></bm-city-list-control>
 
       <!-- 自定义控件 -->
       <bm-custom-control :show="true" :offset="[600, 800]">
@@ -69,8 +78,8 @@
           >
             <span>{{
               showMorePanel
-                ? $t("module.echarts.baiduMap.showSearchList")
-                : $t("module.echarts.baiduMap.hideSearchList")
+                ? $t('module.echarts.baiduMap.showSearchList')
+                : $t('module.echarts.baiduMap.hideSearchList')
             }}</span>
             <el-icon><ArrowRight /></el-icon>
           </span>
@@ -80,50 +89,71 @@
   </div>
 </template>
 <script setup>
-import { BaiduMap } from "baidu-map-vue3";
-import { onMounted, ref, reactive } from "vue";
-import { showTips } from "@/utils/message/showTips.js";
-import { $axiosGet } from "@/assets/js/axios-api/axios-config.js";
-const apiKey = ref("");
+import BaiduMapVue3 from 'baidu-map-vue3'
+import { BaiduMap } from 'baidu-map-vue3'
+import {
+  onMounted,
+  onBeforeMount,
+  ref,
+  reactive,
+  getCurrentInstance
+} from 'vue'
+import { showTips } from '@/utils/message/showTips.js'
+import { $axiosGet } from '@/assets/js/axios-api/axios-config.js'
+const apiKey = ref('')
+const mapReady = ref(false)
 
 // 中心点
 const point = ref({
   lng: 116.403963,
-  lat: 39.915119,
-});
+  lat: 39.915119
+})
 
 // 位置
-const location = ref("佛山");
+const location = ref('佛山')
 //  关键词
-const keyword = ref("佛山");
+const keyword = ref('佛山')
 // 点标注经纬度
 const markerPo = reactive({
   lng: 39.910925,
-  lat: 116.413384,
-});
+  lat: 116.413384
+})
 
 // 是否显示展示更多面板
-const showMorePanel = ref(true);
+const showMorePanel = ref(true)
 
 // 初始化
 async function init() {
-  const res = await $axiosGet({}, "/baiduApi/getMapApiKey");
+  const app = getCurrentInstance().appContext.app
+
+  const res = await $axiosGet({}, '/baiduApi/getMapApiKey')
   if (res.status) {
-    apiKey.value = res.data;
+    apiKey.value = res.data
+    app.use(BaiduMapVue3, {
+      apiKey: apiKey.value
+    })
+    mapReady.value = true
   } else {
-    showTips("error", "getApiKey fail");
+    showTips('error', 'getApiKey fail')
   }
 }
 
-onMounted(() => {
-  init();
-});
+onBeforeMount(() => {
+  init()
+})
+
+onMounted(async () => {})
 </script>
 
 <style lang="less" scoped>
 .map {
   width: 100%;
   height: 80vh;
+  :v-deep {
+    .anchorBL {
+      display: none;
+    }
+  }
 }
 
 .more_panel {

@@ -1,252 +1,396 @@
 <template>
   <div class="g-list-vertical">
-    <el-row class="mb40">
-      <el-button type="primary" @click="query">{{ $t("btn.query") }}</el-button>
-      <el-button type="primary" @click="insert">{{ $t("btn.create") }}</el-button>
-
-      <el-button type="warning" @click="updateDatas">{{
-        $t("btn.batchUpdate")
-      }}</el-button>
-      <el-button type="danger" @click="batchDelete">{{
-        $t("btn.batchDelete")
-      }}</el-button>
+    <el-row class="mb40" :gutter="20">
+      <el-col :span="16">
+        <div class="flex">
+          <search-item
+            v-for="item in searchItems"
+            :key="item.field"
+            v-model:field="searchInfo[item.field]"
+            :label="item.label"
+            :type="item.type"
+            :placeholder="item.placeholder"
+            :options="item.options"
+            clearable
+            :class="`w-1/${searchItems.length}`"
+          ></search-item>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="flex justify-end">
+          <el-button type="primary" @click="query">{{
+            $t('btn.search')
+          }}</el-button>
+          <el-button type="warning" @click="reset">{{
+            $t('btn.reset')
+          }}</el-button>
+          <el-button type="success" @click="create">{{
+            $t('btn.create')
+          }}</el-button>
+        </div>
+      </el-col>
     </el-row>
 
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item :label="'名称'">
-        <el-input
-          v-model="formInline.name"
-          :placeholder="$t('placeholder.inputName')"
-          ref="name"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="'地址'">
-        <el-input
-          v-model="formInline.address"
-          :placeholder="$t('placeholder.inputAdress')"
-          ref="address"
-        ></el-input>
-      </el-form-item>
-      <el-form-item :label="'类型'">
-        <el-select v-model="formInline.type" :placeholder="$t('placeholder.inputType')">
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="'打开方式'">
-        <el-select
-          v-model="formInline.openWay"
-          :placeholder="$t('placeholder.inputOpenWay')"
-        >
-          <el-option
-            v-for="item in openWayOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="图标">
-        <el-upload
-          class="avatar-uploader"
-          action="#"
-          :show-file-list="false"
-          :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload"
-        >
-          <img v-if="formInline.icon" :src="formInline.icon" class="avatar" />
-          <el-icon class="avatar-uploader-icon" v-else><Plus /></el-icon>
-        </el-upload>
-      </el-form-item>
-    </el-form>
+    <base-table
+      ref="tableRef"
+      :options="tableOptions"
+      :page="pageInfo"
+      max-height="700"
+      @selection-change="handleSelectionChange"
+    >
+    </base-table>
 
-    <el-table :data="tableData" style="width: 100%" max-height="700">
-      <el-table-column type="selection" width="55"> </el-table-column>
-
-      <el-table-column sortable prop="name" label="名称" width="300"> </el-table-column>
-      <el-table-column prop="address" label="地址" width="300"> </el-table-column>
-      <el-table-column prop="type" label="类型" width="120"> </el-table-column>
-      <el-table-column prop="icon" label="图标" width="200">
-        <template #default="scope">
-          <img class="icon" :src="scope.row.date" />
-        </template>
-      </el-table-column>
-      <el-table-column sortable prop="create_time" label="创建时间" width="300">
-      </el-table-column>
-      <el-table-column sortable prop="update_time" label="修改时间" width="300">
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150">
-        <template #default="scope">
-          <el-button @click.native.prevent="deleteRow(scope.$index)" size="small">
-            移除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <base-dialog
+      ref="dialogRef"
+      :options="dialogOptions"
+      :title="dialogTitle"
+      @confirm="query"
+    ></base-dialog>
   </div>
 </template>
-<script>
-import * as webAdressApi from "@/assets/js/api/webAdressController/webAdressApi.js";
+<script setup>
+import { onMounted, ref, reactive, defineAsyncComponent, computed } from 'vue'
+import webAdressApi from '@/assets/js/api/webAdressController/webAdressApi.js'
+import { showTips } from '@/utils/message/showTips.js'
+import { ElMessageBox } from 'element-plus'
+import { dialogFields, tableFields } from './schema/configureSchema'
+import i18n from '@/lang/index.js'
+import { exportFile } from '@/utils/commom/importAndExport.ts'
 
-export default {
-  data() {
-    return {
-      formInline: {
-        name: "",
-        type: "",
-        icon: "",
-        address: "",
-        openWay: "",
-      },
-      tableData: [],
-      openWayOptions: [
-        {
-          label: "新tab页签打开",
-          value: "newTab",
-        },
-        {
-          label: "当前窗口打开",
-          value: "curWindow",
-        },
-      ],
-      typeOptions: [
-        {
-          label: "框架",
-          value: "frame",
-        },
-        {
-          label: "工具",
-          value: "tool",
-        },
-        {
-          label: "资源",
-          value: "resource",
-        },
-      ],
-    };
-  },
-  methods: {
-    // 查询
-    query() {
-      webAdressApi
-        .queryWebsite()
-        .then((result) => {
-          if (result.status) {
-            this.tableData = result.data.map((item) => {
-              item.create_time = new Date(item.create_time).toLocaleString();
-              item.update_time = new Date(item.update_time).toLocaleString();
-              return item;
-            });
-          } else {
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-          }
-        })
-        .catch((err) => {});
-    },
-    // 删除
-    deleteRow(index) {
-      let id = this.tableData[index].id;
-      webAdressApi
-        .deleteWebsite(id)
-        .then((result) => {
-          if (result.status) {
-            this.$message({
-              type: "error",
-              message: "删除成功",
-            });
-            this.query();
-          } else {
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-          }
-        })
-        .catch((err) => {});
-    },
-    // 创建
-    insert() {
-      let nowDate = new Date().getTime();
-      let websiteInfo = {
-        name: this.formInline.name,
-        type: this.formInline.type,
-        icon: this.formInline.icon,
-        address: this.formInline.address,
-        open_way: this.formInline.openWay,
-        create_time: nowDate,
-        update_time: nowDate,
-      };
-      webAdressApi
-        .createWebsite(websiteInfo)
-        .then((result) => {
-          if (result.status) this.query();
-          else
-            this.$message({
-              type: "error",
-              message: result.msg,
-            });
-        })
-        .catch((err) => {});
-    },
-    updateDatas() {},
-    batchDelete() {},
-    handleAvatarSuccess(res, file) {
-      console.log(file);
-      // this.formInline.icon = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      console.log(file.type);
-      let isImg = false;
-      if (
-        file.type === "image/jpeg" ||
-        file.type === "image/svg+xml" ||
-        file.type === "image/png"
-      )
-        isImg = true;
-      let isLt2M = file.size / 1024 / 1024 < 2;
+console.log('webAdressApi', webAdressApi)
 
-      if (!isImg) {
-        this.$message.error("上传头像图片只能是 jpg、svg和png 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isImg && isLt2M;
-    },
+const $t = i18n.global.t
+
+const BaseDialog = defineAsyncComponent(
+  () => import('@/components/base/form/BaseDialog.vue')
+)
+const BaseTable = defineAsyncComponent(
+  () => import('@/components/base/form/BaseTable.vue')
+)
+const SearchItem = defineAsyncComponent(
+  () => import('@/components/base/SearchItem/index.vue')
+)
+
+const confirmMethod = async newData => {
+  const nowDate = new Date().getTime()
+  const websiteInfo = {
+    name: newData.name,
+    type: newData.type,
+    icon: newData.icon,
+    address: newData.address,
+    open_way: newData.open_way,
+    create_time: nowDate,
+    update_time: nowDate
+  }
+  let confirmFun = webAdressApi.createWebsite
+  let successTips = '创建成功'
+  if (newData.id) {
+    websiteInfo.id = newData.id
+    confirmFun = webAdressApi.updateWebsite
+    successTips = '编辑成功'
+  }
+  const result = await confirmFun(websiteInfo)
+  if (result.status) {
+    showTips('success', successTips)
+    query()
+  } else {
+    showTips('error', result.msg)
+  }
+  return result
+}
+
+const initMethod = async params => {
+  const { id } = params
+  const result = await webAdressApi.getWebsiteDetailById(id)
+  return result
+}
+
+const dialogOptions = reactive({
+  fieldList: dialogFields,
+  confirmMethod,
+  confirmParams: {},
+  initMethod,
+  initParams: {},
+  disabled: false
+})
+
+const dialogRef = ref()
+
+const dialogTitle = ref('新增')
+
+const searchInfo = reactive({
+  name: '',
+  type: '',
+  icon: '',
+  address: '',
+  open_way: ''
+})
+
+const tableData = ref([])
+const checkList = ref([])
+const handleSelectionChange = val => {
+  checkList.value = val.map(v => v.id)
+}
+const openWayOptions = ref([
+  {
+    label: '新tab页签打开',
+    value: 'newTab'
   },
-  created() {
-    this.query();
+  {
+    label: '当前窗口打开',
+    value: 'curWindow'
   },
-};
+  {
+    label: '进入模块',
+    value: 'module'
+  }
+])
+const typeOptions = ref([
+  {
+    label: '框架',
+    value: 'frame'
+  },
+  {
+    label: '工具',
+    value: 'tool'
+  },
+  {
+    label: '资源',
+    value: 'resource'
+  },
+  {
+    label: '模块',
+    value: 'module'
+  }
+])
+
+const searchItems = computed(() => [
+  {
+    field: 'name',
+    label: '名称',
+    placeholder: $t('placeholder.inputName'),
+    type: 'input'
+  },
+  {
+    field: 'address',
+    label: '地址',
+    placeholder: $t('placeholder.inputAdress'),
+    type: 'input'
+  },
+  {
+    field: 'type',
+    label: '类型',
+    placeholder: $t('placeholder.inputType'),
+    type: 'select',
+    options: typeOptions.value
+  },
+  {
+    field: 'open_way',
+    label: '打开方式',
+    placeholder: $t('placeholder.inputOpenWay'),
+    type: 'select',
+    options: openWayOptions.value
+  }
+])
+
+const reset = () => {
+  Object.keys(searchInfo).forEach(key => {
+    searchInfo[key] = ''
+  })
+  query()
+}
+
+// 查询
+async function query() {
+  const params = {
+    curPage: pageInfo.curPage,
+    pageSize: pageInfo.pageSize,
+    ...searchInfo
+  }
+
+  getTotal(params)
+
+  const result = await webAdressApi.queryWebsite(params)
+  if (result.status) {
+    tableData.value = result.data.map(item => {
+      item.create_time = new Date(item.create_time).toLocaleString()
+      item.update_time = new Date(item.update_time).toLocaleString()
+      return item
+    })
+  } else {
+    showTips('error', result.msg)
+  }
+}
+
+const getAllData = async () => {
+  let dataList = []
+  const params = {
+    curPage: 1,
+    pageSize: 999,
+    ...searchInfo
+  }
+
+  const result = await webAdressApi.queryWebsite(params)
+  if (result.status) {
+    dataList = result.data.map(item => {
+      item.create_time = new Date(item.create_time).toLocaleString()
+      item.update_time = new Date(item.update_time).toLocaleString()
+      return item
+    })
+  } else {
+    showTips('error', result.msg)
+  }
+
+  return dataList
+}
+
+async function getTotal(params) {
+  const result = await webAdressApi.getWebsiteCount(params)
+  if (result.status) {
+    pageInfo.total = result.data[0]?.['COUNT(*)'] || 0
+  } else {
+    showTips('error', result.msg)
+  }
+}
+// 删除
+async function deleteRow(row) {
+  const id = row.id
+  try {
+    await ElMessageBox.confirm('是否确认删除该数据', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+  } catch (e) {
+    showTips('info', '已取消删除操作')
+    return
+  }
+
+  const result = await webAdressApi.deleteWebsite(id)
+  if (result.status) {
+    showTips('success', '删除成功')
+    query()
+  } else {
+    showTips('error', result.msg)
+  }
+}
+// 编辑
+async function updateRow(row) {
+  dialogTitle.value = '编辑'
+  dialogOptions.disabled = false
+  dialogOptions.initParams = { id: row.id }
+  dialogRef.value?.opentDialog()
+}
+// 创建
+function create() {
+  dialogTitle.value = '新增'
+  dialogOptions.disabled = false
+  dialogRef.value?.opentDialog()
+}
+// 查看
+const getDetail = row => {
+  dialogTitle.value = '查看'
+  dialogOptions.disabled = true
+  dialogOptions.initParams = { id: row.id }
+  dialogRef.value?.opentDialog()
+}
+
+function batchDelete() {
+  ElMessageBox.confirm('此操作将永久删除选中, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      // 构造sql
+      const ids = checkList.value
+      const result = await webAdressApi.batchDeleteWebsite(ids)
+      if (result.status) {
+        // 删除成功后操作
+        checkList.value = []
+        query()
+        showTips('success', '删除成功')
+      }
+    })
+    .catch(() => {
+      showTips('info', '已取消删除')
+    })
+}
+
+const exportSelected = () => {
+  const dataList =
+    tableData.value?.filter(item => checkList.value?.includes(item.id)) || []
+  exportFile(dataList)
+}
+const exportAll = async () => {
+  exportAllLoading.value = true
+  const dataList = await getAllData()
+  exportAllLoading.value = false
+  exportFile(dataList)
+}
+
+const pageTableOperate = [
+  {
+    label: '查看',
+    type: 'primary',
+    action: getDetail
+  },
+  {
+    label: '编辑',
+    type: 'warning',
+    action: updateRow
+  },
+  {
+    label: '删除',
+    type: 'danger',
+    action: deleteRow
+  }
+]
+
+const exportAllLoading = ref(false)
+
+const tableOperate = [
+  {
+    label: '导出选中',
+    type: 'primary',
+    action: exportSelected
+  },
+  {
+    label: '导出全部',
+    type: 'warning',
+    loading: exportAllLoading,
+    action: exportAll
+  },
+  {
+    label: $t('btn.batchDelete'),
+    type: 'danger',
+    action: batchDelete
+  }
+]
+
+const tableOptions = reactive({
+  tableData,
+  tableFields,
+  tableName: '资料列表',
+  showIndex: false,
+  showSelection: true,
+  pageTableOperate,
+  tableOperate,
+  tableOperateWidth: '200'
+})
+
+const pageInfo = reactive({
+  curPage: 1,
+  pageSize: 10,
+  total: 100,
+  curPageChange: query
+})
+
+onMounted(() => {
+  query()
+})
 </script>
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-}
 .avatar {
   width: 40px;
   height: 40px;

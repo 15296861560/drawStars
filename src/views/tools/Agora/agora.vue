@@ -48,7 +48,7 @@
       <el-button type="success" @click="showSetting = true">
         <span> 音视频设备测试 </span>
       </el-button>
-      <el-button type="success" @click="">
+      <el-button type="success" @click="noop">
         <span> 调整通话音量 </span>
       </el-button>
     </div>
@@ -81,192 +81,197 @@
   </div>
 </template>
 <script>
-import AgoraRTC from "agora-rtc-sdk-ng";
-import mediaSettings from "./mediaSettings.vue";
-import { $axios, $axiosGet } from "@/assets/js/axios-api/axios-config.js";
-import { showTips } from "@/utils/message/showTips.js";
-import { userInfoStore } from "@/stores/user-info";
-const userInfo = userInfoStore();
+import AgoraRTC from 'agora-rtc-sdk-ng'
+import mediaSettings from './mediaSettings.vue'
+import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
+import { showTips } from '@/utils/message/showTips.js'
+import { userInfoStore } from '@/stores/user-info'
+const userInfo = userInfoStore()
 
 export default {
   components: {
-    mediaSettings,
+    mediaSettings
   },
   data() {
     return {
-      appId: "",
+      appId: '',
       rtc: {
         localAudioTrack: null,
         localVideoTrack: null,
         client: null,
-        screenClient: null,
+        screenClient: null
       },
       options: null,
       localUser: {
         account: userInfo.getUserId,
-        channelName: "",
-        role: "PUBLISHER",
+        channelName: '',
+        role: 'PUBLISHER'
       },
       users: {},
 
       showSetting: false,
       deviceObj: {
-        cameraId: "",
-        microphoneId: "",
-        playbackDeviceId: "",
+        cameraId: '',
+        microphoneId: '',
+        playbackDeviceId: ''
       },
-      rtcToken: "",
-      loading: true,
-    };
+      rtcToken: '',
+      loading: true
+    }
   },
   computed: {
     userList() {
-      return Object.values(this.users);
-    },
+      return Object.values(this.users)
+    }
   },
   mounted() {
-    this.init();
+    this.init()
   },
   methods: {
     async init() {
-      this.loading = true;
-      this.rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-      this.bindEvent();
-      await this.getAppID();
-      this.loading = false;
+      this.loading = true
+      this.rtc.client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
+      this.bindEvent()
+      await this.getAppID()
+      this.loading = false
     },
     async getAppID() {
-      let res = await $axiosGet({}, "/agoraApi/getAppID");
+      let res = await $axiosGet({}, '/agoraApi/getAppID')
       if (res.status) {
-        this.appId = res.data;
+        this.appId = res.data
       } else {
-        showTips("error", "getAppID fail");
+        showTips('error', 'getAppID fail')
       }
 
-      return this.appId;
+      return this.appId
     },
     async getRTCToken(account, channelName, role) {
-      let rtcToken = "";
       let res = await $axios(
         { user: account, channelName, role },
-        "/agoraApi/getRTCToken"
-      );
+        '/agoraApi/getRTCToken'
+      )
       if (res.status) {
-        this.rtcToken = res.data;
+        this.rtcToken = res.data
       } else {
-        showTips("error", "getRTCToken fail");
+        showTips('error', 'getRTCToken fail')
       }
 
-      return this.rtcToken;
+      return this.rtcToken
     },
     bindEvent() {
-      this.rtc.client.on("user-published", async (user, mediaType) => {
-        if (user.uid.indexOf(this.options.uid) > -1) return;
-        await this.rtc.client.subscribe(user, mediaType);
-        this.$set(this.users, user.uid, user);
-        if (mediaType === "video") {
-          const remoteVideoTrack = user.videoTrack;
+      this.rtc.client.on('user-published', async (user, mediaType) => {
+        if (user.uid.indexOf(this.options.uid) > -1) {
+          return
+        }
+        await this.rtc.client.subscribe(user, mediaType)
+        this.$set(this.users, user.uid, user)
+        if (mediaType === 'video') {
+          const remoteVideoTrack = user.videoTrack
           this.$nextTick(() => {
-            const remotePlayerEl = document.getElementById(`user-${user.uid}`);
-            remotePlayerEl && remoteVideoTrack.play(remotePlayerEl);
-          });
+            const remotePlayerEl = document.getElementById(`user-${user.uid}`)
+            remotePlayerEl && remoteVideoTrack.play(remotePlayerEl)
+          })
         }
-        if (mediaType === "audio") {
-          const remoteAudioTrack = user.audioTrack;
-          remoteAudioTrack.play();
+        if (mediaType === 'audio') {
+          const remoteAudioTrack = user.audioTrack
+          remoteAudioTrack.play()
         }
-        this.rtc.client.on("user-unpublished", (user) => {
-          const remotePlayerEl = document.getElementById(`user-${user.uid}`);
-          remotePlayerEl && remotePlayerEl.remove();
-        });
-      });
+        this.rtc.client.on('user-unpublished', user => {
+          const remotePlayerEl = document.getElementById(`user-${user.uid}`)
+          remotePlayerEl && remotePlayerEl.remove()
+        })
+      })
     },
     async join() {
-      const { account, channelName, role } = this.localUser;
+      const { account, channelName, role } = this.localUser
       this.options = {
         appId: this.appId,
         channel: channelName,
         token: await this.getRTCToken(account, channelName, role),
-        uid: account,
-      };
-      const { appId, channel, token, uid } = this.options;
-      this.rtc.client.join(appId, channel, token, uid);
+        uid: account
+      }
+      const { appId, channel, token, uid } = this.options
+      this.rtc.client.join(appId, channel, token, uid)
     },
     exit() {
-      this.rtc.client.leave();
+      this.rtc.client.leave()
     },
     async openVideo() {
       if (!this.rtc.client?._joinAndNotLeaveYet) {
-        showTips("error", "请先加入房间");
-        return;
+        showTips('error', '请先加入房间')
+        return
       }
       if (this.rtc.localVideoTrack) {
         // 恢复摄像头采集
-        this.rtc.localVideoTrack.setEnabled(true);
-        return;
+        this.rtc.localVideoTrack.setEnabled(true)
+        return
       }
       this.rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack({
-        cameraId: this.deviceObj.cameraId,
-      });
-      await this.rtc.client.publish([this.rtc.localVideoTrack]);
+        cameraId: this.deviceObj.cameraId
+      })
+      await this.rtc.client.publish([this.rtc.localVideoTrack])
 
-      const localPlayerContainer = this.$refs.video;
-      this.rtc.localVideoTrack.play(localPlayerContainer);
+      const localPlayerContainer = this.$refs.video
+      this.rtc.localVideoTrack.play(localPlayerContainer)
     },
     async openAudio() {
       if (!this.rtc.client?._joinAndNotLeaveYet) {
-        showTips("error", "请先加入房间");
-        return;
+        showTips('error', '请先加入房间')
+        return
       }
       this.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack({
-        microphoneId: this.deviceObj.microphoneId,
-      });
-      this.rtc.client.publish([this.rtc.localAudioTrack]);
+        microphoneId: this.deviceObj.microphoneId
+      })
+      this.rtc.client.publish([this.rtc.localAudioTrack])
     },
     closeVideo() {
       // this.rtc.localVideoTrack.close();
-      this.rtc.localVideoTrack.setEnabled(false);
+      this.rtc.localVideoTrack.setEnabled(false)
     },
     closeAudio() {
-      this.rtc.localAudioTrack.close();
+      this.rtc.localAudioTrack.close()
     },
     async shareScreen() {
       if (!this.rtc.client?._joinAndNotLeaveYet) {
-        showTips("error", "请先加入房间");
-        return;
+        showTips('error', '请先加入房间')
+        return
       }
       if (!this.rtc.screenClient) {
-        const { appId, channel, uid } = this.options;
+        const { appId, channel } = this.options
 
-        const account = this.options.uid + "_screen";
+        const account = this.options.uid + '_screen'
         this.options.token = await this.getRTCToken(
           account,
           channel,
           this.localUser.role
-        );
-        const token = this.options.token;
-        this.rtc.screenClient = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-        await this.rtc.screenClient.join(appId, channel, token, account);
+        )
+        const token = this.options.token
+        this.rtc.screenClient = AgoraRTC.createClient({
+          mode: 'rtc',
+          codec: 'vp8'
+        })
+        await this.rtc.screenClient.join(appId, channel, token, account)
       }
 
-      this.rtc.localSreenTrack = await AgoraRTC.createScreenVideoTrack();
-      await this.rtc.screenClient.publish(this.rtc.localSreenTrack);
-      const localPlayerContainer = this.$refs.screen;
-      this.rtc.localSreenTrack.play(localPlayerContainer);
+      this.rtc.localSreenTrack = await AgoraRTC.createScreenVideoTrack()
+      await this.rtc.screenClient.publish(this.rtc.localSreenTrack)
+      const localPlayerContainer = this.$refs.screen
+      this.rtc.localSreenTrack.play(localPlayerContainer)
     },
     closeShare() {
-      this.rtc.localSreenTrack.close();
+      this.rtc.localSreenTrack.close()
     },
     // 选择设备
     selectDevice(deviceObj) {
-      Object.assign(this.deviceObj, deviceObj);
+      Object.assign(this.deviceObj, deviceObj)
       this.rtc.localVideoTrack &&
-        this.rtc.localVideoTrack.setDevice(this.deviceObj.cameraId);
+        this.rtc.localVideoTrack.setDevice(this.deviceObj.cameraId)
       this.rtc.localAudioTrack &&
-        this.rtc.localAudioTrack.setDevice(this.deviceObj.microphoneId);
+        this.rtc.localAudioTrack.setDevice(this.deviceObj.microphoneId)
     },
-  },
-};
+    noop() {}
+  }
+}
 </script>
 
 <style scoped lang="less">

@@ -1,26 +1,38 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": [
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue",
-    "types/*"
+    "types/*",
+    "vite.config.ts"
   ],
   "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "vue",
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true,
+
+    "strict": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+
+    "noEmit": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-    ],
-    "types": ["baidu-map-vue3/typings/global"]
-  },
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
+      "@/*": ["./src/*"]
     }
-  ]
+  }
 }

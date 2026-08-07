@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { echartViewsMixin } from "../mixin/echartViewsMixin";
+import { echartViewsMixin } from '../mixin/echartViewsMixin'
 export default {
   mixins: [echartViewsMixin],
   data() {
@@ -13,38 +13,40 @@ export default {
       myChart: null,
       option: {
         xAxis: {
-          type: "category",
-          data: [],
+          type: 'category',
+          data: []
         },
         yAxis: {
-          type: "value",
+          type: 'value'
         },
         series: [
           {
             data: [],
-            type: "bar",
-          },
-        ],
+            type: 'bar'
+          }
+        ]
       },
 
-      XData: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+      XData: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
 
-      statisticalData: [120, 200, 150, 80, 70, 110, 130],
-    };
+      statisticalData: [120, 200, 150, 80, 70, 110, 130]
+    }
   },
   methods: {
     paint() {
-      this.initData();
+      this.initData()
 
       // 基于准备好的dom，初始化echarts实例
-      this.myChart = this.$echarts.init(document.getElementById("echart-basic-bar"));
+      this.myChart = this.$echarts.init(
+        document.getElementById('echart-basic-bar')
+      )
       // 绘制图表
-      this.myChart.setOption(this.option);
+      this.myChart.setOption(this.option)
     },
     initData() {
-      this.option.xAxis.data = this.XData;
-      this.option.series[0].data = this.statisticalData;
-    },
-  },
-};
+      this.option.xAxis.data = this.XData
+      this.option.series[0].data = this.statisticalData
+    }
+  }
+}
 </script>

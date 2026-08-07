@@ -4,18 +4,15 @@ import EventEmitter from 'events'
 export default class RTMClient extends EventEmitter {
   constructor() {
     super()
-    this.channels = {};
-    this._logined = false;
-    this.client = null;
+    this.channels = {}
+    this._logined = false
+    this.client = null
   }
 
   // subscribe client events
   subscribeClientEvents() {
-    const clientEvents = [
-      'ConnectionStateChanged',
-      'MessageFromPeer'
-    ]
-    clientEvents.forEach((eventName) => {
+    const clientEvents = ['ConnectionStateChanged', 'MessageFromPeer']
+    clientEvents.forEach(eventName => {
       this.client.on(eventName, (...args) => {
         console.log('emit ', eventName, ...args)
         // log event message
@@ -26,12 +23,8 @@ export default class RTMClient extends EventEmitter {
 
   // subscribe channel events
   subscribeChannelEvents(channelName) {
-    const channelEvents = [
-      'ChannelMessage',
-      'MemberJoined',
-      'MemberLeft'
-    ]
-    channelEvents.forEach((eventName) => {
+    const channelEvents = ['ChannelMessage', 'MemberJoined', 'MemberLeft']
+    channelEvents.forEach(eventName => {
       this.channels[channelName].channel.on(eventName, (...args) => {
         console.log('emit ', eventName, args)
         this.emit(eventName, {
@@ -44,16 +37,16 @@ export default class RTMClient extends EventEmitter {
 
   async login(accountName, token, appId) {
     this.accountName = accountName
-    const client = AgoraRTM.createInstance(appId);
+    const client = AgoraRTM.createInstance(appId)
 
     let res = await client.login({
       uid: this.accountName,
       token
     })
-    this.client = client;
-    this.subscribeClientEvents();
+    this.client = client
+    this.subscribeClientEvents()
 
-    return res;
+    return res
   }
 
   async logout() {
@@ -73,14 +66,19 @@ export default class RTMClient extends EventEmitter {
 
   async leaveChannel(name) {
     console.log('leaveChannel', name)
-    if (!this.channels[name] ||
-      (this.channels[name] &&
-        !this.channels[name].joined)) return
+    if (
+      !this.channels[name] ||
+      (this.channels[name] && !this.channels[name].joined)
+    ) {
+      return
+    }
     return this.channels[name].channel.leave()
   }
 
   async sendChannelMessage(text, channelName) {
-    if (!this.channels[channelName] || !this.channels[channelName].joined) return
+    if (!this.channels[channelName] || !this.channels[channelName].joined) {
+      return
+    }
     return this.channels[channelName].channel.sendMessage({
       text
     })
@@ -88,9 +86,12 @@ export default class RTMClient extends EventEmitter {
 
   async sendPeerMessage(text, peerId) {
     console.log('sendPeerMessage', text, peerId)
-    return this.client.sendMessageToPeer({
-      text
-    }, peerId.toString())
+    return this.client.sendMessageToPeer(
+      {
+        text
+      },
+      peerId.toString()
+    )
   }
 
   async queryPeersOnlineStatus(memberId) {
@@ -98,33 +99,35 @@ export default class RTMClient extends EventEmitter {
     return this.client.queryPeersOnlineStatus([memberId])
   }
 
-  //send image
+  // send image
   async uploadImage(blob, peerId) {
     const mediaMessage = await this.client.createMediaMessageByUploading(blob, {
       messageType: 'IMAGE',
       fileName: 'agora.jpg',
       description: 'send image',
-      thumbnail: blob,
+      thumbnail: blob
       // width: 100,
       // height: 200,
       // thumbnailWidth: 50,
-      // thumbnailHeight: 200, 
+      // thumbnailHeight: 200,
     })
     return this.client.sendMessageToPeer(mediaMessage, peerId)
   }
 
   async sendChannelMediaMessage(blob, channelName) {
     console.log('sendChannelMessage', blob, channelName)
-    if (!this.channels[channelName] || !this.channels[channelName].joined) return
+    if (!this.channels[channelName] || !this.channels[channelName].joined) {
+      return
+    }
     const mediaMessage = await this.client.createMediaMessageByUploading(blob, {
       messageType: 'IMAGE',
       fileName: 'agora.jpg',
       description: 'send image',
-      thumbnail: blob,
+      thumbnail: blob
       // width: 100,
       // height: 200,
       // thumbnailWidth: 50,
-      // thumbnailHeight: 200, 
+      // thumbnailHeight: 200,
     })
     return this.channels[channelName].channel.sendMessage(mediaMessage)
   }
@@ -134,13 +137,9 @@ export default class RTMClient extends EventEmitter {
     setTimeout(() => controller.abort(), 1000)
     await this.client.downloadMedia(message.mediaId, {
       cancelSignal: controller.signal,
-      onOperationProgress: ({
-        currentSize,
-        totalSize
-      }) => {
+      onOperationProgress: ({ currentSize, totalSize }) => {
         console.log(currentSize, totalSize)
-      },
+      }
     })
   }
-
 }

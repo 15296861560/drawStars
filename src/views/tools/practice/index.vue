@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:22
@@ -12,25 +12,33 @@
       <el-col :xs="24" :sm="12">
         <div class="m-box">
           <div class="m-box-title">
-            <div class="m-btn msg">{{ $t("btn.sourceCode") }}</div>
+            <div class="m-btn msg">{{ $t('btn.sourceCode') }}</div>
             <div>
               <el-button type="primary" size="small" @click="refresh"
-                ><el-icon><RefreshRight /></el-icon>>{{ $t("btn.reset") }}</el-button
+                ><el-icon><RefreshRight /></el-icon>>{{
+                  $t('btn.reset')
+                }}</el-button
               >
               <el-button type="primary" size="small" @click="running"
-                ><el-icon><VideoPlay /></el-icon>{{ $t("btn.clickRun") }}</el-button
+                ><el-icon><VideoPlay /></el-icon
+                >{{ $t('btn.clickRun') }}</el-button
               >
             </div>
           </div>
           <div class="m-box-main">
-            <textarea v-model="content" class="form-control" rows="" cols=""></textarea>
+            <textarea
+              v-model="content"
+              class="form-control"
+              rows=""
+              cols=""
+            ></textarea>
           </div>
         </div>
       </el-col>
       <el-col :xs="24" :sm="12">
         <div class="m-box">
           <div class="m-box-title">
-            <div class="m-btn msg">{{ $t("btn.runningRes") }}</div>
+            <div class="m-btn msg">{{ $t('btn.runningRes') }}</div>
           </div>
           <div class="m-box-main">
             <iframe ref="showPage" class="m-iframe"></iframe>
@@ -41,40 +49,39 @@
   </div>
 </template>
 <script>
-import { getContent } from "@/assets/js/api/commomController/commomApi.js";
+import { findReq } from '@/assets/js/api'
 export default {
   data() {
     return {
-      content: "",
-    };
+      content: ''
+    }
   },
   methods: {
-    getTemplate() {
-      let _this = this;
-      getContent().then((res) => {
-        if (res.status) {
-          this.content = res.data;
-        }
-      });
+    async getTemplate() {
+      const req = findReq('commomController', 'getContent')
+      const res = await req()
+      if (res.status) {
+        this.content = res.data
+      }
     },
     running() {
-      let page = this.$refs.showPage;
-      let doc = page.contentDocument || page.contentWindow.document; // W3C || IE
+      let page = this.$refs.showPage
+      let doc = page.contentDocument || page.contentWindow.document // W3C || IE
       // doc.designMode = "on";//控制整个文档是否可编辑
-      //当一个HTML元素的contenteditable属性被设置为true时，document.execCommand() 方法便可使用。
+      // 当一个HTML元素的contenteditable属性被设置为true时，document.execCommand() 方法便可使用。
       // doc.contentEditable = true;//让iframe可编辑
-      doc.open();
-      doc.write(this.content);
-      doc.close();
+      doc.open()
+      doc.write(this.content)
+      doc.close()
     },
     refresh() {
-      this.getTemplate();
-    },
+      this.getTemplate()
+    }
   },
   mounted() {
-    this.getTemplate();
+    this.getTemplate()
   },
-  destroyed() {},
-};
+  destroyed() {}
+}
 </script>
 <style></style>

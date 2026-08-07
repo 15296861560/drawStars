@@ -6,73 +6,87 @@
  * @LastEditors: lgy
  * @LastEditTime: 2022-12-31 10:28:48
  */
-import { createRouter, createWebHistory } from "vue-router";
-import MyEcharts from "@/router/homePages/myEcharts.ts";
-import MyComponents from "@/router/homePages/myComponents.ts";
-import Tools from "@/router/homePages/tools.ts";
-import Special from "@/router/homePages/special.ts";
-import Data from "@/router/homePages/data.ts";
-import Multimedia from "@/router/homePages/multimedia.ts";
-import Case from "@/router/homePages/case.ts";
-import Lab from "@/router/homePages/lab.ts";
-import Resource from "@/router/homePages/resource.ts";
-import Profile from "@/router/homePages/profile.ts";
+import { createRouter, createWebHistory } from 'vue-router'
+
+const routeFiles = import.meta.glob('@/router/homePages/*.ts', { eager: true })
+
+const homePages: Array<any> = []
+Object.keys(routeFiles).forEach(path => {
+  homePages.push(...(routeFiles[path] as any).default)
+})
 
 export const RouterList = [
   {
-    path: "/login",
-    alias: "/",
-    name: "登录",
-    component: () => import("@/views/login/login.vue"),
+    path: '/login',
+    alias: '/',
+    name: '登录',
+    component: () => import('@/views/login/login.vue'),
     meta: {
-      title: ["登录"],
-    },
+      title: ['登录']
+    }
   },
   {
-    path: "/home",
-    name: "home",
-    component: () => import("@/views/Index.vue"),
+    path: '/forgetPassword',
+    name: '忘记密码',
+    component: () => import('@/views/login/forgetPassword.vue'),
+    meta: {
+      title: ['忘记密码']
+    }
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: () => import('@/views/Index.vue'),
     children: [
       {
-        path: "/home/homepage",
-        name: "首页",
-        component: () => import("@/views/homePages/HomePage.vue"),
+        path: '/home/homepage',
+        name: '首页',
+        component: () => import('@/views/homePages/HomePage.vue'),
         meta: {
-          title: ["首页"],
-          keepAlive: true,
-        },
+          title: ['首页'],
+          keepAlive: true
+        }
       },
       {
-        path: "/404",
-        name: "NotFound",
+        path: '/404',
+        name: 'NotFound',
         meta: {
-          title: ["404"],
-          keepAlive: true,
+          title: ['404'],
+          keepAlive: true
         },
-        component: () => import("@/views/pages/NotFound.vue"),
+        component: () => import('@/views/pages/NotFound.vue')
       },
-      ...MyEcharts,
-      ...MyComponents,
-      ...Tools,
-      ...Special,
-      ...Data,
-      ...Multimedia,
-      ...Case,
-      ...Lab,
-      ...Resource,
-      ...Profile,
-    ],
+      ...homePages
+    ]
+  },
+  {
+    path: '/survey/fill/:shareCode',
+    name: '填写问卷',
+    component: () => import('@/views/survey/fill/index.vue'),
+    meta: {
+      title: ['填写问卷'],
+      public: true
+    }
+  },
+  {
+    path: '/survey/result/:responseId',
+    name: '问卷结果',
+    component: () => import('@/views/survey/result/index.vue'),
+    meta: {
+      title: ['问卷结果'],
+      public: true
+    }
   },
   // 所有未定义路由，全部重定向到404页
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404'
-  },
-];
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: RouterList,
-});
+  routes: RouterList
+})
 
-export default router;
+export default router

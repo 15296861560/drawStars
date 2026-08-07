@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:23
@@ -8,7 +8,7 @@
 -->
 <template>
   <div>
-    <footer class="footer">Copyright © {{ $t("footer.msg") }}</footer>
+    <footer class="footer">Copyright © {{ $t('footer.msg') }}</footer>
   </div>
 </template>
 <style scoped>

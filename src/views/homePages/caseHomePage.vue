@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-09-29 23:49:47
@@ -20,14 +20,14 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../mixin/homePageMixin";
+import { homePageMixin } from '../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "caseHomePage",
-      routes: ["boards", "demos", "games"],
-    };
-  },
-};
+      homepage: 'caseHomePage',
+      routes: ['boards', 'demos', 'games']
+    }
+  }
+}
 </script>

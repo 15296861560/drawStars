@@ -1,15 +1,15 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:11
  * @LastEditors: lgy
- * @LastEditTime: 2022-11-28 23:40:01
+ * @LastEditTime: 2023-07-30 02:19:58
 -->
 <template>
   <div class="commit">
     <div class="title-row">
-      <div class="commit-title">{{ $t("commit.updateLog") }}</div>
+      <div class="commit-title">{{ $t('commit.updateLog') }}</div>
     </div>
     <div class="commit-main">
       <el-timeline :reverse="false">
@@ -26,50 +26,53 @@
   </div>
 </template>
 
-<script>
-import { getCommitInfo } from "@/assets/js/api/commomController/commomApi.js";
-export default {
-  name: "CommitInfo",
-  props: {},
-  data() {
-    return {
-      commitInfoList: [],
-    };
-  },
-  methods: {
-    getCommitInfoList() {
-      getCommitInfo()
-        .then((res) => {
-          if (res.data.length > 15) {
-            this.commitInfoList = res.data.splice(0, 15);
-          } else {
-            this.commitInfoList = res.data;
-          }
+<script setup>
+import axios from 'axios'
+import { onMounted, reactive } from 'vue'
+import { showTips } from '@/utils/message/showTips.js'
+
+const commitInfoList = reactive([])
+
+async function getCommitInfoList() {
+  const accout = 15296861560
+  const warehouse = 'drawStars'
+  const url = `https://api.github.com/repos/${accout}/${warehouse}/commits?sha=vue3`
+  let res = await axios.get(url).catch(e => {
+    showTips('error', e.toString())
+  })
+  if (res.status === 200) {
+    res.data.forEach(c => {
+      let message = c.commit?.message
+      if (message && message.startsWith('feat')) {
+        commitInfoList.push({
+          date: c.commit?.author?.date,
+          feat: message.slice(5)
         })
-        .catch((e) => {
-          console.log(e);
-        });
-    },
-  },
-  mounted() {
-    // 首页刚加载时$axios里无法访问$store，所以
-    this.$nextTick(() => {
-      this.getCommitInfoList();
-    });
-  },
-};
+      }
+    })
+  } else {
+    showTips('error', res.toString())
+  }
+}
+
+onMounted(() => {
+  getCommitInfoList()
+})
 </script>
 
 <style lang="less" scoped>
+/* 与依赖信息卡片对齐：标题 5vh + 上下边距 4vh + 11 行 × 5vh */
 .commit {
   display: flex;
-  width: 49%;
+  width: 100%;
+  height: calc(5vh + 4vh + 55vh);
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
   text-align: left;
   .title-row {
     display: flex;
+    flex-shrink: 0;
     padding-left: 2vw;
     align-items: center;
     height: 5vh;
@@ -81,7 +84,9 @@ export default {
     }
   }
   .commit-main {
-    display: block;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     padding-left: 2vw;
     padding-right: 2vw;
     margin-top: 2vh;

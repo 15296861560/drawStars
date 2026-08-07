@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-05-23 23:24:08
@@ -9,16 +9,13 @@
 export default {
   state: {
     userInfo: {
-      name: "",
+      name: '',
       userId: 0
     },
-    token: ""
+    token: ''
   },
   mutations: {
-    changeUserInfo(state, {
-      attr,
-      val
-    }) {
+    changeUserInfo(state, { attr, val }) {
       state[attr] = val
     }
   },
@@ -34,19 +31,14 @@ export default {
     },
     getToken(state) {
       return state.token
-    },
+    }
   },
   actions: {
-    changeUserInfo(context, {
-      attr,
-      val
-    }) {
+    changeUserInfo(context, { attr, val }) {
       context.commit('changeUserInfo', {
         attr,
         val
       })
     }
   }
-
-
 }

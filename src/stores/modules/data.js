@@ -1,13 +1,11 @@
 export default {
   state: {
-    data:{},
-    str:"",
-    dataList:[],
-    routeList:[],
+    data: {},
+    str: '',
+    dataList: [],
+    routeList: []
   },
-  mutations: {
-
-  },
+  mutations: {},
   getters: {
     getData(state) {
       return state.data
@@ -18,21 +16,16 @@ export default {
     getDataList(state) {
       return state.dataList
     },
-    getRouteList() {
+    getRouteList(state) {
       return state.routeList
-    },
+    }
   },
   actions: {
-    changeData(context, {
-      attr,
-      val
-    }) {
+    changeData(context, { attr, val }) {
       context.commit('changeData', {
         attr,
         val
       })
     }
   }
-
-
 }

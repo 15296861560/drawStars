@@ -14,13 +14,19 @@
             <div
               class="icon"
               :class="
-                isMicrophoneTesting ? 'drawstars-icon-mic-on' : 'drawstars-icon-mic-off'
+                isMicrophoneTesting
+                  ? 'drawstars-icon-mic-on'
+                  : 'drawstars-icon-mic-off'
               "
               @click="testMicrophone"
             ></div>
             <div
               class="icon"
-              :class="isOpenViveo ? 'drawstars-icon-video' : 'drawstars-icon-video-off'"
+              :class="
+                isOpenViveo
+                  ? 'drawstars-icon-video'
+                  : 'drawstars-icon-video-off'
+              "
               @click="debugCamera"
             ></div>
           </div>
@@ -75,7 +81,10 @@
                 ><Microphone v-if="isMicrophoneTesting" /> <Mute v-else
               /></el-icon>
               <div class="progress-bg">
-                <div class="progress" :style="{ width: volumeLevel + '%' }"></div>
+                <div
+                  class="progress"
+                  :style="{ width: volumeLevel + '%' }"
+                ></div>
               </div>
             </div>
             <el-button type="success" @click="confirm">
@@ -89,123 +98,125 @@
 </template>
 
 <script>
-import AgoraRTC from "agora-rtc-sdk-ng";
+import AgoraRTC from 'agora-rtc-sdk-ng'
 export default {
-  name: "MediaSettings",
+  name: 'MediaSettings',
   props: {
-    showSetting: Boolean,
+    showSetting: Boolean
   },
 
   data() {
     return {
-      cameraId: "",
+      cameraId: '',
       cameras: [],
-      microphoneId: "",
+      microphoneId: '',
       microphones: [],
-      playbackDeviceId: "",
+      playbackDeviceId: '',
       playbackDevices: [],
       volumeLevel: 0,
       isMicrophoneTesting: false,
       mediaStreamTrack: null,
-      isOpenViveo: false,
-    };
+      isOpenViveo: false
+    }
   },
   methods: {
     init() {
-      this.getDevices();
+      this.getDevices()
     },
     // 获取设备列表
     getDevices() {
-      AgoraRTC.getCameras().then((devices) => {
-        this.cameras = devices;
+      AgoraRTC.getCameras().then(devices => {
+        this.cameras = devices
         if (devices.length) {
-          this.cameraId = devices[0].deviceId;
+          this.cameraId = devices[0].deviceId
         }
-      });
-      AgoraRTC.getMicrophones().then((devices) => {
-        this.microphones = devices;
+      })
+      AgoraRTC.getMicrophones().then(devices => {
+        this.microphones = devices
         if (devices.length) {
-          this.microphoneId = devices[0].deviceId;
+          this.microphoneId = devices[0].deviceId
         }
-      });
-      AgoraRTC.getPlaybackDevices().then((devices) => {
-        this.playbackDevices = devices;
+      })
+      AgoraRTC.getPlaybackDevices().then(devices => {
+        this.playbackDevices = devices
         if (devices.length) {
-          this.playbackDeviceId = devices[0].deviceId;
+          this.playbackDeviceId = devices[0].deviceId
         }
-      });
+      })
     },
     debugCamera() {
       if (!this.cameraId) {
-        return;
+        return
       }
-      this.isOpenViveo = !this.isOpenViveo;
+      this.isOpenViveo = !this.isOpenViveo
       if (this.isOpenViveo) {
-        this.playVideo();
+        this.playVideo()
       } else {
-        this.stopVideo();
+        this.stopVideo()
       }
     },
     // 播放视频
     playVideo() {
-      let video = this.$refs.video;
+      let video = this.$refs.video
 
-      AgoraRTC.createCameraVideoTrack({ cameraId: this.cameraId }).then((videoTrack) => {
-        this.mediaStreamTrack = videoTrack.getMediaStreamTrack();
-        video.srcObject = new MediaStream([this.mediaStreamTrack]);
-        video.play();
-      });
+      AgoraRTC.createCameraVideoTrack({ cameraId: this.cameraId }).then(
+        videoTrack => {
+          this.mediaStreamTrack = videoTrack.getMediaStreamTrack()
+          video.srcObject = new MediaStream([this.mediaStreamTrack])
+          video.play()
+        }
+      )
     },
     // 停止播放
     stopVideo() {
-      let video = this.$refs.video;
+      let video = this.$refs.video
       if (!video || !video.srcObject) {
-        return;
+        return
       }
-      this.mediaStreamTrack.stop();
-      video.srcObject = null;
+      this.mediaStreamTrack.stop()
+      video.srcObject = null
     },
     // 扬声器测试
     testPlayer() {
-      let audio = this.$refs.music;
-      audio.play();
+      let audio = this.$refs.music
+      audio.play()
     },
     // 麦克风测试
     testMicrophone() {
-      this.isMicrophoneTesting = !this.isMicrophoneTesting;
+      this.isMicrophoneTesting = !this.isMicrophoneTesting
       if (!this.isMicrophoneTesting) {
-        return;
+        return
       }
-      AgoraRTC.createMicrophoneAudioTrack({ microphoneId: this.microphoneId }).then(
-        (audioTrack) => {
-          setInterval(() => {
-            this.volumeLevel = audioTrack.getVolumeLevel() * 100;
-            if (!this.isMicrophoneTesting) {
-              audioTrack.stop();
-              this.volumeLevel = 0;
-            }
-          }, 500);
-        }
-      );
+      AgoraRTC.createMicrophoneAudioTrack({
+        microphoneId: this.microphoneId
+      }).then(audioTrack => {
+        setInterval(() => {
+          this.volumeLevel = audioTrack.getVolumeLevel() * 100
+          if (!this.isMicrophoneTesting) {
+            audioTrack.stop()
+            this.volumeLevel = 0
+          }
+        }, 500)
+      })
     },
     cancel() {
-      this.$parent.showSetting = false;
+      this.$parent.showSetting = false
     },
     confirm() {
-      this.$parent.showSetting = false;
+      this.$parent.showSetting = false
       let obj = {
         cameraId: this.cameraId,
         microphoneId: this.microphoneId,
-        playbackDeviceId: this.playbackDeviceId,
-      };
-      this.$emit("confirm", obj);
-    },
+        playbackDeviceId: this.playbackDeviceId
+      }
+      this.$emit('confirm', obj)
+    }
   },
   mounted() {},
   created() {
-    this.init();
-  },
-};
+    this.init()
+  }
+}
 </script>
 
 <style lang="less" scoped>

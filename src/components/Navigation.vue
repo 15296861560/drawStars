@@ -1,47 +1,63 @@
 <template>
   <div class="navigation">
-    <el-breadcrumb>
-      <!-- 路由导航 -->
-      <el-breadcrumb-item
-        v-show="websiteInfo.isPC"
-        v-for="(item, index) in titleData"
-        :key="index"
-      >
-        <span @click="toFirstPage" v-if="index === 0" class="firstPage"
-          ><el-icon class="mr4"><Menu /></el-icon>{{ item }}</span
+    <div class="left-part">
+      <top-home-menu v-if="showTopLayoutMenu" />
+      <el-breadcrumb v-else>
+        <!-- 路由导航 -->
+        <el-breadcrumb-item
+          v-show="websiteInfo.isPC"
+          v-for="(item, index) in titleData"
+          :key="index"
         >
-        <span v-if="index !== 0" @click="goPage(index)" class="title">{{ item }}</span>
-      </el-breadcrumb-item>
+          <span @click="toFirstPage" v-if="index === 0" class="firstPage"
+            ><el-icon class="mr4"> <Menu /> </el-icon>{{ item }}</span
+          >
+          <span v-if="index !== 0" @click="goPage(index)" class="title">{{
+            item
+          }}</span>
+        </el-breadcrumb-item>
 
-      <el-breadcrumb-item v-show="!websiteInfo.isPC">
-        <span @click="toFirstPage" class="firstPage"
-          ><el-icon><Menu /></el-icon>{{ titleData[0] }}</span
-        >
-      </el-breadcrumb-item>
-    </el-breadcrumb>
+        <el-breadcrumb-item v-show="!websiteInfo.isPC">
+          <span @click="toFirstPage" class="firstPage"
+            ><el-icon> <Menu /> </el-icon>{{ titleData[0] }}</span
+          >
+        </el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
 
     <div class="right-part">
+      <!-- 错误日志记录 -->
+      <errorLog></errorLog>
       <!-- 全屏 -->
       <el-icon
         class="full-screen u-icon"
         :title="$t('navigation.fullScreen')"
         @click="fullScreen"
-        ><FullScreen
-      /></el-icon>
+      >
+        <FullScreen />
+      </el-icon>
       <!-- 消息 -->
-      <el-icon
-        class="message u-icon"
-        :title="$t('navigation.message')"
-        @click="toSeeMessage"
-        ><Message
-      /></el-icon>
+      <el-badge
+        :value="unreadCount"
+        :hidden="!unreadCount"
+        :max="99"
+        class="message-badge"
+      >
+        <el-icon
+          class="message u-icon"
+          :title="$t('navigation.message')"
+          @click="toSeeMessage"
+        >
+          <Message />
+        </el-icon>
+      </el-badge>
       <!-- 选择语言 -->
       <el-dropdown
         class="selectLang"
         :title="$t('navigation.selectLang')"
         @command="handleSetLanguage"
       >
-        <div style="height: 3vh" class="u-icon drawstars-icon-lang"></div>
+        <div class="u-icon drawstars-icon-lang language"></div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :disabled="language === 'zh'" command="zh">
@@ -55,7 +71,10 @@
       </el-dropdown>
 
       <el-dropdown class="profile">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link profile-link">
+          <el-avatar :size="28" :src="userAvatar || undefined" class="nav-avatar">
+            {{ (userName || 'U').slice(0, 1) }}
+          </el-avatar>
           {{ userName }}
           <el-icon class="el-icon--right">
             <ArrowDown />
@@ -64,14 +83,16 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click.native="toPersonalCenter">{{
-              $t("navigation.profile")
+              $t('navigation.profile')
             }}</el-dropdown-item>
-            <el-dropdown-item>{{ $t("navigation.setting") }}</el-dropdown-item>
+            <el-dropdown-item @click.native="openLayoutSettings">{{
+              $t('navigation.layoutSettings')
+            }}</el-dropdown-item>
             <el-dropdown-item @click.native="toChangePasswork">{{
-              $t("navigation.changePasswork")
+              $t('navigation.changePasswork')
             }}</el-dropdown-item>
             <el-dropdown-item divided @click.native="logout">{{
-              $t("navigation.logOut")
+              $t('navigation.logOut')
             }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -87,136 +108,183 @@
 </template>
 
 <script>
-import storage from "@/utils/commom/storage";
-import { userInfoStore } from "@/stores/user-info";
-import { settingInfoStore } from "@/stores/setting-info";
-import messageSide from "@/views/message/messageSide.vue";
+import storage from '@/utils/commom/storage'
+import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
+import { userInfoStore } from '@/stores/user-info'
+import { settingInfoStore } from '@/stores/setting-info'
+import messageSide from '@/views/message/messageSide.vue'
+import errorLog from '@/components/part/errorLog.vue'
+import TopHomeMenu from '@/components/layout/TopHomeMenu.vue'
+import { layoutSettingsStore } from '@/stores/layout-settings'
+import { notifyStore } from '@/stores/notify'
 
-const settingInfo = settingInfoStore();
+const settingInfo = settingInfoStore()
+const userInfo = userInfoStore()
+const notifyInfo = notifyStore()
 
 export default {
-  name: "Navigation",
+  name: 'Navigation',
   props: {
     titleData: Array,
-    default: [],
+    default: []
   },
-  inject: ["websiteInfo"],
+  inject: ['websiteInfo'],
   components: {
     messageSide,
+    errorLog,
+    TopHomeMenu
   },
   data() {
     return {
-      activeIndex: "1",
-      activeIndex2: "1",
-      search: "",
-      screenHeight: document.documentElement.clientHeight, //获取浏览器高度
-      screenWidth: document.documentElement.clientWidth, //获取浏览器宽度
-      isFullscreen: false, //是否全屏显示
-      showMessageBox: false, //是否显示消息盒子
-    };
+      activeIndex: '1',
+      activeIndex2: '1',
+      search: '',
+      screenHeight: document.documentElement.clientHeight, // 获取浏览器高度
+      screenWidth: document.documentElement.clientWidth, // 获取浏览器宽度
+      isFullscreen: false, // 是否全屏显示
+      showMessageBox: false // 是否显示消息盒子
+    }
   },
   computed: {
     language() {
-      return settingInfo.getLanguage;
+      return settingInfo.getLanguage
     },
     userName() {
-      const userInfo = userInfoStore();
-      return userInfo.getUserName;
+      return userInfo.getUserName
     },
+    userAvatar() {
+      return userInfo.getAvatar
+    },
+    showTopLayoutMenu() {
+      const layout = layoutSettingsStore()
+      return this.websiteInfo.isPC && layout.navType === 3
+    },
+    unreadCount() {
+      return notifyInfo.unreadCount
+    }
   },
   methods: {
-    initMessage() {},
+    initMessage() {
+      if (userInfo.getUserId) {
+        notifyInfo.fetchUnreadCount()
+      }
+    },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      console.log(key);
+      console.log(key, keyPath)
+      console.log(key)
       // if(key=='1-3')this.$router.push('https://cn.bing.com/');
       // if(key=='1-3')window.localtion.href = 'https://cn.bing.com/';
     },
     goPage(index) {
-      let path = this.$route.path;
-      let paths = path.split("/");
-      let toPath = "";
+      let path = this.$route.path
+      let paths = path.split('/')
+      let toPath = ''
       for (let i = 1; i <= index + 1; i++) {
-        toPath += "/" + paths[i];
+        toPath += '/' + paths[i]
       }
-      //当前路径不跳转
-      if (toPath == path) return;
+      // 当前路径不跳转
+      if (toPath == path) {
+        return
+      }
       this.$router.push({
-        path: toPath,
-      });
+        path: toPath
+      })
     },
     toPersonalCenter() {
-      let toPath = "/home/personalCenter/personalProfile";
-      this.toNewPath(toPath);
+      let toPath = '/home/personalCenter/basicInfo'
+      this.toNewPath(toPath)
     },
     toChangePasswork() {
-      let toPath = "/home/personalCenter/changePassword";
-      this.toNewPath(toPath);
+      let toPath = '/home/personalCenter/credentials'
+      this.toNewPath(toPath)
     },
     toNewPath(toPath) {
-      let path = this.$route.path;
+      let path = this.$route.path
 
-      if (path === toPath) return;
+      if (path === toPath) {
+        return
+      }
 
       this.$router.push({
-        path: toPath,
-      });
+        path: toPath
+      })
     },
     logout() {
-      const userInfo = userInfoStore();
-      userInfo.changeUserInfo({});
+      if (isSkipLoginMode()) {
+        applySkipLoginSession()
+        this.$message({
+          type: 'info',
+          message: '当前为跳过登录模式，已恢复本地预览会话'
+        })
+        return
+      }
+      if (userInfo.clearUserInfo) {
+        userInfo.clearUserInfo()
+      } else {
+        userInfo.changeUserInfo({})
+        userInfo.updateToken('')
+      }
+      import('@/stores/permission').then(({ permissionStore }) => {
+        permissionStore().clearPermission()
+      })
+      notifyInfo.clear()
 
       this.$router.push({
-        path: "/login",
-      });
+        path: '/login'
+      })
     },
     toFirstPage() {
       this.$router
         .push({
-          path: "/home/homepage",
+          path: '/home/homepage'
         })
-        .catch(() => {});
+        .catch(() => {})
     },
     handleSetLanguage(lang) {
-      this.$i18n.locale = lang;
-      storage.local.save("LANGUAGE", lang);
-      settingInfo.changeSettingInfo(lang);
+      this.$i18n.locale = lang
+      storage.local.save('LANGUAGE', lang)
+      settingInfo.changeSettingInfo(lang)
       this.$message({
-        message: this.$t("tips.switchLanguageSuccess"),
-        type: "success",
-      });
+        message: this.$t('tips.switchLanguageSuccess'),
+        type: 'success'
+      })
     },
-    //全屏
+    // 全屏
     fullScreen() {
-      //该方法进入全屏的方式与f11有差异
+      // 该方法进入全屏的方式与f11有差异
       if (this.isFullscreen) {
-        this.isFullscreen = false;
-        document.webkitCancelFullScreen();
+        this.isFullscreen = false
+        document.webkitCancelFullScreen()
       } else {
-        this.isFullscreen = true;
-        document.documentElement.webkitRequestFullScreen();
+        this.isFullscreen = true
+        document.documentElement.webkitRequestFullScreen()
       }
     },
     // 查看消息
     toSeeMessage() {
       if (this.showMessageBox) {
-        this.closeMessageBox();
+        this.closeMessageBox()
       } else {
-        this.showMessageBox = true;
+        this.showMessageBox = true
       }
     },
     closeMessageBox() {
-      let msgSide = document.getElementById("msgSide");
-      msgSide.classList.add("slideOutRight");
+      let msgSide = document.getElementById('msgSide')
+      msgSide.classList.add('slideOutRight')
       setTimeout(() => {
-        msgSide.classList.remove("slideOutRight");
-        this.showMessageBox = false;
-      }, 500);
+        msgSide.classList.remove('slideOutRight')
+        this.showMessageBox = false
+      }, 500)
     },
+    openLayoutSettings() {
+      layoutSettingsStore().openDrawer()
+    }
   },
   watch: {},
-  mounted() {},
-};
+  mounted() {
+    this.initMessage()
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -226,24 +294,63 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
+  min-height: 48px;
+
+  .left-part {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
 
   .right-part {
     display: flex;
     align-items: center;
+
     .full-screen {
       margin-left: 1vw;
       cursor: pointer;
     }
-    .message {
+
+    .message-badge {
       margin-left: 1vw;
+      line-height: 1;
+
+      :deep(.el-badge__content) {
+        transform: translateY(-4px) translateX(8px);
+      }
+    }
+
+    .message {
       cursor: pointer;
     }
+
     .selectLang {
       margin-left: 1vw;
+
+      .language {
+        height: 3vh;
+        outline: none;
+      }
     }
 
     .profile {
       margin-left: 2vw;
+
+      .el-dropdown-link {
+        outline: none;
+      }
+
+      .profile-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .nav-avatar {
+        flex-shrink: 0;
+      }
     }
   }
 }
@@ -251,19 +358,23 @@ export default {
 .title:hover {
   color: #4395ff;
 }
+
 .title:active {
   color: aqua;
 }
+
 .firstPage {
   display: flex;
   color: black;
   font-weight: bold;
   cursor: pointer;
 }
+
 .firstPage:hover {
   color: #4395ff;
   font-weight: bold;
 }
+
 .firstPage:active {
   color: aqua;
   font-weight: bold;

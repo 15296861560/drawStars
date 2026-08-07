@@ -1,5 +1,5 @@
 /*
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-24 23:56:05
@@ -8,13 +8,21 @@
  */
 const storage = {
   local: {
-    save(key:string, value:string) {
+    save(key: string, value: string) {
       localStorage.setItem(key, JSON.stringify(value))
     },
-    get(key:string, defaultValue:string = '') {
-      return JSON.parse(localStorage.getItem(key)) || defaultValue
+    get(key: string, defaultValue: string = '') {
+      const raw = localStorage.getItem(key)
+      if (raw === null) {
+        return defaultValue
+      }
+      try {
+        return JSON.parse(raw) || defaultValue
+      } catch {
+        return defaultValue
+      }
     },
-    remove(key:string) {
+    remove(key: string) {
       localStorage.removeItem(key)
     },
     clear() {
@@ -22,13 +30,21 @@ const storage = {
     }
   },
   session: {
-    save(key:string, value:string) {
+    save(key: string, value: string) {
       sessionStorage.setItem(key, JSON.stringify(value))
     },
-    get(key:string, defaultValue:string = '') {
-      return JSON.parse(sessionStorage.getItem(key)) || defaultValue
+    get(key: string, defaultValue: string = '') {
+      const raw = sessionStorage.getItem(key)
+      if (raw === null) {
+        return defaultValue
+      }
+      try {
+        return JSON.parse(raw) || defaultValue
+      } catch {
+        return defaultValue
+      }
     },
-    remove(key:string) {
+    remove(key: string) {
       sessionStorage.removeItem(key)
     },
     clear() {

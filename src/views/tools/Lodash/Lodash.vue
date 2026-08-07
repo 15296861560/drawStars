@@ -1,18 +1,14 @@
 <template>
   <div>
-    <div class="g-home-module">
-      
-    </div>
+    <div class="g-home-module"></div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {}
   },
-  methods: {
- 
-  },
-};
+  methods: {}
+}
 </script>
 <style></style>

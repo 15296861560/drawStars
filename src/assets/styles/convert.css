@@ -1,0 +1,201 @@
+.ql-toolbar{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ql-toolbar .ql-formats .ql-picker .ql-picker-label{
+    display: flex;
+}
+
+@font-face {
+                font-family: 'SimSun-local';
+                src: local('SimSun');
+            }
+@font-face {
+    font-family: 'SimHei-local';
+    src: local('SimHei');
+}
+@font-face {
+    font-family: 'KaiTi-local';
+    src: local('KaiTi');
+}
+@font-face {
+    font-family: 'Microsoft YaHei-local';
+    src: local('Microsoft YaHei');
+}
+@font-face {
+    font-family: 'FangSong-local';
+    src: local('FangSong');
+}
+.word-content {
+    font-family: 'Calibri', 'Arial', sans-serif;
+    line-height: 1.15;
+    color: #000000;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+.word-content p {
+    margin: 0;
+    padding: 0;
+}
+.word-content h1, .word-content h2, .word-content h3, 
+.word-content h4, .word-content h5, .word-content h6 {
+    font-weight: bold;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+    line-height: 1.2;
+}
+.word-content h1 { font-size: 24pt; }
+.word-content h2 { font-size: 18pt; }
+.word-content h3 { font-size: 14pt; }
+.word-content h4 { font-size: 12pt; }
+.word-content h5 { font-size: 10pt; }
+.word-content h6 { font-size: 8pt; }
+.word-content table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+    margin: 8pt 0;
+    empty-cells: show;
+    border: 1px solid #666;
+}
+.word-content table.floating-table {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    box-sizing: border-box;
+}
+.word-content .table-container {
+    margin: 8pt 0;
+    overflow: hidden;
+    position: relative;
+}
+.word-content th {
+    font-weight: bold;
+    background-color: #f2f2f2;
+}
+.word-content th, .word-content td {
+    position: relative;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #666;
+}
+.word-content td:empty::after {
+    content: "";
+    display: inline-block;
+    min-height: 1em;
+}
+.word-content ul, .word-content ol {
+    padding-left: 40px;
+    margin: 0;
+}
+.word-content li {
+    position: relative;
+}
+.word-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+.word-content a {
+    color: #0563C1;
+    text-decoration: underline;
+}
+.word-content hr {
+    border: none;
+    height: 1px;
+    background-color: #000000;
+    margin: 8pt 0;
+}
+/* 字段样式 */
+.field, .form-field {
+    display: inline-block;
+    padding: 1pt 2pt;
+    border-radius: 2px;
+    background-color: #f0f0f0;
+    border: 1px solid #d0d0d0;
+    color: #444;
+    font-style: italic;
+}
+.field-date, .field-page {
+    color: #666;
+    font-size: 0.9em;
+}
+.form-text {
+    border-bottom: 1px dotted #999;
+    min-width: 100px;
+    background-color: #f8f8f8;
+}
+.form-checkbox {
+    white-space: nowrap;
+}
+.form-dropdown {
+    border: 1px solid #aaa;
+    padding: 1px 10px 1px 4px;
+    background-color: #fff;
+    min-width: 100px;
+    position: relative;
+}
+.form-dropdown:after {
+    content: "▼";
+    font-size: 8px;
+    position: absolute;
+    right: 4px;
+    top: 5px;
+    color: #888;
+}
+.complex-field {
+    color: inherit;
+    background-color: #f9f9f9;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+/* 图表样式 */
+.chart-placeholder {
+    border: 1px solid #ccc;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+.chart-error {
+    border: 1px solid #f88;
+    padding: 10px;
+    color: #c00;
+    background-color: #fff8f8;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+.embedded-chart {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border: 1px solid #eee;
+}
+/* 兼容打印样式 */
+@media print {
+    .word-content {
+        max-width: 100% !important;
+    }
+    .word-content table {
+        page-break-inside: auto;
+    }
+    .word-content tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+    }
+    .word-content thead {
+        display: table-header-group;
+    }
+    .word-content tfoot {
+        display: table-footer-group;
+    }
+}

@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 14:38:16
@@ -23,26 +23,26 @@
 
 <script>
 export default {
-  name: "RouterLinkNormal",
+  name: 'RouterLinkNormal',
   props: {
     to: {
       type: String,
-      default: "#",
+      default: '#'
     },
     imgName: {
       type: String,
-      default: "",
+      default: ''
     },
     text: {
       type: String,
-      default: "",
+      default: ''
     },
     format: {
       type: String,
-      default: "svg",
-    },
-  },
-};
+      default: 'svg'
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped></style>

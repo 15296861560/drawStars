@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-10-29 17:12:19
@@ -25,24 +25,26 @@
 
       <el-form-item>
         <el-button type="primary" @click="connection">{{
-          $t("btn.connection")
+          $t('btn.connection')
         }}</el-button>
         <el-button type="primary" @click="modifyAddress">{{
-          $t("btn.modifyAddress")
+          $t('btn.modifyAddress')
         }}</el-button>
-        <el-button type="primary" @click="send">{{ $t("btn.send") }}</el-button>
+        <el-button type="primary" @click="send">{{ $t('btn.send') }}</el-button>
       </el-form-item>
     </el-form>
 
-    <h2>{{ $t("tip.msgList") }}</h2>
+    <h2>{{ $t('tip.msgList') }}</h2>
 
     <div class="msg-area">
       <div>
-        <h3>{{ $t("tip.sendMsgList") }}</h3>
-        <div class="msg" v-for="(msg, index) in sendMsgList" :key="index">{{ msg }}</div>
+        <h3>{{ $t('tip.sendMsgList') }}</h3>
+        <div class="msg" v-for="(msg, index) in sendMsgList" :key="index">
+          {{ msg }}
+        </div>
       </div>
       <div>
-        <h3>{{ $t("tip.receiveMsgList") }}</h3>
+        <h3>{{ $t('tip.receiveMsgList') }}</h3>
         <div class="msg" v-for="(msg, index) in receiveMsgList" :key="index">
           {{ msg }}
         </div>
@@ -51,49 +53,49 @@
   </div>
 </template>
 <script>
-import { i18nLabelMixin } from "@/views/mixin/i18nLabelMixin";
+import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
       formInline: {
-        address: "ws://localhost:8020/",
-        message: "",
+        address: 'ws://localhost:8020/',
+        message: ''
       },
       isModifyAddress: false,
       receiveMsgList: [],
       sendMsgList: [],
-      client: null,
-    };
+      client: null
+    }
   },
   methods: {
     connection() {
-      this.client = new WebSocket(this.formInline.address);
-      this.client.addEventListener("open", () => {
+      this.client = new WebSocket(this.formInline.address)
+      this.client.addEventListener('open', () => {
         this.$message({
-          type: "success",
-          message: this.$t("tip.success"),
-        });
-      });
-      this.client.addEventListener("close", () => {
+          type: 'success',
+          message: this.$t('tip.success')
+        })
+      })
+      this.client.addEventListener('close', () => {
         this.$message({
-          type: "error",
-          message: this.$t("tip.disconnect"),
-        });
-      });
-      this.client.addEventListener("message", (event) => {
-        this.receiveMsgList.push(event.data);
-      });
+          type: 'error',
+          message: this.$t('tip.disconnect')
+        })
+      })
+      this.client.addEventListener('message', event => {
+        this.receiveMsgList.push(event.data)
+      })
     },
     modifyAddress() {
-      this.isModifyAddress = !this.isModifyAddress;
+      this.isModifyAddress = !this.isModifyAddress
     },
     send() {
-      this.client.send(this.formInline.message);
-      this.sendMsgList.push(this.formInline.message);
-    },
+      this.client.send(this.formInline.message)
+      this.sendMsgList.push(this.formInline.message)
+    }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .msg-area {

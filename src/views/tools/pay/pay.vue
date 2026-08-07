@@ -1,5 +1,5 @@
 <!--
- * @Description: 
+ * @Description:
  * @Version: 2.0
  * @Autor: lgy
  * @Date: 2022-11-26 16:37:22
@@ -23,17 +23,17 @@
   </div>
 </template>
 <script>
-import { homePageMixin } from "../../mixin/homePageMixin";
+import { homePageMixin } from '../../mixin/homePageMixin'
 export default {
   mixins: [homePageMixin],
   data() {
     return {
-      homepage: "pay",
-      imgSrc: "tools/pay/",
-      routes: ["alipay"],
-    };
+      homepage: 'pay',
+      imgSrc: 'tools/pay/',
+      routes: ['alipay']
+    }
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 <style></style>

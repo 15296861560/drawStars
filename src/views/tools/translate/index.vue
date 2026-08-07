@@ -26,7 +26,9 @@
           >
           </el-option>
         </el-select>
-        <el-button type="primary" @click="translate" class="translate">翻译</el-button>
+        <el-button type="primary" @click="translate" class="translate"
+          >翻译</el-button
+        >
       </div>
       <div class="translate-part">
         <div class="original-lang">
@@ -75,7 +77,10 @@
             <span class="msg" @click="toTranslate(msg.src)">
               {{ msg.src }}
             </span>
-            <el-icon class="delete" v-show="isEdit" @click="deleteHistory(index)"
+            <el-icon
+              class="delete"
+              v-show="isEdit"
+              @click="deleteHistory(index)"
               ><RemoveFilled
             /></el-icon>
           </div>
@@ -85,135 +90,136 @@
   </div>
 </template>
 <script>
-import storage from "@/utils/commom/storage.ts";
-import { jsonp } from "vue-jsonp";
-import { getSign } from "@/assets/js/api/translateController/translateApi.js";
+import storage from '@/utils/commom/storage.ts'
+import { jsonp } from 'vue-jsonp'
+import { findReq } from '@/assets/js/api'
 
 export default {
   data() {
     return {
-      originalText: "",
-      postText: "",
-      //语言列表
+      originalText: '',
+      postText: '',
+      // 语言列表
       language: [
         {
-          value: "auto",
-          text: "自动检测",
+          value: 'auto',
+          text: '自动检测'
         },
         {
-          value: "zh",
-          text: "中文",
+          value: 'zh',
+          text: '中文'
         },
         {
-          value: "cht",
-          text: "繁体中文",
+          value: 'cht',
+          text: '繁体中文'
         },
         {
-          value: "en",
-          text: "英文",
+          value: 'en',
+          text: '英文'
         },
         {
-          value: "jp",
-          text: "日语",
+          value: 'jp',
+          text: '日语'
         },
         {
-          value: "ru",
-          text: "俄语",
+          value: 'ru',
+          text: '俄语'
         },
         {
-          value: "de",
-          text: "德语",
+          value: 'de',
+          text: '德语'
         },
         {
-          value: "swe",
-          text: "瑞典语",
-        },
+          value: 'swe',
+          text: '瑞典语'
+        }
       ],
-      from: "auto",
-      to: "en",
+      from: 'auto',
+      to: 'en',
       historyList: [],
-      isEdit: false,
-    };
+      isEdit: false
+    }
   },
   methods: {
     async translate() {
-      let appID = "";
-      let sign = "";
+      let appID = ''
+      let sign = ''
 
-      const contents = this.originalText;
-      const salt = parseInt(Math.random() * 10000);
+      const contents = this.originalText
+      const salt = parseInt(Math.random() * 10000)
 
       // 获取appid和签名
-      let res = await getSign({ contents, salt }, "/translateApi/getSign");
+      const getSign = findReq('translateController', 'getSign')
+      const res = await getSign({ contents, salt }, '/translateApi/getSign')
       if (res.status) {
-        appID = res.data && res.data.appID;
-        sign = res.data && res.data.sign;
+        appID = res.data && res.data.appID
+        sign = res.data && res.data.sign
       }
 
       // 发送翻译请求
-      const url = "http://api.fanyi.baidu.com/api/trans/vip/translate";
+      const url = 'http://api.fanyi.baidu.com/api/trans/vip/translate'
       const params = {
-        q: contents, //翻译内容
+        q: contents, // 翻译内容
         from: this.from,
         to: this.to,
         appid: appID,
         salt: salt,
-        sign: sign,
-      };
-      jsonp(url, params).then((res) => {
+        sign: sign
+      }
+      jsonp(url, params).then(res => {
         if (res && res.trans_result) {
-          this.postText = res.trans_result[0].dst;
-          this.handelHistory(this.historyList, res.trans_result[0]);
+          this.postText = res.trans_result[0].dst
+          this.handelHistory(this.historyList, res.trans_result[0])
         }
-      });
+      })
     },
     handelHistory(historyList, trans) {
       if (historyList.length < 50) {
-        historyList.push(trans);
+        historyList.push(trans)
       } else {
-        historyList.shift();
-        historyList.push(trans);
+        historyList.shift()
+        historyList.push(trans)
       }
-      let historyObj = {};
-      historyList.forEach((history) => {
-        historyObj[history.src] = history;
-      });
-      historyList = Object.values(historyObj);
-      this.historyList = historyList;
+      let historyObj = {}
+      historyList.forEach(history => {
+        historyObj[history.src] = history
+      })
+      historyList = Object.values(historyObj)
+      this.historyList = historyList
 
-      storage.local.save("translate-history", historyList);
+      storage.local.save('translate-history', historyList)
     },
     clearHistory() {
-      this.historyList = [];
-      storage.local.save("translate-history", this.historyList);
+      this.historyList = []
+      storage.local.save('translate-history', this.historyList)
     },
     clearInput() {
-      this.originalText = "";
-      this.postText = "";
+      this.originalText = ''
+      this.postText = ''
     },
     toTranslate(word) {
-      this.originalText = word;
-      this.translate();
+      this.originalText = word
+      this.translate()
     },
     toChange() {
-      if (this.from === "auto") {
-        return;
+      if (this.from === 'auto') {
+        return
       }
 
-      [this.from, this.to] = [this.to, this.from];
+      ;[this.from, this.to] = [this.to, this.from]
     },
     finish() {
-      this.isEdit = false;
-      storage.local.save("translate-history", this.historyList);
+      this.isEdit = false
+      storage.local.save('translate-history', this.historyList)
     },
     deleteHistory(index) {
-      this.historyList.splice(index, 1);
-    },
+      this.historyList.splice(index, 1)
+    }
   },
   created() {
-    this.historyList = storage.local.get("translate-history", []);
-  },
-};
+    this.historyList = storage.local.get('translate-history', [])
+  }
+}
 </script>
 <style lang="less" scoped>
 .operation {

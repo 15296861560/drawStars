@@ -1,7 +1,7 @@
 <template>
   <div class="dependence">
     <div class="title-row">
-      <div class="dependence-title">{{ $t("dependence.dependenceInfo") }}</div>
+      <div class="dependence-title">{{ $t('dependence.dependenceInfo') }}</div>
     </div>
     <div class="dependence-main">
       <ul>
@@ -18,50 +18,53 @@
 </template>
 
 <script>
-import packageMsg from "../../../package.json";
+import packageMsg from '../../../package.json'
 // 最多显示多少条依赖信息
-const maxShowLength = 10;
+const maxShowLength = 10
 export default {
-  name: "Dependence",
+  name: 'Dependence',
   props: {},
   data() {
     return {
       dpList: [],
-      isOverflow: false,
-    };
+      isOverflow: false
+    }
   },
   methods: {
     getDpList() {
-      let dpList = [];
+      let dpList = []
       for (let key in packageMsg.dependencies) {
         if (dpList.length >= maxShowLength) {
-          this.isOverflow = true;
-          break;
+          this.isOverflow = true
+          break
         }
         dpList.push({
           relyOn: key,
-          version: packageMsg.dependencies[key],
-        });
+          version: packageMsg.dependencies[key]
+        })
       }
 
-      this.dpList = dpList;
-    },
+      this.dpList = dpList
+    }
   },
   mounted() {
-    this.getDpList();
-  },
-};
+    this.getDpList()
+  }
+}
 </script>
 
 <style lang="less" scoped>
+/* 与更新日志卡片对齐：标题 5vh + 上下边距 4vh + 11 行 × 5vh */
 .dependence {
   display: flex;
-  width: 49%;
+  width: 100%;
+  height: calc(5vh + 4vh + 55vh);
   background-color: white;
   flex-direction: column;
   border-radius: 5px;
   .title-row {
     display: flex;
+    flex-shrink: 0;
     padding-left: 2vw;
     align-items: center;
     height: 5vh;
@@ -73,7 +76,8 @@ export default {
     }
   }
   .dependence-main {
-    display: block;
+    flex: 1;
+    min-height: 0;
     padding-left: 2vw;
     padding-right: 2vw;
     margin-top: 2vh;
