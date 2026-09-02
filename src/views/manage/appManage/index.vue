@@ -27,6 +27,9 @@
           <el-button type="success" @click="create">{{
             $t('btn.create')
           }}</el-button>
+          <el-button type="primary" plain @click="goShellRelease">
+            壳版本发布
+          </el-button>
         </div>
       </el-col>
     </el-row>
@@ -81,6 +84,12 @@ const SearchItem = defineAsyncComponent(
 )
 
 const confirmMethod = async newData => {
+  const permissionCodes = Array.isArray(newData.permission_codes)
+    ? newData.permission_codes
+    : String(newData.permission_codes || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
   const app = {
     name: newData.name,
     version: newData.version,
@@ -88,7 +97,15 @@ const confirmMethod = async newData => {
     category: newData.category,
     icon: newData.icon,
     description: newData.description,
-    file_path: newData.file_path
+    file_path: newData.file_path,
+    module_code: newData.module_code,
+    platforms: newData.platforms,
+    module_url: newData.module_url,
+    checksum: newData.checksum,
+    min_shell_version: newData.min_shell_version,
+    release_notes: newData.release_notes,
+    force_update: newData.force_update,
+    permission_codes: permissionCodes
   }
   let confirmFun = appApi.createApp
   let successTips = '创建成功'
@@ -109,6 +126,12 @@ const confirmMethod = async newData => {
 const initMethod = async params => {
   const { id } = params
   const result = await appApi.getAppDetailById(id)
+  if (result?.status && Array.isArray(result.data) && result.data[0]) {
+    const row = result.data[0]
+    if (Array.isArray(row.permission_codes)) {
+      row.permission_codes = row.permission_codes.join(',')
+    }
+  }
   return result
 }
 
@@ -331,6 +354,28 @@ async function upgradeApp(row) {
 }
 
 // 发布
+async function offlineApp(row) {
+  try {
+    await ElMessageBox.confirm('是否确认下架该模块？下架后移动端不可新开', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+  } catch (e) {
+    showTips('info', '已取消')
+    return
+  }
+  const result = await appApi.offlineApp(row.id)
+  if (result.status) {
+    showTips('success', '下架成功')
+    query()
+  }
+}
+
+function goShellRelease() {
+  router.push('/home/manageHomePage/app/shell')
+}
+
 async function publishApp(row) {
   try {
     await ElMessageBox.confirm('是否确认发布该应用', '提示', {
@@ -413,6 +458,22 @@ const pageTableOperate = [
     label: '删除',
     type: 'danger',
     action: deleteRow
+  },
+  {
+    label: '版本历史',
+    type: 'primary',
+    action: versionsRow
+  },
+  {
+    label: '预览码',
+    type: 'success',
+    action: previewCodeRow
+  },
+  {
+    label: '下架',
+    type: 'danger',
+    action: offlineApp,
+    show: row => row.status === 'published'
   }
 ]
 
@@ -445,7 +506,7 @@ const tableOptions = reactive({
   showSelection: true,
   pageTableOperate,
   tableOperate,
-  tableOperateWidth: '250'
+  tableOperateWidth: '320'
 })
 
 const pageInfo = reactive({
@@ -454,6 +515,41 @@ const pageInfo = reactive({
   total: 100,
   curPageChange: query
 })
+
+async function versionsRow(row) {
+  const result = await appApi.listVersions(row.id)
+  const list = result?.data?.list || []
+  const text = list.length
+    ? list.map(v => (v.version || '') + ' / ' + (v.status || '')).join('\n')
+    : '暂无版本记录'
+  ElMessageBox.alert(text, '版本历史 - ' + (row.module_code || row.name), {
+    confirmButtonText: '确定'
+  })
+}
+
+async function previewCodeRow(row) {
+  const moduleUrl = row.module_url || row.moduleUrl
+  if (!moduleUrl) {
+    showTips('warning', '请先填写 module_url')
+    return
+  }
+  const result = await appApi.createPreviewCode({
+    moduleCode: row.module_code || row.moduleCode,
+    moduleUrl,
+    name: row.name,
+    ttlSec: 3600
+  })
+  if (!result?.status) {
+    showTips('error', result?.msg || '生成失败')
+    return
+  }
+  const deeplink = result.data?.deeplink || result.data?.text
+  ElMessageBox.alert(
+    '请用壳扫一扫识别：\n' + deeplink + '\n过期时间戳：' + result.data?.expireAt,
+    '预览码 - ' + (row.name || ''),
+    { confirmButtonText: '确定' }
+  )
+}
 
 onMounted(() => {
   query()

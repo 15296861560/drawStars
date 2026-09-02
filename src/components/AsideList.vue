@@ -159,6 +159,7 @@ import { getHomePathList } from '@/utils/home-path-list'
 import { layoutSettingsStore } from '@/stores/layout-settings'
 import { permissionStore } from '@/stores/permission'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import { resolveActiveMenuIndex } from '@/utils/menu-active'
 import MenuIcon from '@/components/layout/MenuIcon.vue'
 export default {
   name: 'AsideList',
@@ -179,6 +180,18 @@ export default {
       return (store.menus || []).filter(
         m => m.path !== '/home/homepage' && m.type !== 3
       )
+    },
+    /** 可用于高亮匹配的菜单 path 集合（含 RBAC 与本地菜单） */
+    menuIndexPaths() {
+      const paths = ['/home/homepage', ...this.pathList.map(i => i.path)]
+      const walk = nodes => {
+        ;(nodes || []).forEach(n => {
+          if (n.path && !n.path.startsWith('rbac-')) paths.push(n.path)
+          walk(n.children)
+        })
+      }
+      walk(this.rbacMenus)
+      return paths
     },
     menuBg() {
       return this.layout.isDarkAside ? '#282c34' : '#ffffff'
@@ -234,7 +247,35 @@ export default {
     // 获取主页列表数据
     getHomePages() {
       this.pathList = getHomePathList()
-      this.defaultActive = this.$route.fullPath
+      this.syncActive()
+    },
+    // 路由变化时同步菜单高亮（页签/按钮跳转也会走到这里）
+    syncActive() {
+      this.defaultActive = resolveActiveMenuIndex(
+        this.$route.path,
+        this.menuIndexPaths
+      )
+      // 展开高亮项所在的父级菜单（el-menu 仅暴露 open，subMenus 通过实例内部取）
+      this.$nextTick(() => {
+        const menu = this.$refs.asideMenu
+        const subMenus = menu?.subMenus || {}
+        Object.entries(subMenus).forEach(([index, sub]) => {
+          const indexPath = sub?.indexPath || []
+          const hit =
+            indexPath.includes(this.defaultActive) ||
+            indexPath.some(
+              i =>
+                this.menuIndexPaths.includes(i) &&
+                this.defaultActive.startsWith(i + '/')
+            )
+          if (hit) menu.open(index)
+        })
+      })
+    }
+  },
+  watch: {
+    '$route.path'() {
+      this.syncActive()
     }
   },
   mounted() {

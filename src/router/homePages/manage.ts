@@ -22,7 +22,35 @@ export default [
     name: '应用管理',
     component: () => import('@/views/manage/appManage/index.vue'),
     meta: {
-      title: ['首页', '管理中心', '应用管理']
+      title: ['首页', '管理中心', '应用管理'],
+      permission: 'system:app:list'
+    }
+  },
+  {
+    path: '/home/manageHomePage/app/opsBanner',
+    name: 'appOpsBanner',
+    component: () => import('@/views/manage/appManage/opsBanner.vue'),
+    meta: {
+      title: ['首页', '管理中心', '运营 Banner'],
+      permission: 'system:app:ops'
+    }
+  },
+  {
+    path: '/home/manageHomePage/app/debugWhitelist',
+    name: 'appDebugWhitelist',
+    component: () => import('@/views/manage/appManage/debugWhitelist.vue'),
+    meta: {
+      title: ['首页', '管理中心', '调试白名单'],
+      permission: 'system:app:publish'
+    }
+  },
+  {
+    path: '/home/manageHomePage/app/shell',
+    name: '壳版本发布',
+    component: () => import('@/views/manage/appManage/shellRelease.vue'),
+    meta: {
+      title: ['首页', '管理中心', '壳版本发布'],
+      permission: 'system:shell:release'
     }
   },
   {

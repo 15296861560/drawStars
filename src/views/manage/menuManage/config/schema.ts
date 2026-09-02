@@ -93,6 +93,35 @@ export const dialogFields = [
     placeholder: '如 system:user:create'
   },
   {
+    fieldName: 'client',
+    label: 'client',
+    type: 'select',
+    defaultVal: 'pc',
+    config: { valueKey: 'value', labelKey: 'label' },
+    options: [
+      { label: 'pc', value: 'pc' },
+      { label: 'mobile', value: 'mobile' },
+      { label: 'all', value: 'all' }
+    ]
+  },
+  {
+    fieldName: 'moduleCode',
+    label: 'moduleCode',
+    type: 'input',
+    placeholder: 'mobile module code'
+  },
+  {
+    fieldName: 'isTab',
+    label: 'isTab',
+    type: 'select',
+    defaultVal: 0,
+    config: { valueKey: 'value', labelKey: 'label' },
+    options: [
+      { label: '否', value: 0 },
+      { label: '是', value: 1 }
+    ]
+  },
+  {
     fieldName: 'icon',
     label: '图标',
     type: 'icon',

@@ -140,6 +140,7 @@ import {
 } from '@element-plus/icons-vue'
 import { getHomePathList } from '@/utils/home-path-list'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
+import { resolveActiveMenuIndex } from '@/utils/menu-active'
 import { permissionStore } from '@/stores/permission'
 import { storeToRefs } from 'pinia'
 import MenuIcon from '@/components/layout/MenuIcon.vue'
@@ -159,6 +160,29 @@ const rbacMenus = computed(() =>
   )
 )
 
+/** 可用于高亮匹配的菜单 path 集合 */
+const menuIndexPaths = computed(() => {
+  const paths = [
+    '/home/homepage',
+    ...pathList.value.map(i => i.path)
+  ]
+  const walk = (nodes: any[]) => {
+    ;(nodes || []).forEach(n => {
+      if (n.path && !n.path.startsWith('tm-')) paths.push(n.path)
+      walk(n.children)
+    })
+  }
+  walk(rbacMenus.value)
+  return paths
+})
+
+const syncActive = () => {
+  defaultActive.value = resolveActiveMenuIndex(
+    route.path,
+    menuIndexPaths.value
+  )
+}
+
 function handleSelect(path: string) {
   if (!path) {
     return
@@ -176,18 +200,13 @@ function handleSelect(path: string) {
 }
 
 onMounted(() => {
-  defaultActive.value = route.fullPath
+  syncActive()
   if (!perm.loaded && !perm.menus?.length) {
     perm.loadPermission().catch(() => {})
   }
 })
 
-watch(
-  () => route.fullPath,
-  p => {
-    defaultActive.value = p
-  }
-)
+watch(() => route.path, syncActive)
 </script>
 
 <style scoped lang="less">
