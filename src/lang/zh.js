@@ -310,5 +310,20 @@ export default {
     surveyTemplate: '模板管理',
     surveyQuestionBank: '题库管理',
     externalLinks: '外链'
+  },
+  im: {
+    title: 'IM 聊天',
+    tabs: { message: '消息', contacts: '通讯录', hall: '大厅' },
+    empty: '选择一个会话开始聊天',
+    degraded: '实时连接已降级，消息将通过接口拉取',
+    muted: '已禁言',
+    send: '发送',
+    recall: '撤回',
+    delete: '删除',
+    pin: '置顶',
+    mute: '免打扰',
+    createRoom: '创建房间',
+    addFriend: '添加好友',
+    save: '保存'
   }
 }

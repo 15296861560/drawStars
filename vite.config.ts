@@ -38,6 +38,12 @@ export default defineConfig({
         target: 'https://cx.shouji.360.cn',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/phoneAreaApi/, '')
+      },
+      // IM WebSocket 网关（开发期代理到后端 IM WS 端口 8041）
+      '/im/ws': {
+        target: 'ws://127.0.0.1:8041',
+        ws: true,
+        changeOrigin: true
       }
     }
   },

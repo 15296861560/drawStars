@@ -314,5 +314,20 @@ export default {
     surveyTemplate: 'Templates',
     surveyQuestionBank: 'Question Bank',
     externalLinks: 'External links'
+  },
+  im: {
+    title: 'IM Chat',
+    tabs: { message: 'Messages', contacts: 'Contacts', hall: 'Hall' },
+    empty: 'Select a conversation to start chatting',
+    degraded: 'Realtime connection degraded; messages will be fetched via API',
+    muted: 'Muted',
+    send: 'Send',
+    recall: 'Recall',
+    delete: 'Delete',
+    pin: 'Pin',
+    mute: 'Mute',
+    createRoom: 'Create Room',
+    addFriend: 'Add Friend',
+    save: 'Save'
   }
 }

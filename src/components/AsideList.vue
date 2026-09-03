@@ -281,9 +281,9 @@ export default {
   mounted() {
     this.getHomePages()
     const perm = permissionStore()
-    if (!perm.loaded && !perm.menus?.length) {
-      perm.loadPermission().catch(() => {})
-    }
+    // 始终拉取最新菜单，确保后端 seed 新增的菜单（如 IM）能即时反映，
+    // 而不被 sessionStorage 里的旧缓存挡住。
+    perm.loadPermission().catch(() => {})
   }
 }
 </script>
