@@ -59,7 +59,7 @@ VITE_SKIP_LOGIN=true
 
 为 `true` 时（`src/config/skip-login.ts`）会跳过登录校验并写入本地模拟会话，便于只浏览前端页面。完整接口能力（登录、资料、支付、通知等）仍需配合后端服务。
 
-### 环境变量
+### 环境变量（Vite）
 
 所有自定义环境变量均在 `env.d.ts` 中声明，Vite 会以 `VITE_` 前缀注入：
 
@@ -107,7 +107,7 @@ VITE_SKIP_LOGIN=true
 
 ## 目录结构（节选）
 
-```
+```text
 drawStars-Vue3/
 ├── .github/workflows/         # CI/CD（Docker 构建、Gitee 同步）
 ├── prd/                       # 产品需求文档
@@ -201,7 +201,7 @@ docker run -d -p 80:80 -e API_UPSTREAM=api:8010 drawstars-web
 
 `nginx.conf.template` 在容器启动时通过环境变量 `API_UPSTREAM` 动态配置后端地址，将 `/api/`、`/uploadImg/` 转发到后端服务（去除前缀），其余路径回退到 `index.html`（SPA history 模式）。
 
-### 环境变量
+### 环境变量（Docker）
 
 | 变量 | 默认值 | 说明 |
 | --- | --- | --- |

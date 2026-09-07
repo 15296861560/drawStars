@@ -53,7 +53,7 @@ drawStars 工具模块已存在聊天室演示页（`/home/toolHomePage/chat`，
 
 #### 1.4.1 逻辑架构
 
-```
+```text
 [Web 客户端]
     |  HTTPS（REST：鉴权/资料/历史/治理/上传）
     |  WSS  （长连接：推送/轻量信令；发送也可走 REST）
@@ -144,7 +144,7 @@ drawStars 工具模块已存在聊天室演示页（`/home/toolHomePage/chat`，
 
 ## 三、功能模块总览
 
-```
+```text
 聊天室 / IM 体系
 ├── 1. 账号与连接
 │   ├── 登录 / 登出 / Token 鉴权
@@ -280,7 +280,7 @@ drawStars 工具模块已存在聊天室演示页（`/home/toolHomePage/chat`，
 
 重连成功后客户端对每个活跃会话执行：
 
-```
+```text
 GET /api/im/conversations/{id}/messages/sync?afterSeq={localMaxSeq}&limit=50
 ```
 
@@ -334,7 +334,7 @@ GET /api/im/conversations/{id}/messages/sync?afterSeq={localMaxSeq}&limit=50
 
 #### 4.2.4 状态机：好友申请
 
-```
+```text
 NONE --申请--> PENDING
 PENDING --同意--> ACCEPTED
 PENDING --拒绝--> REJECTED
@@ -345,7 +345,7 @@ ACCEPTED --删除好友--> NONE
 
 #### 4.2.5 状态机：举报单
 
-```
+```text
 PENDING --采纳处置--> RESOLVED
 PENDING --驳回--> REJECTED
 PENDING --升级平台封禁--> ESCALATED
@@ -425,7 +425,7 @@ PENDING --升级平台封禁--> ESCALATED
 | 仅有 `target`       | 服务端 **upsert 会话**：C2C 按 `pair_key` 查找或创建并写入双方 `im_conversation_user`；GROUP/ROOM 校验已加入（或在房）后绑定已有会话，**不在发送时偷偷拉人进群/进房** |
 | 首条 C2C            | 创建会话后 `max_seq` 从 1 开始分配本条消息                                                                                                                            |
 
-```
+```text
 发送方客户端
   │
   ├─ 主路径：POST /api/im/messages/send   ← WS 断线时仍可用
@@ -516,7 +516,7 @@ PENDING --升级平台封禁--> ESCALATED
 
 #### 4.4.3 消息发送状态机（客户端）
 
-```
+```text
 EDITING --点击发送--> PENDING
 PENDING --成功--> SUCCESS
 PENDING --失败--> FAILED
@@ -561,7 +561,7 @@ SUCCESS --撤回--> RECALLED
 
 关系：
 
-```
+```text
 im_conversation.conv_type = GROUP → im_group.group_id
 im_conversation.conv_type = ROOM  → im_room.room_id
 im_group_member / im_room_member 角色枚举一致：OWNER/ADMIN/MEMBER
@@ -591,7 +591,7 @@ im_group_member / im_room_member 角色枚举一致：OWNER/ADMIN/MEMBER
 
 适用于 **公开群** 与 **joinMode=APPROVE 的房间**（私有群固定邀请制，不走本流）。
 
-```
+```text
 用户申请 --创建--> PENDING
 PENDING --管理员/群主同意--> APPROVED（写入成员表并推送 MEMBER_JOIN）
 PENDING --拒绝--> REJECTED
@@ -607,7 +607,7 @@ PENDING --超时（默认 7 天）--> EXPIRED
 
 #### 4.5.3 房间状态机
 
-```
+```text
 DRAFT --发布--> ACTIVE
 ACTIVE --关闭--> CLOSED
 ACTIVE --违规封禁--> BANNED
@@ -629,7 +629,7 @@ DRAFT --取消--> （物理删除或标记 DELETED）
 
 对候选房间计算：
 
-```
+```text
 score = 0.4 * norm(onlineCount)
       + 0.3 * norm(msgCount1h)
       + 0.2 * interestOverlap(user.tags, room.tags)
@@ -801,7 +801,7 @@ score = 0.4 * norm(onlineCount)
 
 ### 5.1 ER 示意
 
-```
+```text
 User(1) -----< Friendship >----- User
 User(1) -----< ConversationUser >----- Conversation(1)
 Conversation(1) -----< Message
@@ -898,7 +898,7 @@ User(1) ----- UserProfile
 
 ### 6.1 路由规划
 
-```
+```text
 /home/toolHomePage/chat                      # 旧 Demo/实验室（非产品链路）
 /home/im                                     # IM 首页（正式）
 /home/im/conversation                        # 会话列表
@@ -1140,7 +1140,7 @@ UI 文案走 i18n；消息内容本体不翻译（v2.0+ 插件）。
 
 ### 9.1 自研实时子系统边界
 
-```
+```text
 ImWsGateway          连接、订阅、扇出、心跳
 ImMessageService     发送/撤回/seq/未读（唯一写入口）
 ImPresenceService    在线状态、房间停留

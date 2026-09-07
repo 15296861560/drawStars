@@ -42,5 +42,8 @@
   "eslint.format.enable": false,
   "vetur.format.defaultFormatter.html": "none",
   "vetur.format.defaultFormatter.js": "none",
-  "vetur.format.defaultFormatter.ts": "none"
+  "vetur.format.defaultFormatter.ts": "none",
+  "i18n-ally.localesPaths": [
+    "src/lang"
+  ]
 }
