@@ -149,5 +149,13 @@ export default [
         }
       }
     ]
+  },
+  {
+    path: '/home/toolHomePage/shortLink',
+    name: '短链生成器',
+    component: () => import('@/views/tools/shortLink/index.vue'),
+    meta: {
+      title: ['首页', '工具模块', '短链生成器']
+    }
   }
 ]

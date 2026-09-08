@@ -31,11 +31,11 @@
       </router-link>
 
       <router-link-normal
-        :to="`/home/toolHomePage/${name}`"
-        :imgName="name"
-        :text="$t(`homePage.toolHomePage.${name}`)"
-        v-for="(name, index) in routes"
-        :key="name"
+        :to="`/home/toolHomePage/${item.name}`"
+        :imgName="item.icon || item.name"
+        :text="$t(`homePage.toolHomePage.${item.name}`)"
+        v-for="(item, index) in routes"
+        :key="item.name"
       ></router-link-normal>
     </div>
   </div>
@@ -47,14 +47,15 @@ export default {
   data() {
     return {
       routes: [
-        'chat',
-        'utilities',
-        'practice',
-        'translate',
-        'pay',
-        'compress',
-        'networkStrength',
-        'infoAnalysis'
+        { name: 'chat' },
+        { name: 'utilities' },
+        { name: 'practice' },
+        { name: 'translate' },
+        { name: 'pay' },
+        { name: 'compress' },
+        { name: 'networkStrength' },
+        { name: 'infoAnalysis' },
+        { name: 'shortLink', icon: 'zshortLink' }
       ]
     }
   }
