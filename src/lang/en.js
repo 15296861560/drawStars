@@ -62,7 +62,8 @@ export default {
       compress: 'Compressed code',
       networkStrength: 'Network Strength',
       infoAnalysis: 'Info Analysis',
-      shortLink: 'Short Link'
+      shortLink: 'Short Link',
+      watermark: 'Image Watermark'
     },
     componentsHomePage: {
       dragAndDropComponents: 'Visual drag and drop component',

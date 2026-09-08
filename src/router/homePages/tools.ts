@@ -157,5 +157,13 @@ export default [
     meta: {
       title: ['首页', '工具模块', '短链生成器']
     }
+  },
+  {
+    path: '/home/toolHomePage/watermark',
+    name: '图片水印',
+    component: () => import('@/views/tools/watermark/index.vue'),
+    meta: {
+      title: ['首页', '工具模块', '图片水印']
+    }
   }
 ]

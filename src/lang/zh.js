@@ -62,7 +62,8 @@ export default {
       compress: '压缩代码',
       networkStrength: '网络质量',
       infoAnalysis: '信息分析',
-      shortLink: '短链生成器'
+      shortLink: '短链生成器',
+      watermark: '图片水印'
     },
     componentsHomePage: {
       dragAndDropComponents: '可视化拖拽组件',

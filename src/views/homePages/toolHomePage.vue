@@ -55,7 +55,8 @@ export default {
         { name: 'compress' },
         { name: 'networkStrength' },
         { name: 'infoAnalysis' },
-        { name: 'shortLink', icon: 'zshortLink' }
+        { name: 'shortLink', icon: 'zshortLink' },
+        { name: 'watermark', icon: 'zwatermark' }
       ]
     }
   }
