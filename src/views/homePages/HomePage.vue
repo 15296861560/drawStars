@@ -7,7 +7,7 @@
             v-for="route in routes"
             :key="route.name"
             :to="route.path"
-            :imgName="route.name"
+            :imgName="route.icon || route.name"
             :text="$t(`homePage.${route.name}`)"
           ></router-link-normal>
         </el-row>
@@ -77,7 +77,7 @@ export default {
         { name: 'lab', path: '/home/labHomePage' },
         { name: 'case', path: '/home/caseHomePage' },
         { name: 'resource', path: '/home/resourceHomePage' },
-        { name: 'survey', path: '/home/surveyHomePage' }
+        { name: 'survey', path: '/home/surveyHomePage', icon: 'zquestionnaire' }
       ],
       areaOption: {},
       lineOption: {},
