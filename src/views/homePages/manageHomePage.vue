@@ -24,6 +24,7 @@ export default {
         { name: 'menu', imgName: 'app' },
         { name: 'points', imgName: 'app' },
         { name: 'task', imgName: 'app' },
+        { name: 'workflow', imgName: 'app' },
         { name: 'notice', imgName: 'notice' },
         { name: 'logs', imgName: 'log' },
         { name: 'app', imgName: 'app' }

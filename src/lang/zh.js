@@ -26,6 +26,7 @@ export default {
       menu: '菜单配置',
       points: '积分管理',
       task: '任务管理',
+      workflow: '流程编排',
       pointsRules: '规则配置',
       pointsLevels: '等级配置',
       notice: '通知管理',

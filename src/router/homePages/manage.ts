@@ -222,6 +222,93 @@ export default [
         component: () => import('@/views/manage/logManage/statistics.vue')
       }
     ]
+  },
+  {
+    path: '/home/manageHomePage/workflow',
+    redirect: '/home/manageHomePage/workflow/overview',
+    name: '流程编排',
+    component: () => import('@/views/manage/workflowManage/index.vue'),
+    meta: {
+      title: ['首页', '管理中心', '流程编排'],
+      permission: 'system:workflow:list'
+    },
+    children: [
+      {
+        path: 'overview',
+        name: '流程概览',
+        component: () => import('@/views/manage/workflowManage/overview.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '流程概览']
+        }
+      },
+      {
+        path: 'list',
+        name: '流程列表',
+        component: () => import('@/views/manage/workflowManage/list.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '流程列表']
+        }
+      },
+      {
+        path: 'designer/:id?',
+        name: '流程编排器',
+        component: () => import('@/views/manage/workflowManage/designer.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '流程编排器'],
+          permission: 'system:workflow:design'
+        }
+      },
+      {
+        path: 'execution/:id',
+        name: '执行详情',
+        component: () => import('@/views/manage/workflowManage/execution.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '执行详情']
+        }
+      },
+      {
+        path: 'history',
+        name: '执行历史',
+        component: () => import('@/views/manage/workflowManage/history.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '执行历史']
+        }
+      },
+      {
+        path: 'templates',
+        name: '模板市场',
+        component: () => import('@/views/manage/workflowManage/templates.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '模板市场']
+        }
+      },
+      {
+        path: 'tools',
+        name: '工具管理',
+        component: () => import('@/views/manage/workflowManage/tools.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '工具管理']
+        }
+      },
+      {
+        path: 'categories',
+        name: '流程分类',
+        component: () => import('@/views/manage/workflowManage/categories.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '流程分类'],
+          permission: 'system:workflow:operate'
+        }
+      },
+      {
+        path: 'alerts',
+        name: '告警规则',
+        component: () => import('@/views/manage/workflowManage/alerts.vue'),
+        meta: {
+          title: ['首页', '管理中心', '流程编排', '告警规则'],
+          permission: 'system:workflow:operate'
+        }
+      }
+    ]
   }
   // {
   //   path: "/home/manageHomePage/notice/detail",

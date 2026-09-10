@@ -26,6 +26,7 @@ export default {
       menu: 'Menus',
       points: 'Points',
       task: 'Tasks',
+      workflow: 'Workflow',
       pointsRules: 'Points Rules',
       pointsLevels: 'Points Levels',
       notice: 'Notices',
