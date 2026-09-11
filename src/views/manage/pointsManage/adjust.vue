@@ -5,7 +5,9 @@
         <h3>新增积分</h3>
         <p>为指定用户发放积分，须填写原因，操作人自动记录</p>
       </div>
-      <el-tag type="info" effect="plain" round>操作人：{{ operatorLabel }}</el-tag>
+      <el-tag type="info" effect="plain" round
+        >操作人：{{ operatorLabel }}</el-tag
+      >
     </div>
 
     <el-row :gutter="16" class="content-row">
@@ -101,19 +103,44 @@
                 {{ formatTime(row.createdAt) }}
               </template>
             </el-table-column>
-            <el-table-column prop="userId" label="用户ID" width="88" align="center" />
-            <el-table-column prop="points" label="积分" width="88" align="right">
+            <el-table-column
+              prop="userId"
+              label="用户ID"
+              width="88"
+              align="center"
+            />
+            <el-table-column
+              prop="points"
+              label="积分"
+              width="88"
+              align="right"
+            >
               <template #default="{ row }">
                 <span class="text-success">+{{ row.points }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="description" label="原因" min-width="140" show-overflow-tooltip />
-            <el-table-column prop="operatorName" label="操作人" width="100" show-overflow-tooltip>
+            <el-table-column
+              prop="description"
+              label="原因"
+              min-width="140"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              prop="operatorName"
+              label="操作人"
+              width="100"
+              show-overflow-tooltip
+            >
               <template #default="{ row }">
                 {{ row.operatorName || row.operatorId || '-' }}
               </template>
             </el-table-column>
-            <el-table-column prop="balanceAfter" label="余额" width="88" align="right" />
+            <el-table-column
+              prop="balanceAfter"
+              label="余额"
+              width="88"
+              align="right"
+            />
           </el-table>
           <div class="pager">
             <el-pagination

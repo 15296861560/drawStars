@@ -18,8 +18,12 @@ export const imConversationStore = defineStore('im-conversation', () => {
       return Number(b.lastMsgTime || 0) - Number(a.lastMsgTime || 0)
     })
   })
-  const totalUnread = computed(() => list.value.reduce((s, c) => s + (c.unreadCount || 0), 0))
-  const activeConversation = computed(() => list.value.find(c => c.id === activeId.value))
+  const totalUnread = computed(() =>
+    list.value.reduce((s, c) => s + (c.unreadCount || 0), 0)
+  )
+  const activeConversation = computed(() =>
+    list.value.find(c => c.id === activeId.value)
+  )
 
   async function fetchList() {
     loading.value = true
@@ -43,7 +47,11 @@ export const imConversationStore = defineStore('im-conversation', () => {
     if (idx >= 0) {
       list.value[idx] = { ...list.value[idx], ...conv }
     } else {
-      list.value.unshift({ convType: conv.convType!, bizId: conv.bizId || '', ...conv } as ImConversation)
+      list.value.unshift({
+        convType: conv.convType!,
+        bizId: conv.bizId || '',
+        ...conv
+      } as ImConversation)
     }
   }
 
@@ -53,7 +61,12 @@ export const imConversationStore = defineStore('im-conversation', () => {
   }
 
   /** 收到新消息时更新会话最后消息与未读 */
-  function onMessage(conversationId: string, seq: number, serverTime: string, isSelf: boolean) {
+  function onMessage(
+    conversationId: string,
+    seq: number,
+    serverTime: string,
+    isSelf: boolean
+  ) {
     const conv = list.value.find(c => c.id === conversationId)
     if (!conv) return
     conv.lastMsgTime = serverTime
@@ -66,7 +79,11 @@ export const imConversationStore = defineStore('im-conversation', () => {
   async function markRead(conversationId: string, seq: number) {
     const res = await conversationApi.markRead(conversationId, seq)
     if (res.status) {
-      patch(conversationId, { unreadCount: res.data?.unreadCount ?? 0, mentionUnread: 0, lastReadSeq: seq })
+      patch(conversationId, {
+        unreadCount: res.data?.unreadCount ?? 0,
+        mentionUnread: 0,
+        lastReadSeq: seq
+      })
     }
   }
 
@@ -102,8 +119,24 @@ export const imConversationStore = defineStore('im-conversation', () => {
   }
 
   return {
-    list, loading, activeId, draftMap, sortedList, totalUnread, activeConversation,
-    fetchList, setActive, upsert, patch, onMessage, markRead, togglePin, toggleMute,
-    saveDraftLocal, saveDraft, remove, clear
+    list,
+    loading,
+    activeId,
+    draftMap,
+    sortedList,
+    totalUnread,
+    activeConversation,
+    fetchList,
+    setActive,
+    upsert,
+    patch,
+    onMessage,
+    markRead,
+    togglePin,
+    toggleMute,
+    saveDraftLocal,
+    saveDraft,
+    remove,
+    clear
   }
 })

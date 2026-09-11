@@ -3,11 +3,7 @@
     <section class="notify-section">
       <h3 class="section-title">{{ $t('sections.channel') }}</h3>
       <div class="card-grid">
-        <div
-          v-for="item in channelItems"
-          :key="item.id"
-          class="notify-card"
-        >
+        <div v-for="item in channelItems" :key="item.id" class="notify-card">
           <div class="card-text">
             <div class="card-title">{{ item.title }}</div>
             <div class="card-desc">{{ item.desc }}</div>
@@ -17,14 +13,8 @@
             class="card-select"
             @change="onChange"
           >
-            <el-option
-              :label="$t('options.receive')"
-              :value="true"
-            />
-            <el-option
-              :label="$t('options.reject')"
-              :value="false"
-            />
+            <el-option :label="$t('options.receive')" :value="true" />
+            <el-option :label="$t('options.reject')" :value="false" />
           </el-select>
         </div>
       </div>

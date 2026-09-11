@@ -150,7 +150,8 @@ function onScroll() {
 function scrollToIndex(index: number, behavior: ScrollBehavior = 'auto') {
   const el = containerRef.value
   if (!el) return
-  const top = Math.max(0, Math.min(index, props.items.length - 1)) * props.itemHeight
+  const top =
+    Math.max(0, Math.min(index, props.items.length - 1)) * props.itemHeight
   el.scrollTo({ top, behavior })
 }
 

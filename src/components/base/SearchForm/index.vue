@@ -1,10 +1,5 @@
 <template>
-  <el-form
-    v-show="visible"
-    :model="model"
-    class="search-form"
-    @submit.prevent
-  >
+  <el-form v-show="visible" :model="model" class="search-form" @submit.prevent>
     <el-form-item
       v-for="item in items"
       :key="item.field"

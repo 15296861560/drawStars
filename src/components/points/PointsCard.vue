@@ -60,7 +60,8 @@ defineEmits<{
 const userStore = userInfoStore()
 const { availablePoints, level, levelName } = usePointsAccount()
 const { hasCheckedInToday, consecutiveDays, checkIn, loadStatus } = useCheckIn()
-const { currentLevel, nextLevel, progress, pointsToNextLevel } = usePointsLevel()
+const { currentLevel, nextLevel, progress, pointsToNextLevel } =
+  usePointsLevel()
 const { formatPoints } = usePointsStatistics()
 
 const checkInLoading = ref(false)
@@ -84,10 +85,7 @@ async function handleCheckIn() {
     const result = await checkIn(resolveUserId())
     ElMessage.success(`签到成功！获得 ${result.points} 积分`)
   } catch (error: any) {
-    const msg =
-      error?.response?.data?.msg ||
-      error?.message ||
-      '签到失败'
+    const msg = error?.response?.data?.msg || error?.message || '签到失败'
     ElMessage.error(msg)
     // 后端已签到但前端状态未同步时，刷新状态避免重复点击
     if (String(msg).includes('今日已签到')) {

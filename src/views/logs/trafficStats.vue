@@ -20,16 +20,25 @@
         </div>
         <div class="header-right">
           <div class="active-users" :class="{ muted: !activeUsers }">
-            <span class="dot-wrap"><span class="dot" :class="{ off: !activeUsers }"></span></span>
+            <span class="dot-wrap"
+              ><span class="dot" :class="{ off: !activeUsers }"></span
+            ></span>
             <template v-if="activeUsers > 0">
               <strong>{{ activeUsers }}</strong> 位在线访客
             </template>
             <template v-else>当前无在线访客</template>
           </div>
-          <button class="analytics-btn icon" type="button" title="刷新" @click="refresh">
+          <button
+            class="analytics-btn icon"
+            type="button"
+            title="刷新"
+            @click="refresh"
+          >
             ↻
           </button>
-          <button class="analytics-btn link" type="button" @click="goConfig">网站配置</button>
+          <button class="analytics-btn link" type="button" @click="goConfig">
+            网站配置
+          </button>
         </div>
       </div>
 
@@ -70,7 +79,11 @@
           />
         </div>
         <div class="filter">
-          <el-select v-model="preset" class="date-select" @change="onPresetChange">
+          <el-select
+            v-model="preset"
+            class="date-select"
+            @change="onPresetChange"
+          >
             <el-option
               v-for="p in presets"
               :key="p.value"
@@ -316,7 +329,9 @@ const kpis = computed(() => {
 
   const bounceRate = uv ? (Math.min(bounces, uv) / uv) * 100 : 0
   const prevBounceRate =
-    visitorsPrev > 0 ? (Math.min(prevBounces, visitorsPrev) / visitorsPrev) * 100 : 0
+    visitorsPrev > 0
+      ? (Math.min(prevBounces, visitorsPrev) / visitorsPrev) * 100
+      : 0
   const avgTime = pv - bounces > 0 ? totaltime / (pv - bounces) : 0
   const avgTimePrev =
     viewsPrev - prevBounces > 0 ? prevTime / (viewsPrev - prevBounces) : 0

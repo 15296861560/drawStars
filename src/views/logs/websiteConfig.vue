@@ -3,7 +3,9 @@
     <el-row class="mb20" :gutter="16" align="middle">
       <el-col :span="12">
         <h3 class="page-title">网站配置</h3>
-        <p class="page-desc">配置埋点站点，Website UUID 对应前端 umami-config</p>
+        <p class="page-desc">
+          配置埋点站点，Website UUID 对应前端 umami-config
+        </p>
       </el-col>
       <el-col :span="12" class="text-right">
         <el-button type="primary" @click="openCreate">新建网站</el-button>
@@ -14,10 +16,16 @@
       <el-table-column prop="websiteId" label="ID" width="80" />
       <el-table-column prop="name" label="名称" min-width="140" />
       <el-table-column prop="domain" label="域名" min-width="160" />
-      <el-table-column prop="websiteUuid" label="Website UUID" min-width="280" />
+      <el-table-column
+        prop="websiteUuid"
+        label="Website UUID"
+        min-width="280"
+      />
       <el-table-column label="操作" width="320" fixed="right">
         <template #default="{ row }">
-          <el-button link type="primary" @click="goDashboard(row)">仪表盘</el-button>
+          <el-button link type="primary" @click="goDashboard(row)"
+            >仪表盘</el-button
+          >
           <el-button link type="primary" @click="openEdit(row)">编辑</el-button>
           <el-button link type="warning" @click="handleReset(row)"
             >清空统计</el-button
@@ -39,7 +47,10 @@
           <el-input v-model="form.name" placeholder="站点名称" />
         </el-form-item>
         <el-form-item label="域名">
-          <el-input v-model="form.domain" placeholder="如 localhost / example.com" />
+          <el-input
+            v-model="form.domain"
+            placeholder="如 localhost / example.com"
+          />
         </el-form-item>
         <el-form-item v-if="!editingId" label="Website UUID">
           <el-input

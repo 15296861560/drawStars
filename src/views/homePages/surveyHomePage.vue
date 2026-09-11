@@ -21,7 +21,11 @@ export default {
         { name: 'list', path: '/home/survey', imgName: 'app' },
         { name: 'create', path: '/home/survey/create', imgName: 'notice' },
         { name: 'template', path: '/home/survey/template', imgName: 'menu' },
-        { name: 'questionBank', path: '/home/survey/question-bank', imgName: 'log' }
+        {
+          name: 'questionBank',
+          path: '/home/survey/question-bank',
+          imgName: 'log'
+        }
       ]
     }
   }

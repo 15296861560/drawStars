@@ -8,11 +8,11 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-card shadow="hover" style="margin-top:16px">
+    <el-card shadow="hover" style="margin-top: 16px">
       <div class="im-mg-chart-title">消息量趋势（近 {{ days }} 天）</div>
       <div ref="trendChart" class="im-mg-chart-box"></div>
     </el-card>
-    <el-card shadow="hover" style="margin-top:16px">
+    <el-card shadow="hover" style="margin-top: 16px">
       <div class="im-mg-chart-title">活跃房间榜</div>
       <el-table :data="roomRank" size="small" border>
         <el-table-column type="index" label="#" width="60" />
@@ -74,7 +74,14 @@ function renderTrend(list: Array<{ date: string; count: number }>) {
     grid: { left: 40, right: 20, top: 20, bottom: 30 },
     xAxis: { type: 'category', data: list.map(i => i.date) },
     yAxis: { type: 'value' },
-    series: [{ name: '消息量', type: 'bar', data: list.map(i => i.count), itemStyle: { color: '#4C5EDB' } }]
+    series: [
+      {
+        name: '消息量',
+        type: 'bar',
+        data: list.map(i => i.count),
+        itemStyle: { color: '#4C5EDB' }
+      }
+    ]
   })
 }
 
@@ -86,9 +93,26 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="less">
-.im-mg-analytics { padding: 16px; }
-.im-mg-stat-title { font-size: 13px; color: @color-text-placeholder; }
-.im-mg-stat-value { font-size: 26px; font-weight: 600; margin-top: 6px; color: @color-primary; }
-.im-mg-chart-title { font-size: 14px; font-weight: 500; margin-bottom: 10px; color: @color-text-normal; }
-.im-mg-chart-box { height: 280px; }
+.im-mg-analytics {
+  padding: 16px;
+}
+.im-mg-stat-title {
+  font-size: 13px;
+  color: @color-text-placeholder;
+}
+.im-mg-stat-value {
+  font-size: 26px;
+  font-weight: 600;
+  margin-top: 6px;
+  color: @color-primary;
+}
+.im-mg-chart-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: @color-text-normal;
+}
+.im-mg-chart-box {
+  height: 280px;
+}
 </style>

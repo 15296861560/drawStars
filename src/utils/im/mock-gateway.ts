@@ -5,7 +5,13 @@
  */
 import { userInfoStore } from '@/stores/user-info'
 import { MsgStatus, MsgType, WsEvent } from '@/api/im/types'
-import { buildEnvelope, type WsEnvelope, type WsIncoming, type MessageEventData, type AckEventData } from './protocol'
+import {
+  buildEnvelope,
+  type WsEnvelope,
+  type WsIncoming,
+  type MessageEventData,
+  type AckEventData
+} from './protocol'
 
 type Emit = (env: WsEnvelope) => void
 
@@ -41,16 +47,29 @@ class MockGateway {
       case 'SUBSCRIBE':
         this.subscribed.add(cmd.conversationId)
         // 模拟服务端补推该会话未读
-        this.emit(buildEnvelope('SUBSCRIBED', { conversationId: cmd.conversationId }))
+        this.emit(
+          buildEnvelope('SUBSCRIBED', { conversationId: cmd.conversationId })
+        )
         break
       case 'UNSUBSCRIBE':
         this.subscribed.delete(cmd.conversationId)
         break
       case 'READ':
-        this.emit(buildEnvelope(WsEvent.READ, { conversationId: cmd.conversationId, userId: this.uid(), seq: cmd.seq }))
+        this.emit(
+          buildEnvelope(WsEvent.READ, {
+            conversationId: cmd.conversationId,
+            userId: this.uid(),
+            seq: cmd.seq
+          })
+        )
         break
       case 'ROOM_PRESENCE':
-        this.emit(buildEnvelope(WsEvent.MEMBER_JOIN, { roomId: cmd.roomId, userId: this.uid() }))
+        this.emit(
+          buildEnvelope(WsEvent.MEMBER_JOIN, {
+            roomId: cmd.roomId,
+            userId: this.uid()
+          })
+        )
         break
       case 'SEND':
         this.handleSend(cmd)
@@ -61,7 +80,9 @@ class MockGateway {
   /** 先写后推：分配 seq → 落内存 → 推 MESSAGE + ACK */
   private handleSend(cmd: Extract<WsIncoming, { type: 'SEND' }>) {
     if (!this.emit) return
-    const convId = cmd.conversationId || `mock-${cmd.target?.convType || 'c2c'}-${cmd.target?.bizId || 'x'}`
+    const convId =
+      cmd.conversationId ||
+      `mock-${cmd.target?.convType || 'c2c'}-${cmd.target?.bizId || 'x'}`
     const seq = (this.convMaxSeq.get(convId) || 0) + 1
     this.convMaxSeq.set(convId, seq)
     const msgId = `mock-msg-${Date.now()}-${seq}`
@@ -83,7 +104,13 @@ class MockGateway {
     list.push(msg)
     this.convMessages.set(convId, list)
     // ACK 先行
-    const ack: AckEventData = { clientMsgId: cmd.clientMsgId, msgId, seq, serverTime: now, status: 'SUCCESS' }
+    const ack: AckEventData = {
+      clientMsgId: cmd.clientMsgId,
+      msgId,
+      seq,
+      serverTime: now,
+      status: 'SUCCESS'
+    }
     this.emit(buildEnvelope(WsEvent.ACK, ack))
     // 再推 MESSAGE
     this.emit(buildEnvelope(WsEvent.MESSAGE, msg))

@@ -98,13 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  reactive,
-  defineAsyncComponent,
-  watchEffect,
-  onMounted
-} from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useVModels } from '@vueuse/core'
 import type { AnyObject } from '@/types/global'
 import GridMap from '@/components/base/map/GridMap.vue'

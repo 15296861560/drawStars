@@ -465,7 +465,7 @@ PENDING --升级平台封禁--> ESCALATED
 
 #### 4.4.2 `content` JSON 约定
 
-**TEXT**
+#### 4.4.2.1 TEXT
 
 ```json
 {
@@ -475,7 +475,7 @@ PENDING --升级平台封禁--> ESCALATED
 }
 ```
 
-**IMAGE**
+#### 4.4.2.2 IMAGE
 
 ```json
 {
@@ -488,7 +488,7 @@ PENDING --升级平台封禁--> ESCALATED
 }
 ```
 
-**CUSTOM**
+#### 4.4.2.3 CUSTOM
 
 ```json
 {
@@ -497,7 +497,7 @@ PENDING --升级平台封禁--> ESCALATED
 }
 ```
 
-**礼物（v1.2）**
+#### 4.4.2.4 礼物（v1.2）
 
 ```json
 {
@@ -1056,7 +1056,7 @@ User(1) ----- UserProfile
 
 连接：`WSS /im/ws?ticket={wsTicket}`，Ticket 由 `/api/im/ws-ticket` 签发。
 
-**客户端 → 服务端（上行）**
+#### 7.6.1 客户端 → 服务端（上行）
 
 | type            | 说明                                                              |
 | --------------- | ----------------------------------------------------------------- |
@@ -1068,7 +1068,7 @@ User(1) ----- UserProfile
 | `PING`          | 连接心跳                                                          |
 | `ROOM_PRESENCE` | `{ roomId }` 房间停留心跳                                         |
 
-**服务端 → 客户端（下行）统一信封**
+#### 7.6.2 服务端 → 客户端（下行）统一信封
 
 ```json
 {

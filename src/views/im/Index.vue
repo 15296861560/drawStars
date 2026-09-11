@@ -32,7 +32,11 @@
 
       <!-- 右侧：聊天窗 / 空态 -->
       <div class="im-index-right">
-        <ChatWindow v-if="activeId" :key="activeId" :conversation-id="activeId" />
+        <ChatWindow
+          v-if="activeId"
+          :key="activeId"
+          :conversation-id="activeId"
+        />
         <div v-else class="im-index-empty">
           <el-empty description="选择一个会话开始聊天" />
         </div>
@@ -65,8 +69,18 @@ const convListRef = ref<InstanceType<typeof ConversationList> | null>(null)
 const activeId = computed(() => convStore.activeId)
 
 const tabs = computed(() => [
-  { key: 'message' as const, label: '消息', icon: '💬', badge: convStore.totalUnread },
-  { key: 'contacts' as const, label: '通讯录', icon: '👥', badge: relation.pendingReceived.length },
+  {
+    key: 'message' as const,
+    label: '消息',
+    icon: '💬',
+    badge: convStore.totalUnread
+  },
+  {
+    key: 'contacts' as const,
+    label: '通讯录',
+    icon: '👥',
+    badge: relation.pendingReceived.length
+  },
   { key: 'hall' as const, label: '大厅', icon: '🌐', badge: 0 }
 ])
 
@@ -85,7 +99,10 @@ function onTab(key: 'message' | 'contacts' | 'hall') {
 onMounted(async () => {
   tab.value = tabFromPath(route.path)
   im.init()
-  await Promise.all([convStore.fetchList(), relation.fetchPending().catch(() => [])])
+  await Promise.all([
+    convStore.fetchList(),
+    relation.fetchPending().catch(() => [])
+  ])
 })
 
 watch(
@@ -146,7 +163,9 @@ onBeforeUnmount(() => {
   border-radius: 8px;
   margin: 2px;
   color: @color-text-secondary;
-  transition: background-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
   &:hover {
     background: @color-fill-hover;
   }

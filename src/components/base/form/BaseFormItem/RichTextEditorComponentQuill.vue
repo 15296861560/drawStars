@@ -31,7 +31,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onBeforeUnmount, ref, shallowRef, onMounted, watch, nextTick } from 'vue'
+import {
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  onMounted,
+  watch,
+  nextTick
+} from 'vue'
 import Quill from 'quill'
 import { useVModels } from '@vueuse/core'
 import 'quill/dist/quill.snow.css'

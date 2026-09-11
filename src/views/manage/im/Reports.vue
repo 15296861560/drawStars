@@ -17,8 +17,12 @@ import { Search, Refresh } from '@element-plus/icons-vue'
 import { showTips } from '@/utils/message/showTips.js'
 import { adminApi } from '@/api/im'
 
-const BaseTable = defineAsyncComponent(() => import('@/components/base/form/BaseTable.vue'))
-const SearchForm = defineAsyncComponent(() => import('@/components/base/SearchForm/index.vue'))
+const BaseTable = defineAsyncComponent(
+  () => import('@/components/base/form/BaseTable.vue')
+)
+const SearchForm = defineAsyncComponent(
+  () => import('@/components/base/SearchForm/index.vue')
+)
 
 const showSearch = ref(true)
 const searchInfo = reactive({ status: '' })

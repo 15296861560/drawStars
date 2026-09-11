@@ -13,7 +13,13 @@
     </div>
 
     <div v-if="showEmoji" class="im-input-emoji">
-      <span v-for="e in emojis" :key="e" class="im-input-emoji-item" @click="insertEmoji(e)">{{ e }}</span>
+      <span
+        v-for="e in emojis"
+        :key="e"
+        class="im-input-emoji-item"
+        @click="insertEmoji(e)"
+        >{{ e }}</span
+      >
     </div>
 
     <div class="im-input-row">
@@ -21,12 +27,20 @@
         v-model="text"
         type="textarea"
         :autosize="{ minRows: 1, maxRows: 5 }"
-        :placeholder="muted ? '当前会话已被禁言' : '输入消息，Enter 发送，Shift+Enter 换行'"
+        :placeholder="
+          muted ? '当前会话已被禁言' : '输入消息，Enter 发送，Shift+Enter 换行'
+        "
         :disabled="muted"
         resize="none"
         @keydown.enter.exact.prevent="onSend"
       />
-      <el-button type="primary" :disabled="muted || !text.trim()" :loading="sending" @click="onSend">发送</el-button>
+      <el-button
+        type="primary"
+        :disabled="muted || !text.trim()"
+        :loading="sending"
+        @click="onSend"
+        >发送</el-button
+      >
     </div>
   </div>
 </template>
@@ -48,7 +62,32 @@ const emit = defineEmits<{
 const text = ref('')
 const showEmoji = ref(false)
 const sending = ref(false)
-const emojis = ['😀', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '👍', '👌', '🙏', '💪', '🎉', '❤️', '🔥', '⭐']
+const emojis = [
+  '😀',
+  '😄',
+  '😁',
+  '😆',
+  '😅',
+  '😂',
+  '🤣',
+  '😊',
+  '😇',
+  '🙂',
+  '🙃',
+  '😉',
+  '😌',
+  '😍',
+  '🥰',
+  '😘',
+  '👍',
+  '👌',
+  '🙏',
+  '💪',
+  '🎉',
+  '❤️',
+  '🔥',
+  '⭐'
+]
 
 function toggleEmoji() {
   showEmoji.value = !showEmoji.value

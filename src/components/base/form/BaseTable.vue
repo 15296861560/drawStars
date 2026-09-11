@@ -1,17 +1,8 @@
 <template>
-  <div
-    class="base-table"
-    :class="rootClass"
-  >
-    <div
-      v-if="hasToolbar"
-      class="base-table__toolbar"
-    >
+  <div class="base-table" :class="rootClass">
+    <div v-if="hasToolbar" class="base-table__toolbar">
       <div class="base-table__toolbar-left">
-        <div
-          v-if="tableName"
-          class="base-table__title"
-        >
+        <div v-if="tableName" class="base-table__title">
           {{ tableName }}
         </div>
         <el-button
@@ -93,9 +84,7 @@
               :config="fields.config"
               :active-value="fields.activeValue"
               :inactive-value="fields.inactiveValue"
-              :disabled="
-                fields.disabled ? fields.disabled(row, fields) : false
-              "
+              :disabled="fields.disabled ? fields.disabled(row, fields) : false"
               @change="val => handleFieldChange(fields, row, val)"
             />
           </template>
@@ -111,10 +100,7 @@
       >
         <template #default="scope">
           <div class="base-table__row-ops">
-            <template
-              v-for="operate in pageTableOperate"
-              :key="operate.label"
-            >
+            <template v-for="operate in pageTableOperate" :key="operate.label">
               <el-tooltip
                 v-if="handleShowButton(operate, scope.row) && operate.icon"
                 :content="operate.tip || operate.label"
@@ -147,10 +133,7 @@
       </template>
     </el-table>
 
-    <div
-      v-if="page"
-      class="base-table__pagination"
-    >
+    <div v-if="page" class="base-table__pagination">
       <el-pagination
         v-model:current-page="page.curPage"
         v-model:page-size="page.pageSize"
@@ -203,7 +186,9 @@ const tableAttrs = computed(() => {
   return raw
 })
 
-const rootClass = computed(() => attrs.class as string | Record<string, boolean> | unknown)
+const rootClass = computed(
+  () => attrs.class as string | Record<string, boolean> | unknown
+)
 
 const defaultPage = ref({
   layout: 'total, sizes, prev, pager, next, jumper',

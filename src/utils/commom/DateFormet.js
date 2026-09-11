@@ -149,11 +149,8 @@ DateFormet.getWeekDay = function (et) {
     if (/(E+)/.test(fmt)) {
       fmt = fmt.replace(
         RegExp.$1,
-        (RegExp.$1.length > 1
-          ? RegExp.$1.length > 2
-            ? '星期'
-            : '周'
-          : '') + week[date.getDay() + '']
+        (RegExp.$1.length > 1 ? (RegExp.$1.length > 2 ? '星期' : '周') : '') +
+          week[date.getDay() + '']
       )
     }
     for (let k in o) {

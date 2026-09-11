@@ -5,7 +5,11 @@
 
       <div class="base-info-content pc-page-body">
         <div class="avatar-block">
-          <el-avatar class="avatar-img" :size="80" :src="personalData.avatar || undefined">
+          <el-avatar
+            class="avatar-img"
+            :size="80"
+            :src="personalData.avatar || undefined"
+          >
             {{ (personalData.nickname || 'U').slice(0, 1) }}
           </el-avatar>
           <div class="avatar-meta">
@@ -23,7 +27,9 @@
                 accept="image/jpg,image/jpeg,image/png"
                 :on-change="onAvatarChange"
               >
-                <el-button link type="primary">{{ $t('btn.uploadAvatar') }}</el-button>
+                <el-button link type="primary">{{
+                  $t('btn.uploadAvatar')
+                }}</el-button>
               </el-upload>
               <el-button
                 v-if="personalData.avatar"
@@ -162,26 +168,48 @@ export default {
           const run = async () => {
             if (level === 0) {
               const result = await queryPovinceList()
-              return result.map(r => ({ value: r.province, label: r.name, leaf: false }))
+              return result.map(r => ({
+                value: r.province,
+                label: r.name,
+                leaf: false
+              }))
             }
             if (level === 1) {
               const result = await queryCityList({ province: node.value })
-              let nodes = result.map(r => ({ value: r.city, label: r.name, leaf: false }))
-              if (!nodes.length) nodes = [{ value: '01', label: node.label, leaf: false }]
+              let nodes = result.map(r => ({
+                value: r.city,
+                label: r.name,
+                leaf: false
+              }))
+              if (!nodes.length)
+                nodes = [{ value: '01', label: node.label, leaf: false }]
               return nodes
             }
             if (level === 2) {
-              const result = await queryAreaList({ province: node.parent.value, city: node.value })
-              return result.map(r => ({ value: r.area, label: r.name, leaf: false }))
+              const result = await queryAreaList({
+                province: node.parent.value,
+                city: node.value
+              })
+              return result.map(r => ({
+                value: r.area,
+                label: r.name,
+                leaf: false
+              }))
             }
             const result = await queryTownList({
               province: node.parent.parent.value,
               city: node.parent.value,
               area: node.value
             })
-            return result.map(r => ({ value: r.town, label: r.name, leaf: true }))
+            return result.map(r => ({
+              value: r.town,
+              label: r.name,
+              leaf: true
+            }))
           }
-          run().then(resolve).catch(() => resolve([]))
+          run()
+            .then(resolve)
+            .catch(() => resolve([]))
         }
       }
     }

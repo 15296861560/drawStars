@@ -1,6 +1,9 @@
 import type { LogicRule, LogicCondition, Question } from '@/types/survey'
 
-function matchCondition(cond: LogicCondition, answers: Record<string, any>): boolean {
+function matchCondition(
+  cond: LogicCondition,
+  answers: Record<string, any>
+): boolean {
   const raw = answers[String(cond.questionId)]
   const val = raw?.value !== undefined ? raw.value : raw
   switch (cond.operator) {
@@ -9,7 +12,9 @@ function matchCondition(cond: LogicCondition, answers: Record<string, any>): boo
     case 'neq':
       return val != cond.value
     case 'includes':
-      return Array.isArray(val) ? val.includes(cond.value) : String(val || '').includes(String(cond.value))
+      return Array.isArray(val)
+        ? val.includes(cond.value)
+        : String(val || '').includes(String(cond.value))
     case 'gt':
       return Number(val) > Number(cond.value)
     case 'gte':
@@ -19,9 +24,19 @@ function matchCondition(cond: LogicCondition, answers: Record<string, any>): boo
     case 'lte':
       return Number(val) <= Number(cond.value)
     case 'empty':
-      return val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length)
+      return (
+        val === undefined ||
+        val === null ||
+        val === '' ||
+        (Array.isArray(val) && !val.length)
+      )
     case 'not_empty':
-      return !(val === undefined || val === null || val === '' || (Array.isArray(val) && !val.length))
+      return !(
+        val === undefined ||
+        val === null ||
+        val === '' ||
+        (Array.isArray(val) && !val.length)
+      )
     default:
       return false
   }
@@ -63,7 +78,9 @@ export function evaluateLogic(
   })
 
   let jumpPage: number | undefined
-  const sorted = [...(rules || [])].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+  const sorted = [...(rules || [])].sort(
+    (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
+  )
 
   for (const rule of sorted) {
     const ok = evalCondition(rule.condition, answers)

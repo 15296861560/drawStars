@@ -30,7 +30,9 @@ export const imRelationStore = defineStore('im-relation', () => {
   async function respondFriend(friendId: string, accept: boolean) {
     const res = await friendApi.respondFriend(friendId, accept)
     if (res.status) {
-      pendingReceived.value = pendingReceived.value.filter(f => String(f.friendId) !== String(friendId))
+      pendingReceived.value = pendingReceived.value.filter(
+        f => String(f.friendId) !== String(friendId)
+      )
       if (accept) await fetchFriends()
     }
     return res
@@ -38,7 +40,10 @@ export const imRelationStore = defineStore('im-relation', () => {
 
   async function removeFriend(friendId: string) {
     const res = await friendApi.removeFriend(friendId)
-    if (res.status) friends.value = friends.value.filter(f => String(f.friendId) !== String(friendId))
+    if (res.status)
+      friends.value = friends.value.filter(
+        f => String(f.friendId) !== String(friendId)
+      )
     return res
   }
 
@@ -56,7 +61,10 @@ export const imRelationStore = defineStore('im-relation', () => {
 
   async function removeBlacklist(targetId: string) {
     const res = await blacklistApi.removeBlacklist(targetId)
-    if (res.status) blacklist.value = blacklist.value.filter(b => String(b.targetId) !== String(targetId))
+    if (res.status)
+      blacklist.value = blacklist.value.filter(
+        b => String(b.targetId) !== String(targetId)
+      )
     return res
   }
 
@@ -67,8 +75,17 @@ export const imRelationStore = defineStore('im-relation', () => {
   }
 
   return {
-    friends, pendingReceived, blacklist,
-    fetchFriends, fetchPending, requestFriend, respondFriend, removeFriend,
-    fetchBlacklist, addBlacklist, removeBlacklist, clear
+    friends,
+    pendingReceived,
+    blacklist,
+    fetchFriends,
+    fetchPending,
+    requestFriend,
+    respondFriend,
+    removeFriend,
+    fetchBlacklist,
+    addBlacklist,
+    removeBlacklist,
+    clear
   }
 })

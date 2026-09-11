@@ -21,8 +21,12 @@
           <el-input v-model="confirmPassword" type="password" show-password />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submit">{{ $t('submit') }}</el-button>
-          <el-button @click="$router.push('/login')">{{ $t('back') }}</el-button>
+          <el-button type="primary" @click="submit">{{
+            $t('submit')
+          }}</el-button>
+          <el-button @click="$router.push('/login')">{{
+            $t('back')
+          }}</el-button>
         </el-form-item>
       </el-form>
     </div>

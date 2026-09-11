@@ -18,8 +18,12 @@ import { ElMessageBox } from 'element-plus'
 import { showTips } from '@/utils/message/showTips.js'
 import { adminApi } from '@/api/im'
 
-const BaseTable = defineAsyncComponent(() => import('@/components/base/form/BaseTable.vue'))
-const SearchForm = defineAsyncComponent(() => import('@/components/base/SearchForm/index.vue'))
+const BaseTable = defineAsyncComponent(
+  () => import('@/components/base/form/BaseTable.vue')
+)
+const SearchForm = defineAsyncComponent(
+  () => import('@/components/base/SearchForm/index.vue')
+)
 
 const showSearch = ref(true)
 const searchInfo = reactive({ keyword: '' })
@@ -33,7 +37,12 @@ const pageInfo = reactive({
 })
 
 const searchFields = [
-  { field: 'keyword', label: '关键字', type: 'input', placeholder: '房间ID/标题' }
+  {
+    field: 'keyword',
+    label: '关键字',
+    type: 'input',
+    placeholder: '房间ID/标题'
+  }
 ]
 
 const tableFields = [
@@ -73,7 +82,11 @@ async function query() {
     const kw = searchInfo.keyword.trim().toLowerCase()
     const all = res.data?.list ?? []
     tableData.value = kw
-      ? all.filter((r: any) => String(r.roomId).toLowerCase().includes(kw) || String(r.title).toLowerCase().includes(kw))
+      ? all.filter(
+          (r: any) =>
+            String(r.roomId).toLowerCase().includes(kw) ||
+            String(r.title).toLowerCase().includes(kw)
+        )
       : all
     pageInfo.total = tableData.value.length
   } else {
@@ -94,7 +107,11 @@ const toggleSearch = () => {
 async function toggleBan(row: any) {
   const banned = row.status !== 'BANNED'
   try {
-    await ElMessageBox.confirm(`确认${banned ? '封禁' : '解封'}房间「${row.title}」？`, '警告', { type: 'warning' })
+    await ElMessageBox.confirm(
+      `确认${banned ? '封禁' : '解封'}房间「${row.title}」？`,
+      '警告',
+      { type: 'warning' }
+    )
   } catch {
     return
   }
@@ -108,7 +125,9 @@ async function toggleBan(row: any) {
 }
 
 async function toggleOfficial(row: any) {
-  const res = await adminApi.setRoomWeight(row.roomId, { official: !row.official })
+  const res = await adminApi.setRoomWeight(row.roomId, {
+    official: !row.official
+  })
   if (res.status) {
     showTips('success', '已更新')
     query()
@@ -120,7 +139,9 @@ async function toggleOfficial(row: any) {
 async function setWeight(row: any) {
   let value = String(row.manualWeight ?? 1)
   try {
-    const r = await ElMessageBox.prompt('输入权重值（0-10）', '加权', { inputValue: value })
+    const r = await ElMessageBox.prompt('输入权重值（0-10）', '加权', {
+      inputValue: value
+    })
     value = r.value
   } catch {
     return
@@ -156,7 +177,13 @@ const pageTableOperate = [
     action: toggleBan,
     show: (op: any, row: any) => row.status === 'BANNED'
   },
-  { label: '加权', tip: '调整权重', type: 'primary', icon: undefined as any, action: setWeight },
+  {
+    label: '加权',
+    tip: '调整权重',
+    type: 'primary',
+    icon: undefined as any,
+    action: setWeight
+  },
   {
     label: '设为官方',
     tip: '设为官方',

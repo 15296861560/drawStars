@@ -31,4 +31,11 @@ export function removeFriend(friendId: string) {
   return del<{}>(formatPath('/im/friends/:friendId', { friendId }))
 }
 
-export default { listFriends, pendingReceived, requestFriend, respondFriend, withdrawRequest, removeFriend }
+export default {
+  listFriends,
+  pendingReceived,
+  requestFriend,
+  respondFriend,
+  withdrawRequest,
+  removeFriend
+}

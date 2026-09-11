@@ -22,7 +22,8 @@ export default {
     $axiosGet(params, '/notifyApi/queryNotifyByType'),
 
   /** 查询所有通知 */
-  queryAllNotify: params => $axiosGet(params || {}, '/notifyApi/queryAllNotify'),
+  queryAllNotify: params =>
+    $axiosGet(params || {}, '/notifyApi/queryAllNotify'),
 
   /**
    * 查询当前用户收到的通知（支持筛选与分页）
@@ -39,8 +40,7 @@ export default {
     $axiosGet(params, '/notifyApi/queryMyNotifyByType'),
 
   /** 未读数量 */
-  getUnreadCount: params =>
-    $axiosGet(params || {}, '/notifyApi/unreadCount'),
+  getUnreadCount: params => $axiosGet(params || {}, '/notifyApi/unreadCount'),
 
   /** 单条已读 */
   markRead: params => $axios(params, '/notifyApi/markRead'),

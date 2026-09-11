@@ -1,8 +1,4 @@
-import {
-  $axios,
-  $axiosGet,
-  requests
-} from '@/assets/js/axios-api/axios-config.js'
+import { requests } from '@/assets/js/axios-api/axios-config.js'
 
 const convertApi = {
   /**

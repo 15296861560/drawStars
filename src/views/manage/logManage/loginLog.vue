@@ -106,9 +106,7 @@ const searchItems = computed(() => [
 
 // 查询方法
 async function query() {
-  const range = Array.isArray(searchInfo.timeRange)
-    ? searchInfo.timeRange
-    : []
+  const range = Array.isArray(searchInfo.timeRange) ? searchInfo.timeRange : []
   const params = {
     username: searchInfo.username || undefined,
     ip: searchInfo.ip || undefined,

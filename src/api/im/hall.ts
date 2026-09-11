@@ -5,9 +5,21 @@
 import { get } from './base'
 import type { ImRoom, PageResult } from './types'
 
-export function hallRooms(params: { categoryId?: string; keyword?: string; curPage?: number; pageSize?: number } = {}) {
+export function hallRooms(
+  params: {
+    categoryId?: string
+    keyword?: string
+    curPage?: number
+    pageSize?: number
+  } = {}
+) {
   return get<PageResult<ImRoom>>(
-    { categoryId: params.categoryId || '', keyword: params.keyword || '', curPage: params.curPage || 1, pageSize: params.pageSize || 20 },
+    {
+      categoryId: params.categoryId || '',
+      keyword: params.keyword || '',
+      curPage: params.curPage || 1,
+      pageSize: params.pageSize || 20
+    },
     '/im/hall/rooms'
   )
 }

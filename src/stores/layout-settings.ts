@@ -50,7 +50,9 @@ function resolveThemeName(source: Record<string, unknown> | null): string {
     return source.themeName
   }
   if (typeof source?.theme === 'string') {
-    const matched = themePresets.find(p => p.primary.toLowerCase() === (source.theme as string).toLowerCase())
+    const matched = themePresets.find(
+      p => p.primary.toLowerCase() === (source.theme as string).toLowerCase()
+    )
     if (matched) {
       return matched.key
     }

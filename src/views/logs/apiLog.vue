@@ -18,8 +18,12 @@
       </el-col>
       <el-col :span="4">
         <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{ $t('btn.search') }}</el-button>
-          <el-button type="warning" @click="reset">{{ $t('btn.reset') }}</el-button>
+          <el-button type="primary" @click="query">{{
+            $t('btn.search')
+          }}</el-button>
+          <el-button type="warning" @click="reset">{{
+            $t('btn.reset')
+          }}</el-button>
         </div>
       </el-col>
     </el-row>
@@ -39,25 +43,64 @@ const SearchItem = defineAsyncComponent(
   () => import('@/components/base/SearchItem/index.vue')
 )
 
-const searchInfo = reactive({ method: '', url: '', status: '', startTime: '', endTime: '' })
+const searchInfo = reactive({
+  method: '',
+  url: '',
+  status: '',
+  startTime: '',
+  endTime: ''
+})
 const tableData = ref([])
-const pageInfo = reactive({ curPage: 1, pageSize: 10, total: 0, curPageChange: query })
+const pageInfo = reactive({
+  curPage: 1,
+  pageSize: 10,
+  total: 0,
+  curPageChange: query
+})
 
 const searchItems = computed(() => [
-  { field: 'method', label: '请求方法', type: 'select', options: [
-    { label: 'GET', value: 'GET' }, { label: 'POST', value: 'POST' },
-    { label: 'PUT', value: 'PUT' }, { label: 'DELETE', value: 'DELETE' }
-  ], placeholder: '请选择方法' },
-  { field: 'url', label: '接口路径', type: 'input', placeholder: '请输入路径关键字' },
-  { field: 'status', label: '状态', type: 'select', options: [
-    { label: '成功', value: 'success' }, { label: '失败', value: 'fail' }
-  ], placeholder: '请选择状态' },
-  { field: 'timeRange', label: '时间范围', type: 'daterange', startField: 'startTime', endField: 'endTime' }
+  {
+    field: 'method',
+    label: '请求方法',
+    type: 'select',
+    options: [
+      { label: 'GET', value: 'GET' },
+      { label: 'POST', value: 'POST' },
+      { label: 'PUT', value: 'PUT' },
+      { label: 'DELETE', value: 'DELETE' }
+    ],
+    placeholder: '请选择方法'
+  },
+  {
+    field: 'url',
+    label: '接口路径',
+    type: 'input',
+    placeholder: '请输入路径关键字'
+  },
+  {
+    field: 'status',
+    label: '状态',
+    type: 'select',
+    options: [
+      { label: '成功', value: 'success' },
+      { label: '失败', value: 'fail' }
+    ],
+    placeholder: '请选择状态'
+  },
+  {
+    field: 'timeRange',
+    label: '时间范围',
+    type: 'daterange',
+    startField: 'startTime',
+    endField: 'endTime'
+  }
 ])
 
 async function query() {
   const result = await logApi.queryApiLogs({
-    ...searchInfo, curPage: pageInfo.curPage, pageSize: pageInfo.pageSize
+    ...searchInfo,
+    curPage: pageInfo.curPage,
+    pageSize: pageInfo.pageSize
   })
   if (result.status) {
     tableData.value = result.data.list || []

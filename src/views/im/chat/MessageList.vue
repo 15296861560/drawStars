@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, watch } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 import VirtualList from '@/components/base/VirtualList/index.vue'
 import MessageBubble from './MessageBubble.vue'
 import type { ImMessage } from '@/api/im/types'

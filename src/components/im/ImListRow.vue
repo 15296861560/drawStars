@@ -6,13 +6,21 @@
   >
     <div class="im-list-row__avatar">
       <slot name="avatar">
-        <ImAvatar :src="avatar" :name="name" :size="40" :badge="badge" :online="online" />
+        <ImAvatar
+          :src="avatar"
+          :name="name"
+          :size="40"
+          :badge="badge"
+          :online="online"
+        />
       </slot>
     </div>
     <div class="im-list-row__main">
       <div class="im-list-row__title">
         <span class="im-list-row__name">{{ name }}</span>
-        <span v-if="$slots.tag" class="im-list-row__tag"><slot name="tag" /></span>
+        <span v-if="$slots.tag" class="im-list-row__tag"
+          ><slot name="tag"
+        /></span>
       </div>
       <div v-if="$slots.sub || sub" class="im-list-row__sub">
         <slot name="sub">{{ sub }}</slot>
@@ -37,7 +45,15 @@ withDefaults(
     active?: boolean
     disabled?: boolean
   }>(),
-  { name: '', avatar: '', sub: '', badge: 0, online: false, active: false, disabled: false }
+  {
+    name: '',
+    avatar: '',
+    sub: '',
+    badge: 0,
+    online: false,
+    active: false,
+    disabled: false
+  }
 )
 
 const emit = defineEmits<{ click: [] }>()

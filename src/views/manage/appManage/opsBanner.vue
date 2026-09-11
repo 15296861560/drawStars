@@ -122,15 +122,19 @@ async function load() {
 
 // 本地过滤（接口一次性返回全量）
 function query() {
-  const kw = String(searchInfo.title || '').trim().toLowerCase()
+  const kw = String(searchInfo.title || '')
+    .trim()
+    .toLowerCase()
   tableData.value = allList.value.filter(item => {
     const hitTitle =
-      !kw || String(item.title || '')
+      !kw ||
+      String(item.title || '')
         .toLowerCase()
         .includes(kw)
     const hitStatus = !searchInfo.status || item.status === searchInfo.status
     const hitPlatform =
-      !searchInfo.platform || String(item.platforms || '').includes(searchInfo.platform)
+      !searchInfo.platform ||
+      String(item.platforms || '').includes(searchInfo.platform)
     return hitTitle && hitStatus && hitPlatform
   })
 }

@@ -17,7 +17,12 @@
         </template>
         <!-- 图片 -->
         <template v-else-if="msg.msgType === 'IMAGE'">
-          <img class="im-bubble-img" :src="content.url" alt="" @click="preview(content.url)" />
+          <img
+            class="im-bubble-img"
+            :src="content.url"
+            alt=""
+            @click="preview(content.url)"
+          />
         </template>
         <!-- 系统 -->
         <template v-else-if="msg.msgType === 'SYSTEM'">
@@ -28,8 +33,12 @@
           <span class="im-bubble-text">[自定义消息]</span>
         </template>
       </div>
-      <div v-if="msg.status === 'SENDING'" class="im-bubble-status">发送中…</div>
-      <div v-else-if="msg.status === 'DELETED'" class="im-bubble-status failed">发送失败</div>
+      <div v-if="msg.status === 'SENDING'" class="im-bubble-status">
+        发送中…
+      </div>
+      <div v-else-if="msg.status === 'DELETED'" class="im-bubble-status failed">
+        发送失败
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +48,9 @@ import { computed, defineAsyncComponent } from 'vue'
 import type { ImMessage } from '@/api/im/types'
 import { MsgStatus } from '@/api/im/types'
 
-const ImAvatar = defineAsyncComponent(() => import('@/components/im/ImAvatar.vue'))
+const ImAvatar = defineAsyncComponent(
+  () => import('@/components/im/ImAvatar.vue')
+)
 
 const props = defineProps<{
   msg: ImMessage
@@ -77,10 +88,7 @@ function renderText(text: string): string {
 }
 
 function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 }
 
 function preview(url: string) {

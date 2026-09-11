@@ -640,7 +640,7 @@ drawStars 已具备 PC 管理端（用户、角色、菜单、应用管理等）
 | 注入上下文 | userId、roles、permissions、locale、theme、shellVersion、moduleVersion（非敏感）                                                  |
 | 鉴权       | 打开前走 Ticket（4.12.1）；App 本地包可辅以短时 `getAuthToken`；规则见 4.1.2                                                      |
 | 导航       | 模块内 SPA 路由；顶栏返回先模块内回退，再关闭容器                                                                                 |
-| 通信       | uni-app `web-view` ↔ 壳：`postMessage` + 约定协议；小程序按子集降级                                                              |
+| 通信       | uni-app `web-view` ↔ 壳：`postMessage` + 约定协议；小程序按子集降级                                                               |
 | 错误页     | 加载失败、校验失败、权限失败统一错误页，可重试                                                                                    |
 | 性能       | 记录 TTI、白屏；超时（默认 15s）可杀进程并上报                                                                                    |
 | WebView 栈 | **v1.0 默认单模块栈**：同时仅一个业务模块 WebView；打开新模块前关闭或盖住旧模块（避免多 WebView 内存爆）。多模块并行为 v2.0+ 预留 |

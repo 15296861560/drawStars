@@ -39,7 +39,8 @@
           <template #default="{ row }">
             {{ pointsTypeLabel(row.pointsType) }}
           </template>
-        </el-table-column>        <el-table-column label="计算方式" width="100">
+        </el-table-column>
+        <el-table-column label="计算方式" width="100">
           <template #default="{ row }">
             {{ calcMethodLabel(row.calcMethod) }}
           </template>
@@ -117,10 +118,7 @@ import {
 import { showTips } from '@/utils/message/showTips.js'
 import { pointsStore } from '@/stores/points'
 import { dialogFields } from './config/rulesSchema'
-import {
-  pointsSourceLabel,
-  pointsTypeLabel
-} from '@/utils/points-labels'
+import { pointsSourceLabel, pointsTypeLabel } from '@/utils/points-labels'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
@@ -134,10 +132,12 @@ const dialogTitle = ref('新增规则')
 
 function calcMethodLabel(method: string) {
   return (
-    ({ FIXED: '固定值', RATIO: '比例', FORMULA: '公式' } as Record<
-      string,
-      string
-    >)[method] || method
+    (
+      { FIXED: '固定值', RATIO: '比例', FORMULA: '公式' } as Record<
+        string,
+        string
+      >
+    )[method] || method
   )
 }
 

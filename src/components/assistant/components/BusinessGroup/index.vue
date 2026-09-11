@@ -87,16 +87,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, watch, nextTick, computed, onMounted } from 'vue'
-import { getAssetsImgFile } from '@/utils/tool'
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { v4 as uuidv4 } from 'uuid'
-
-import { userInfoStore } from '@/stores/user-info'
-const userInfo = userInfoStore()
-const userId = computed(() => userInfo.getUserId || '')
 
 const emit = defineEmits([
   'direction-change',
@@ -154,18 +147,13 @@ const createGroup = () => {
   }
   emit('change-group', groupInfo)
 }
-const deleteAllDialog = async () => {
-  if (await deleteGroup()) {
-    groups.value = []
-  }
-}
-const deleteSingleGroup = async (id: string, index: number) => {
+const deleteSingleGroup = async (id: string, _index: number) => {
   if (await deleteGroup(id)) {
     await getListGroup() // 强制刷新整个列表
   }
 }
 
-const deleteGroup = async (groupId = '') => {
+const deleteGroup = async (_groupId = '') => {
   ElMessage.success('删除成功')
   return true
 }

@@ -48,8 +48,18 @@
             class="panel-table"
             empty-text="暂无规则"
           >
-            <el-table-column prop="name" label="名称" min-width="100" show-overflow-tooltip />
-            <el-table-column prop="code" label="编码" min-width="120" show-overflow-tooltip />
+            <el-table-column
+              prop="name"
+              label="名称"
+              min-width="100"
+              show-overflow-tooltip
+            />
+            <el-table-column
+              prop="code"
+              label="编码"
+              min-width="120"
+              show-overflow-tooltip
+            />
             <el-table-column label="状态" width="80" align="center">
               <template #default="{ row }">
                 <el-tag :type="row.enabled ? 'success' : 'info'" size="small">
@@ -77,8 +87,18 @@
             class="panel-table"
             empty-text="暂无等级"
           >
-            <el-table-column prop="level" label="等级" width="70" align="center" />
-            <el-table-column prop="name" label="名称" min-width="100" show-overflow-tooltip />
+            <el-table-column
+              prop="level"
+              label="等级"
+              width="70"
+              align="center"
+            />
+            <el-table-column
+              prop="name"
+              label="名称"
+              min-width="100"
+              show-overflow-tooltip
+            />
             <el-table-column
               prop="requiredPoints"
               label="所需积分"
@@ -221,7 +241,9 @@ onMounted(reload)
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
   &.clickable {
     cursor: pointer;

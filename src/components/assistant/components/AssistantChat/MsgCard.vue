@@ -259,13 +259,8 @@ import { computed, ref, nextTick, toRefs, onMounted, reactive } from 'vue'
 import { IReactive } from '@/types'
 import { getAssetsImgFile } from '@/utils/tool'
 import { useSetEcharts } from '@/hooks/echarts'
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
 
 import { XMarkdown } from 'vue-element-plus-x'
-
-const userStore = useUserStore()
-const { systemSkin } = storeToRefs(userStore)
 
 const props = defineProps<{
   msgInfo: Object
@@ -273,7 +268,7 @@ const props = defineProps<{
   latestMsgId: String
 }>()
 
-const { msgInfo, userId, latestMsgId } = toRefs(<IReactive>props)
+const { msgInfo, latestMsgId } = toRefs(<IReactive>props)
 
 const emit = defineEmits(['msg-action', 'msg-text-link'])
 
@@ -284,18 +279,6 @@ const processedPrefixContent = computed(() => {
   // 使用正则表达式移除.和**之间的空格 否则数字不显示
   // 匹配点号后跟空格再跟**的模式，并替换为点号直接跟**
   return content.replace(/\.\s*\*\*/g, '.**')
-})
-
-const userAvatar = computed(() => {
-  if (!msgInfo.value?.role) {
-    // return getAssetsImgFile('assistant/robot-avatar.png')
-    return (
-      systemSkin?.value?.ai_logo ||
-      getAssetsImgFile('assistant/robot-avatar.png')
-    )
-  } else {
-    return getAssetsImgFile('assistant/user-default-avatar.png')
-  }
 })
 
 const msgAction = (extInfo: IReactive, op: IReactive) => {

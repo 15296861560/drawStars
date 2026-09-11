@@ -1261,7 +1261,7 @@ async sendTaskNotification(userId: number, notification: TaskNotification) {
 | **P8** | 成就系统 + 成就墙                               | 3天  | 🟢 低  |
 | **P9** | 奖励模板 + 任务模板                             | 2天  | 🟢 低  |
 
-**总预估：~32 个工作日**
+**总预估**：~32 个工作日
 
 ### 9.2 技术栈对齐
 

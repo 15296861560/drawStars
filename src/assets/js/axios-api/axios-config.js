@@ -155,14 +155,8 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
           .then(res => {
             res.status === 200 && apiObj.afterFetch(res, realURL, options)
             const data = res.data || {}
-            const hideTip =
-              options.hideErrorTip || data.code === 'TOKEN-FAIL'
-            if (
-              !hideTip &&
-              data &&
-              data.status === false &&
-              data.msg
-            ) {
+            const hideTip = options.hideErrorTip || data.code === 'TOKEN-FAIL'
+            if (!hideTip && data && data.status === false && data.msg) {
               showTips('error', data.msg)
             }
             resolve(data)

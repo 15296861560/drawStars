@@ -23,7 +23,10 @@ export function updateGroup(groupId: string, data: Record<string, unknown>) {
 }
 
 export function joinGroup(groupId: string) {
-  return post<{ status: string; conversationId?: string }>({}, formatPath('/im/groups/:groupId/join', { groupId }))
+  return post<{ status: string; conversationId?: string }>(
+    {},
+    formatPath('/im/groups/:groupId/join', { groupId })
+  )
 }
 
 export function leaveGroup(groupId: string) {
@@ -31,23 +34,46 @@ export function leaveGroup(groupId: string) {
 }
 
 export function groupMembers(groupId: string) {
-  return get<{ list: Array<Record<string, unknown>> }>({}, formatPath('/im/groups/:groupId/members', { groupId }))
+  return get<{ list: Array<Record<string, unknown>> }>(
+    {},
+    formatPath('/im/groups/:groupId/members', { groupId })
+  )
 }
 
-export function muteGroupMember(groupId: string, targetUserId: string, duration: MuteDuration) {
-  return post<{}>({ targetUserId, duration }, formatPath('/im/groups/:groupId/mute', { groupId }))
+export function muteGroupMember(
+  groupId: string,
+  targetUserId: string,
+  duration: MuteDuration
+) {
+  return post<{}>(
+    { targetUserId, duration },
+    formatPath('/im/groups/:groupId/mute', { groupId })
+  )
 }
 
 export function kickGroupMember(groupId: string, targetUserId: string) {
-  return post<{}>({ targetUserId }, formatPath('/im/groups/:groupId/kick', { groupId }))
+  return post<{}>(
+    { targetUserId },
+    formatPath('/im/groups/:groupId/kick', { groupId })
+  )
 }
 
-export function setGroupAdmin(groupId: string, targetUserId: string, isAdmin: boolean) {
-  return post<{}>({ targetUserId, isAdmin }, formatPath('/im/groups/:groupId/admins', { groupId }))
+export function setGroupAdmin(
+  groupId: string,
+  targetUserId: string,
+  isAdmin: boolean
+) {
+  return post<{}>(
+    { targetUserId, isAdmin },
+    formatPath('/im/groups/:groupId/admins', { groupId })
+  )
 }
 
 export function transferGroup(groupId: string, targetUserId: string) {
-  return post<ImGroup>({ targetUserId }, formatPath('/im/groups/:groupId/transfer', { groupId }))
+  return post<ImGroup>(
+    { targetUserId },
+    formatPath('/im/groups/:groupId/transfer', { groupId })
+  )
 }
 
 export function dissolveGroup(groupId: string) {
@@ -55,6 +81,16 @@ export function dissolveGroup(groupId: string) {
 }
 
 export default {
-  createGroup, listGroups, getGroup, updateGroup, joinGroup, leaveGroup,
-  groupMembers, muteGroupMember, kickGroupMember, setGroupAdmin, transferGroup, dissolveGroup
+  createGroup,
+  listGroups,
+  getGroup,
+  updateGroup,
+  joinGroup,
+  leaveGroup,
+  groupMembers,
+  muteGroupMember,
+  kickGroupMember,
+  setGroupAdmin,
+  transferGroup,
+  dissolveGroup
 }

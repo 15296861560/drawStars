@@ -169,17 +169,13 @@ import {
   computed,
   reactive,
   ref,
-  inject,
   nextTick,
   watch,
-  onUnmounted,
   onMounted
 } from 'vue'
 import { getAssetsImgFile } from '@/utils/tool'
 import { ElMessage } from 'element-plus'
-import { cloneDeep, debounce, throttle } from 'lodash-es'
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
+import { cloneDeep, throttle } from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid'
 
 import { userInfoStore } from '@/stores/user-info'
@@ -385,7 +381,6 @@ const getFileType = (file: any) => {
 }
 
 /**语音识别 */
-const listening = ref(false)
 let recognition: any = null
 
 const isEdge = () => {
@@ -396,12 +391,6 @@ if (isEdge()) {
   recognition = new (window as any).webkitSpeechRecognition()
 }
 const audioBlob = ref()
-
-let recognitionText = ''
-const onResult = debounce((event: { results: any }) => {
-  recognitionText = (Object.values(event.results).at(-1) as Array<any>)[0]
-    .transcript
-}, 1000)
 
 const initSpeech = () => {
   if (!recognition) {
@@ -456,7 +445,6 @@ const initSpeech = () => {
   recognition.continuous = true
   recognition.interimResults = true
   recognition.lang = 'zh-CN'
-  recognition.addEventListener('result', onResult)
 }
 
 const apiSpeechRecognition = async (file: File) => {
@@ -487,32 +475,6 @@ const apiSpeechRecognition = async (file: File) => {
 }
 
 initSpeech()
-
-const triggerSpeech = () => {
-  if (sendLoading.value) {
-    return
-  }
-
-  if (listening.value) {
-    recognition?.stop()
-    listening.value = false
-    console.log('停止输入。。。')
-    if (recognitionText) {
-      const msgItem = convertMsg({
-        prefixContent: recognitionText,
-        role: 1
-      })
-
-      appendMsgItem(msgItem)
-      userAsk(msgItem)
-      recognitionText = ''
-    }
-  } else {
-    recognition?.start()
-    listening.value = true
-    console.log('开启输入。。。')
-  }
-}
 
 /**发送信息 */
 const sendLoading = ref(false)
@@ -672,7 +634,6 @@ const scrollChatList = throttle(async (e: any) => {
   }
 
   const topId = msgList.value[0]?.id
-  const offset = msgList.value.length
 
   // const options = {
   //   method: createRequest("assitant", "getChatHistoryPage"),

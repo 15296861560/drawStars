@@ -58,10 +58,7 @@ const DEFAULT_NIGHT = {
 
 function setPrimaryVars(
   primary: string,
-  precise?: Pick<
-    ThemePreset,
-    'primaryHover' | 'primaryActive' | 'primaryLight'
-  >
+  precise?: Pick<ThemePreset, 'primaryHover' | 'primaryActive' | 'primaryLight'>
 ): void {
   const style = document.documentElement.style
   style.setProperty('--el-color-primary', primary)

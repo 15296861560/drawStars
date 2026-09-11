@@ -23,7 +23,9 @@
       <el-table :data="scoring.detail || []" size="small" border>
         <el-table-column prop="questionId" label="题目ID" width="100" />
         <el-table-column label="得分" width="120">
-          <template #default="{ row }">{{ row.score }} / {{ row.max }}</template>
+          <template #default="{ row }"
+            >{{ row.score }} / {{ row.max }}</template
+          >
         </el-table-column>
         <el-table-column label="结果" width="100">
           <template #default="{ row }">
@@ -134,8 +136,15 @@ onMounted(load)
   gap: 8px;
   margin: 12px 0;
 }
-.score-num { font-size: 56px; font-weight: 700; color: #1a5fb4; }
-.score-max { font-size: 24px; color: #909399; }
+.score-num {
+  font-size: 56px;
+  font-weight: 700;
+  color: #1a5fb4;
+}
+.score-max {
+  font-size: 24px;
+  color: #909399;
+}
 .grade-row {
   display: flex;
   justify-content: center;

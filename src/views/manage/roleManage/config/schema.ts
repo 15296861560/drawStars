@@ -26,9 +26,7 @@ export const allFields = [
     label: '权限字符',
     type: 'input',
     minWidth: 140,
-    rule: [
-      { required: true, message: '请输入权限字符', trigger: 'blur' }
-    ]
+    rule: [{ required: true, message: '请输入权限字符', trigger: 'blur' }]
   },
   {
     fieldName: 'sort',

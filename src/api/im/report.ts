@@ -4,7 +4,11 @@
  */
 import { post } from './base'
 
-export function createReport(targetType: string, targetId: string, reason: string) {
+export function createReport(
+  targetType: string,
+  targetId: string,
+  reason: string
+) {
   return post<{ id: string }>({ targetType, targetId, reason }, '/im/reports')
 }
 

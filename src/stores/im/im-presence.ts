@@ -40,5 +40,14 @@ export const imPresenceStore = defineStore('im-presence', () => {
     roomOnlineCount.value = {}
   }
 
-  return { onlineMap, roomOnlineCount, setOnline, setRoomOnline, batchCheck, isOnline, roomCount, clear }
+  return {
+    onlineMap,
+    roomOnlineCount,
+    setOnline,
+    setRoomOnline,
+    batchCheck,
+    isOnline,
+    roomCount,
+    clear
+  }
 })

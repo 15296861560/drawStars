@@ -2,9 +2,18 @@
   <div class="g-list-vertical im-mg-settings">
     <el-tabs v-model="tab">
       <el-tab-pane label="系统配置" name="config">
-        <el-form :model="config" label-width="180px" style="max-width:640px" v-loading="configLoading">
-          <el-form-item v-for="key in configKeys" :key="key" :label="configLabels[key] || key">
-            <el-input v-model="config[key]" style="width:240px" />
+        <el-form
+          :model="config"
+          label-width="180px"
+          style="max-width: 640px"
+          v-loading="configLoading"
+        >
+          <el-form-item
+            v-for="key in configKeys"
+            :key="key"
+            :label="configLabels[key] || key"
+          >
+            <el-input v-model="config[key]" style="width: 240px" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="saveConfig">保存</el-button>
@@ -14,8 +23,12 @@
 
       <el-tab-pane label="敏感词" name="sensitive">
         <div class="im-mg-bar">
-          <el-input v-model="newWord" placeholder="敏感词" style="width:200px" />
-          <el-select v-model="newAction" style="width:140px">
+          <el-input
+            v-model="newWord"
+            placeholder="敏感词"
+            style="width: 200px"
+          />
+          <el-select v-model="newAction" style="width: 140px">
             <el-option label="拦截 BLOCK" value="BLOCK" />
             <el-option label="审核 REVIEW" value="REVIEW" />
           </el-select>
@@ -33,9 +46,21 @@
 
       <el-tab-pane label="分类" name="category">
         <div class="im-mg-bar">
-          <el-input v-model="catForm.code" placeholder="编码" style="width:160px" />
-          <el-input v-model="catForm.name" placeholder="名称" style="width:160px" />
-          <el-input v-model.number="catForm.sort" placeholder="排序" style="width:100px" />
+          <el-input
+            v-model="catForm.code"
+            placeholder="编码"
+            style="width: 160px"
+          />
+          <el-input
+            v-model="catForm.name"
+            placeholder="名称"
+            style="width: 160px"
+          />
+          <el-input
+            v-model.number="catForm.sort"
+            placeholder="排序"
+            style="width: 100px"
+          />
           <el-button type="primary" @click="addCategory">添加</el-button>
         </div>
         <el-table :data="categories" border size="small">
@@ -57,11 +82,23 @@ import { adminApi } from '@/api/im'
 const tab = ref('config')
 
 const config = ref<Record<string, string>>({})
-const configKeys = ['freqPerSec', 'freqPerMin', 'createRoomPerDay', 'roomHistoryRetainDays', 'groupHistoryRetainDays', 'strangerPerDayUsers', 'strangerPerDayMsgs']
+const configKeys = [
+  'freqPerSec',
+  'freqPerMin',
+  'createRoomPerDay',
+  'roomHistoryRetainDays',
+  'groupHistoryRetainDays',
+  'strangerPerDayUsers',
+  'strangerPerDayMsgs'
+]
 const configLabels: Record<string, string> = {
-  freqPerSec: '每秒频率上限', freqPerMin: '每分钟频率上限', createRoomPerDay: '每日建房上限',
-  roomHistoryRetainDays: '房间历史保留天数', groupHistoryRetainDays: '群组历史保留天数',
-  strangerPerDayUsers: '陌生人每日人数', strangerPerDayMsgs: '陌生人每日消息数'
+  freqPerSec: '每秒频率上限',
+  freqPerMin: '每分钟频率上限',
+  createRoomPerDay: '每日建房上限',
+  roomHistoryRetainDays: '房间历史保留天数',
+  groupHistoryRetainDays: '群组历史保留天数',
+  strangerPerDayUsers: '陌生人每日人数',
+  strangerPerDayMsgs: '陌生人每日消息数'
 }
 const configLoading = ref(false)
 
@@ -91,8 +128,15 @@ async function loadWords() {
 }
 async function addWord() {
   if (!newWord.value.trim()) return
-  const res = await adminApi.addSensitiveWord(newWord.value.trim(), newAction.value)
-  if (res.status) { ElMessage.success('已添加'); newWord.value = ''; loadWords() }
+  const res = await adminApi.addSensitiveWord(
+    newWord.value.trim(),
+    newAction.value
+  )
+  if (res.status) {
+    ElMessage.success('已添加')
+    newWord.value = ''
+    loadWords()
+  }
 }
 async function reload() {
   await adminApi.reloadSensitiveWords()
@@ -105,8 +149,16 @@ async function loadCategories() {
 }
 async function addCategory() {
   if (!catForm.value.code || !catForm.value.name) return
-  const res = await adminApi.createCategory(catForm.value.code, catForm.value.name, catForm.value.sort)
-  if (res.status) { ElMessage.success('已添加'); catForm.value = { code: '', name: '', sort: 0 }; loadCategories() }
+  const res = await adminApi.createCategory(
+    catForm.value.code,
+    catForm.value.name,
+    catForm.value.sort
+  )
+  if (res.status) {
+    ElMessage.success('已添加')
+    catForm.value = { code: '', name: '', sort: 0 }
+    loadCategories()
+  }
 }
 
 function fmtTime(t: string): string {
@@ -115,7 +167,11 @@ function fmtTime(t: string): string {
   return new Date(n > 1e12 ? n : n).toLocaleString()
 }
 
-onMounted(() => { loadConfig(); loadWords(); loadCategories() })
+onMounted(() => {
+  loadConfig()
+  loadWords()
+  loadCategories()
+})
 </script>
 
 <style scoped lang="less">
@@ -123,5 +179,9 @@ onMounted(() => { loadConfig(); loadWords(); loadCategories() })
   padding: 12px 16px;
   background: @color-bg;
 }
-.im-mg-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+.im-mg-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
 </style>

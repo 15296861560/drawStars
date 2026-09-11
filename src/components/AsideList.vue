@@ -70,10 +70,7 @@
                   </el-menu-item>
                 </template>
               </el-sub-menu>
-              <el-menu-item
-                v-else-if="item.path"
-                :index="item.path"
-              >
+              <el-menu-item v-else-if="item.path" :index="item.path">
                 <menu-icon :name="item.icon" />
                 <template #title>{{ item.name }}</template>
               </el-menu-item>
@@ -81,39 +78,39 @@
           </template>
 
           <template v-else>
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><Shop /></el-icon>
-              <span>{{ $t('aside.module') }}</span>
-            </template>
-            <el-menu-item
-              :index="item.path"
-              v-for="item in pathList"
-              :key="item.path"
-              >{{ $t(item.name) }}</el-menu-item
-            >
-          </el-sub-menu>
-          <el-sub-menu index="logs">
-            <template #title>
-              <el-icon><Document /></el-icon>
-              <span>{{ $t('aside.logManage') }}</span>
-            </template>
-            <el-menu-item index="/home/logs/operation">{{
-              $t('aside.operationLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/business">{{
-              $t('aside.businessLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/api">{{
-              $t('aside.apiLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/performance">{{
-              $t('aside.performanceLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/traffic">{{
-              $t('aside.trafficStats')
-            }}</el-menu-item>
-          </el-sub-menu>
+            <el-sub-menu index="1">
+              <template #title>
+                <el-icon><Shop /></el-icon>
+                <span>{{ $t('aside.module') }}</span>
+              </template>
+              <el-menu-item
+                :index="item.path"
+                v-for="item in pathList"
+                :key="item.path"
+                >{{ $t(item.name) }}</el-menu-item
+              >
+            </el-sub-menu>
+            <el-sub-menu index="logs">
+              <template #title>
+                <el-icon><Document /></el-icon>
+                <span>{{ $t('aside.logManage') }}</span>
+              </template>
+              <el-menu-item index="/home/logs/operation">{{
+                $t('aside.operationLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/business">{{
+                $t('aside.businessLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/api">{{
+                $t('aside.apiLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/performance">{{
+                $t('aside.performanceLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/traffic">{{
+                $t('aside.trafficStats')
+              }}</el-menu-item>
+            </el-sub-menu>
           </template>
           <el-sub-menu index="survey">
             <template #title>

@@ -41,10 +41,7 @@
                 <span>{{ leaf.name }}</span>
               </el-menu-item>
             </el-sub-menu>
-            <el-menu-item
-              v-else
-              :index="child.path || 'tm-' + child.id"
-            >
+            <el-menu-item v-else :index="child.path || 'tm-' + child.id">
               <menu-icon :name="child.icon" />
               <span>{{ child.name }}</span>
             </el-menu-item>
@@ -57,40 +54,40 @@
       </template>
     </template>
     <template v-else>
-    <el-sub-menu index="sub-mod">
-      <template #title>
-        <el-icon><Shop /></el-icon>
-        <span>{{ $t('aside.module') }}</span>
-      </template>
-      <el-menu-item
-        v-for="item in pathList"
-        :key="item.path"
-        :index="item.path"
-      >
-        {{ $t(item.name) }}
-      </el-menu-item>
-    </el-sub-menu>
-    <el-sub-menu index="sub-logs">
-      <template #title>
-        <el-icon><Document /></el-icon>
-        <span>{{ $t('aside.logManage') }}</span>
-      </template>
-      <el-menu-item index="/home/logs/operation">{{
-        $t('aside.operationLog')
-      }}</el-menu-item>
-      <el-menu-item index="/home/logs/business">{{
-        $t('aside.businessLog')
-      }}</el-menu-item>
-      <el-menu-item index="/home/logs/api">{{
-        $t('aside.apiLog')
-      }}</el-menu-item>
-      <el-menu-item index="/home/logs/performance">{{
-        $t('aside.performanceLog')
-      }}</el-menu-item>
-      <el-menu-item index="/home/logs/traffic">{{
-        $t('aside.trafficStats')
-      }}</el-menu-item>
-    </el-sub-menu>
+      <el-sub-menu index="sub-mod">
+        <template #title>
+          <el-icon><Shop /></el-icon>
+          <span>{{ $t('aside.module') }}</span>
+        </template>
+        <el-menu-item
+          v-for="item in pathList"
+          :key="item.path"
+          :index="item.path"
+        >
+          {{ $t(item.name) }}
+        </el-menu-item>
+      </el-sub-menu>
+      <el-sub-menu index="sub-logs">
+        <template #title>
+          <el-icon><Document /></el-icon>
+          <span>{{ $t('aside.logManage') }}</span>
+        </template>
+        <el-menu-item index="/home/logs/operation">{{
+          $t('aside.operationLog')
+        }}</el-menu-item>
+        <el-menu-item index="/home/logs/business">{{
+          $t('aside.businessLog')
+        }}</el-menu-item>
+        <el-menu-item index="/home/logs/api">{{
+          $t('aside.apiLog')
+        }}</el-menu-item>
+        <el-menu-item index="/home/logs/performance">{{
+          $t('aside.performanceLog')
+        }}</el-menu-item>
+        <el-menu-item index="/home/logs/traffic">{{
+          $t('aside.trafficStats')
+        }}</el-menu-item>
+      </el-sub-menu>
     </template>
     <el-sub-menu index="sub-survey">
       <template #title>
@@ -162,10 +159,7 @@ const rbacMenus = computed(() =>
 
 /** 可用于高亮匹配的菜单 path 集合 */
 const menuIndexPaths = computed(() => {
-  const paths = [
-    '/home/homepage',
-    ...pathList.value.map(i => i.path)
-  ]
+  const paths = ['/home/homepage', ...pathList.value.map(i => i.path)]
   const walk = (nodes: any[]) => {
     ;(nodes || []).forEach(n => {
       if (n.path && !n.path.startsWith('tm-')) paths.push(n.path)
@@ -177,10 +171,7 @@ const menuIndexPaths = computed(() => {
 })
 
 const syncActive = () => {
-  defaultActive.value = resolveActiveMenuIndex(
-    route.path,
-    menuIndexPaths.value
-  )
+  defaultActive.value = resolveActiveMenuIndex(route.path, menuIndexPaths.value)
 }
 
 function handleSelect(path: string) {

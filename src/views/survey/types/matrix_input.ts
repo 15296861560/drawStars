@@ -6,9 +6,17 @@ const def: QuestionTypeDef = {
   label: '矩阵填空',
   icon: 'Menu',
   category: 'advanced',
-  defaultConfig: () => ({ rows: [{ id: 'r1', label: '行1' }], columns: [{ id: 'c1', label: '列1' }] }),
+  defaultConfig: () => ({
+    rows: [{ id: 'r1', label: '行1' }],
+    columns: [{ id: 'c1', label: '列1' }]
+  }),
   createQuestion(partial) {
-    return createBaseQuestion('matrix_input', '矩阵填空', this.defaultConfig, partial)
+    return createBaseQuestion(
+      'matrix_input',
+      '矩阵填空',
+      this.defaultConfig,
+      partial
+    )
   },
   validate(answer, question: Question) {
     const req = requiredCheck(answer?.value ?? answer, question)

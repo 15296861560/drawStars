@@ -72,7 +72,11 @@
 
       <el-dropdown class="profile">
         <span class="el-dropdown-link profile-link">
-          <el-avatar :size="28" :src="userAvatar || undefined" class="nav-avatar">
+          <el-avatar
+            :size="28"
+            :src="userAvatar || undefined"
+            class="nav-avatar"
+          >
             {{ (userName || 'U').slice(0, 1) }}
           </el-avatar>
           {{ userName }}

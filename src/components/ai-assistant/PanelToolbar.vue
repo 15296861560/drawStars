@@ -82,8 +82,7 @@ import {
   Folder,
   Refresh,
   Plus,
-  Close,
-  MagicStick
+  Close
 } from '@element-plus/icons-vue'
 import { aiAssistantStore } from '@/stores/ai-assistant'
 import AiTooltip from './AiTooltip.vue'

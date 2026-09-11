@@ -55,7 +55,9 @@ function to18(id15: string): string {
  * Pure client-side; area names use built-in GB/T 2260 subset.
  */
 export function analyzeIdCard(raw: string): IdCardAnalysisResult {
-  const idNumber = String(raw || '').trim().toUpperCase()
+  const idNumber = String(raw || '')
+    .trim()
+    .toUpperCase()
   if (!idNumber) return emptyResult('请输入身份证号')
 
   let normalized = idNumber
@@ -89,9 +91,7 @@ export function analyzeIdCard(raw: string): IdCardAnalysisResult {
 
   return {
     valid: checkPassed,
-    message: checkPassed
-      ? '校验通过'
-      : `校验位不匹配（应为 ${expected}）`,
+    message: checkPassed ? '校验通过' : `校验位不匹配（应为 ${expected}）`,
     idNumber,
     addressCode,
     address: resolveAreaName(addressCode),

@@ -138,13 +138,7 @@
 </template>
 
 <script setup>
-import {
-  onMounted,
-  reactive,
-  ref,
-  computed,
-  defineAsyncComponent
-} from 'vue'
+import { onMounted, reactive, ref, computed, defineAsyncComponent } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import userManageApi from '@/assets/js/api/userManageController/userManageApi.js'
 import roleApi from '@/assets/js/api/roleController/roleApi.js'
@@ -294,7 +288,7 @@ const submitForm = async () => {
   if (formMode.value === 'create') {
     res = await userManageApi.create({ ...form })
   } else {
-    const { password, ...rest } = form
+    const { password: _password, ...rest } = form
     res = await userManageApi.update(rest)
   }
   if (res.status) {

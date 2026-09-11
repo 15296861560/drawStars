@@ -4,11 +4,7 @@ import { createBaseQuestion, requiredCheck, type QuestionTypeDef } from './base'
 function hasLocationValue(v: any): boolean {
   if (v == null || v === '') return false
   if (typeof v === 'string') {
-    return !(
-      v.includes('定位失败') ||
-      v.includes('不支持') ||
-      !v.trim()
-    )
+    return !(v.includes('定位失败') || v.includes('不支持') || !v.trim())
   }
   if (typeof v === 'object') {
     const lng = v.longitude

@@ -53,13 +53,7 @@
 </template>
 
 <script setup>
-import {
-  onMounted,
-  reactive,
-  ref,
-  computed,
-  defineAsyncComponent
-} from 'vue'
+import { onMounted, reactive, ref, computed, defineAsyncComponent } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import menuApi from '@/assets/js/api/menuController/menuApi.js'
 import { showTips } from '@/utils/message/showTips.js'

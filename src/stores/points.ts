@@ -41,9 +41,7 @@ export const pointsStore = defineStore(
       () => account.value?.availablePoints ?? 0
     )
     const getLevel = computed(() => account.value?.level ?? 1)
-    const getLevelName = computed(
-      () => account.value?.levelName ?? '普通会员'
-    )
+    const getLevelName = computed(() => account.value?.levelName ?? '普通会员')
     const getTransactions = computed(() => transactions.value)
     const getRules = computed(() => rules.value)
     const getLevels = computed(() => levels.value)
@@ -52,13 +50,13 @@ export const pointsStore = defineStore(
 
     const currentLevelInfo = computed(() => {
       if (!account.value || !levels.value.length) return null
-      return levels.value.find((l) => l.level === account.value!.level) || null
+      return levels.value.find(l => l.level === account.value!.level) || null
     })
 
     const nextLevelInfo = computed(() => {
       if (!account.value || !levels.value.length) return null
       return (
-        levels.value.find((l) => l.level === account.value!.level + 1) || null
+        levels.value.find(l => l.level === account.value!.level + 1) || null
       )
     })
 
@@ -75,7 +73,7 @@ export const pointsStore = defineStore(
     })
 
     const getRuleBySource = (source: PointsSource) => {
-      return rules.value.find((r) => r.source === source && r.enabled)
+      return rules.value.find(r => r.source === source && r.enabled)
     }
 
     async function loadAccount(userId?: number) {
@@ -155,10 +153,7 @@ export const pointsStore = defineStore(
 
     async function loadCheckInStatus(userId: number) {
       try {
-        Object.assign(
-          checkInStatus,
-          await pointsApi.getCheckInStatus(userId)
-        )
+        Object.assign(checkInStatus, await pointsApi.getCheckInStatus(userId))
       } catch (error) {
         console.error('加载签到状态失败:', error)
         throw error

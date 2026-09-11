@@ -34,7 +34,6 @@ import type { AnyObject } from '@/types/global'
 import { useVModels } from '@vueuse/core'
 import { ElMessage, ElMessageBox, genFileId } from 'element-plus'
 import type { UploadProps, UploadUserFile, UploadRawFile } from 'element-plus'
-import { Delete, Upload, Plus, ZoomIn } from '@element-plus/icons-vue'
 import { findReq } from '@/assets/js/api'
 
 const props = defineProps<{
@@ -158,10 +157,6 @@ const handleExceed: UploadProps['onExceed'] = files => {
     file.uid = genFileId()
     uploadRef.value!.handleStart(file)
   }
-}
-
-const handleReUpload = () => {
-  uploadRef.value?.$el?.getElementsByClassName('el-upload__input')?.[0]?.click()
 }
 
 const beforeRemove: UploadProps['beforeRemove'] = uploadFile => {

@@ -14,12 +14,18 @@ export const imRoomStore = defineStore('im-room', () => {
   const hallHasMore = ref(false)
   const hallCurPage = ref(1)
 
-  async function fetchHall(params: { categoryId?: string; keyword?: string; reset?: boolean } = {}) {
+  async function fetchHall(
+    params: { categoryId?: string; keyword?: string; reset?: boolean } = {}
+  ) {
     if (hallLoading.value) return
     if (params.reset) hallCurPage.value = 1
     hallLoading.value = true
     try {
-      const res = await hallApi.hallRooms({ ...params, curPage: hallCurPage.value, pageSize: 20 })
+      const res = await hallApi.hallRooms({
+        ...params,
+        curPage: hallCurPage.value,
+        pageSize: 20
+      })
       if (res.status && res.data?.list) {
         if (hallCurPage.value === 1) hallList.value = res.data.list
         else hallList.value = [...hallList.value, ...res.data.list]
@@ -31,7 +37,9 @@ export const imRoomStore = defineStore('im-room', () => {
     }
   }
 
-  async function loadMoreHall(params: { categoryId?: string; keyword?: string } = {}) {
+  async function loadMoreHall(
+    params: { categoryId?: string; keyword?: string } = {}
+  ) {
     if (!hallHasMore.value || hallLoading.value) return
     hallCurPage.value += 1
     await fetchHall(params)
@@ -72,7 +80,8 @@ export const imRoomStore = defineStore('im-room', () => {
   }
 
   function patchCurrent(patch: Partial<ImRoom>) {
-    if (currentRoom.value) currentRoom.value = { ...currentRoom.value, ...patch }
+    if (currentRoom.value)
+      currentRoom.value = { ...currentRoom.value, ...patch }
   }
 
   function clear() {
@@ -84,7 +93,20 @@ export const imRoomStore = defineStore('im-room', () => {
   }
 
   return {
-    currentRoom, members, hallList, hallLoading, hallHasMore, hallCurPage, RoomStatus,
-    fetchHall, loadMoreHall, enterRoom, loadMembers, leaveCurrent, createRoom, patchCurrent, clear
+    currentRoom,
+    members,
+    hallList,
+    hallLoading,
+    hallHasMore,
+    hallCurPage,
+    RoomStatus,
+    fetchHall,
+    loadMoreHall,
+    enterRoom,
+    loadMembers,
+    leaveCurrent,
+    createRoom,
+    patchCurrent,
+    clear
   }
 })

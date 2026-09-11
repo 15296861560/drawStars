@@ -5,26 +5,53 @@
 import { post, get, put, formatPath } from './base'
 import type { PageResult, ReportStatus } from './types'
 
-export function adminReports(params: { status?: string; curPage?: number; pageSize?: number } = {}) {
-  return get<PageResult<{ id: string; reporterId: string; targetType: string; targetId: string; reason: string; status: string; remark?: string; handledBy?: string; createdAt: string }>>(
-    { status: params.status || '', curPage: params.curPage || 1, pageSize: params.pageSize || 20 },
+export function adminReports(
+  params: { status?: string; curPage?: number; pageSize?: number } = {}
+) {
+  return get<
+    PageResult<{
+      id: string
+      reporterId: string
+      targetType: string
+      targetId: string
+      reason: string
+      status: string
+      remark?: string
+      handledBy?: string
+      createdAt: string
+    }>
+  >(
+    {
+      status: params.status || '',
+      curPage: params.curPage || 1,
+      pageSize: params.pageSize || 20
+    },
     '/manage/im/reports'
   )
 }
 
-export function handleReport(id: string, status: ReportStatus, remark?: string) {
-  return put<{}>(formatPath('/manage/im/reports/:id', { id }), { status, remark })
+export function handleReport(
+  id: string,
+  status: ReportStatus,
+  remark?: string
+) {
+  return put<{}>(formatPath('/manage/im/reports/:id', { id }), {
+    status,
+    remark
+  })
 }
 
-export function searchMessages(params: {
-  roomId?: string
-  conversationId?: string
-  keyword?: string
-  startTime?: string
-  endTime?: string
-  curPage?: number
-  pageSize?: number
-} = {}) {
+export function searchMessages(
+  params: {
+    roomId?: string
+    conversationId?: string
+    keyword?: string
+    startTime?: string
+    endTime?: string
+    curPage?: number
+    pageSize?: number
+  } = {}
+) {
   return get<PageResult<Record<string, unknown>>>(
     {
       roomId: params.roomId || '',
@@ -44,19 +71,34 @@ export function analyticsOverview() {
 }
 
 export function analyticsTrends(days = 7) {
-  return get<{ list: Array<{ date: string; count: number }> }>({ days }, '/manage/im/analytics/trends')
+  return get<{ list: Array<{ date: string; count: number }> }>(
+    { days },
+    '/manage/im/analytics/trends'
+  )
 }
 
 export function analyticsRooms() {
-  return get<{ list: Array<Record<string, unknown>> }>({}, '/manage/im/analytics/rooms')
+  return get<{ list: Array<Record<string, unknown>> }>(
+    {},
+    '/manage/im/analytics/rooms'
+  )
 }
 
 export function banRoom(roomId: string, banned: boolean) {
-  return post<{}>({ banned }, formatPath('/manage/im/rooms/:roomId/ban', { roomId }))
+  return post<{}>(
+    { banned },
+    formatPath('/manage/im/rooms/:roomId/ban', { roomId })
+  )
 }
 
-export function setRoomWeight(roomId: string, data: { manualWeight?: number; official?: boolean }) {
-  return post<{}>(data as unknown as Record<string, unknown>, formatPath('/manage/im/rooms/:roomId/weight', { roomId }))
+export function setRoomWeight(
+  roomId: string,
+  data: { manualWeight?: number; official?: boolean }
+) {
+  return post<{}>(
+    data as unknown as Record<string, unknown>,
+    formatPath('/manage/im/rooms/:roomId/weight', { roomId })
+  )
 }
 
 export function getSettings() {
@@ -68,7 +110,15 @@ export function updateSettings(items: Record<string, string>) {
 }
 
 export function listCategories() {
-  return get<Array<{ id: string; code: string; name: string; sort: number; status: string }>>({}, '/manage/im/categories')
+  return get<
+    Array<{
+      id: string
+      code: string
+      name: string
+      sort: number
+      status: string
+    }>
+  >({}, '/manage/im/categories')
 }
 
 export function createCategory(code: string, name: string, sort?: number) {
@@ -76,7 +126,9 @@ export function createCategory(code: string, name: string, sort?: number) {
 }
 
 export function listSensitiveWords() {
-  return get<Array<{ id: string; word: string; action: string; createdAt: string }>>({}, '/manage/im/sensitive-words')
+  return get<
+    Array<{ id: string; word: string; action: string; createdAt: string }>
+  >({}, '/manage/im/sensitive-words')
 }
 
 export function addSensitiveWord(word: string, action = 'BLOCK') {
@@ -88,7 +140,19 @@ export function reloadSensitiveWords() {
 }
 
 export default {
-  adminReports, handleReport, searchMessages, analyticsOverview, analyticsTrends, analyticsRooms,
-  banRoom, setRoomWeight, getSettings, updateSettings, listCategories, createCategory,
-  listSensitiveWords, addSensitiveWord, reloadSensitiveWords
+  adminReports,
+  handleReport,
+  searchMessages,
+  analyticsOverview,
+  analyticsTrends,
+  analyticsRooms,
+  banRoom,
+  setRoomWeight,
+  getSettings,
+  updateSettings,
+  listCategories,
+  createCategory,
+  listSensitiveWords,
+  addSensitiveWord,
+  reloadSensitiveWords
 }

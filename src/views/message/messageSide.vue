@@ -6,11 +6,7 @@
     <div class="message-box__header">
       <h2 class="message-box__title">站内信</h2>
       <div class="message-box__header__right">
-        <div
-          v-if="hasMore"
-          class="message-btn__more u-btn"
-          @click="onLoadMore"
-        >
+        <div v-if="hasMore" class="message-btn__more u-btn" @click="onLoadMore">
           查看更多
         </div>
         <el-icon><Close class="u-btn" @click="close" /></el-icon>
@@ -99,9 +95,7 @@
                 </div>
               </div>
             </li>
-            <li v-if="hasMore" class="message__hint">
-              下滑或点击查看更多
-            </li>
+            <li v-if="hasMore" class="message__hint">下滑或点击查看更多</li>
           </ul>
         </template>
 

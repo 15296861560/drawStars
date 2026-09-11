@@ -93,7 +93,12 @@ function patternScore(count: number, block: number): number {
   return 0
 }
 
-function evaluatePoint(board: Cell[][], x: number, y: number, side: Side): number {
+function evaluatePoint(
+  board: Cell[][],
+  x: number,
+  y: number,
+  side: Side
+): number {
   const dirs: [number, number][] = [
     [1, 0],
     [0, 1],
@@ -122,7 +127,12 @@ function evaluateBoard(board: Cell[][], aiSide: Side): number {
   return ai - human
 }
 
-function scoreMove(board: Cell[][], x: number, y: number, aiSide: Side): number {
+function scoreMove(
+  board: Cell[][],
+  x: number,
+  y: number,
+  aiSide: Side
+): number {
   const attack = evaluatePoint(board, x, y, aiSide)
   const defend = evaluatePoint(board, x, y, opposite(aiSide))
   return attack * 1.1 + defend
@@ -219,14 +229,7 @@ export function getAiMove(
     const next = cloneBoard(board)
     next[p.x][p.y] = aiSide
     if (checkWin(next, p.x, p.y)) return p
-    const score = minimax(
-      next,
-      depth - 1,
-      false,
-      aiSide,
-      -Infinity,
-      Infinity
-    )
+    const score = minimax(next, depth - 1, false, aiSide, -Infinity, Infinity)
     if (score > bestScore) {
       bestScore = score
       best = p

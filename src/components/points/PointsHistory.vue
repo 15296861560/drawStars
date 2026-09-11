@@ -9,13 +9,23 @@
   >
     <!-- 筛选栏 -->
     <div class="filter-bar">
-      <el-select v-model="filterType" placeholder="交易类型" clearable @change="handleFilter">
+      <el-select
+        v-model="filterType"
+        placeholder="交易类型"
+        clearable
+        @change="handleFilter"
+      >
         <el-option label="全部" value="" />
         <el-option label="获取" value="EARN" />
         <el-option label="消费" value="SPEND" />
         <el-option label="调整" value="ADJUST" />
       </el-select>
-      <el-select v-model="filterSource" placeholder="积分来源" clearable @change="handleFilter">
+      <el-select
+        v-model="filterSource"
+        placeholder="积分来源"
+        clearable
+        @change="handleFilter"
+      >
         <el-option label="全部" value="" />
         <el-option label="签到" value="CHECK_IN" />
         <el-option label="消费" value="PURCHASE" />
@@ -46,16 +56,33 @@
       </el-table-column>
       <el-table-column label="操作人" width="100">
         <template #default="{ row }">
-          {{ row.operatorName || (row.source === 'ADMIN_ADJUST' ? row.operatorId || '-' : '-') }}
+          {{
+            row.operatorName ||
+            (row.source === 'ADMIN_ADJUST' ? row.operatorId || '-' : '-')
+          }}
         </template>
       </el-table-column>
       <el-table-column label="类型" width="80">
         <template #default="{ row }">
           <el-tag
-            :type="row.type === 'SPEND' ? 'danger' : row.type === 'ADJUST' ? 'warning' : 'success'"
+            :type="
+              row.type === 'SPEND'
+                ? 'danger'
+                : row.type === 'ADJUST'
+                  ? 'warning'
+                  : 'success'
+            "
             size="small"
           >
-            {{ row.type === 'EARN' ? '获得' : row.type === 'SPEND' ? '消费' : row.type === 'ADJUST' ? '调整' : row.type }}
+            {{
+              row.type === 'EARN'
+                ? '获得'
+                : row.type === 'SPEND'
+                  ? '消费'
+                  : row.type === 'ADJUST'
+                    ? '调整'
+                    : row.type
+            }}
           </el-tag>
         </template>
       </el-table-column>
@@ -105,7 +132,7 @@ const emit = defineEmits<{
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 const userStore = userInfoStore()
@@ -137,7 +164,7 @@ async function handleFilter() {
   total.value = result.total
 }
 
-watch(visible, (val) => {
+watch(visible, val => {
   if (val) {
     handleFilter()
   }

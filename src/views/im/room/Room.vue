@@ -4,21 +4,36 @@
     <template v-else-if="room">
       <div class="im-room-header">
         <div>
-          <h2>{{ room.title }} <el-tag v-if="room.official" size="small" type="warning">官方</el-tag></h2>
+          <h2>
+            {{ room.title }}
+            <el-tag v-if="room.official" size="small" type="warning"
+              >官方</el-tag
+            >
+          </h2>
           <div class="im-room-meta">
             <span>{{ onlineLabel }} 在线</span>
-            <span v-if="room.status === 'CLOSED'"><el-tag type="info" size="small">已关闭</el-tag></span>
-            <span v-if="room.status === 'BANNED'"><el-tag type="danger" size="small">已封禁</el-tag></span>
+            <span v-if="room.status === 'CLOSED'"
+              ><el-tag type="info" size="small">已关闭</el-tag></span
+            >
+            <span v-if="room.status === 'BANNED'"
+              ><el-tag type="danger" size="small">已封禁</el-tag></span
+            >
           </div>
         </div>
         <div class="im-room-actions">
-          <el-button v-if="!joined" type="primary" @click="onJoin">进入房间</el-button>
+          <el-button v-if="!joined" type="primary" @click="onJoin"
+            >进入房间</el-button
+          >
           <el-button v-else @click="onLeave">离开</el-button>
-          <el-button v-if="isManager" @click="manageDialog = true">管理</el-button>
+          <el-button v-if="isManager" @click="manageDialog = true"
+            >管理</el-button
+          >
         </div>
       </div>
 
-      <div class="im-room-notice" v-if="room.notice">公告：{{ room.notice }}</div>
+      <div class="im-room-notice" v-if="room.notice">
+        公告：{{ room.notice }}
+      </div>
 
       <div class="im-room-tags" v-if="room.tags?.length">
         <span>共同标签：</span>
@@ -26,10 +41,18 @@
       </div>
 
       <!-- 满员/封禁错误态 -->
-      <el-result v-if="room.status === 'BANNED'" icon="error" title="房间已被封禁" sub-title="该房间因违规已被管理员封禁" />
+      <el-result
+        v-if="room.status === 'BANNED'"
+        icon="error"
+        title="房间已被封禁"
+        sub-title="该房间因违规已被管理员封禁"
+      />
 
       <div v-else class="im-room-main">
-        <ChatWindow v-if="joined && conversationId" :conversation-id="conversationId" />
+        <ChatWindow
+          v-if="joined && conversationId"
+          :conversation-id="conversationId"
+        />
         <el-empty v-else description="点击「进入房间」开始聊天" />
       </div>
     </template>
@@ -39,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import ChatWindow from '../chat/ChatWindow.vue'
 import { imRoomStore } from '@/stores/im/im-room'
@@ -47,7 +70,6 @@ import { imWsClient } from '@/utils/im/ws-client'
 import { roomApi } from '@/api/im'
 
 const route = useRoute()
-const router = useRouter()
 const store = imRoomStore()
 
 const loading = ref(true)

@@ -45,7 +45,11 @@ export const dialogFields = [
     attrs: { rows: 4 },
     rule: [
       {
-        validator: (_rule: unknown, value: string, callback: (e?: Error) => void) => {
+        validator: (
+          _rule: unknown,
+          value: string,
+          callback: (e?: Error) => void
+        ) => {
           try {
             JSON.parse(value || '{}')
             callback()

@@ -82,7 +82,7 @@ const emit = defineEmits<{
   (e: 'update:field', value: string | number | boolean | string[] | any): void
 }>()
 
-const { type, apiMethod, apiParams, config, options } = toRefs(props)
+const { type, options } = toRefs(props)
 const { field } = useVModels(props, emit)
 
 const SEARCH_ITEM_TYPE = {

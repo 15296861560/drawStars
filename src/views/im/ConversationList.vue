@@ -21,13 +21,19 @@
       >
         <template #sub>
           <span v-if="conv.isMuted" class="im-conv-mute">🔇</span>
-          <span v-if="draft(conv.id)" class="im-conv-draft">{{ draft(conv.id) }}</span>
+          <span v-if="draft(conv.id)" class="im-conv-draft">{{
+            draft(conv.id)
+          }}</span>
         </template>
         <template #tag>
           <span v-if="conv.isPinned" class="im-conv-pin">📌</span>
         </template>
       </ImListRow>
-      <el-empty v-if="!filtered.length" description="暂无会话" :image-size="60" />
+      <el-empty
+        v-if="!filtered.length"
+        description="暂无会话"
+        :image-size="60"
+      />
     </el-scrollbar>
   </div>
 </template>
@@ -39,7 +45,9 @@ import { defineAsyncComponent } from 'vue'
 import { imConversationStore } from '@/stores/im/im-conversation'
 import type { ImConversation } from '@/api/im/types'
 
-const ImListRow = defineAsyncComponent(() => import('@/components/im/ImListRow.vue'))
+const ImListRow = defineAsyncComponent(
+  () => import('@/components/im/ImListRow.vue')
+)
 
 const store = imConversationStore()
 
@@ -48,7 +56,9 @@ const activeId = computed(() => store.activeId)
 const filtered = computed(() => {
   const kw = keyword.value.trim().toLowerCase()
   if (!kw) return store.sortedList
-  return store.sortedList.filter(c => (c.title || c.bizId || '').toLowerCase().includes(kw))
+  return store.sortedList.filter(c =>
+    (c.title || c.bizId || '').toLowerCase().includes(kw)
+  )
 })
 
 function draft(id: string): string {

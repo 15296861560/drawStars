@@ -7,7 +7,12 @@
       <div class="im-profile-base">
         <div class="im-profile-base-title">
           基础信息
-          <el-link type="primary" :underline="false" class="im-profile-base-link" @click="goPersonalCenter">
+          <el-link
+            type="primary"
+            :underline="false"
+            class="im-profile-base-link"
+            @click="goPersonalCenter"
+          >
             去个人中心修改 ›
           </el-link>
         </div>
@@ -30,7 +35,12 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="个性签名">
-            <el-input :model-value="form.signature || ''" type="textarea" :rows="2" readonly />
+            <el-input
+              :model-value="form.signature || ''"
+              type="textarea"
+              :rows="2"
+              readonly
+            />
           </el-form-item>
         </el-form>
       </div>
@@ -39,16 +49,34 @@
 
       <!-- IM 专属设置：可在本页编辑 -->
       <div class="im-profile-base-title">IM 专属设置</div>
-      <el-form :model="form" label-width="120px" size="default" style="max-width: 540px">
+      <el-form
+        :model="form"
+        label-width="120px"
+        size="default"
+        style="max-width: 540px"
+      >
         <el-form-item label="兴趣标签">
-          <el-select v-model="form.tags" multiple filterable allow-create placeholder="回车添加" style="width:100%">
+          <el-select
+            v-model="form.tags"
+            multiple
+            filterable
+            allow-create
+            placeholder="回车添加"
+            style="width: 100%"
+          >
             <el-option v-for="t in form.tags" :key="t" :label="t" :value="t" />
           </el-select>
         </el-form-item>
-        <el-form-item label="允许陌生人私信"><el-switch v-model="form.allowStrangerMsg" /></el-form-item>
-        <el-form-item label="展示在线状态"><el-switch v-model="form.showOnline" /></el-form-item>
+        <el-form-item label="允许陌生人私信"
+          ><el-switch v-model="form.allowStrangerMsg"
+        /></el-form-item>
+        <el-form-item label="展示在线状态"
+          ><el-switch v-model="form.showOnline"
+        /></el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="saving" @click="onSave">保存</el-button>
+          <el-button type="primary" :loading="saving" @click="onSave"
+            >保存</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>

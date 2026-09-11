@@ -2,9 +2,9 @@
  * 积分管理 Composables
  * 提供可复用的积分相关逻辑
  */
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { pointsStore } from '@/stores/points'
-import type { PointsSource, PointsLevel } from '@/types/points'
+import type { PointsSource } from '@/types/points'
 
 /**
  * 积分账户相关逻辑
@@ -37,7 +37,9 @@ export function usePointsAccount() {
 export function useCheckIn() {
   const store = pointsStore()
 
-  const hasCheckedInToday = computed(() => store.checkInStatus.hasCheckedInToday)
+  const hasCheckedInToday = computed(
+    () => store.checkInStatus.hasCheckedInToday
+  )
   const consecutiveDays = computed(() => store.checkInStatus.consecutiveDays)
   const weekStatus = computed(() => store.checkInStatus.weekStatus)
 
@@ -254,7 +256,10 @@ export function usePointsSpend() {
   }
 
   /** 计算最大可用积分（考虑订单金额限制） */
-  function getMaxUsablePoints(orderAmount: number, maxDeductionRate: number = 0.5): number {
+  function getMaxUsablePoints(
+    orderAmount: number,
+    maxDeductionRate: number = 0.5
+  ): number {
     const maxDeduction = orderAmount * maxDeductionRate
     const maxPoints = Math.floor(maxDeduction / 0.01) // 假设 100积分 = 1元
     return Math.min(availablePoints.value, maxPoints)

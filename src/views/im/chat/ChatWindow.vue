@@ -11,9 +11,15 @@
           <el-button text :icon="MoreFilled" />
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="pin">{{ conv?.isPinned ? '取消置顶' : '置顶' }}</el-dropdown-item>
-              <el-dropdown-item command="mute">{{ conv?.isMuted ? '取消免打扰' : '免打扰' }}</el-dropdown-item>
-              <el-dropdown-item command="delete" divided>删除会话</el-dropdown-item>
+              <el-dropdown-item command="pin">{{
+                conv?.isPinned ? '取消置顶' : '置顶'
+              }}</el-dropdown-item>
+              <el-dropdown-item command="mute">{{
+                conv?.isMuted ? '取消免打扰' : '免打扰'
+              }}</el-dropdown-item>
+              <el-dropdown-item command="delete" divided
+                >删除会话</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -34,7 +40,12 @@
     />
 
     <!-- 右键菜单 -->
-    <ul v-if="menu.show" class="im-chat-menu" :style="{ left: menu.x + 'px', top: menu.y + 'px' }" @click.stop>
+    <ul
+      v-if="menu.show"
+      class="im-chat-menu"
+      :style="{ left: menu.x + 'px', top: menu.y + 'px' }"
+      @click.stop
+    >
       <li v-if="canRecall" @click="onRecall">撤回</li>
       <li @click="onDelete">删除</li>
     </ul>
@@ -50,7 +61,7 @@ import MessageInput from './MessageInput.vue'
 import { imStore } from '@/stores/im/im-im'
 import { imConversationStore } from '@/stores/im/im-conversation'
 import { imMessageStore } from '@/stores/im/im-message'
-import { roomApi, filesApi } from '@/api/im'
+import { filesApi } from '@/api/im'
 import { MsgStatus, type ImMessage } from '@/api/im/types'
 import { userInfoStore } from '@/stores/user-info'
 
@@ -60,14 +71,23 @@ const convStore = imConversationStore()
 const msgStore = imMessageStore()
 const selfUid = () => String(userInfoStore().getUserId.value || '0')
 
-const conv = computed(() => convStore.list.find(c => c.id === props.conversationId))
+const conv = computed(() =>
+  convStore.list.find(c => c.id === props.conversationId)
+)
 const messages = computed(() => msgStore.getMessages(props.conversationId))
-const loadingHistory = computed(() => !!msgStore.loadingHistory[props.conversationId])
+const loadingHistory = computed(
+  () => !!msgStore.loadingHistory[props.conversationId]
+)
 const sending = ref(false)
 
 const title = computed(() => conv.value?.title || conv.value?.bizId || '会话')
 
-const menu = reactive({ show: false, x: 0, y: 0, msg: null as ImMessage | null })
+const menu = reactive({
+  show: false,
+  x: 0,
+  y: 0,
+  msg: null as ImMessage | null
+})
 const canRecall = computed(() => {
   const m = menu.msg
   if (!m) return false
@@ -103,7 +123,11 @@ async function onImage(file: File) {
   // 简化：直接用本地 URL 预览上传（真实环境走 presign + 对象存储）
   sending.value = true
   try {
-    const presignRes = await filesApi.presign(file.type, file.size, (file.name.split('.').pop() || 'png'))
+    const presignRes = await filesApi.presign(
+      file.type,
+      file.size,
+      file.name.split('.').pop() || 'png'
+    )
     if (presignRes.status && presignRes.data?.url) {
       // 上传文件到 uploadPath（此处仅作演示：用本地对象 URL）
       await msgStore.sendImage(props.conversationId, URL.createObjectURL(file))

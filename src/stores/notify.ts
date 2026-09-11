@@ -101,9 +101,7 @@ export const notifyStore = defineStore('notify', () => {
       }
 
       total.value = nextTotal
-      hasMore.value = Array.isArray(payload)
-        ? false
-        : Boolean(payload.hasMore)
+      hasMore.value = Array.isArray(payload) ? false : Boolean(payload.hasMore)
       return list.value
     } finally {
       loading.value = false

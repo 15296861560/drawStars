@@ -6,7 +6,13 @@ const def: QuestionTypeDef = {
   label: '排序题',
   icon: 'Sort',
   category: 'advanced',
-  defaultConfig: () => ({ options: [{ content: '选项A', sortOrder: 1 }, { content: '选项B', sortOrder: 2 }, { content: '选项C', sortOrder: 3 }] }),
+  defaultConfig: () => ({
+    options: [
+      { content: '选项A', sortOrder: 1 },
+      { content: '选项B', sortOrder: 2 },
+      { content: '选项C', sortOrder: 3 }
+    ]
+  }),
   createQuestion(partial) {
     return createBaseQuestion('sort', '排序题', this.defaultConfig, partial)
   },

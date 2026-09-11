@@ -17,7 +17,11 @@
 
       <template v-if="hasOptions">
         <el-divider content-position="left">选项</el-divider>
-        <div v-for="(opt, i) in question.config!.options" :key="i" class="opt-row">
+        <div
+          v-for="(opt, i) in question.config!.options"
+          :key="i"
+          class="opt-row"
+        >
           <el-input v-model="opt.content" placeholder="选项内容" />
           <el-checkbox v-model="opt.isOther">其他</el-checkbox>
           <el-button link type="danger" @click="removeOpt(i)">删</el-button>
@@ -34,7 +38,9 @@
         </el-form-item>
       </template>
 
-      <template v-if="question.type === 'input' || question.type === 'textarea'">
+      <template
+        v-if="question.type === 'input' || question.type === 'textarea'"
+      >
         <el-form-item label="最大字数">
           <el-input-number v-model="question.config!.maxLength" :min="0" />
         </el-form-item>
@@ -54,21 +60,47 @@
 
       <template v-if="question.type === 'rating'">
         <el-form-item label="满分">
-          <el-input-number v-model="question.config!.ratingMax" :min="1" :max="10" />
+          <el-input-number
+            v-model="question.config!.ratingMax"
+            :min="1"
+            :max="10"
+          />
         </el-form-item>
       </template>
 
-      <template v-if="question.type === 'matrix_radio' || question.type === 'matrix_input'">
+      <template
+        v-if="
+          question.type === 'matrix_radio' || question.type === 'matrix_input'
+        "
+      >
         <el-divider content-position="left">矩阵行</el-divider>
-        <div v-for="(row, i) in question.config!.rows || []" :key="'r'+i" class="opt-row">
+        <div
+          v-for="(row, i) in question.config!.rows || []"
+          :key="'r' + i"
+          class="opt-row"
+        >
           <el-input v-model="row.label" />
-          <el-button link type="danger" @click="(question.config!.rows || []).splice(i,1)">删</el-button>
+          <el-button
+            link
+            type="danger"
+            @click="(question.config!.rows || []).splice(i, 1)"
+            >删</el-button
+          >
         </div>
         <el-button size="small" @click="addRow">添加行</el-button>
         <el-divider content-position="left">矩阵列</el-divider>
-        <div v-for="(col, i) in question.config!.columns || []" :key="'c'+i" class="opt-row">
+        <div
+          v-for="(col, i) in question.config!.columns || []"
+          :key="'c' + i"
+          class="opt-row"
+        >
           <el-input v-model="col.label" />
-          <el-button link type="danger" @click="(question.config!.columns || []).splice(i,1)">删</el-button>
+          <el-button
+            link
+            type="danger"
+            @click="(question.config!.columns || []).splice(i, 1)"
+            >删</el-button
+          >
         </div>
         <el-button size="small" @click="addCol">添加列</el-button>
       </template>
@@ -103,7 +135,7 @@
       <el-divider content-position="left">逻辑</el-divider>
       <div v-for="(rule, i) in relatedRules" :key="i" class="logic-block">
         <div class="logic-row">
-          <el-select v-model="rule.actionType" size="small" style="width:90px">
+          <el-select v-model="rule.actionType" size="small" style="width: 90px">
             <el-option label="显示" value="show" />
             <el-option label="隐藏" value="hide" />
             <el-option label="跳转" value="jump" />
@@ -114,7 +146,7 @@
             v-model="rule.targetQuestionId"
             size="small"
             placeholder="目标题"
-            style="flex:1"
+            style="flex: 1"
           >
             <el-option
               v-for="q in otherQuestions"
@@ -136,8 +168,10 @@
           <el-select
             :model-value="ensureCondition(rule).operator"
             size="small"
-            style="width:110px"
-            @update:model-value="(v: any) => (ensureCondition(rule).operator = v)"
+            style="width: 110px"
+            @update:model-value="
+              (v: any) => (ensureCondition(rule).operator = v)
+            "
           >
             <el-option label="等于" value="eq" />
             <el-option label="不等于" value="neq" />
@@ -147,11 +181,14 @@
             <el-option label="非空" value="not_empty" />
           </el-select>
           <el-select
-            v-if="sourceOptions.length && ensureCondition(rule).operator !== 'not_empty'"
+            v-if="
+              sourceOptions.length &&
+              ensureCondition(rule).operator !== 'not_empty'
+            "
             :model-value="ensureCondition(rule).value"
             size="small"
             placeholder="条件值"
-            style="flex:1"
+            style="flex: 1"
             clearable
             @update:model-value="(v: any) => (ensureCondition(rule).value = v)"
           >
@@ -167,8 +204,10 @@
             :model-value="String(ensureCondition(rule).value ?? '')"
             size="small"
             placeholder="条件值"
-            style="flex:1"
-            @update:model-value="(v: string) => (ensureCondition(rule).value = v)"
+            style="flex: 1"
+            @update:model-value="
+              (v: string) => (ensureCondition(rule).value = v)
+            "
           />
         </div>
       </div>
@@ -199,12 +238,12 @@ const hasOptions = computed(() =>
   ['radio', 'checkbox', 'sort', 'judge'].includes(props.question?.type || '')
 )
 
-const sourceOptions = computed(
-  () => props.question?.config?.options || []
-)
+const sourceOptions = computed(() => props.question?.config?.options || [])
 
 const otherQuestions = computed(() =>
-  props.questions.filter(q => (q.id ?? q._key) !== (props.question?.id ?? props.question?._key))
+  props.questions.filter(
+    q => (q.id ?? q._key) !== (props.question?.id ?? props.question?._key)
+  )
 )
 
 function ensureCondition(rule: LogicRule): LogicCondition {
@@ -222,7 +261,9 @@ function ensureCondition(rule: LogicRule): LogicCondition {
   return rule.condition as LogicCondition
 }
 
-const qKey = computed(() => String(props.question?.id ?? props.question?._key ?? ''))
+const qKey = computed(() =>
+  String(props.question?.id ?? props.question?._key ?? '')
+)
 
 const relatedRules = computed({
   get: () =>
@@ -338,12 +379,39 @@ function removeRule(i: number) {
 </script>
 
 <style scoped>
-.property-panel { padding: 8px; }
-h4 { margin: 0 0 12px; font-size: 15px; }
-.opt-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
-.logic-block { margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px dashed #ebeef5; }
-.logic-row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
-.cond-row { padding-left: 2px; }
-.empty { color: #909399; padding: 24px 8px; text-align: center; }
-.w-full { width: 100%; }
+.property-panel {
+  padding: 8px;
+}
+h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+.opt-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.logic-block {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #ebeef5;
+}
+.logic-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.cond-row {
+  padding-left: 2px;
+}
+.empty {
+  color: #909399;
+  padding: 24px 8px;
+  text-align: center;
+}
+.w-full {
+  width: 100%;
+}
 </style>

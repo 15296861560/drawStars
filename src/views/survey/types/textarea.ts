@@ -8,7 +8,12 @@ const def: QuestionTypeDef = {
   category: 'basic',
   defaultConfig: () => ({ placeholder: '请输入', maxLength: 2000 }),
   createQuestion(partial) {
-    return createBaseQuestion('textarea', '多行填空', this.defaultConfig, partial)
+    return createBaseQuestion(
+      'textarea',
+      '多行填空',
+      this.defaultConfig,
+      partial
+    )
   },
   validate(answer, question: Question) {
     const req = requiredCheck(answer?.value ?? answer, question)

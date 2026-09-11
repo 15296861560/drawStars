@@ -6,7 +6,10 @@ import { post, formatPath } from './base'
 import type { SendResult, SendMessagePayload, SendTarget } from './types'
 
 export function sendMessage(payload: SendMessagePayload) {
-  return post<SendResult>(payload as unknown as Record<string, unknown>, '/im/messages/send')
+  return post<SendResult>(
+    payload as unknown as Record<string, unknown>,
+    '/im/messages/send'
+  )
 }
 
 export function recallMessage(msgId: string) {
@@ -24,4 +27,9 @@ export function forwardMessage(msgId: string, target: SendTarget) {
   )
 }
 
-export default { sendMessage, recallMessage, deleteMessageForMe, forwardMessage }
+export default {
+  sendMessage,
+  recallMessage,
+  deleteMessageForMe,
+  forwardMessage
+}

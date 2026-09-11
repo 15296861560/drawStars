@@ -36,11 +36,15 @@ const registry: Record<string, QuestionTypeDef> = {
   judge
 }
 
-export function getQuestionType(type: QuestionType | string): QuestionTypeDef | undefined {
+export function getQuestionType(
+  type: QuestionType | string
+): QuestionTypeDef | undefined {
   return registry[type]
 }
 
-export function listQuestionTypes(category?: 'basic' | 'advanced'): QuestionTypeDef[] {
+export function listQuestionTypes(
+  category?: 'basic' | 'advanced'
+): QuestionTypeDef[] {
   const all = Object.values(registry)
   if (!category) return all
   return all.filter(t => t.category === category)

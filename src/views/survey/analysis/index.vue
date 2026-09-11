@@ -348,7 +348,9 @@
                 @click="saveReport"
                 >生成并保存</el-button
               >
-              <el-button :icon="Refresh" @click="loadReports">刷新列表</el-button>
+              <el-button :icon="Refresh" @click="loadReports"
+                >刷新列表</el-button
+              >
             </el-form-item>
           </el-form>
           <el-table :data="reports" border size="small" class="mt12">

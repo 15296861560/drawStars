@@ -14,7 +14,8 @@ const def: QuestionTypeDef = {
     const req = requiredCheck(answer?.value ?? answer, question)
     if (req) return req
     const v = answer?.value ?? answer
-    if (question.required && (v === undefined || v === null || v === '')) return '请评分'
+    if (question.required && (v === undefined || v === null || v === ''))
+      return '请评分'
     return null
   }
 }

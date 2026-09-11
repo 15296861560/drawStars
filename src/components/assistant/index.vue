@@ -75,12 +75,10 @@
 
 <script setup lang="ts">
 import {
-  computed,
   defineAsyncComponent,
   ref,
   watch,
   toRefs,
-  provide,
   nextTick,
   onMounted,
   onUnmounted
@@ -138,7 +136,7 @@ const openDialog = () => {
   }, 500)
 }
 
-const msgTextLink = async (link: string) => {}
+const msgTextLink = async (_link: string) => {}
 
 const createGroup = (groupInfo: IReactive) => {
   businessGroupRef.value.groups.unshift(groupInfo)

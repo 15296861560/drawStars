@@ -5,10 +5,16 @@
       <h2 class="settings-title">{{ $t('account.title') }}</h2>
 
       <div class="setting-row">
-        <span class="setting-label letter-space">{{ $t('password.label') }}</span>
+        <span class="setting-label letter-space">{{
+          $t('password.label')
+        }}</span>
         <div class="setting-right">
           <span class="setting-value">{{ $t('password.hint') }}</span>
-          <button type="button" class="setting-action" @click="openView('password')">
+          <button
+            type="button"
+            class="setting-action"
+            @click="openView('password')"
+          >
             {{ $t('btn.setPassword') }}
           </button>
         </div>
@@ -18,7 +24,11 @@
         <span class="setting-label letter-space">{{ $t('phone.label') }}</span>
         <div class="setting-right">
           <span class="setting-value">{{ maskedPhone }}</span>
-          <button type="button" class="setting-action" @click="openView('phone')">
+          <button
+            type="button"
+            class="setting-action"
+            @click="openView('phone')"
+          >
             {{ phone ? $t('btn.modifyPhone') : $t('btn.bindPhone') }}
           </button>
         </div>
@@ -28,7 +38,11 @@
         <span class="setting-label letter-space">{{ $t('email.label') }}</span>
         <div class="setting-right">
           <span class="setting-value">{{ maskedEmail }}</span>
-          <button type="button" class="setting-action" @click="openView('email')">
+          <button
+            type="button"
+            class="setting-action"
+            @click="openView('email')"
+          >
             {{ email ? $t('btn.modifyEmail') : $t('btn.bindEmail') }}
           </button>
         </div>
@@ -68,7 +82,9 @@
           <p class="verify-sub">{{ $t('phone.sendHelp') }}</p>
 
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('phone.fillCaptcha') }}</span>
+            <span class="verify-field-label">{{
+              $t('phone.fillCaptcha')
+            }}</span>
             <el-input
               v-model="oldPhoneCaptcha"
               class="verify-input"
@@ -104,7 +120,9 @@
           <p class="verify-sub">{{ $t('phone.bindHelp') }}</p>
 
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('phone.newPhoneLabel') }}</span>
+            <span class="verify-field-label">{{
+              $t('phone.newPhoneLabel')
+            }}</span>
             <el-input
               v-model="newPhone"
               class="verify-input"
@@ -113,7 +131,9 @@
             />
           </div>
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('phone.fillCaptcha') }}</span>
+            <span class="verify-field-label">{{
+              $t('phone.fillCaptcha')
+            }}</span>
             <el-input
               v-model="newPhoneCaptcha"
               class="verify-input"
@@ -169,7 +189,9 @@
           <p class="verify-sub">{{ $t('email.sendHelp') }}</p>
 
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('email.fillCaptcha') }}</span>
+            <span class="verify-field-label">{{
+              $t('email.fillCaptcha')
+            }}</span>
             <el-input
               v-model="oldEmailCaptcha"
               class="verify-input"
@@ -183,7 +205,9 @@
                   @click="sendCaptcha(email, 'changeEmail', 'oldEmail')"
                 >
                   {{
-                    oldEmailCd > 0 ? oldEmailCd + 's' : $t('btn.getEmailCaptcha')
+                    oldEmailCd > 0
+                      ? oldEmailCd + 's'
+                      : $t('btn.getEmailCaptcha')
                   }}
                 </button>
               </template>
@@ -205,7 +229,9 @@
           <p class="verify-sub">{{ $t('email.bindHelp') }}</p>
 
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('email.newEmailLabel') }}</span>
+            <span class="verify-field-label">{{
+              $t('email.newEmailLabel')
+            }}</span>
             <el-input
               v-model="newEmail"
               class="verify-input"
@@ -214,7 +240,9 @@
             />
           </div>
           <div class="verify-field">
-            <span class="verify-field-label">{{ $t('email.fillCaptcha') }}</span>
+            <span class="verify-field-label">{{
+              $t('email.fillCaptcha')
+            }}</span>
             <el-input
               v-model="newEmailCaptcha"
               class="verify-input"

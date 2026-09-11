@@ -40,7 +40,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, defineAsyncComponent } from 'vue'
 import { showTips } from '@/utils/message/showTips.js'
-import { ElMessageBox, ElTooltip } from 'element-plus'
+import { ElMessageBox } from 'element-plus'
 import logApi from '@/assets/js/api/logController/logApi.js'
 import { exportFile } from '@/utils/commom/importAndExport.ts'
 const BaseTable = defineAsyncComponent(
@@ -122,9 +122,7 @@ const searchItems = computed(() => [
 
 // 查询方法
 async function query() {
-  const range = Array.isArray(searchInfo.timeRange)
-    ? searchInfo.timeRange
-    : []
+  const range = Array.isArray(searchInfo.timeRange) ? searchInfo.timeRange : []
   const params = {
     username: searchInfo.username || undefined,
     operation: searchInfo.operation || undefined,

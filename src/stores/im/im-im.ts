@@ -10,10 +10,14 @@ import { imAuthStore } from './im-auth'
 import { imConversationStore } from './im-conversation'
 import { imMessageStore } from './im-message'
 import { imPresenceStore } from './im-presence'
-import { imRelationStore } from './im-relation'
 import { mockGateway } from '@/utils/im/mock-gateway'
 import type { WsEnvelope } from '@/utils/im/protocol'
-import type { MessageEventData, AckEventData, ReadEventData, MemberEventData } from '@/utils/im/protocol'
+import type {
+  MessageEventData,
+  AckEventData,
+  ReadEventData,
+  MemberEventData
+} from '@/utils/im/protocol'
 import { userInfoStore } from '@/stores/user-info'
 
 export const imStore = defineStore('im', () => {
@@ -34,7 +38,9 @@ export const imStore = defineStore('im', () => {
     bindEvents()
     // 站点已登录态下连接 IM WS
     if (userInfoStore().getToken.value) {
-      imAuthStore().connect().catch(() => {})
+      imAuthStore()
+        .connect()
+        .catch(() => {})
     }
   }
 
@@ -118,7 +124,11 @@ export const imStore = defineStore('im', () => {
     imConversationStore().setActive('')
   }
 
-  function mockInjectRemote(conversationId: string, senderId: string, text: string) {
+  function mockInjectRemote(
+    conversationId: string,
+    senderId: string,
+    text: string
+  ) {
     mockGateway.injectRemoteMessage(conversationId, senderId, text)
   }
 
@@ -129,5 +139,12 @@ export const imStore = defineStore('im', () => {
     initialized.value = false
   }
 
-  return { initialized, init, destroy, openConversation, closeConversation, mockInjectRemote }
+  return {
+    initialized,
+    init,
+    destroy,
+    openConversation,
+    closeConversation,
+    mockInjectRemote
+  }
 })

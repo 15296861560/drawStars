@@ -535,10 +535,6 @@ function applyLocationValue(val: any) {
   locForm.address = next.address
 }
 
-function onLocFieldChange() {
-  emitValue()
-}
-
 async function resolveAddressFromCoords() {
   const lng = Number(locForm.longitude)
   const lat = Number(locForm.latitude)

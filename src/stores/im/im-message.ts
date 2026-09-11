@@ -5,7 +5,11 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { messageApi, conversationApi } from '@/api/im'
 import { MsgStatus, MsgType, type ImMessage } from '@/api/im/types'
-import type { AckEventData, MessageEventData, ReadEventData } from '@/utils/im/protocol'
+import type {
+  AckEventData,
+  MessageEventData,
+  ReadEventData
+} from '@/utils/im/protocol'
 import { userInfoStore } from '@/stores/user-info'
 
 function genClientMsgId(): string {
@@ -42,7 +46,11 @@ export const imMessageStore = defineStore('im-message', () => {
     loadingHistory.value[conversationId] = true
     try {
       const beforeSeq = maxSeq.value[conversationId]
-      const res = await conversationApi.listMessages(conversationId, beforeSeq, limit)
+      const res = await conversationApi.listMessages(
+        conversationId,
+        beforeSeq,
+        limit
+      )
       if (!res.status || !res.data) return
       const arr = ensureArr(conversationId)
       const incoming = res.data.list || []
@@ -52,14 +60,24 @@ export const imMessageStore = defineStore('im-message', () => {
       for (const m of arr) if (!map.has(m.seq)) map.set(m.seq, m)
       const merged = [...map.values()].sort((a, b) => a.seq - b.seq)
       cache.value[conversationId] = merged
-      hasMore.value[conversationId] = res.data.hasMore !== false && incoming.length >= limit
+      hasMore.value[conversationId] =
+        res.data.hasMore !== false && incoming.length >= limit
       if (incoming.length) {
         const minSeq = Math.min(...incoming.map(m => m.seq))
-        if (!maxSeq.value[conversationId] || minSeq < maxSeq.value[conversationId]) {
+        if (
+          !maxSeq.value[conversationId] ||
+          minSeq < maxSeq.value[conversationId]
+        ) {
           // 历史向前加载不影响 maxSeq
         }
-        const maxIncoming = Math.max(...incoming.map(m => m.seq), ...arr.map(m => m.seq))
-        maxSeq.value[conversationId] = Math.max(maxSeq.value[conversationId] || 0, maxIncoming)
+        const maxIncoming = Math.max(
+          ...incoming.map(m => m.seq),
+          ...arr.map(m => m.seq)
+        )
+        maxSeq.value[conversationId] = Math.max(
+          maxSeq.value[conversationId] || 0,
+          maxIncoming
+        )
       }
     } finally {
       loadingHistory.value[conversationId] = false
@@ -78,11 +96,17 @@ export const imMessageStore = defineStore('im-message', () => {
     }
     arr.sort((a, b) => a.seq - b.seq)
     cache.value[conversationId] = [...arr]
-    if (arr.length) maxSeq.value[conversationId] = Math.max(...arr.map(m => m.seq))
+    if (arr.length)
+      maxSeq.value[conversationId] = Math.max(...arr.map(m => m.seq))
   }
 
   /** 乐观插入一条 SENDING 消息 */
-  function insertPending(conversationId: string, clientMsgId: string, content: Record<string, unknown>, msgType: MsgType): ImMessage {
+  function insertPending(
+    conversationId: string,
+    clientMsgId: string,
+    content: Record<string, unknown>,
+    msgType: MsgType
+  ): ImMessage {
     const arr = ensureArr(conversationId)
     const localSeq = -Date.now()
     const msg: ImMessage = {
@@ -106,7 +130,9 @@ export const imMessageStore = defineStore('im-message', () => {
     if (!ack.clientMsgId) return
     for (const convId of Object.keys(cache.value)) {
       const arr = cache.value[convId]
-      const idx = arr.findIndex(m => m.clientMsgId === ack.clientMsgId && m.status === MsgStatus.SENDING)
+      const idx = arr.findIndex(
+        m => m.clientMsgId === ack.clientMsgId && m.status === MsgStatus.SENDING
+      )
       if (idx >= 0) {
         if (ack.status === 'SUCCESS') {
           arr[idx] = {
@@ -121,7 +147,8 @@ export const imMessageStore = defineStore('im-message', () => {
           arr[idx] = { ...arr[idx], status: MsgStatus.DELETED }
         }
         cache.value[convId] = [...arr]
-        if (ack.seq) maxSeq.value[convId] = Math.max(maxSeq.value[convId] || 0, ack.seq)
+        if (ack.seq)
+          maxSeq.value[convId] = Math.max(maxSeq.value[convId] || 0, ack.seq)
         return
       }
     }
@@ -131,9 +158,15 @@ export const imMessageStore = defineStore('im-message', () => {
   function appendRemote(event: MessageEventData) {
     const convId = event.conversationId
     const arr = ensureArr(convId)
-    if (arr.some(m => m.msgId === event.msgId || (event.seq > 0 && m.seq === event.seq))) {
+    if (
+      arr.some(
+        m => m.msgId === event.msgId || (event.seq > 0 && m.seq === event.seq)
+      )
+    ) {
       // 已存在，更新状态
-      const idx = arr.findIndex(m => m.msgId === event.msgId || (event.seq > 0 && m.seq === event.seq))
+      const idx = arr.findIndex(
+        m => m.msgId === event.msgId || (event.seq > 0 && m.seq === event.seq)
+      )
       if (idx >= 0) arr[idx] = { ...arr[idx], ...event } as ImMessage
       cache.value[convId] = [...arr]
       return
@@ -154,11 +187,12 @@ export const imMessageStore = defineStore('im-message', () => {
     arr.push(msg)
     arr.sort((a, b) => a.seq - b.seq)
     cache.value[convId] = [...arr]
-    if (event.seq) maxSeq.value[convId] = Math.max(maxSeq.value[convId] || 0, event.seq)
+    if (event.seq)
+      maxSeq.value[convId] = Math.max(maxSeq.value[convId] || 0, event.seq)
   }
 
   /** 对方已读回执 */
-  function applyRead(event: ReadEventData) {
+  function applyRead(_event: ReadEventData) {
     // 仅用于展示已读状态，暂不细化
   }
 
@@ -168,7 +202,10 @@ export const imMessageStore = defineStore('im-message', () => {
       for (const convId of Object.keys(cache.value)) {
         const idx = cache.value[convId].findIndex(m => m.msgId === msgId)
         if (idx >= 0) {
-          cache.value[convId][idx] = { ...cache.value[convId][idx], status: MsgStatus.RECALLED }
+          cache.value[convId][idx] = {
+            ...cache.value[convId][idx],
+            status: MsgStatus.RECALLED
+          }
           cache.value[convId] = [...cache.value[convId]]
           break
         }
@@ -181,7 +218,10 @@ export const imMessageStore = defineStore('im-message', () => {
     for (const convId of Object.keys(cache.value)) {
       const idx = cache.value[convId].findIndex(m => m.msgId === msgId)
       if (idx >= 0) {
-        cache.value[convId][idx] = { ...cache.value[convId][idx], status: MsgStatus.RECALLED }
+        cache.value[convId][idx] = {
+          ...cache.value[convId][idx],
+          status: MsgStatus.RECALLED
+        }
         cache.value[convId] = [...cache.value[convId]]
         return
       }
@@ -199,7 +239,11 @@ export const imMessageStore = defineStore('im-message', () => {
   }
 
   /** 发送文本消息（REST 先写后推） */
-  async function sendText(conversationId: string, text: string, options: { atUserIds?: string[]; atAll?: boolean } = {}) {
+  async function sendText(
+    conversationId: string,
+    text: string,
+    options: { atUserIds?: string[]; atAll?: boolean } = {}
+  ) {
     const clientMsgId = genClientMsgId()
     insertPending(conversationId, clientMsgId, { text }, MsgType.TEXT)
     const res = await messageApi.sendMessage({
@@ -211,20 +255,42 @@ export const imMessageStore = defineStore('im-message', () => {
       atAll: options.atAll
     })
     if (res.status && res.data) {
-      applyAck({ clientMsgId, msgId: res.data.msgId, seq: res.data.seq, serverTime: res.data.serverTime, status: 'SUCCESS' })
+      applyAck({
+        clientMsgId,
+        msgId: res.data.msgId,
+        seq: res.data.seq,
+        serverTime: res.data.serverTime,
+        status: 'SUCCESS'
+      })
     } else {
       applyAck({ clientMsgId, status: 'FAILED', error: res.msg })
     }
     return res
   }
 
-  async function sendImage(conversationId: string, url: string, width?: number, height?: number) {
+  async function sendImage(
+    conversationId: string,
+    url: string,
+    width?: number,
+    height?: number
+  ) {
     const clientMsgId = genClientMsgId()
     const content: Record<string, unknown> = { url, width, height }
     insertPending(conversationId, clientMsgId, content, MsgType.IMAGE)
-    const res = await messageApi.sendMessage({ clientMsgId, msgType: MsgType.IMAGE, content, conversationId })
+    const res = await messageApi.sendMessage({
+      clientMsgId,
+      msgType: MsgType.IMAGE,
+      content,
+      conversationId
+    })
     if (res.status && res.data) {
-      applyAck({ clientMsgId, msgId: res.data.msgId, seq: res.data.seq, serverTime: res.data.serverTime, status: 'SUCCESS' })
+      applyAck({
+        clientMsgId,
+        msgId: res.data.msgId,
+        seq: res.data.seq,
+        serverTime: res.data.serverTime,
+        status: 'SUCCESS'
+      })
     } else {
       applyAck({ clientMsgId, status: 'FAILED', error: res.msg })
     }
@@ -246,8 +312,23 @@ export const imMessageStore = defineStore('im-message', () => {
   }
 
   return {
-    cache, maxSeq, loadingHistory, hasMore,
-    getMessages, loadHistory, sync, insertPending, applyAck, appendRemote, applyRead,
-    recallMessage, applyRecall, deleteForMe, sendText, sendImage, clearConversation, clearAll
+    cache,
+    maxSeq,
+    loadingHistory,
+    hasMore,
+    getMessages,
+    loadHistory,
+    sync,
+    insertPending,
+    applyAck,
+    appendRemote,
+    applyRead,
+    recallMessage,
+    applyRecall,
+    deleteForMe,
+    sendText,
+    sendImage,
+    clearConversation,
+    clearAll
   }
 })

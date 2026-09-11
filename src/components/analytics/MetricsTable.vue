@@ -7,8 +7,13 @@
     <div v-if="!rows.length" class="empty">暂无数据</div>
     <div v-else class="body">
       <div v-for="(row, idx) in rows" :key="idx" class="row">
-        <div class="bar" :style="{ width: `${Math.min(100, row.z || 0)}%` }"></div>
-        <div class="label" :title="row.x || row.name">{{ displayLabel(row) }}</div>
+        <div
+          class="bar"
+          :style="{ width: `${Math.min(100, row.z || 0)}%` }"
+        ></div>
+        <div class="label" :title="row.x || row.name">
+          {{ displayLabel(row) }}
+        </div>
         <div class="value">{{ row.y ?? row.value ?? 0 }}</div>
         <div class="percent">{{ formatPercent(row.z) }}%</div>
       </div>
@@ -28,7 +33,13 @@
 const props = defineProps<{
   title: string
   metricLabel?: string
-  rows: Array<{ x?: string; name?: string; y?: number; value?: number; z?: number }>
+  rows: Array<{
+    x?: string
+    name?: string
+    y?: number
+    value?: number
+    z?: number
+  }>
   limit?: number
   showMore?: boolean
   labelMap?: Record<string, string>

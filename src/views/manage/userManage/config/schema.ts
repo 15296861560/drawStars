@@ -1,5 +1,12 @@
 export const allFields = [
-  { fieldName: 'id', label: 'ID', type: 'text', width: 80, hideDialog: true, hideTable: true },
+  {
+    fieldName: 'id',
+    label: 'ID',
+    type: 'text',
+    width: 80,
+    hideDialog: true,
+    hideTable: true
+  },
   { fieldName: 'name', label: '姓名', type: 'input', width: 120 },
   { fieldName: 'phone', label: '手机', type: 'input', width: 130 },
   { fieldName: 'email', label: '邮箱', type: 'input', minWidth: 160 },

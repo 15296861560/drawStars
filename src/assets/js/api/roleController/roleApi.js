@@ -8,8 +8,7 @@ const roleApi = {
   queryList: params => $axiosGet(params, `/roleApi/list`),
   getDetail: id => $axiosGet({}, `/roleApi/detail/${id}`),
   create: data => $axios(data, `/roleApi/create`),
-  update: data =>
-    requests({ url: `/api/roleApi/update`, data, method: 'put' }),
+  update: data => requests({ url: `/api/roleApi/update`, data, method: 'put' }),
   delete: id =>
     requests({ url: `/api/roleApi/delete/${id}`, method: 'delete' }),
   getMenuIds: roleId => $axiosGet({}, `/roleApi/menuIds/${roleId}`),

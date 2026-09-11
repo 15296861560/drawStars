@@ -3,10 +3,18 @@
     <div class="section-head pc-page-title">{{ $t('title') }}</div>
     <div class="section-body pc-page-body">
       <el-descriptions :column="1" border>
-        <el-descriptions-item :label="$t('level')">{{ info.level }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('roleName')">{{ info.roleName }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('status')">{{ info.status }}</el-descriptions-item>
-        <el-descriptions-item :label="$t('alias')">{{ info.accountAlias || '-' }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('level')">{{
+          info.level
+        }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('roleName')">{{
+          info.roleName
+        }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('status')">{{
+          info.status
+        }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('alias')">{{
+          info.accountAlias || '-'
+        }}</el-descriptions-item>
       </el-descriptions>
       <div class="perm-title">{{ $t('permissions') }}</div>
       <ul class="perm-list">
@@ -27,7 +35,13 @@ export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
-      info: { level: 1, roleName: '', permissions: [], status: '', accountAlias: '' }
+      info: {
+        level: 1,
+        roleName: '',
+        permissions: [],
+        status: '',
+        accountAlias: ''
+      }
     }
   },
   created() {

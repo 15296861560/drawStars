@@ -8,7 +8,12 @@ const def: QuestionTypeDef = {
   category: 'advanced',
   defaultConfig: () => ({}),
   createQuestion(partial) {
-    return createBaseQuestion('signature', '签名题', this.defaultConfig, partial)
+    return createBaseQuestion(
+      'signature',
+      '签名题',
+      this.defaultConfig,
+      partial
+    )
   },
   validate(answer, question: Question) {
     const req = requiredCheck(answer?.value ?? answer, question)

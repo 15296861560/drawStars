@@ -37,9 +37,12 @@ export const userInfoStore = defineStore(
 
     function changeUserInfo(newVal: Partial<UserInfo>) {
       if (newVal.name !== undefined) userInfo.name = String(newVal.name || '')
-      if (newVal.userId !== undefined) userInfo.userId = Number(newVal.userId) || 0
-      if (newVal.phone !== undefined) userInfo.phone = String(newVal.phone || '')
-      if (newVal.email !== undefined) userInfo.email = String(newVal.email || '')
+      if (newVal.userId !== undefined)
+        userInfo.userId = Number(newVal.userId) || 0
+      if (newVal.phone !== undefined)
+        userInfo.phone = String(newVal.phone || '')
+      if (newVal.email !== undefined)
+        userInfo.email = String(newVal.email || '')
       if (newVal.avatar !== undefined)
         userInfo.avatar = String(newVal.avatar || '')
       if (newVal.accountAlias !== undefined)

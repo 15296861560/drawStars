@@ -26,7 +26,9 @@
             <el-tag type="danger">
               {{
                 scope.row.err?.message ||
-                (typeof scope.row.err === 'string' ? scope.row.err : '（无消息）')
+                (typeof scope.row.err === 'string'
+                  ? scope.row.err
+                  : '（无消息）')
               }}
             </el-tag>
           </template>

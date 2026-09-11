@@ -7,11 +7,7 @@
     :class="{ 'is-bordered': bordered }"
     :style="wrapperStyle"
   >
-    <div
-      v-if="html"
-      class="ql-editor"
-      v-html="html"
-    ></div>
+    <div v-if="html" class="ql-editor" v-html="html"></div>
     <div v-else class="ql-editor rich-text-viewer__empty">
       {{ emptyText }}
     </div>

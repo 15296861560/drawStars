@@ -17,7 +17,7 @@ export const imAuthStore = defineStore('im-auth', () => {
   const isLoggedIn = computed(() => !!token.value)
 
   // 订阅 WS 状态变化
-  imWsClient.on('STATE', (env) => {
+  imWsClient.on('STATE', env => {
     const s = (env.data as { state: WsState }).state
     wsState.value = s
     degraded.value = s === WsState.DISCONNECTED
@@ -58,5 +58,15 @@ export const imAuthStore = defineStore('im-auth', () => {
     wsState.value = WsState.IDLE
   }
 
-  return { token, tokenExpireAt, wsState, degraded, connected, isLoggedIn, ensureToken, connect, logout }
+  return {
+    token,
+    tokenExpireAt,
+    wsState,
+    degraded,
+    connected,
+    isLoggedIn,
+    ensureToken,
+    connect,
+    logout
+  }
 })

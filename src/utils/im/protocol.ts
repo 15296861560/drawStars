@@ -19,7 +19,16 @@ export type WsIncoming =
   | { type: 'UNSUBSCRIBE'; conversationId: string }
   | { type: 'READ'; conversationId: string; seq: number }
   | { type: 'ROOM_PRESENCE'; roomId: string }
-  | { type: 'SEND'; clientMsgId: string; conversationId?: string; target?: { convType: string; bizId: string }; msgType: string; content: Record<string, unknown>; atUserIds?: string[]; atAll?: boolean }
+  | {
+      type: 'SEND'
+      clientMsgId: string
+      conversationId?: string
+      target?: { convType: string; bizId: string }
+      msgType: string
+      content: Record<string, unknown>
+      atUserIds?: string[]
+      atAll?: boolean
+    }
 
 /** MESSAGE 事件 data */
 export interface MessageEventData {
@@ -61,7 +70,11 @@ export interface MemberEventData {
   role?: string
 }
 
-export function buildEnvelope<T>(event: WsEvent | string, data: T, requestId?: string): WsEnvelope<T> {
+export function buildEnvelope<T>(
+  event: WsEvent | string,
+  data: T,
+  requestId?: string
+): WsEnvelope<T> {
   return { event, requestId, ts: Date.now(), data }
 }
 

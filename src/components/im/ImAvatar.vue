@@ -1,11 +1,6 @@
 <template>
   <div class="im-avatar" :class="{ 'is-online': online }">
-    <el-badge
-      :value="badge"
-      :hidden="!badge"
-      :max="max"
-      :type="badgeType"
-    >
+    <el-badge :value="badge" :hidden="!badge" :max="max" :type="badgeType">
       <el-avatar
         :size="size"
         :src="src"

@@ -60,8 +60,7 @@ export function trackPageview(to?: {
           : '',
       language: typeof navigator !== 'undefined' ? navigator.language : '',
       url: path,
-      referrer:
-        typeof document !== 'undefined' ? document.referrer || '' : '',
+      referrer: typeof document !== 'undefined' ? document.referrer || '' : '',
       title,
       username: getUsername()
     }

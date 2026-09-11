@@ -208,8 +208,16 @@ const emit = defineEmits<{
 }>()
 
 const fallthroughAttrs = useAttrs()
-const { type, apiMethod, apiParams, config, disabled, readonly, options, attrs } =
-  toRefs(props)
+const {
+  type,
+  apiMethod,
+  apiParams,
+  config,
+  disabled,
+  readonly,
+  options,
+  attrs
+} = toRefs(props)
 const { field } = useVModels(props, emit)
 
 const mergedAttrs = computed(() => ({

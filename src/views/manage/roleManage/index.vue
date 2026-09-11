@@ -22,7 +22,12 @@
       destroy-on-close
       append-to-body
     >
-      <el-form ref="formRef" :model="form" :rules="formRules" label-width="90px">
+      <el-form
+        ref="formRef"
+        :model="form"
+        :rules="formRules"
+        label-width="90px"
+      >
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入角色名称" />
         </el-form-item>
@@ -89,10 +94,7 @@
         :default-checked-keys="[]"
       />
       <template #footer>
-        <el-button
-          v-if="!bindIsSuperAdmin"
-          type="primary"
-          @click="submitBind"
+        <el-button v-if="!bindIsSuperAdmin" type="primary" @click="submitBind"
           >确 定</el-button
         >
         <el-button @click="bindVisible = false">{{
@@ -315,9 +317,7 @@ const openBind = async row => {
     roleApi.getMenuIds(row.id)
   ])
   const tree = treeRes.status ? treeRes.data || [] : []
-  menuTree.value = bindIsSuperAdmin.value
-    ? markTreeDisabled(tree, true)
-    : tree
+  menuTree.value = bindIsSuperAdmin.value ? markTreeDisabled(tree, true) : tree
   bindMenuIds.value = idsRes.status
     ? (idsRes.data || []).map(id => Number(id)).filter(n => Number.isFinite(n))
     : []

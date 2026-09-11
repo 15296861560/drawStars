@@ -8,7 +8,10 @@ export interface LocalDraft {
   surveyId?: number | string
 }
 
-export function saveLocalDraft(shareCode: string, data: Omit<LocalDraft, 'savedAt'>) {
+export function saveLocalDraft(
+  shareCode: string,
+  data: Omit<LocalDraft, 'savedAt'>
+) {
   try {
     const payload: LocalDraft = { ...data, savedAt: Date.now() }
     localStorage.setItem(PREFIX + shareCode, JSON.stringify(payload))

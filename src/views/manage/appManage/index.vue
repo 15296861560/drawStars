@@ -356,11 +356,15 @@ async function upgradeApp(row) {
 // 发布
 async function offlineApp(row) {
   try {
-    await ElMessageBox.confirm('是否确认下架该模块？下架后移动端不可新开', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    })
+    await ElMessageBox.confirm(
+      '是否确认下架该模块？下架后移动端不可新开',
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    )
   } catch (e) {
     showTips('info', '已取消')
     return
@@ -545,7 +549,10 @@ async function previewCodeRow(row) {
   }
   const deeplink = result.data?.deeplink || result.data?.text
   ElMessageBox.alert(
-    '请用壳扫一扫识别：\n' + deeplink + '\n过期时间戳：' + result.data?.expireAt,
+    '请用壳扫一扫识别：\n' +
+      deeplink +
+      '\n过期时间戳：' +
+      result.data?.expireAt,
     '预览码 - ' + (row.name || ''),
     { confirmButtonText: '确定' }
   )

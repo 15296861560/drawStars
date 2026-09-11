@@ -13,7 +13,11 @@
               <el-button text @click="remove(f)">删除</el-button>
             </template>
           </ImListRow>
-          <el-empty v-if="!friends.length" description="暂无好友" :image-size="60" />
+          <el-empty
+            v-if="!friends.length"
+            description="暂无好友"
+            :image-size="60"
+          />
         </el-scrollbar>
       </el-tab-pane>
 
@@ -25,11 +29,17 @@
           :sub="p.remark || '请求加为好友'"
         >
           <template #extra>
-            <el-button type="primary" size="small" @click="respond(p, true)">同意</el-button>
+            <el-button type="primary" size="small" @click="respond(p, true)"
+              >同意</el-button
+            >
             <el-button size="small" @click="respond(p, false)">拒绝</el-button>
           </template>
         </ImListRow>
-        <el-empty v-if="!pendingReceived.length" description="暂无好友申请" :image-size="60" />
+        <el-empty
+          v-if="!pendingReceived.length"
+          description="暂无好友申请"
+          :image-size="60"
+        />
       </el-tab-pane>
 
       <el-tab-pane label="黑名单" name="blacklist">
@@ -42,12 +52,18 @@
             <el-button text @click="unblock(b)">移出</el-button>
           </template>
         </ImListRow>
-        <el-empty v-if="!blacklist.length" description="黑名单为空" :image-size="60" />
+        <el-empty
+          v-if="!blacklist.length"
+          description="黑名单为空"
+          :image-size="60"
+        />
       </el-tab-pane>
     </el-tabs>
 
     <div class="im-contacts-add">
-      <el-button type="primary" plain size="small" @click="addDialog = true">+ 添加好友</el-button>
+      <el-button type="primary" plain size="small" @click="addDialog = true"
+        >+ 添加好友</el-button
+      >
     </div>
 
     <el-dialog v-model="addDialog" title="添加好友" width="360px">
@@ -66,7 +82,9 @@ import { ElMessage } from 'element-plus'
 import { imRelationStore } from '@/stores/im/im-relation'
 import type { ImFriendship, ImBlacklistItem } from '@/api/im/types'
 
-const ImListRow = defineAsyncComponent(() => import('@/components/im/ImListRow.vue'))
+const ImListRow = defineAsyncComponent(
+  () => import('@/components/im/ImListRow.vue')
+)
 
 const store = imRelationStore()
 const tab = ref('friends')

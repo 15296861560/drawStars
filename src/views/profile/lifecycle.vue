@@ -2,14 +2,24 @@
   <div class="lifecycle pc-page">
     <div class="section-head pc-page-title">{{ $t('title') }}</div>
     <div class="section-body pc-page-body">
-      <el-alert :title="$t('warning')" type="warning" show-icon :closable="false" class="mb16" />
+      <el-alert
+        :title="$t('warning')"
+        type="warning"
+        show-icon
+        :closable="false"
+        class="mb16"
+      />
       <el-form label-width="7rem" style="max-width: 28rem">
         <el-form-item :label="$t('password')">
           <el-input v-model="password" type="password" show-password />
         </el-form-item>
         <el-form-item>
-          <el-button type="warning" @click="deactivate">{{ $t('deactivate') }}</el-button>
-          <el-button type="danger" @click="remove">{{ $t('delete') }}</el-button>
+          <el-button type="warning" @click="deactivate">{{
+            $t('deactivate')
+          }}</el-button>
+          <el-button type="danger" @click="remove">{{
+            $t('delete')
+          }}</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,7 +43,11 @@ export default {
   methods: {
     async deactivate() {
       try {
-        await ElMessageBox.confirm(this.$t('confirmDeactivate'), this.$t('title'), { type: 'warning' })
+        await ElMessageBox.confirm(
+          this.$t('confirmDeactivate'),
+          this.$t('title'),
+          { type: 'warning' }
+        )
       } catch {
         return
       }
@@ -50,7 +64,9 @@ export default {
     },
     async remove() {
       try {
-        await ElMessageBox.confirm(this.$t('confirmDelete'), this.$t('title'), { type: 'error' })
+        await ElMessageBox.confirm(this.$t('confirmDelete'), this.$t('title'), {
+          type: 'error'
+        })
       } catch {
         return
       }

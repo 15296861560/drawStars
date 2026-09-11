@@ -123,7 +123,11 @@ const isUrlValue = computed(() => {
 const previewSrc = computed(() => {
   const v = String(field.value || '')
   if (!v) return ''
-  if (v.startsWith('http') || v.startsWith('data:') || v.startsWith('/uploadImg')) {
+  if (
+    v.startsWith('http') ||
+    v.startsWith('data:') ||
+    v.startsWith('/uploadImg')
+  ) {
     return v
   }
   if (v.startsWith('/')) return v

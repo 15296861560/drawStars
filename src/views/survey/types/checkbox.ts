@@ -6,7 +6,14 @@ const def: QuestionTypeDef = {
   label: '多选题',
   icon: 'Checked',
   category: 'basic',
-  defaultConfig: () => ({ options: [{ content: '选项A', sortOrder: 1 }, { content: '选项B', sortOrder: 2 }], minSelect: 0, maxSelect: 0 }),
+  defaultConfig: () => ({
+    options: [
+      { content: '选项A', sortOrder: 1 },
+      { content: '选项B', sortOrder: 2 }
+    ],
+    minSelect: 0,
+    maxSelect: 0
+  }),
   createQuestion(partial) {
     return createBaseQuestion('checkbox', '多选题', this.defaultConfig, partial)
   },

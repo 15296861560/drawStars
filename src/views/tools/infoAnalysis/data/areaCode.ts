@@ -331,7 +331,7 @@ export const areaCodeMap: Record<string, string> = {
   '6505': '哈密市',
   '71': '台湾省',
   '81': '香港特别行政区',
-  '82': '澳门特别行政区',
+  '82': '澳门特别行政区'
 }
 
 export function resolveAreaName(code6: string): string {

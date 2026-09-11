@@ -94,7 +94,16 @@ export interface Question {
 
 export interface LogicCondition {
   questionId: number | string
-  operator: 'eq' | 'neq' | 'includes' | 'gt' | 'gte' | 'lt' | 'lte' | 'empty' | 'not_empty'
+  operator:
+    | 'eq'
+    | 'neq'
+    | 'includes'
+    | 'gt'
+    | 'gte'
+    | 'lt'
+    | 'lte'
+    | 'empty'
+    | 'not_empty'
   value?: any
 }
 
@@ -325,7 +334,11 @@ export interface QualityStatistics {
   invalidCount: number
   duplicateCount: number
   shortDurationCount: number
-  missingRates?: Array<{ questionId: number | string; title: string; emptyRate: number }>
+  missingRates?: Array<{
+    questionId: number | string
+    title: string
+    emptyRate: number
+  }>
   list: QualityItem[]
 }
 

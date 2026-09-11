@@ -6,7 +6,12 @@ const def: QuestionTypeDef = {
   label: '判断题',
   icon: 'Select',
   category: 'basic',
-  defaultConfig: () => ({ options: [{ content: '对', sortOrder: 1 }, { content: '错', sortOrder: 2 }] }),
+  defaultConfig: () => ({
+    options: [
+      { content: '对', sortOrder: 1 },
+      { content: '错', sortOrder: 2 }
+    ]
+  }),
   createQuestion(partial) {
     return createBaseQuestion('judge', '判断题', this.defaultConfig, partial)
   },
@@ -14,7 +19,8 @@ const def: QuestionTypeDef = {
     const req = requiredCheck(answer?.value ?? answer, question)
     if (req) return req
     const v = answer?.value ?? answer
-    if (question.required && (v === undefined || v === null || v === '')) return '请选择'
+    if (question.required && (v === undefined || v === null || v === ''))
+      return '请选择'
     return null
   }
 }

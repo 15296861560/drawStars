@@ -10,7 +10,12 @@
 import { ref } from 'vue'
 import { WsState } from '@/api/im/types'
 import { authApi } from '@/api/im'
-import { parseEnvelope, buildEnvelope, type WsEnvelope, type WsIncoming } from './protocol'
+import {
+  parseEnvelope,
+  buildEnvelope,
+  type WsEnvelope,
+  type WsIncoming
+} from './protocol'
 import { mockGateway } from './mock-gateway'
 
 type Handler = (env: WsEnvelope) => void
@@ -68,11 +73,15 @@ class ImWsClient {
   }
 
   async connect(): Promise<void> {
-    if (this.state.value === WsState.CONNECTING || this.state.value === WsState.CONNECTED) return
+    if (
+      this.state.value === WsState.CONNECTING ||
+      this.state.value === WsState.CONNECTED
+    )
+      return
     this.manualClose = false
     if (this.isMock) {
       this.setState(WsState.CONNECTING)
-      mockGateway.attach((env) => this.dispatch(env))
+      mockGateway.attach(env => this.dispatch(env))
       this.setState(WsState.CONNECTED)
       this.resubscribe()
       return
@@ -106,7 +115,7 @@ class ImWsClient {
       // 重连后通知上层补洞
       this.dispatch(buildEnvelope('RESYNC', { ts: Date.now() }))
     }
-    this.ws.onmessage = (ev) => this.onMessage(ev)
+    this.ws.onmessage = ev => this.onMessage(ev)
     this.ws.onclose = () => this.onClose()
     this.ws.onerror = () => {
       // 错误一般伴随 close，交给 onClose 处理
@@ -144,7 +153,10 @@ class ImWsClient {
       this.dispatch(buildEnvelope('WS_DEGRADED', { reason: 'max_retries' }))
       return
     }
-    const delay = Math.min(RECONNECT_BASE_MS * 2 ** this.retries, RECONNECT_MAX_MS)
+    const delay = Math.min(
+      RECONNECT_BASE_MS * 2 ** this.retries,
+      RECONNECT_MAX_MS
+    )
     this.retries += 1
     this.reconnectTimer = setTimeout(() => {
       this.connect()
@@ -153,7 +165,10 @@ class ImWsClient {
 
   private startHeartbeat() {
     this.stopHeartbeat()
-    this.heartbeatTimer = setInterval(() => this.send({ type: 'PING' }), HEARTBEAT_MS)
+    this.heartbeatTimer = setInterval(
+      () => this.send({ type: 'PING' }),
+      HEARTBEAT_MS
+    )
   }
 
   private stopHeartbeat() {

@@ -18,7 +18,7 @@ const def: QuestionTypeDef = {
     const max = question.config?.maxLength
     if (max && v.length > max) return '超出字数限制'
     const pat = question.config?.pattern
-    if (pat && v && !(new RegExp(pat)).test(v)) return '格式不正确'
+    if (pat && v && !new RegExp(pat).test(v)) return '格式不正确'
     return null
   }
 }

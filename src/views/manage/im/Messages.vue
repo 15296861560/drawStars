@@ -17,8 +17,12 @@ import { Search, Refresh } from '@element-plus/icons-vue'
 import { showTips } from '@/utils/message/showTips.js'
 import { adminApi } from '@/api/im'
 
-const BaseTable = defineAsyncComponent(() => import('@/components/base/form/BaseTable.vue'))
-const SearchForm = defineAsyncComponent(() => import('@/components/base/SearchForm/index.vue'))
+const BaseTable = defineAsyncComponent(
+  () => import('@/components/base/form/BaseTable.vue')
+)
+const SearchForm = defineAsyncComponent(
+  () => import('@/components/base/SearchForm/index.vue')
+)
 
 const showSearch = ref(true)
 const searchInfo = reactive({
@@ -38,7 +42,12 @@ const pageInfo = reactive({
 
 const searchFields = [
   { field: 'roomId', label: '房间ID', type: 'input', placeholder: '房间ID' },
-  { field: 'conversationId', label: '会话ID', type: 'input', placeholder: '会话ID' },
+  {
+    field: 'conversationId',
+    label: '会话ID',
+    type: 'input',
+    placeholder: '会话ID'
+  },
   { field: 'keyword', label: '关键词', type: 'input', placeholder: '关键词' },
   { field: 'dateRange', label: '时间', type: 'daterange', width: 280 }
 ]

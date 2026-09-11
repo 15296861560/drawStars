@@ -23,10 +23,7 @@ async function reverseGeocodeViaAMap(
         return
       }
       AMap.convertFrom([lng, lat], 'gps', (status: string, result: any) => {
-        if (
-          status === 'complete' &&
-          result?.locations?.[0]
-        ) {
+        if (status === 'complete' && result?.locations?.[0]) {
           const p = result.locations[0]
           resolve([p.lng, p.lat])
         } else {

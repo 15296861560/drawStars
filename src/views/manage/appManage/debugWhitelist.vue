@@ -103,13 +103,23 @@ async function load() {
 
 // 本地过滤（接口一次性返回全量）
 function query() {
-  const pattern = String(searchInfo.pattern || '').trim().toLowerCase()
-  const remark = String(searchInfo.remark || '').trim().toLowerCase()
+  const pattern = String(searchInfo.pattern || '')
+    .trim()
+    .toLowerCase()
+  const remark = String(searchInfo.remark || '')
+    .trim()
+    .toLowerCase()
   tableData.value = allList.value.filter(item => {
     const hitPattern =
-      !pattern || String(item.pattern || '').toLowerCase().includes(pattern)
+      !pattern ||
+      String(item.pattern || '')
+        .toLowerCase()
+        .includes(pattern)
     const hitRemark =
-      !remark || String(item.remark || '').toLowerCase().includes(remark)
+      !remark ||
+      String(item.remark || '')
+        .toLowerCase()
+        .includes(remark)
     return hitPattern && hitRemark
   })
 }

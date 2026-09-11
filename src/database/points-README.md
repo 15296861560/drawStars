@@ -37,4 +37,3 @@ pnpm prisma generate
 - 必填：`userId`、`points`（正数）、`reason`（原因）
 - 操作人：取当前登录用户，写入流水 `extra_data.operatorId/operatorName`
 - 管理页：积分管理 →「新增积分」
-

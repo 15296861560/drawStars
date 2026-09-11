@@ -41,4 +41,12 @@ export function updateProfile(data: Record<string, unknown>) {
   return post<ImUserProfile>(data, '/im/profile')
 }
 
-export default { issueToken, issueWsTicket, refreshToken, logout, batchStatus, getProfile, updateProfile }
+export default {
+  issueToken,
+  issueWsTicket,
+  refreshToken,
+  logout,
+  batchStatus,
+  getProfile,
+  updateProfile
+}

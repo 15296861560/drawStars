@@ -91,15 +91,7 @@
             <el-table-column label="类型" width="100">
               <template #default="{ row }">
                 {{
-                  (
-                    {
-                      DAILY: '日常',
-                      ONCE: '一次性',
-                      LIMITED: '限时',
-                      ACHIEVEMENT: '成就',
-                      CUSTOM: '自定义'
-                    } as Record<string, string>
-                  )[row.templateData?.taskType || ''] ||
+                  TASK_TYPE_LABELS[row.templateData?.taskType || ''] ||
                   row.templateData?.taskType ||
                   '-'
                 }}
@@ -217,6 +209,15 @@ const store = taskStore()
 const loading = ref(false)
 const submitting = ref(false)
 const activeTab = ref('reward')
+
+// 任务类型枚举 → 中文标签（模板列表展示用）
+const TASK_TYPE_LABELS: Record<string, string> = {
+  DAILY: '日常',
+  ONCE: '一次性',
+  LIMITED: '限时',
+  ACHIEVEMENT: '成就',
+  CUSTOM: '自定义'
+}
 
 const rewardDialogVisible = ref(false)
 const rewardEditingId = ref<number | null>(null)

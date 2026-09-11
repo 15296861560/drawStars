@@ -24,7 +24,10 @@ export function publishRoom(roomId: string) {
 }
 
 export function joinRoom(roomId: string) {
-  return post<{ status: string; conversationId?: string }>({}, formatPath('/im/rooms/:roomId/join', { roomId }))
+  return post<{ status: string; conversationId?: string }>(
+    {},
+    formatPath('/im/rooms/:roomId/join', { roomId })
+  )
 }
 
 export function leaveRoom(roomId: string) {
@@ -32,23 +35,46 @@ export function leaveRoom(roomId: string) {
 }
 
 export function roomMembers(roomId: string) {
-  return get<{ list: Array<Record<string, unknown>> }>({}, formatPath('/im/rooms/:roomId/members', { roomId }))
+  return get<{ list: Array<Record<string, unknown>> }>(
+    {},
+    formatPath('/im/rooms/:roomId/members', { roomId })
+  )
 }
 
-export function muteRoomMember(roomId: string, targetUserId: string, duration: MuteDuration) {
-  return post<{}>({ targetUserId, duration }, formatPath('/im/rooms/:roomId/mute', { roomId }))
+export function muteRoomMember(
+  roomId: string,
+  targetUserId: string,
+  duration: MuteDuration
+) {
+  return post<{}>(
+    { targetUserId, duration },
+    formatPath('/im/rooms/:roomId/mute', { roomId })
+  )
 }
 
 export function kickRoomMember(roomId: string, targetUserId: string) {
-  return post<{}>({ targetUserId }, formatPath('/im/rooms/:roomId/kick', { roomId }))
+  return post<{}>(
+    { targetUserId },
+    formatPath('/im/rooms/:roomId/kick', { roomId })
+  )
 }
 
-export function setRoomAdmin(roomId: string, targetUserId: string, isAdmin: boolean) {
-  return post<{}>({ targetUserId, isAdmin }, formatPath('/im/rooms/:roomId/admins', { roomId }))
+export function setRoomAdmin(
+  roomId: string,
+  targetUserId: string,
+  isAdmin: boolean
+) {
+  return post<{}>(
+    { targetUserId, isAdmin },
+    formatPath('/im/rooms/:roomId/admins', { roomId })
+  )
 }
 
 export function transferRoom(roomId: string, targetUserId: string) {
-  return post<ImRoom>({ targetUserId }, formatPath('/im/rooms/:roomId/transfer', { roomId }))
+  return post<ImRoom>(
+    { targetUserId },
+    formatPath('/im/rooms/:roomId/transfer', { roomId })
+  )
 }
 
 export function closeRoom(roomId: string) {
@@ -56,10 +82,24 @@ export function closeRoom(roomId: string) {
 }
 
 export function roomPresence(roomId: string) {
-  return post<{ onlineCount: number }>({}, formatPath('/im/rooms/:roomId/presence', { roomId }))
+  return post<{ onlineCount: number }>(
+    {},
+    formatPath('/im/rooms/:roomId/presence', { roomId })
+  )
 }
 
 export default {
-  createRoom, getRoom, updateRoom, publishRoom, joinRoom, leaveRoom,
-  roomMembers, muteRoomMember, kickRoomMember, setRoomAdmin, transferRoom, closeRoom, roomPresence
+  createRoom,
+  getRoom,
+  updateRoom,
+  publishRoom,
+  joinRoom,
+  leaveRoom,
+  roomMembers,
+  muteRoomMember,
+  kickRoomMember,
+  setRoomAdmin,
+  transferRoom,
+  closeRoom,
+  roomPresence
 }

@@ -50,7 +50,7 @@ description: >-
 先搜索：
 
 | 类型 | 位置 |
-|------|------|
+| ------ | ------ |
 | 通用基础 | `src/components/base/`（BaseDialog、BaseFormItem、BaseTable、SearchForm、SearchItem、UserSearchSelect、VirtualList 等） |
 | 业务组件 | `src/components/` 下业务目录（points、analytics、layout、ai-assistant 等） |
 | 页面内组件 | `src/views/**/components/` |

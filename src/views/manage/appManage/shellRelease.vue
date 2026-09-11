@@ -129,7 +129,8 @@ function query() {
   tableData.value = allList.value.filter(item => {
     const hitPlatform =
       !searchInfo.platform || item.platform === searchInfo.platform
-    const hitChannel = !searchInfo.channel || item.channel === searchInfo.channel
+    const hitChannel =
+      !searchInfo.channel || item.channel === searchInfo.channel
     const hitVersion =
       !searchInfo.version ||
       String(item.version || '')
