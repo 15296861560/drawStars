@@ -126,6 +126,9 @@ export default {
     navTop: '顶部菜单',
     themeStyle: '主题风格设置',
     themeColor: '主题颜色',
+    themePreset: '主题配色',
+    themeGroupClassic: '经典系列',
+    themeGroupMorandi: '莫兰迪系列',
     systemLayout: '系统布局配置',
     tagsView: '开启 Tags-Views',
     tagsIcon: '显示页签图标',
@@ -138,6 +141,20 @@ export default {
     saving: '正在保存到本地，请稍候...',
     resetting: '正在清除设置缓存并刷新，请稍候...',
     testPages: '测试页面'
+  },
+  themePresets: {
+    starryIndigo: '星夜靛蓝',
+    skyBlue: '晴空蓝',
+    obsidianViolet: '曜石紫',
+    lakeCyan: '湖光青',
+    jadeGreen: '翡翠绿',
+    amberGlow: '琥珀橙',
+    crimson: '绯红',
+    graphite: '石墨灰',
+    morandiMist: '雾霭蓝',
+    morandiSage: '鼠尾草绿',
+    morandiRose: '豆沙粉',
+    custom: '自定义'
   },
   dependence: {
     dependenceInfo: '依赖信息'

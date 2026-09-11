@@ -158,7 +158,7 @@ export const MOCK_MESSAGES: Record<string, AiMessage[]> = {
       role: 'assistant',
       type: 'rich',
       content:
-        '<p><strong>上海</strong> · 晴 · <span style="color:#409EFF;font-size:1.2em">26°C</span></p><p>湿度 58% · 东南风 2 级 · 空气质量 良</p>',
+        '<p><strong>上海</strong> · 晴 · <span style="color:#4C5EDB;font-size:1.2em">26°C</span></p><p>湿度 58% · 东南风 2 级 · 空气质量 良</p>',
       createdAt: iso(3600000),
       capabilityId: 'weather'
     }

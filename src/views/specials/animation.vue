@@ -264,7 +264,7 @@ export default {
     background-color: transparent;
   }
   100% {
-    background-color: aqua;
+    background-color: var(--el-color-primary);
   }
 }
 
@@ -497,7 +497,7 @@ export default {
     transform: rotate(0deg);
   }
   25% {
-    background-color: aqua;
+    background-color: var(--el-color-primary);
     transform: rotate(90deg);
   }
   50% {

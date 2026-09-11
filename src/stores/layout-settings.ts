@@ -5,7 +5,13 @@ import {
   LAYOUT_SETTING_STORAGE_KEY,
   layoutDefaults
 } from '@/config/layout-defaults'
-import { handleThemeStyle } from '@/utils/theme-style'
+import {
+  CUSTOM_THEME_KEY,
+  DEFAULT_THEME_KEY,
+  findThemePreset,
+  themePresets
+} from '@/config/theme-presets'
+import { applyThemePreset, handleThemeStyle } from '@/utils/theme-style'
 
 export type SideTheme = 'theme-dark' | 'theme-light'
 
@@ -30,11 +36,35 @@ function readStoredLayout(): Record<string, unknown> | null {
 
 const stored = readStoredLayout()
 
+/**
+ * 解析持久化中的主题标识：
+ * - 合法预设 key 或 'custom' 直接采用
+ * - 旧数据兼容：仅存有色值时，匹配预设主色则回填对应 key，否则视为自定义
+ */
+function resolveThemeName(source: Record<string, unknown> | null): string {
+  if (
+    typeof source?.themeName === 'string' &&
+    (source.themeName === CUSTOM_THEME_KEY ||
+      themePresets.some(p => p.key === source.themeName))
+  ) {
+    return source.themeName
+  }
+  if (typeof source?.theme === 'string') {
+    const matched = themePresets.find(p => p.primary.toLowerCase() === (source.theme as string).toLowerCase())
+    if (matched) {
+      return matched.key
+    }
+    return CUSTOM_THEME_KEY
+  }
+  return DEFAULT_THEME_KEY
+}
+
 const BASE_TITLE = 'Draw Stars'
 
 export const layoutSettingsStore = defineStore('layoutSettings', () => {
+  const themeName = ref(resolveThemeName(stored))
   const theme = ref(
-    typeof stored?.theme === 'string' ? stored.theme : '#409EFF'
+    typeof stored?.theme === 'string' ? stored.theme : '#4C5EDB'
   )
   const sideTheme = ref<SideTheme>(
     stored?.sideTheme === 'theme-light'
@@ -122,8 +152,35 @@ export const layoutSettingsStore = defineStore('layoutSettings', () => {
     }
   }
 
+  /** 切换主题预设：应用精调色阶与配套夜色侧栏 */
+  function setThemePreset(key: string) {
+    const preset = findThemePreset(key)
+    if (!preset) {
+      return
+    }
+    themeName.value = preset.key
+    theme.value = preset.primary
+    applyThemePreset(preset)
+  }
+
+  /** 自定义主色：单一色值算法派生色阶，夜色侧栏回退默认 */
+  function setThemeColor(hex: string) {
+    themeName.value = CUSTOM_THEME_KEY
+    theme.value = hex
+    handleThemeStyle(hex)
+  }
+
   function applyThemeFromState() {
-    handleThemeStyle(theme.value)
+    if (themeName.value === CUSTOM_THEME_KEY) {
+      handleThemeStyle(theme.value)
+      return
+    }
+    const preset = findThemePreset(themeName.value)
+    if (preset) {
+      applyThemePreset(preset)
+    } else {
+      handleThemeStyle(theme.value)
+    }
   }
 
   function applyDocumentTitle(
@@ -155,6 +212,7 @@ export const layoutSettingsStore = defineStore('layoutSettings', () => {
       dynamicTitle: dynamicTitle.value,
       footerVisible: footerVisible.value,
       sideTheme: sideTheme.value,
+      themeName: themeName.value,
       theme: theme.value
     }
     localStorage.setItem(LAYOUT_SETTING_STORAGE_KEY, JSON.stringify(payload))
@@ -172,6 +230,7 @@ export const layoutSettingsStore = defineStore('layoutSettings', () => {
   }
 
   return {
+    themeName,
     theme,
     sideTheme,
     navType,
@@ -187,6 +246,8 @@ export const layoutSettingsStore = defineStore('layoutSettings', () => {
     BASE_TITLE,
     addVisitedView,
     removeVisitedView,
+    setThemePreset,
+    setThemeColor,
     applyThemeFromState,
     applyDocumentTitle,
     openDrawer,

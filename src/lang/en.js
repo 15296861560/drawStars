@@ -126,6 +126,7 @@ export default {
     navTop: 'Top menu',
     themeStyle: 'Theme style',
     themeColor: 'Primary color',
+    themePreset: 'Theme palette',
     systemLayout: 'Layout options',
     tagsView: 'Enable Tags-Views',
     tagsIcon: 'Show tab icons',
@@ -138,6 +139,20 @@ export default {
     saving: 'Saving to local storage...',
     resetting: 'Clearing saved layout and reloading...',
     testPages: 'Test pages'
+  },
+  themePresets: {
+    starryIndigo: 'Starry Indigo',
+    skyBlue: 'Sky Blue',
+    obsidianViolet: 'Obsidian Violet',
+    lakeCyan: 'Lake Cyan',
+    jadeGreen: 'Jade Green',
+    amberGlow: 'Amber Glow',
+    crimson: 'Crimson',
+    graphite: 'Graphite',
+    morandiMist: 'Morandi Mist',
+    morandiSage: 'Morandi Sage',
+    morandiRose: 'Morandi Rose',
+    custom: 'Custom'
   },
   dependence: {
     dependenceInfo: 'Dependences info'

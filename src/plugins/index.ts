@@ -19,6 +19,10 @@ import { installTracker } from '@/plugins/tracker'
 // 高德地图（仅导入模块；实际拉 Key 须在 pinia 安装后）
 import { installAmap } from '@/plugins/amap/index.js'
 
+// 设计系统 · Element 主题基线
+// 必须位于 element-plus/dist/index.css 及各插件样式之后加载（详见文件头说明）
+import '@/assets/styles/theme/element-theme.less'
+
 // 消除新特性的告警信息
 import 'default-passive-events'
 import * as _Vue from 'vue'

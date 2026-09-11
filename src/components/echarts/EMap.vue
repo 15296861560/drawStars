@@ -145,7 +145,7 @@ export default {
             roam: true, // 是否开启鼠标缩放和平移漫游
             label: {
               show: true, // 省份信息
-              color: 'aqua'
+              color: '#626364'
 
               // formatter: (params) => {
               //   let label = "";

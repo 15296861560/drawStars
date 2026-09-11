@@ -81,17 +81,17 @@ export default {
 }
 
 .linear2 {
-  color: aqua;
+  color: var(--el-color-primary);
   -webkit-mask-image: linear-gradient(black, transparent);
 }
 
 .shine1 {
   color: white;
   text-shadow:
-    0 0 10px aqua,
-    0 0 20px aqua,
-    0 0 30px aqua,
-    0 0 40px aqua;
+    0 0 10px var(--el-color-primary),
+    0 0 20px var(--el-color-primary),
+    0 0 30px var(--el-color-primary),
+    0 0 40px var(--el-color-primary);
 }
 
 .shadow {
@@ -102,7 +102,7 @@ export default {
 /* 描边 */
 .stroke {
   color: transparent;
-  -webkit-text-stroke: 2px #409eff;
+  -webkit-text-stroke: 2px var(--el-color-primary);
 }
 
 /* 镂空 */
@@ -139,10 +139,10 @@ export default {
 .com-shine {
   color: white;
   text-shadow:
-    0 0 10px aqua,
-    0 0 20px aqua,
-    0 0 30px aqua,
-    0 0 40px aqua;
+    0 0 10px var(--el-color-primary),
+    0 0 20px var(--el-color-primary),
+    0 0 30px var(--el-color-primary),
+    0 0 40px var(--el-color-primary);
   animation: Glow 0.5s ease infinite alternate;
 }
 
@@ -283,7 +283,7 @@ export default {
 .com-wave {
   background-image: linear-gradient(
     to right,
-    #409eff,
+    var(--el-color-primary),
     #67c23a,
     #e6a23c,
     #f56c6c

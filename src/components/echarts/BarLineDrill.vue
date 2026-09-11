@@ -175,7 +175,7 @@ export default {
           axisLine: {
             show: true, // 隐藏X轴轴线
             lineStyle: {
-              color: 'aqua',
+              color: '#a4a5a6',
               width: 2
             }
           },
@@ -188,7 +188,7 @@ export default {
           {
             type: 'value',
             nameTextStyle: {
-              color: '#ebf8ac',
+              color: '#626364',
               fontSize: 16
             },
             splitLine: {
@@ -200,7 +200,7 @@ export default {
             axisLine: {
               show: true,
               lineStyle: {
-                color: 'aqua',
+                color: '#a4a5a6',
                 width: 2
               }
             },

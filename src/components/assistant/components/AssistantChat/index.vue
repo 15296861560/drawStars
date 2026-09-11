@@ -838,7 +838,12 @@ onMounted(() => {
     position: absolute;
     bottom: 10px;
     width: calc(100% - 30px);
-    background: linear-gradient(132deg, #9697ff 0%, #6dffd1 54%, #409eff 100%);
+    background: linear-gradient(
+      132deg,
+      #9697ff 0%,
+      #6dffd1 54%,
+      var(--el-color-primary) 100%
+    );
     padding: 1px; /* 边框厚度 */
     border-radius: 6px;
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.15);
@@ -950,7 +955,7 @@ onMounted(() => {
         border-radius: 4px;
         margin-right: 10px;
         font-size: 24px;
-        color: #409eff;
+        color: var(--el-color-primary);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -963,7 +968,7 @@ onMounted(() => {
       .btn-send {
         min-width: 30px;
         height: 30px;
-        background: #409eff;
+        background: var(--el-color-primary);
         border-radius: 4px;
         font-size: 24px;
         color: white;
@@ -1002,13 +1007,13 @@ onMounted(() => {
   width: 90px !important;
   min-width: 90px;
   height: 36px;
-  background: #409eff;
+  background: var(--el-color-primary);
   border-radius: 4px;
   padding: 3px 15px;
 
   .el-popper__arrow {
     &::before {
-      background: #409eff;
+      background: var(--el-color-primary);
     }
   }
 
@@ -1057,7 +1062,7 @@ onMounted(() => {
       }
       &:hover {
         background-color: #cfdcf6;
-        color: #409eff;
+        color: var(--el-color-primary);
         border-radius: 4px;
         // .upload-file__icon {
         //   background: url('@/assets/img/assistant/upload-file__active.png') no-repeat;
@@ -1083,14 +1088,14 @@ onMounted(() => {
 }
 
 .el-popper.is-blue {
-  background: #409eff;
-  border: 1px solid #409eff;
+  background: var(--el-color-primary);
+  border: 1px solid var(--el-color-primary);
   color: var(--el-bg-color);
   width: 312px;
   font-size: 16px;
 }
 .el-popper.is-blue .el-popper__arrow:before {
-  background: #409eff;
-  border: 1px solid #409eff;
+  background: var(--el-color-primary);
+  border: 1px solid var(--el-color-primary);
 }
 </style>

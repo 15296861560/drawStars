@@ -356,27 +356,27 @@ export default {
 }
 
 .title:hover {
-  color: #4395ff;
+  color: @ds-primary-hover;
 }
 
 .title:active {
-  color: aqua;
+  color: @ds-primary-active;
 }
 
 .firstPage {
   display: flex;
-  color: black;
+  color: @color-text-normal;
   font-weight: bold;
   cursor: pointer;
 }
 
 .firstPage:hover {
-  color: #4395ff;
+  color: @ds-primary-hover;
   font-weight: bold;
 }
 
 .firstPage:active {
-  color: aqua;
+  color: @ds-primary-active;
   font-weight: bold;
 }
 

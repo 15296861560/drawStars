@@ -156,12 +156,12 @@ onUnmounted(() => {
 })
 
 const primaryColor = computed(
-  () => props.survey?.themeConfig?.primaryColor || '#409eff'
+  () => props.survey?.themeConfig?.primaryColor || '#4C5EDB'
 )
 const themeStyle = computed(() => {
   const theme = props.survey?.themeConfig || {}
   return {
-    '--survey-primary': theme.primaryColor || '#409eff',
+    '--survey-primary': theme.primaryColor || '#4C5EDB',
     '--survey-bg': theme.backgroundColor || '#f5f7fb',
     '--survey-card': '#ffffff'
   } as Record<string, string>
@@ -286,7 +286,7 @@ defineExpose({
 
 <style scoped>
 .survey-player {
-  --survey-primary: #409eff;
+  --survey-primary: var(--el-color-primary);
   --survey-bg: #f5f7fb;
   --survey-card: #fff;
   min-height: 100%;

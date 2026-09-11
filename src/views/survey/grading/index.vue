@@ -270,7 +270,7 @@ onMounted(load)
   cursor: pointer;
 }
 .group-item.active {
-  border-color: #409eff;
+  border-color: var(--el-color-primary);
   background: #ecf5ff;
 }
 .g-title {

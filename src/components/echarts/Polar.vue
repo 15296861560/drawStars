@@ -21,13 +21,13 @@ export default {
           text: newVal.data + '%',
           subtext: newVal.tooltip,
           textStyle: {
-            color: 'aqua',
+            color: '#4C5EDB',
             fontSize: 32,
             fontWeight: 'bold',
             fontFamily: this.fontFamily
           },
           subtextStyle: {
-            color: 'aqua',
+            color: '#626364',
             fontSize: 24,
             fontWeight: 'bold',
             fontFamily: this.fontFamily

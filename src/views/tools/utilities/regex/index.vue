@@ -467,7 +467,7 @@ export default {
 }
 
 .m-example-clickable:hover {
-  box-shadow: 0 0 0 2px #409eff inset;
+  box-shadow: 0 0 0 2px var(--el-color-primary) inset;
 }
 
 .m-sample {

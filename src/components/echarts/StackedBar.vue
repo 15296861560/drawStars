@@ -58,7 +58,7 @@ export default {
             axisLabel: {
               show: true,
               textStyle: {
-                color: 'aqua', // X轴文字颜色
+                color: '#626364', // X轴文字颜色
                 fontSize: 11
               }
             }
@@ -69,7 +69,7 @@ export default {
             type: 'value',
             axisLine: {
               lineStyle: {
-                color: 'aqua',
+                color: '#a4a5a6',
                 width: 0 // 不显示y轴
               }
             },

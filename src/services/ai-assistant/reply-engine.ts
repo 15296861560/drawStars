@@ -22,7 +22,7 @@ const capabilities: AiCapabilityHandler[] = [
         conversationId,
         role: 'assistant',
         type: 'rich',
-        content: `<p><strong>${city}</strong> · 晴 · <span style="color:#409EFF;font-size:1.15em">26°C</span></p><p>湿度 55% · 微风 · 空气质量 良（Mock 数据）</p>`,
+        content: `<p><strong>${city}</strong> · 晴 · <span style="color:#4C5EDB;font-size:1.15em">26°C</span></p><p>湿度 55% · 微风 · 空气质量 良（Mock 数据）</p>`,
         capabilityId: 'weather'
       }
     }

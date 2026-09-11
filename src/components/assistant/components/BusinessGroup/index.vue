@@ -220,7 +220,7 @@ defineExpose({
       background: #e8f3ff;
     }
     &__active {
-      color: #409eff;
+      color: var(--el-color-primary);
       &::before {
         content: '';
         position: absolute;
@@ -229,7 +229,7 @@ defineExpose({
         transform: translateY(-50%);
         width: 4px;
         height: 20px;
-        background: #409eff;
+        background: var(--el-color-primary);
       }
     }
     &__disabled {
@@ -270,7 +270,7 @@ defineExpose({
       }
     }
     &__active {
-      color: #409eff;
+      color: var(--el-color-primary);
       &::before {
         content: '';
         position: absolute;
@@ -279,7 +279,7 @@ defineExpose({
         transform: translateY(-50%);
         width: 4px;
         height: 20px;
-        background: #409eff;
+        background: var(--el-color-primary);
       }
     }
     .group-name {

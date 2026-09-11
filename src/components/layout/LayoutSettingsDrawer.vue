@@ -68,15 +68,61 @@
         </div>
       </div>
     </div>
-    <div class="drawer-item">
-      <span>{{ $t('layoutSettings.themeColor') }}</span>
-      <span class="comp-style">
-        <el-color-picker
-          v-model="layout.theme"
-          :predefine="predefineColors"
-          @change="onThemePick"
-        />
-      </span>
+
+    <div class="setting-drawer-title">
+      <h3 class="drawer-title">{{ $t('layoutSettings.themePreset') }}</h3>
+    </div>
+    <div v-for="group in themeGroups" :key="group.key" class="preset-group">
+      <div class="preset-group-title">{{ $t(group.nameKey) }}</div>
+      <div class="theme-preset-grid">
+        <div
+          v-for="preset in groupedPresets[group.key]"
+          :key="preset.key"
+          class="theme-preset-item"
+          :class="{ active: layout.themeName === preset.key }"
+          @click="layout.setThemePreset(preset.key)"
+        >
+          <div class="preview">
+            <span class="preview-side" :style="{ background: preset.night }" />
+            <span class="preview-main">
+              <span
+                class="preview-bar"
+                :style="{ background: preset.primary }"
+              />
+            </span>
+          </div>
+          <div class="name">{{ $t(preset.nameKey) }}</div>
+          <el-icon v-if="layout.themeName === preset.key" class="select-mark">
+            <Select />
+          </el-icon>
+        </div>
+        <div
+          v-if="group.key === 'morandi'"
+          class="theme-preset-item custom"
+          :class="{ active: layout.themeName === 'custom' }"
+          @click="applyCustomTheme"
+        >
+          <div class="preview">
+            <span class="preview-side night-var" />
+            <span class="preview-main">
+              <span class="preview-bar" :style="{ background: layout.theme }" />
+            </span>
+          </div>
+          <div class="name custom-name">
+            <span class="custom-label">{{ $t('themePresets.custom') }}</span>
+            <el-color-picker
+              v-model="layout.theme"
+              :predefine="predefineColors"
+              size="small"
+              @change="onThemePick"
+              @click.stop
+            />
+          </div>
+          <el-icon v-if="layout.themeName === 'custom'" class="select-mark">
+            <Select />
+          </el-icon>
+        </div>
+      </div>
     </div>
     <el-divider />
 
@@ -134,25 +180,46 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import { ElLoading } from 'element-plus'
 import { Select, DocumentAdd, Refresh } from '@element-plus/icons-vue'
 import { useI18n } from 'vue-i18n'
 import { layoutSettingsStore } from '@/stores/layout-settings'
-import { handleThemeStyle } from '@/utils/theme-style'
+import {
+  themePresets,
+  themeGroups,
+  type ThemeGroupKey,
+  type ThemePreset
+} from '@/config/theme-presets'
 
 const { t } = useI18n()
 const layout = layoutSettingsStore()
 
+/** 预设按分组归类（组顺序见 themeGroups） */
+const groupedPresets = computed<Record<ThemeGroupKey, ThemePreset[]>>(() => {
+  const map = { classic: [], morandi: [] } as Record<
+    ThemeGroupKey,
+    ThemePreset[]
+  >
+  for (const preset of themePresets) {
+    map[preset.group ?? 'classic'].push(preset)
+  }
+  return map
+})
+
 const predefineColors = [
+  '#4C5EDB',
   '#409EFF',
-  '#ff4500',
-  '#ff8c00',
-  '#ffd700',
-  '#90ee90',
-  '#00ced1',
-  '#1e90ff',
-  '#c71585'
+  '#7C3AED',
+  '#0891B2',
+  '#2BA471',
+  '#D97706',
+  '#DC2626',
+  '#C71585',
+  '#475569',
+  '#6E8B9E',
+  '#90A47E',
+  '#B5838D'
 ]
 
 function setNavType(n: number) {
@@ -161,17 +228,14 @@ function setNavType(n: number) {
 
 function onThemePick(val: string | null) {
   if (val) {
-    layout.theme = val
-    handleThemeStyle(val)
+    layout.setThemeColor(val)
   }
 }
 
-watch(
-  () => layout.theme,
-  v => {
-    handleThemeStyle(v)
-  }
-)
+/** 点击自定义卡：按取色器当前色应用 */
+function applyCustomTheme() {
+  layout.setThemeColor(layout.theme)
+}
 
 watch(
   () => layout.dynamicTitle,
@@ -187,7 +251,7 @@ function saveSetting() {
   const loading = ElLoading.service({
     lock: true,
     text: t('layoutSettings.saving'),
-    background: 'rgba(0,0,0,0.2)'
+    background: 'rgba(15,22,48,0.4)'
   })
   layout.persistToLocalStorage()
   setTimeout(() => {
@@ -199,7 +263,7 @@ function resetSetting() {
   const loading = ElLoading.service({
     lock: true,
     text: t('layoutSettings.resetting'),
-    background: 'rgba(0,0,0,0.2)'
+    background: 'rgba(15,22,48,0.4)'
   })
   setTimeout(() => {
     loading.close()
@@ -243,10 +307,10 @@ function resetSetting() {
       border: 1px solid var(--el-border-color);
     }
     .thumb-dark {
-      background: linear-gradient(90deg, #1b2a47 30%, #f0f2f5 30%);
+      background: linear-gradient(90deg, var(--ds-night) 30%, #f6f8fa 30%);
     }
     .thumb-light {
-      background: linear-gradient(90deg, #fff 30%, #f0f2f5 30%);
+      background: linear-gradient(90deg, #fff 30%, #f6f8fa 30%);
     }
     .setting-drawer-block-checbox-selectIcon {
       position: absolute;
@@ -259,6 +323,107 @@ function resetSetting() {
       justify-content: center;
       font-size: 22px;
     }
+  }
+}
+
+.preset-group {
+  & + .preset-group .preset-group-title {
+    margin-top: 14px;
+  }
+  .preset-group-title {
+    margin: 2px 0 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--el-text-color-secondary);
+    letter-spacing: 0.02em;
+  }
+}
+
+.theme-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.theme-preset-item {
+  position: relative;
+  border: 2px solid var(--el-border-color-light);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  &:hover {
+    border-color: var(--el-color-primary-light-5);
+  }
+  &.active {
+    border-color: var(--el-color-primary);
+    box-shadow: 0 0 0 1px var(--el-color-primary-light-8);
+  }
+  .preview {
+    display: flex;
+    height: 36px;
+    border-radius: 4px;
+    overflow: hidden;
+    .preview-side {
+      width: 30%;
+    }
+    .preview-main {
+      position: relative;
+      flex: 1;
+      background: #f6f8fa;
+      .preview-bar {
+        position: absolute;
+        top: 7px;
+        left: 7px;
+        right: 7px;
+        height: 8px;
+        border-radius: 2px;
+      }
+    }
+  }
+  .night-var {
+    background: var(--ds-night);
+  }
+  .name {
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 24px;
+    color: var(--el-text-color-regular);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .custom-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    :deep(.el-color-picker) {
+      flex-shrink: 0;
+    }
+    .custom-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .select-mark {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--el-color-primary);
+    color: #fff;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2px var(--el-bg-color);
   }
 }
 
@@ -289,7 +454,7 @@ function resetSetting() {
     width: 56px;
     height: 48px;
     border-radius: 4px;
-    background: #f0f2f5;
+    background: #f6f8fa;
     border: 2px solid transparent;
   }
   .left {
@@ -300,7 +465,7 @@ function resetSetting() {
     }
     b:last-child {
       width: 30%;
-      background: #1b2a47;
+      background: var(--ds-night);
       position: absolute;
       height: 100%;
       top: 0;
@@ -312,11 +477,11 @@ function resetSetting() {
       border-radius: 4px 4px 0 0;
       display: block;
       height: 30%;
-      background: #1b2a47;
+      background: var(--ds-night);
     }
     b:last-child {
       width: 30%;
-      background: #1b2a47;
+      background: var(--ds-night);
       position: absolute;
       height: 70%;
       border-radius: 0 0 0 4px;
@@ -326,7 +491,7 @@ function resetSetting() {
     b:first-child {
       display: block;
       height: 30%;
-      background: #1b2a47;
+      background: var(--ds-night);
       border-radius: 4px 4px 0 0;
     }
   }

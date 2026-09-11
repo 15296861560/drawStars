@@ -322,7 +322,7 @@ const survey = reactive<Survey>({
 })
 const surveySettings = reactive<SurveySettings>({ displayMode: 'multi' })
 const themeConfig = reactive<ThemeConfig>({
-  primaryColor: '#409EFF',
+  primaryColor: '#4C5EDB',
   backgroundColor: '#ffffff',
   showProgress: true,
   showQuestionNumber: true,
@@ -612,7 +612,7 @@ async function loadDetail() {
     Object.assign(
       themeConfig,
       {
-        primaryColor: '#409EFF',
+        primaryColor: '#4C5EDB',
         backgroundColor: '#ffffff',
         showProgress: true,
         showQuestionNumber: true
@@ -867,7 +867,7 @@ h4 {
   box-sizing: border-box;
 }
 .type-item:hover {
-  color: #409eff;
+  color: var(--el-color-primary);
   border-color: #c6e2ff;
   background: #ecf5ff;
 }
@@ -896,7 +896,7 @@ h4 {
 .canvas :deep(.sortable-ghost) {
   opacity: 0.45;
   background: #ecf5ff;
-  border: 1px dashed #409eff;
+  border: 1px dashed var(--el-color-primary);
 }
 .left-pane :deep(.sortable-ghost),
 .left-pane :deep(.sortable-drag) {
@@ -929,7 +929,7 @@ h4 {
 .bank-type {
   display: inline-block;
   background: #ecf5ff;
-  color: #409eff;
+  color: var(--el-color-primary);
   padding: 0 4px;
   margin-right: 4px;
   border-radius: 2px;

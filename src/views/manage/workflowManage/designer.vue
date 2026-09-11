@@ -673,7 +673,7 @@ const NODE_TYPES: Array<{
     type: 'TOOL',
     label: '工具节点',
     desc: '调用内置 / 自定义工具',
-    color: '#409eff'
+    color: '#4C5EDB'
   },
   {
     type: 'CONDITION',
@@ -1556,8 +1556,8 @@ onBeforeUnmount(() => {
     background: #fafafa;
 
     &:hover {
-      border-color: #409eff;
-      box-shadow: 0 2px 8px rgba(64, 158, 255, 0.12);
+      border-color: var(--el-color-primary);
+      box-shadow: 0 2px 8px rgba(76, 94, 219, 0.12);
     }
 
     &:active {
@@ -1657,7 +1657,7 @@ onBeforeUnmount(() => {
 
     .edge-preview {
       fill: none;
-      stroke: #409eff;
+      stroke: var(--el-color-primary);
       stroke-width: 2;
       stroke-dasharray: 6 4;
       pointer-events: none;
@@ -1680,12 +1680,12 @@ onBeforeUnmount(() => {
       box-shadow 0.2s;
 
     &:hover {
-      border-color: #409eff;
+      border-color: var(--el-color-primary);
     }
 
     &.selected {
-      border-color: #409eff;
-      box-shadow: 0 0 0 3px rgba(64, 158, 255, 0.18);
+      border-color: var(--el-color-primary);
+      box-shadow: 0 0 0 3px rgba(76, 94, 219, 0.18);
     }
 
     &.link-target {
@@ -1740,13 +1740,13 @@ onBeforeUnmount(() => {
       height: 14px;
       border-radius: 50%;
       background: #fff;
-      border: 2px solid #409eff;
+      border: 2px solid var(--el-color-primary);
       cursor: crosshair;
       transition: transform 0.15s;
 
       &:hover {
         transform: translateX(-50%) scale(1.3);
-        background: #409eff;
+        background: var(--el-color-primary);
       }
     }
   }
@@ -1756,7 +1756,7 @@ onBeforeUnmount(() => {
     top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(64, 158, 255, 0.92);
+    background: rgba(76, 94, 219, 0.92);
     color: #fff;
     font-size: 12px;
     padding: 6px 16px;

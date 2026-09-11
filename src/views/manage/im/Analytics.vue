@@ -74,7 +74,7 @@ function renderTrend(list: Array<{ date: string; count: number }>) {
     grid: { left: 40, right: 20, top: 20, bottom: 30 },
     xAxis: { type: 'category', data: list.map(i => i.date) },
     yAxis: { type: 'value' },
-    series: [{ name: '消息量', type: 'bar', data: list.map(i => i.count), itemStyle: { color: '#409eff' } }]
+    series: [{ name: '消息量', type: 'bar', data: list.map(i => i.count), itemStyle: { color: '#4C5EDB' } }]
   })
 }
 

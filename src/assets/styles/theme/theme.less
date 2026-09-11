@@ -1,81 +1,113 @@
-//  组件使用全局样式文件中定义的less变量操作步骤
-//  1、安装less和less-loader
-//  npm i less less-loader -D
-//  2、要想全局使用还需使用一个插件( sass-resources-loader )
-//  npm i sass-resources-loader -D
-//  3、安装完sass-resources-loader后,找到build/utils.js(webpack的配置)文件，在cssLoaders函数中添加使用全局less函数
-// // 增加全局使用less函数
-// function lessResourceLoader() {
-//   var loaders = [
-//    cssLoader,
-//    'less-loader',
-//    {
-//    loader: 'sass-resources-loader',
-//    options: {
-//     resources: [
-//     path.resolve(__dirname, '../src/assets/styles/theme/theme.less'), //定义全局变量的文件路径
-//     ]
-//    }
-//    }
-//   ];
-//   if (options.extract) {
-//    return ExtractTextPlugin.extract({
-//    use: loaders,
-//    fallback: 'vue-style-loader'
-//    })
-//   } else {
-//    return ['vue-style-loader'].concat(loaders)
-//   }
-//   }
-//   并在return中用你定义的lessResourceLoader函数替换less: generateLoaders('less')这个函数
+/**
+ * drawStars 设计系统 · 主题 Token ——「星夜靛蓝」
+ * ------------------------------------------------
+ * 全站唯一定义 色彩 / 圆角 / 阴影 / 字体 / 动效 的文件。
+ *
+ * 引用方式：
+ *   1. LESS 变量：任意 .vue / .less 中直接使用 @color-* / @ds-*（vite modifyVars 已全局注入）
+ *   2. CSS 变量：任意 CSS / 内联 style 中使用 var(--ds-*)（经 global.less 输出至 :root）
+ *
+ * 规则：业务代码禁止硬编码色值；新增颜色必须先在本文件登记为 token。
+ * 旧变量名（@color-*）全部保留、仅取值升级，保证既有组件无感切换。
+ *
+ * 注意：变量值的注释必须写在分号之后（// 静默注释）。
+ * 行内 /* 注释 *\/ 会成为变量值的一部分，导致 fade() 等颜色函数求值失败。
+ */
 
-@color-primary: #409eff /* 主色 */;
-@color-icon-normal: #626364 /* 默认态图标色 */;
-@color-icon-placeholder: #939496 /* 占位符图标色 */;
-@color-icon-disabled: #d2d4d5 /* 禁用态图标色 */;
-@color-icon-checked: #409eff /* 选中态图标色 */;
-@color-icon-hover: #66b1ff /* 悬浮态图标色 */;
-@color-icon-active: #3a8ee6 /* 按下图标色 */;
-@color-icon-highlight-disabled: #daf5f2 /* 高亮禁用色*/;
-@color-icon-inverse: #ffffff /* 图标颜色反色 */;
-@color-text-normal: #191919 /* 默认态文本色 */;
-@color-text-secondary: #626364 /* 二级文本色 */;
-@color-text-placeholder: #939496 /* 占位符文本色 */;
-@color-text-disabled: #d2d4d5 /* 禁用文本色 */;
-@color-text-selected: #409eff /* 选中态文本色 */;
-@color-text-hover: #66b1ff /* 悬浮态图文本色 */;
-@color-text-active: #3a8ee6 /* 按下图文本色 */;
-@color-text-inverse: #ffffff /* 文本颜色反色 */;
-@color-base-bg: #f6f8fa /* 页面背景底色 */;
-@color-bg: #ffffff /* 页面背景色 */;
-@color-danger: #f56c6c /* 紧急 */;
-@color-important: #e6a23c /* 重要 */;
-@color-warning: #e7b004 /* 次要 */;
-@color-success: #67c23a /* 成功/安全 */;
-@color-info: #6f91df /* 提示/运行 */;
-@color-not-started: #a4a5a6 /* 未启动 */;
-@color-border-dialog: rgba(125, 140, 140, 0.03) /* 弹框，下拉框，提示框描边色 */;
-@color-bg-border: #f6f8fa /* 默认态描边面性 */;
-@color-liner-border: #d2d4d5 /* 默认态描边线性 */;
-@color-border-hover: #757677 /* 悬浮态描边色 */;
-@color-border-highlight-selected: #409eff /* 高亮选中描边色 */;
-@color-border-highlight-hover: #66b1ff /* 高亮悬浮描边色 */;
-@color-border-highlight-active: #3a8ee6 /* 高亮按下描边色 */;
-@color-border-error: #f44234 /* 错误态描边色 */;
-@color-border-success: #6fc362 /* 成功态描边色 */;
-@color-bg-divider: #e5e7e9 /* 分割线/刻度线 */;
-@color-fill-hover: #eff1f3 /* 填充悬浮色 */;
-@color-bg-disabled: #d2d4d5 /* 禁用控件背景色 */;
-@color-mask-shadow: rgba(0, 0, 0, 0.4) /* 蒙层 #000000 不透明度40% */;
-@color-shadow-dropdown: rgba(0, 0, 0, 0.15) /* 下拉选择框，提示框阴影 */;
-@color-shadow-dialog: rgba(0, 0, 0, 0.1) /* 侧滑面板, 弹框阴影 */;
-@color-shadow-card: rgba(0, 0, 0, 0.04) /* 卡片阴影 */;
-@color-shadow-card-hover-margin-32: rgba(0, 0, 0, 0.12)
-  /* 卡片悬浮（运用于卡片间距大于等于 32px）*/;
-@color-shadow-card-hover-margin-16: rgba(0, 0, 0, 0.15)
-  /* 卡片悬浮（运用于卡片间距小于32px）*/;
-@color-shadow-percent4: rgba(0, 0, 0, 0.04);
-@color-shadow-percent10: rgba(0, 0, 0, 0.1);
+/* ========== 品牌色 · 星夜靛蓝 ========== */
+@ds-primary: #4c5edb; // 主色 · 靛蓝（品牌：摘星）
+@ds-primary-hover: #6c7ce8; // 主色 · 悬浮
+@ds-primary-active: #3a4ac2; // 主色 · 按下
+@ds-primary-light: #edeffb; // 主色 · 浅底（选中底 / 标签底）
+
+/* 星夜暗色（侧栏 / 深色容器） */
+@ds-night: #1e2438; // 星夜底色
+@ds-night-deep: #171c2b; // 星夜深层（Logo 区 / 悬浮）
+@ds-night-hover: rgba(255, 255, 255, 0.08); // 暗底悬浮
+@ds-night-text: #a6acc8; // 暗底二级文本
+@ds-night-text-active: #ffffff; // 暗底高亮文本
+
+/* ========== 语义功能色 ========== */
+@ds-color-success: #2ba471; // 成功 / 安全
+@ds-color-warning: #d97706; // 警告 / 次要
+@ds-color-danger: #dc2626; // 紧急 / 错误
+@ds-color-info: #86909c; // 提示 / 运行
+@ds-color-not-started: #a4a5a6; // 未启动
+
+/* ========== 圆角 ========== */
+@ds-radius-sm: 4px; // 小件：标签 / 输入框
+@ds-radius-md: 6px; // 基准：按钮 / 卡片
+@ds-radius-lg: 10px; // 大容器：弹框 / 面板
+@ds-radius-round: 999px; // 胶囊
+
+/* ========== 阴影 · 靛调冷阴影 ========== */
+@ds-shadow-sm: 0 1px 2px rgba(23, 32, 74, 0.06); // 轻浮层
+@ds-shadow-md: 0 4px 12px rgba(23, 32, 74, 0.08); // 下拉 / 悬浮卡片
+@ds-shadow-lg: 0 8px 24px rgba(23, 32, 74, 0.12); // 弹框 / 侧滑面板
+
+/* ========== 字体 ========== */
+@ds-font-family: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei',
+  'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; // 系统字体栈
+@ds-font-xs: 12px; // 辅助说明 / 标签
+@ds-font-sm: 13px; // 次要正文 / 表格
+@ds-font-md: 14px; // 基准正文
+@ds-font-lg: 16px; // 卡片标题
+@ds-font-xl: 18px; // 页面标题
+@ds-font-xxl: 20px; // 区块大标题
+
+/* ========== 动效 ========== */
+@ds-duration-fast: 150ms; // 微交互：hover / 按下
+@ds-duration-base: 200ms; // 常规：展开 / 过渡
+@ds-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); // 标准缓出曲线
+
+/* ================================================================
+ * 旧变量体系（保留全部变量名，取值对齐新主题）
+ * ================================================================ */
+@color-primary: @ds-primary; // 主色
+@color-icon-normal: #626364; // 默认态图标色
+@color-icon-placeholder: #939496; // 占位符图标色
+@color-icon-disabled: #d2d4d5; // 禁用态图标色
+@color-icon-checked: @ds-primary; // 选中态图标色
+@color-icon-hover: @ds-primary-hover; // 悬浮态图标色
+@color-icon-active: @ds-primary-active; // 按下图标色
+@color-icon-highlight-disabled: #e6e9f8; // 高亮禁用色（靛调浅底）
+@color-icon-inverse: #ffffff; // 图标颜色反色
+@color-text-normal: #191919; // 默认态文本色
+@color-text-secondary: #626364; // 二级文本色
+@color-text-placeholder: #939496; // 占位符文本色
+@color-text-disabled: #d2d4d5; // 禁用文本色
+@color-text-selected: @ds-primary; // 选中态文本色
+@color-text-hover: @ds-primary-hover; // 悬浮态文本色
+@color-text-active: @ds-primary-active; // 按下文本色
+@color-text-inverse: #ffffff; // 文本颜色反色
+@color-base-bg: #f6f8fa; // 页面背景底色（白昼工作区）
+@color-bg: #ffffff; // 页面背景色
+@color-danger: @ds-color-danger; // 紧急
+@color-important: #ea580c; // 重要（介于紧急红与警告琥珀之间的橙）
+@color-warning: @ds-color-warning; // 次要
+@color-success: @ds-color-success; // 成功/安全
+@color-info: @ds-color-info; // 提示/运行
+@color-not-started: @ds-color-not-started; // 未启动
+@color-border-dialog: rgba(23, 32, 74, 0.08); // 弹框，下拉框，提示框描边色
+@color-bg-border: #f6f8fa; // 默认态描边面性
+@color-liner-border: #d2d4d5; // 默认态描边线性
+@color-border-hover: #757677; // 悬浮态描边色
+@color-border-highlight-selected: @ds-primary; // 高亮选中描边色
+@color-border-highlight-hover: @ds-primary-hover; // 高亮悬浮描边色
+@color-border-highlight-active: @ds-primary-active; // 高亮按下描边色
+@color-border-error: @ds-color-danger; // 错误态描边色
+@color-border-success: @ds-color-success; // 成功态描边色
+@color-bg-divider: #e5e7e9; // 分割线/刻度线
+@color-fill-hover: #eff1f3; // 填充悬浮色
+@color-bg-disabled: #d2d4d5; // 禁用控件背景色
+@color-mask-shadow: rgba(15, 22, 48, 0.45); // 蒙层（星夜调，不透明度45%）
+@color-shadow-dropdown: rgba(23, 32, 74, 0.12); // 下拉选择框，提示框阴影
+@color-shadow-dialog: rgba(23, 32, 74, 0.1); // 侧滑面板, 弹框阴影
+@color-shadow-card: rgba(23, 32, 74, 0.05); // 卡片阴影
+@color-shadow-card-hover-margin-32: rgba(23, 32, 74, 0.14); // 卡片悬浮（运用于卡片间距大于等于 32px）
+@color-shadow-card-hover-margin-16: rgba(23, 32, 74, 0.16); // 卡片悬浮（运用于卡片间距小于32px）
+@color-shadow-percent4: rgba(23, 32, 74, 0.04);
+@color-shadow-percent10: rgba(23, 32, 74, 0.1);
 //   莫兰迪色
 @color-morandi-1: #c1cbd7;
 @color-morandi-2: #afb0b2;
@@ -129,3 +161,54 @@
 @color-gray-scale-13: #2f2f30;
 @color-gray-scale-14: #191919;
 @color-gray-scale-15: #000000;
+
+/* ========== CSS 变量输出（供 CSS / 内联样式 / JS 使用） ========== */
+:root {
+  /* 品牌 */
+  --ds-primary: @ds-primary;
+  --ds-primary-hover: @ds-primary-hover;
+  --ds-primary-active: @ds-primary-active;
+  --ds-primary-light: @ds-primary-light;
+  /* 星夜暗色 */
+  --ds-night: @ds-night;
+  --ds-night-deep: @ds-night-deep;
+  --ds-night-hover: @ds-night-hover;
+  --ds-night-text: @ds-night-text;
+  --ds-night-text-active: @ds-night-text-active;
+  /* 功能色 */
+  --ds-color-success: @ds-color-success;
+  --ds-color-warning: @ds-color-warning;
+  --ds-color-danger: @ds-color-danger;
+  --ds-color-info: @ds-color-info;
+  --ds-color-not-started: @ds-color-not-started;
+  /* 文本 */
+  --ds-text-normal: @color-text-normal;
+  --ds-text-secondary: @color-text-secondary;
+  --ds-text-placeholder: @color-text-placeholder;
+  /* 背景 / 描边 */
+  --ds-bg-base: @color-base-bg;
+  --ds-bg: @color-bg;
+  --ds-divider: @color-bg-divider;
+  --ds-fill-hover: @color-fill-hover;
+  /* 圆角 */
+  --ds-radius-sm: @ds-radius-sm;
+  --ds-radius-md: @ds-radius-md;
+  --ds-radius-lg: @ds-radius-lg;
+  --ds-radius-round: @ds-radius-round;
+  /* 阴影 */
+  --ds-shadow-sm: @ds-shadow-sm;
+  --ds-shadow-md: @ds-shadow-md;
+  --ds-shadow-lg: @ds-shadow-lg;
+  /* 字体 */
+  --ds-font-family: @ds-font-family;
+  --ds-font-size-xs: @ds-font-xs;
+  --ds-font-size-sm: @ds-font-sm;
+  --ds-font-size-md: @ds-font-md;
+  --ds-font-size-lg: @ds-font-lg;
+  --ds-font-size-xl: @ds-font-xl;
+  --ds-font-size-xxl: @ds-font-xxl;
+  /* 动效 */
+  --ds-duration-fast: @ds-duration-fast;
+  --ds-duration-base: @ds-duration-base;
+  --ds-ease-out: @ds-ease-out;
+}

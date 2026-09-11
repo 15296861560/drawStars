@@ -194,13 +194,13 @@ export default {
       return paths
     },
     menuBg() {
-      return this.layout.isDarkAside ? '#282c34' : '#ffffff'
+      return this.layout.isDarkAside ? 'var(--ds-night)' : '#ffffff'
     },
     menuText() {
-      return this.layout.isDarkAside ? '#fff' : '#303133'
+      return this.layout.isDarkAside ? 'var(--ds-night-text)' : '#303133'
     },
     menuActive() {
-      return this.layout.isDarkAside ? '#ffd04b' : 'var(--el-color-primary)'
+      return this.layout.isDarkAside ? '#ffffff' : 'var(--el-color-primary)'
     }
   },
   methods: {

@@ -1,0 +1,123 @@
+/**
+ * Element Plus 主题基线 ——「星夜靛蓝」
+ * ------------------------------------------------
+ * 仅通过覆盖 --el-* CSS 变量定制 Element 主题，不写组件级样式覆盖。
+ *
+ * 加载顺序（关键）：
+ *   element-plus/dist/index.css  →  本文件
+ *   本文件在 src/plugins/index.ts 的导入块末尾引入，保证位于 dist 样式之后生效。
+ *
+ * 运行时换肤兼容：
+ *   utils/theme-style.ts 会以内联 style 覆盖 --el-color-primary 及其色阶
+ *   （内联样式优先级更高），本文件仅提供默认基线，两者不冲突。
+ */
+
+:root {
+  /* ===== 主色 · 靛蓝 #4C5EDB（色阶按 Element mix(#fff, primary, n*10%) 规则推算） ===== */
+  --el-color-primary: #4c5edb;
+  --el-color-primary-light-1: #5e6edf;
+  --el-color-primary-light-2: #707ee2;
+  --el-color-primary-light-3: #828ee6;
+  --el-color-primary-light-4: #949ee9;
+  --el-color-primary-light-5: #a6afed;
+  --el-color-primary-light-6: #b7bff1;
+  --el-color-primary-light-7: #c9cff4;
+  --el-color-primary-light-8: #dbdff8;
+  --el-color-primary-light-9: #edeffb;
+  --el-color-primary-dark-2: #3d4baf;
+
+  /* ===== 功能色 · 对齐设计系统 ===== */
+  --el-color-success: #2ba471;
+  --el-color-success-light-3: #6bbf9c;
+  --el-color-success-light-5: #95d2b8;
+  --el-color-success-light-7: #bfe4d4;
+  --el-color-success-light-8: #d5ede3;
+  --el-color-success-light-9: #eaf6f1;
+  --el-color-success-dark-2: #22835a;
+
+  --el-color-warning: #d97706;
+  --el-color-warning-light-3: #e4a051;
+  --el-color-warning-light-5: #ecbb83;
+  --el-color-warning-light-7: #f4d6b4;
+  --el-color-warning-light-8: #f7e4cd;
+  --el-color-warning-light-9: #fbf1e6;
+  --el-color-warning-dark-2: #ae5f05;
+
+  --el-color-danger: #dc2626;
+  --el-color-danger-light-3: #e76767;
+  --el-color-danger-light-5: #ee9393;
+  --el-color-danger-light-7: #f5bebe;
+  --el-color-danger-light-8: #f8d4d4;
+  --el-color-danger-light-9: #fce9e9;
+  --el-color-danger-dark-2: #b01e1e;
+
+  --el-color-error: #dc2626;
+  --el-color-error-light-3: #e76767;
+  --el-color-error-light-5: #ee9393;
+  --el-color-error-light-7: #f5bebe;
+  --el-color-error-light-8: #f8d4d4;
+  --el-color-error-light-9: #fce9e9;
+  --el-color-error-dark-2: #b01e1e;
+
+  --el-color-info: #86909c;
+  --el-color-info-light-3: #aab1ba;
+  --el-color-info-light-5: #c3c8ce;
+  --el-color-info-light-7: #dbdee1;
+  --el-color-info-light-8: #e7e9eb;
+  --el-color-info-light-9: #f3f4f5;
+  --el-color-info-dark-2: #6b737d;
+
+  /* ===== 文本色 · 对齐灰阶 ===== */
+  --el-text-color-primary: #191919;
+  --el-text-color-regular: #474748;
+  --el-text-color-secondary: #626364;
+  --el-text-color-placeholder: #939496;
+  --el-text-color-disabled: #babbbd;
+
+  /* ===== 边框色 · 对齐灰阶 ===== */
+  --el-border-color: #d2d4d5;
+  --el-border-color-light: #e5e7e9;
+  --el-border-color-lighter: #eff1f3;
+  --el-border-color-extra-light: #f6f8fa;
+  --el-border-color-dark: #babbbd;
+  --el-border-color-darker: #a4a5a6;
+
+  /* ===== 填充色 · 对齐灰阶 ===== */
+  --el-fill-color: #eff1f3;
+  --el-fill-color-light: #f6f8fa;
+  --el-fill-color-lighter: #fafbfc;
+  --el-fill-color-extra-light: #fafbfc;
+  --el-fill-color-dark: #e5e7e9;
+  --el-fill-color-darker: #d2d4d5;
+  --el-fill-color-blank: #ffffff;
+
+  /* ===== 背景色 ===== */
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f6f8fa;
+  --el-bg-color-overlay: #ffffff;
+
+  /* ===== 圆角 · 基准 6px ===== */
+  --el-border-radius-base: 6px;
+  --el-border-radius-small: 4px;
+  --el-border-radius-round: 999px;
+  --el-border-radius-circle: 100%;
+  --el-dialog-border-radius: 10px;
+  --el-card-border-radius: 8px;
+
+  /* ===== 阴影 · 靛调冷阴影 ===== */
+  --el-box-shadow: 0 12px 32px 4px rgba(23, 32, 74, 0.04),
+    0 8px 20px rgba(23, 32, 74, 0.08);
+  --el-box-shadow-light: 0 0 12px rgba(23, 32, 74, 0.1);
+  --el-box-shadow-lighter: 0 0 6px rgba(23, 32, 74, 0.1);
+  --el-box-shadow-dark: 0 16px 48px 16px rgba(23, 32, 74, 0.08),
+    0 12px 32px rgba(23, 32, 74, 0.12);
+
+  /* ===== 遮罩 · 星夜调 ===== */
+  --el-overlay-color: rgba(15, 22, 48, 0.8);
+  --el-overlay-color-light: rgba(15, 22, 48, 0.7);
+  --el-overlay-color-lighter: rgba(15, 22, 48, 0.45);
+
+  /* ===== 字体 · 系统字体栈 ===== */
+  --el-font-family: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei',
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}

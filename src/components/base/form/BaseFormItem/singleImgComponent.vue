@@ -164,7 +164,7 @@ onMounted(() => {
     position: relative;
     overflow: hidden;
     &:hover {
-      border-color: #409eff;
+      border-color: var(--el-color-primary);
     }
   }
   .uploader-icon {

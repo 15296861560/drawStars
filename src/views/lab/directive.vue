@@ -187,7 +187,7 @@ export default {
   position: relative;
   width: min(50vw, 480px);
   height: 240px;
-  border: 1px solid aqua;
+  border: 1px solid var(--el-color-primary);
   border-radius: 4px;
 }
 

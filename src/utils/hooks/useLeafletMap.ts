@@ -128,7 +128,7 @@ export const createPolygonEditor = map => {
     }
 
     polyEditor.poly = L.polygon([...polyEditor.points], {
-      color: '#409eff',
+      color: '#4C5EDB',
       fillColor: '#d2ebff',
       opacity: 0.2
     }).addTo(map)
@@ -145,7 +145,7 @@ export const createPolygonEditor = map => {
     }
 
     polyEditor.poly = L.polygon([...polyEditor.points, e.latlng], {
-      color: '#409eff',
+      color: '#4C5EDB',
       fillColor: '#d2ebff',
       opacity: 0.8
     }).addTo(map)

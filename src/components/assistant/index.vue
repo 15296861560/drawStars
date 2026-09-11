@@ -356,7 +356,7 @@ defineExpose({ openDialog })
     font-size: 20px;
     cursor: pointer;
     &:hover {
-      color: #409eff;
+      color: var(--el-color-primary);
     }
   }
 }
@@ -391,7 +391,7 @@ defineExpose({ openDialog })
         background: #e8f3ff;
       }
       &:hover {
-        color: #409eff;
+        color: var(--el-color-primary);
       }
       &__disabled {
         cursor: not-allowed;

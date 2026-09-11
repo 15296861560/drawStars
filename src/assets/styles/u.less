@@ -16,11 +16,11 @@
 }
 
 .u-el-icon:hover {
-  color: #409EFF;
+  color: @ds-primary;
 }
 
 .u-el-icon-auqa:hover {
-  color: aqua;
+  color: @ds-primary-hover;
 }
 
 //图片
@@ -35,31 +35,31 @@
 //提示
 .u-tip-normal {
   width: 100%;
-  color: #a1a1a1;
+  color: @color-text-placeholder;
   font-size: 12px;
   line-height: 22px;
 }
 
 //图标
 .u-icon:hover {
-  color: aqua;
+  color: @ds-primary-hover;
 }
 
 // 链接
 .u-link {
-  color: black;
+  color: @color-text-normal;
   cursor: pointer;
   text-decoration: underline;
 }
 
 .u-link:hover {
-  color: aqua;
+  color: @ds-primary;
 }
 
 // 按钮
 .u-btn {
   cursor: pointer;
-  transition: all .3s ease-in-out;
+  transition: all @ds-duration-base @ds-ease-out;
 
   &:hover {
     color: @color-icon-hover;

@@ -359,7 +359,7 @@ export default {
       margin-bottom: 30px;
 
       &:hover {
-        border-color: #409eff;
+        border-color: var(--el-color-primary);
         background: #f5f7fa;
       }
 
@@ -378,7 +378,7 @@ export default {
         margin: 0 0 8px 0;
 
         .upload-link {
-          color: #409eff;
+          color: var(--el-color-primary);
         }
       }
 
@@ -400,7 +400,7 @@ export default {
 
       .section-title {
         font-size: 16px;
-        color: #409eff;
+        color: var(--el-color-primary);
         margin: 0 0 20px 0;
         padding-bottom: 10px;
         border-bottom: 1px solid #ebeef5;
@@ -445,15 +445,15 @@ export default {
             transition: all 0.2s;
 
             &:hover {
-              border-color: #409eff;
+              border-color: var(--el-color-primary);
             }
 
             &.active {
-              border-color: #409eff;
+              border-color: var(--el-color-primary);
               background: #ecf5ff;
 
               .position-dot {
-                background: #409eff;
+                background: var(--el-color-primary);
               }
             }
 
@@ -474,7 +474,7 @@ export default {
 
       .section-title {
         font-size: 16px;
-        color: #409eff;
+        color: var(--el-color-primary);
         margin: 0 0 20px 0;
         padding-bottom: 10px;
         border-bottom: 1px solid #ebeef5;

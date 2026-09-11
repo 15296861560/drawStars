@@ -34,9 +34,11 @@
 }
 
 .g-aside {
-  background-color: #282c34;
+  background-color: var(--ds-night); // 运行时由主题预设写入，支持换肤
   overflow: hidden;
-  transition: width 0.4s;
+  transition:
+    width 0.3s @ds-ease-out,
+    background-color 0.3s;
   text-align: left;
 }
 

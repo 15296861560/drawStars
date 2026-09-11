@@ -337,7 +337,7 @@ export default {
   transform: scale(1.1);
 }
 .drag {
-  background-color: aqua;
+  background-color: var(--el-color-primary-light-3);
 }
 .data-tip {
   font-size: 32px;

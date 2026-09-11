@@ -506,9 +506,9 @@ onMounted(() => {
         min-width: 52px;
         height: 34px;
         background: #ffffff;
-        border: 1px solid #409eff;
+        border: 1px solid var(--el-color-primary);
         border-radius: 2px;
-        color: #409eff;
+        color: var(--el-color-primary);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -547,7 +547,7 @@ onMounted(() => {
         display: flex;
         align-items: center;
         font-size: 14px;
-        color: #409eff;
+        color: var(--el-color-primary);
         margin-right: 10px;
         &__link {
           text-decoration-line: underline;
@@ -594,10 +594,10 @@ onMounted(() => {
         &:hover {
           .business-card__content {
             .card-title {
-              color: #409eff;
+              color: var(--el-color-primary);
             }
             .card-tip {
-              color: #409eff;
+              color: var(--el-color-primary);
             }
           }
         }
@@ -638,7 +638,7 @@ onMounted(() => {
         background: #edf6ff;
         border-radius: 6px;
         font-size: 16px;
-        color: #409eff;
+        color: var(--el-color-primary);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -665,7 +665,7 @@ onMounted(() => {
       margin: 10px 0px;
       .msg-example {
         font-size: 16px;
-        color: #409eff;
+        color: var(--el-color-primary);
         cursor: pointer;
         &:hover {
           opacity: 0.8;
@@ -677,7 +677,7 @@ onMounted(() => {
       max-width: 100%;
       width: 1100px;
       :deep(.data-num) {
-        color: #409eff;
+        color: var(--el-color-primary);
       }
       .chart-dom {
         width: 100%;

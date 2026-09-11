@@ -307,7 +307,7 @@ const polyEditorTool = () => {
         path: data.target?._opts?.path ? [...data.target._opts.path] : [],
         fillColor: '#d2ebff', // 多边形填充颜色
         fillOpacity: 0.8,
-        strokeColor: '#409eff' // 线条颜色
+        strokeColor: '#4C5EDB' // 线条颜色
       }
       const polygon = createPolygonGraphic(
         polygonOptions,
@@ -378,7 +378,7 @@ const selectPolygon = (e: MapEvent) => {
   drawToolInfo.selectedPolygon?.setOptions({
     fillOpacity: 0.8,
     fillColor: '#d2ebff',
-    strokeColor: '#409eff',
+    strokeColor: '#4C5EDB',
     strokeOpacity: 1
   })
 }

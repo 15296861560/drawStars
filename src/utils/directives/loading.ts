@@ -43,7 +43,7 @@ function ensureStyle() {
   animation: v-loading-rotate 1.5s linear infinite;
 }
 .v-loading-path {
-  stroke: #409eff;
+  stroke: var(--el-color-primary);
   stroke-width: 3;
   stroke-linecap: round;
   animation: v-loading-dash 1.5s ease-in-out infinite;

@@ -47,7 +47,9 @@
         <el-table-column label="上限" width="120">
           <template #default="{ row }">
             <span v-if="row.dailyLimit > 0">每日{{ row.dailyLimit }}次</span>
-            <span v-else-if="row.monthlyLimit > 0">每月{{ row.monthlyLimit }}次</span>
+            <span v-else-if="row.monthlyLimit > 0"
+              >每月{{ row.monthlyLimit }}次</span
+            >
             <span v-else>无限制</span>
           </template>
         </el-table-column>
@@ -82,7 +84,7 @@ const emit = defineEmits<{
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 const { currentLevel, allLevels } = usePointsLevel()
@@ -144,7 +146,7 @@ function formatBenefit(key: string, value: any): string {
     transition: all 0.3s;
 
     &.active {
-      border-color: #409eff;
+      border-color: var(--el-color-primary);
       background: #ecf5ff;
     }
 
@@ -184,7 +186,7 @@ function formatBenefit(key: string, value: any): string {
     line-height: 1.6;
 
     strong {
-      color: #409eff;
+      color: var(--el-color-primary);
     }
   }
 }

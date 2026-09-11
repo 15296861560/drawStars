@@ -215,7 +215,7 @@ defineExpose({ focus })
   &:focus-within {
     box-shadow:
       0 0 0 1px fade(@ai-primary, 30%),
-      0 4px 20px rgba(64, 158, 255, 0.12);
+      0 4px 20px rgba(76, 94, 219, 0.12);
   }
 }
 

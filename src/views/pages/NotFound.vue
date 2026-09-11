@@ -40,7 +40,13 @@ export default {
   .not-found-title {
     font-size: 30rem;
     margin: 0;
-    background-image: -webkit-linear-gradient(45deg, red, yellow, aqua, green);
+    background-image: -webkit-linear-gradient(
+      45deg,
+      #4c5edb,
+      #7c3aed,
+      #0ea5e9,
+      #4c5edb
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -webkit-animation: com-linear 6s infinite linear;

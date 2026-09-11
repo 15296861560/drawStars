@@ -252,7 +252,7 @@ export default {
 }
 
 .bg-color:hover {
-  background-color: aqua;
+  background-color: var(--el-color-primary-light-3);
 }
 
 /* 阴影过渡 */
@@ -326,7 +326,7 @@ export default {
 }
 
 .color-scale:hover {
-  background-color: aqua;
+  background-color: var(--el-color-primary-light-3);
   transform: scale(1.5, 1.5);
 }
 
@@ -378,13 +378,18 @@ export default {
 
 .text-shadow:hover {
   text-shadow: 3px 3px 6px #c0c4cc;
-  color: #409eff;
+  color: var(--el-color-primary);
 }
 
 /* 渐变背景 */
 .gradient-bg {
   transition: background-position 0.5s ease 0s;
-  background-image: linear-gradient(45deg, aqua, #409eff, aqua);
+  background-image: linear-gradient(
+    45deg,
+    var(--el-color-primary),
+    var(--el-color-primary),
+    var(--el-color-primary)
+  );
   background-size: 300% 300%;
   background-position: 0% 50%;
 }

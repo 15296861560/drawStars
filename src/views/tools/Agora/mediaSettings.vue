@@ -369,7 +369,7 @@ export default {
   background-repeat: no-repeat;
   color: white;
   &:hover {
-    color: aqua;
+    color: var(--el-color-primary-light-3);
   }
 }
 </style>

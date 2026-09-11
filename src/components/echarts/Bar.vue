@@ -98,7 +98,7 @@ export default {
             // 坐标轴轴线相关设置
             axisLine: {
               lineStyle: {
-                color: 'aqua'
+                color: '#a4a5a6'
               },
               symbol: newVal.symbol
             },
@@ -110,7 +110,7 @@ export default {
             axisLabel: {
               show: true,
               textStyle: {
-                color: 'aqua', // X轴文字颜色
+                color: '#626364', // X轴文字颜色
                 fontSize: 11
               }
             }
@@ -124,7 +124,7 @@ export default {
             axisLine: {
               show: true,
               lineStyle: {
-                color: 'aqua'
+                color: '#a4a5a6'
               },
               symbol: newVal.symbol
             },

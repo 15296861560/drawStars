@@ -60,8 +60,8 @@ const placeholder = computed(() => props.question.config?.placeholder || '填写
 }
 .editor-card:hover { border-color: #c0c4cc; }
 .editor-card.active {
-  border-color: #409eff;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.15);
+  border-color: var(--el-color-primary);
+  box-shadow: 0 0 0 2px rgba(76, 94, 219, 0.15);
 }
 .card-head {
   display: flex;
