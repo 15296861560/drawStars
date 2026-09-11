@@ -44,20 +44,37 @@ function go(fullPath: string) {
 <style scoped lang="less">
 .layout-tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; // 页签过多时横向滚动，避免换行撑高 sticky 顶部
   align-items: center;
   gap: 6px;
-  padding: 6px 12px 0;
-  background: #fff;
+  padding: 5px 12px;
+  background: var(--ds-bg);
   border-bottom: 1px solid var(--el-border-color-lighter);
   min-height: 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  // 细滚动条：不占额外高度，避免页签栏跳动
+  scrollbar-width: thin;
+  scrollbar-color: var(--el-border-color) transparent;
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: var(--el-border-color);
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 .tag-item {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0; // 防止滚动容器内被压缩换行
   gap: 4px;
   padding: 2px 8px;
   font-size: 12px;
+  white-space: nowrap; // 单个页签内标题不折行
   border-radius: 3px;
   border: 1px solid var(--el-border-color);
   color: var(--el-text-color-regular);
