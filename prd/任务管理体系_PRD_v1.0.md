@@ -312,13 +312,13 @@ drawStars 平台已具备用户管理、权限体系、积分系统、AI 助手�
     └── 按角色/部门分配
     │
     ▼
-系统为每个被指派用户创建 task_instance（status=ASSIGNED）
+系统为每个被指派用户创建 task_assignment（status=PENDING，不创建 task_instance）
     │
     ▼
 WebSocket 推送通知 → 用户收到"您有新任务"
     │
     ▼
-用户在"我的任务"中看到并执行
+用户在"我的任务"中确认领取（assignment → ACCEPTED，并创建 task_instance[status=ACCEPTED]）并执行
 ```
 
 ---
@@ -404,13 +404,25 @@ WebSocket 推送通知 → 用户收到"您有新任务"
 
 #### 4.3.3 任务分配操作
 
-| 操作       | 说明                                     |
-| ---------- | ---------------------------------------- |
-| 定向指派   | 选择用户 → 创建 task_instance → 推送通知 |
-| 批量指派   | Excel 导入用户 ID → 批量创建实例         |
-| 按角色分配 | 选择角色 → 该角色所有成员收到任务        |
-| 撤回指派   | 未接取的指派任务可撤回                   |
-| 转派       | 将 A 用户的任务转派给 B（管理端操作）    |
+| 操作       | 说明                                                                                             |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| 定向指派   | 选择用户 → 创建 task_assignment（PENDING，不创建实例，用户确认领取时才创建，见 4.1.7）→ 推送通知 |
+| 批量指派   | Excel 导入用户 ID → 批量创建 task_assignment（PENDING）                                          |
+| 按角色分配 | 选择角色 → 该角色所有成员收到任务                                                                |
+| 撤回指派   | 未确认（PENDING）的指派可撤回（REVOKED）                                                         |
+| 转派       | 将 A 用户的任务转派给 B（管理端操作）                                                            |
+
+#### 4.3.4 凭证记录与误审修正（v1.7 新增，配套移动端任务大厅）
+
+> 凭证提交/审核链路（`task_submission`）定义于《移动端任务大厅 PRD》第五章；本节为 PC 管理端配套的记录查询与误审修正能力，随移动模块 v1.0 同期交付。
+
+| 功能     | 说明                                                                                                                                   |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 记录列表 | 全量凭证提交记录：按任务/用户/状态（PENDING/APPROVED/REJECTED/EXPIRED）/提交时间筛选，支持 taskNo 与用户搜索                           |
+| 记录详情 | 证据查看（图片/文字/位置）、多轮提交历史（submit_round）、审核人与审核理由                                                             |
+| 误审修正 | 对已审记录做「通过 ↔ 驳回」状态改写：二次确认 + 必填修正理由；instance 状态同步联动（COMPLETED ↔ IN_PROGRESS）；已发奖励提示人工追回 |
+| 操作留痕 | 修正动作写操作日志：操作人/对象/修正前后状态/理由/时间                                                                                 |
+| 权限     | `system:task:audit`                                                                                                                    |
 
 ---
 
@@ -421,8 +433,8 @@ WebSocket 推送通知 → 用户收到"您有新任务"
 直接调用已有积分系统：
 
 ```typescript
-// 调用 pointsService.operatePoints()
-await this.pointsService.operatePoints({
+// 调用积分通用操作（积分 PRD 4.2.4，POST /api/points/operate）
+await this.pointsService.operate({
   userId,
   points: rewardConfig.amount,
   source: 'COMPLETE_TASK',
@@ -904,6 +916,27 @@ CREATE TABLE `task_reward_template` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奖励模板表';
+
+-- 10. 任务模板表（v1.7 补齐：4.7.4 任务模板管理的数据存储，配置字段语义对齐 task 表）
+CREATE TABLE `task_template` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(64) NOT NULL COMMENT '模板名称',
+  `description` VARCHAR(255) DEFAULT NULL,
+  `category` VARCHAR(32) DEFAULT NULL COMMENT '模板分类（日常/活动/新手引导/成就）',
+  `task_type` VARCHAR(32) NOT NULL DEFAULT 'CUSTOM' COMMENT 'DAILY/ONCE/LIMITED/ACHIEVEMENT/CUSTOM',
+  `condition_type` VARCHAR(32) DEFAULT NULL COMMENT 'LOGIN/SHARE/PURCHASE/...',
+  `condition_config` JSON DEFAULT NULL COMMENT '条件配置（一键创建时复制入 task）',
+  `reward_config` JSON DEFAULT NULL COMMENT '奖励配置（一键创建时复制入 task）',
+  `icon` VARCHAR(128) DEFAULT NULL,
+  `difficulty` TINYINT NOT NULL DEFAULT 1 COMMENT '1-4',
+  `sort` INT NOT NULL DEFAULT 0,
+  `enabled` TINYINT NOT NULL DEFAULT 1,
+  `creator_id` BIGINT UNSIGNED NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_enabled` (`enabled`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='任务模板表';
 ```
 
 ### 5.2 表关系图
@@ -928,6 +961,7 @@ task_category (分类)
     └── task_achievement (成就)
 
 task_notification (通知) ← 独立，关联 user_id + task_id
+task_template (任务模板，v1.7 补) ← 独立，一键创建时复制配置生成 task（无外键血缘）
 ```
 
 ---
@@ -1079,21 +1113,23 @@ src/
     ├── 任务概览      /home/manageHomePage/task/overview
     ├── 任务列表      /home/manageHomePage/task/list
     ├── 任务审核      /home/manageHomePage/task/audit
+    ├── 凭证记录      /home/manageHomePage/task/submissions
     ├── 奖励发放      /home/manageHomePage/task/shipping
     ├── 分类管理      /home/manageHomePage/task/categories
     └── 奖励模板      /home/manageHomePage/task/templates
 ```
 
-| 菜单名称 | 路由                                   | 权限                | 说明                               |
-| -------- | -------------------------------------- | ------------------- | ---------------------------------- |
-| 任务概览 | `/home/manageHomePage/task/overview`   | system:task:list    | 统计 Dashboard、趋势图、导出       |
-| 任务列表 | `/home/manageHomePage/task/list`       | system:task:list    | 任务 CRUD / 生命周期 / 复制 / 指派 |
-| 任务审核 | `/home/manageHomePage/task/audit`      | system:task:audit   | 待审任务审批                       |
-| 奖励发放 | `/home/manageHomePage/task/shipping`   | system:task:operate | 实物奖励发货与物流                 |
-| 分类管理 | `/home/manageHomePage/task/categories` | system:task:operate | 任务分类 CRUD                      |
-| 奖励模板 | `/home/manageHomePage/task/templates`  | system:task:operate | 奖励模板 / 任务模板 CRUD           |
+| 菜单名称 | 路由                                    | 权限                | 说明                               |
+| -------- | --------------------------------------- | ------------------- | ---------------------------------- |
+| 任务概览 | `/home/manageHomePage/task/overview`    | system:task:list    | 统计 Dashboard、趋势图、导出       |
+| 任务列表 | `/home/manageHomePage/task/list`        | system:task:list    | 任务 CRUD / 生命周期 / 复制 / 指派 |
+| 任务审核 | `/home/manageHomePage/task/audit`       | system:task:audit   | 待审任务审批                       |
+| 凭证记录 | `/home/manageHomePage/task/submissions` | system:task:audit   | 凭证提交记录查询与误审修正（v1.7） |
+| 奖励发放 | `/home/manageHomePage/task/shipping`    | system:task:operate | 实物奖励发货与物流                 |
+| 分类管理 | `/home/manageHomePage/task/categories`  | system:task:operate | 任务分类 CRUD                      |
+| 奖励模板 | `/home/manageHomePage/task/templates`   | system:task:operate | 奖励模板 / 任务模板 CRUD           |
 
-页面实现目录：`src/views/manage/taskManage/`（overview / list / audit / shipping / categories / templates）。
+页面实现目录：`src/views/manage/taskManage/`（overview / list / audit / submissions / shipping / categories / templates）。
 
 ### 7.2 Pinia Store 设计
 
@@ -1186,7 +1222,7 @@ async claimPointsReward(userId: number, instance: TaskInstance, task: Task) {
   const pointsReward = task.rewardConfig.rewards.find(r => r.type === 'POINTS')
   if (!pointsReward) return
 
-  await this.pointsService.operatePoints({
+  await this.pointsService.operate({
     userId,
     points: pointsReward.config.amount,
     source: 'COMPLETE_TASK',
@@ -1225,7 +1261,7 @@ async sendTaskNotification(userId: number, notification: TaskNotification) {
 | `system:task:create`  | 创建任务、复制任务                     |
 | `system:task:update`  | 编辑任务、提交审核                     |
 | `system:task:status`  | 暂停 / 恢复 / 下线                     |
-| `system:task:claim`   | 领取任务（指派给当前账号）             |
+| `system:task:claim`   | 领取（确认）指派给当前账号的任务       |
 | `system:task:assign`  | 定向指派 / 撤回指派                    |
 | `system:task:delete`  | 删除任务                               |
 | `system:task:audit`   | 审核任务                               |
@@ -1322,14 +1358,17 @@ async sendTaskNotification(userId: number, notification: TaskNotification) {
 
 ### C. 版本记录
 
-| 版本 | 日期       | 变更内容                                                                                                    |
-| ---- | ---------- | ----------------------------------------------------------------------------------------------------------- |
-| v1.0 | 2026-08-06 | 初版：完整功能模块设计                                                                                      |
-| v1.1 | 2026-08-07 | 管理端改为三级菜单：任务概览 / 任务列表 / 任务审核 / 奖励发放（取消页签切换）                               |
-| v1.2 | 2026-08-07 | 前后端补齐剩余模块：统计趋势与导出、分类/模板 CRUD、子任务 UI、通知面板、复制/批量指派、实物确认收货        |
-| v1.3 | 2026-08-07 | 任务列表细粒度按钮权限（create/update/status/assign/delete）；列表隐藏 ID；BaseTable 操作列按内容自适应宽度 |
-| v1.4 | 2026-08-07 | 任务列表补充「领取」按钮与权限 system:task:claim                                                            |
-| v1.5 | 2026-08-07 | 新增任务编号 taskNo（类型编码+日期+当日序号，唯一索引兼容并发）并在列表展示                                 |
+| 版本 | 日期       | 变更内容                                                                                                                                                                                                                                                                                                                                                                            |
+| ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| v1.0 | 2026-08-06 | 初版：完整功能模块设计                                                                                                                                                                                                                                                                                                                                                              |
+| v1.1 | 2026-08-07 | 管理端改为三级菜单：任务概览 / 任务列表 / 任务审核 / 奖励发放（取消页签切换）                                                                                                                                                                                                                                                                                                       |
+| v1.2 | 2026-08-07 | 前后端补齐剩余模块：统计趋势与导出、分类/模板 CRUD、子任务 UI、通知面板、复制/批量指派、实物确认收货                                                                                                                                                                                                                                                                                |
+| v1.3 | 2026-08-07 | 任务列表细粒度按钮权限（create/update/status/assign/delete）；列表隐藏 ID；BaseTable 操作列按内容自适应宽度                                                                                                                                                                                                                                                                         |
+| v1.4 | 2026-08-07 | 任务列表补充「领取」按钮与权限 system:task:claim                                                                                                                                                                                                                                                                                                                                    |
+| v1.5 | 2026-08-07 | 新增任务编号 taskNo（类型编码+日期+当日序号，唯一索引兼容并发）并在列表展示                                                                                                                                                                                                                                                                                                         |
+| v1.6 | 2026-09-15 | 勘误（对齐《移动端任务大厅 PRD》4.4 统一口径）：定向指派流程更正——指派时创建 task_assignment（PENDING）而非 task_instance（ASSIGNED）；instance 状态机无 ASSIGNED 态，用户确认领取时 assignment→ACCEPTED 并创建 instance（ACCEPTED）                                                                                                                                                |
+| v1.7 | 2026-09-15 | 勘误与补齐（配套《移动端任务大厅 PRD》五轮评审）：① 4.3.3 指派操作描述与 v1.6 勘误对齐（定向/批量指派创建 task_assignment 而非实例；撤回限 PENDING）；② 新增 4.3.4「凭证记录与误审修正」页及菜单/路由 `/home/manageHomePage/task/submissions`（权限 system:task:audit，误审修正闭环，配套移动端 4.7.3）；③ 5.1 补 `task_template` 表（4.7.4 任务模板管理数据存储）并同步 5.2 关系图 |
+| v1.8 | 2026-09-15 | 勘误（对齐《积分管理体系 PRD》4.2.4 通用积分操作，配套《移动端任务大厅 PRD》七轮评审 B1）：4.4.1 与 8.1 积分发放代码示例中 `pointsService.operatePoints` 更正为 `pointsService.operate`（对应 `POST /api/points/operate`，source=COMPLETE_TASK，referenceId/referenceType 传任务标识保证流水可追溯）                                                                                |
 
 ---
 
