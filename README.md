@@ -237,6 +237,20 @@ nssm edit <servicename>
 nssm set <服务名称> AppDirectory <路径>
 ```
 
+## 生态导航
+
+本项目是 DrawStars 生态的现行 Web 前端，配套项目见[生态总览](../README.md)：
+
+| 项目 | 关系 |
+| --- | --- |
+| [drawStars-serve-node](../drawStars-serve-node) | 后端服务（dev `:8011` / prod `:8010`），`/api`、`/uploadImg`、`/im/ws` 代理目标 |
+| [drawStars-e2e](../drawStars-e2e) | Playwright E2E 测试，以本项目（`:8081`）为被测对象，PRD 映射见其 `docs/TEST_CASES.md` |
+| [draw-stars-ui](../draw-stars-ui) | 组件库，本项目依赖其 Vue3 版 `draw-stars-ui@1.x`（Button/Flip/VirtualList） |
+| [drawStars-platform](../drawStars-platform) | 移动端壳（uni-app），与本后端共用同一套 RBAC/移动模块接口 |
+| [drawStarts-Notify](../drawStarts-Notify) / [drawStarts-notify-serve](../drawStarts-notify-serve) | 通知 SDK 与 WS 服务端（`:8030`，可由后端嵌入） |
+
+> 鉴权约定：请求头 `accessToken`（非 `Authorization: Bearer`），由后端全局 `AuthGuard` 校验。
+
 ## 参考链接
 
 ### 核心环境
