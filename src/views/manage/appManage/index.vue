@@ -380,7 +380,41 @@ function goShellRelease() {
   router.push('/home/manageHomePage/app/shell')
 }
 
+// 与后端 publishFromAppManage 门禁保持一致的前端预检
+function validatePublish(row) {
+  const plats = (Array.isArray(row.platforms) ? row.platforms : []).map(p =>
+    String(p).toLowerCase()
+  )
+  if (!plats.length) {
+    return '发布门禁：请先勾选平台'
+  }
+  if (!/^\d+\.\d+\.\d+/.test(String(row.version || ''))) {
+    return '发布门禁：version 需符合 SemVer (x.y.z)'
+  }
+  const url = String(row.module_url || '').trim()
+  const needUrl = plats.some(p => ['h5', 'mp-weixin', 'mp', 'mini'].includes(p))
+  if (
+    needUrl &&
+    (!url || (!/^https:\/\//i.test(url) && !url.startsWith('/')))
+  ) {
+    return '发布门禁：含 H5/小程序平台必须填写 https 开头的 module_url'
+  }
+  const needZip = plats.some(p => ['android', 'ios', 'app'].includes(p))
+  if (needZip && !row.file_path) {
+    return '发布门禁：含 App 平台必须先上传 zip 安装包'
+  }
+  if (needZip && !row.checksum) {
+    return '发布门禁：含 App 平台必须填写 checksum'
+  }
+  return ''
+}
+
 async function publishApp(row) {
+  const invalidMsg = validatePublish(row)
+  if (invalidMsg) {
+    showTips('error', invalidMsg)
+    return
+  }
   try {
     await ElMessageBox.confirm('是否确认发布该应用', '提示', {
       confirmButtonText: '确定',
@@ -455,8 +489,9 @@ const pageTableOperate = [
   {
     label: '发布',
     type: 'info',
-    action: publishApp,
-    show: row => row.status !== 'published'
+    action: publishApp
+    // 注意：不能用 app_manage.status 控制发布按钮显隐，status=published 只是业务状态，
+    // 模块目录(mobile_module)只有点发布成功后才会同步，重复点发布后端有版本门禁兜底
   },
   {
     label: '删除',

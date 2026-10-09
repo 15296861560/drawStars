@@ -22,7 +22,8 @@ export interface Field {
   minWidth?: string | number
   /** 编辑态禁用（如唯一编码） */
   disableOnEdit?: boolean
-  disabled?: boolean
+  /** 可传布尔，或传 (row, fields) => boolean 动态判断禁用 */
+  disabled?: boolean | ((row?: AnyObject, fields?: Field) => boolean)
   readonly?: boolean
   defaultVal?: any
   attrs?: AnyObject
@@ -61,6 +62,8 @@ export interface TableOption {
   tableOperate?: Array<Operate>
   tableTools?: Array<Operate>
   tableOperateWidth?: string | number
+  /** 操作列固定方式，默认 'right'；设为 false 取消固定 */
+  operateFixed?: 'left' | 'right' | false
   rowKey?: string
   tableName?: string
   [key: string]: any

@@ -84,7 +84,7 @@
               :config="fields.config"
               :active-value="fields.activeValue"
               :inactive-value="fields.inactiveValue"
-              :disabled="fields.disabled ? fields.disabled(row, fields) : false"
+              :disabled="handleFieldDisabled(fields, row)"
               @change="val => handleFieldChange(fields, row, val)"
             />
           </template>
@@ -187,7 +187,7 @@ const tableAttrs = computed(() => {
 })
 
 const rootClass = computed(
-  () => attrs.class as string | Record<string, boolean> | unknown
+  () => attrs.class as string | Record<string, boolean>
 )
 
 const defaultPage = ref({
@@ -219,13 +219,10 @@ const hasToolbar = computed(() => {
   )
 })
 
-/** 默认不 fixed，避免表头/表体错位；需要时 options.operateFixed = 'right' */
+/** 操作列默认固定在右侧；不需要固定时 options.operateFixed = false */
 const resolveOperateFixed = computed(() => {
-  const val = operateFixed?.value
-  if (val === false || val === null || val === undefined || val === '') {
-    return false
-  }
-  return val
+  if (operateFixed?.value === false) return false
+  return operateFixed?.value || 'right'
 })
 
 const measuredOperateWidth = ref(0)
@@ -309,6 +306,9 @@ const handleShowButton = (operate: AnyObject, row: AnyObject): boolean =>
 
 const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   operate.disabled ? operate.disabled(operate, row) : false
+
+const handleFieldDisabled = (fields: AnyObject, row: AnyObject): boolean =>
+  fields.disabled ? fields.disabled(row, fields) : false
 
 const handleFieldChange = (fields: AnyObject, row: AnyObject, val: any) => {
   fields.onChange?.(row, val, fields)
