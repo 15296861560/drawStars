@@ -46,7 +46,7 @@ export const allFields = [
     label: 'module_url',
     type: 'input',
     width: 200,
-    placeholder: 'H5 module url'
+    placeholder: '选填；在线 H5 页面地址。留空则须上传 zip 离线包'
   },
   {
     fieldName: 'permission_codes',

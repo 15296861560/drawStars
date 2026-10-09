@@ -392,19 +392,23 @@ function validatePublish(row) {
     return '发布门禁：version 需符合 SemVer (x.y.z)'
   }
   const url = String(row.module_url || '').trim()
-  const needUrl = plats.some(p => ['h5', 'mp-weixin', 'mp', 'mini'].includes(p))
-  if (
-    needUrl &&
-    (!url || (!/^https:\/\//i.test(url) && !url.startsWith('/')))
-  ) {
-    return '发布门禁：含 H5/小程序平台必须填写 https 开头的 module_url'
+  if (url && !/^https:\/\//i.test(url) && !url.startsWith('/')) {
+    return '发布门禁：module_url 须为 https 或以 / 开头'
   }
-  const needZip = plats.some(p => ['android', 'ios', 'app'].includes(p))
+  // 小程序端无法安装本地 zip，必须在线 module_url
+  const isMp = plats.some(p => ['mp-weixin', 'mp', 'mini'].includes(p))
+  if (isMp && !url) {
+    return '发布门禁：小程序平台必须填写 module_url'
+  }
+  // h5 模块二选一：在线 module_url 或 zip 离线包（壳 App 内下载解压直访）
+  const h5Offline = plats.includes('h5') && !url
+  const needZip =
+    plats.some(p => ['android', 'ios', 'app'].includes(p)) || h5Offline
   if (needZip && !row.file_path) {
-    return '发布门禁：含 App 平台必须先上传 zip 安装包'
+    return '发布门禁：App 平台与离线 H5 平台必须上传 zip'
   }
   if (needZip && !row.checksum) {
-    return '发布门禁：含 App 平台必须填写 checksum'
+    return '发布门禁：App 平台与离线 H5 平台必须填写 checksum'
   }
   return ''
 }
