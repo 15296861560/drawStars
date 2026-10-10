@@ -8,7 +8,7 @@
 -->
 <script setup>
 // 错误拦截
-import { getCurrentInstance, nextTick } from 'vue'
+import { computed, getCurrentInstance, nextTick, watch } from 'vue'
 import { errorLogStore } from '@/stores/error-log'
 const errorLog = errorLogStore()
 const instance = getCurrentInstance()
@@ -36,15 +36,34 @@ app.config.errorHandler = (err, vm, info) => {
   })
 }
 
-import { RouterView, useRouter } from 'vue-router'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import AiAssistantHost from '@/components/ai-assistant/AiAssistantHost.vue'
 
 import { userInfoStore } from '@/stores/user-info'
 import { permissionStore } from '@/stores/permission'
+import { aiAssistantStore } from '@/stores/ai-assistant'
 import { isSkipLoginMode } from '@/config/skip-login'
 
 const userInfo = userInfoStore()
 const permission = permissionStore()
+const route = useRoute()
+
+// 登录页（含 / 别名入口）屏蔽 AI 助手入口，离开后自动恢复
+const isLoginPage = computed(
+  () => route.path === '/login' || route.path === '/' || route.name === '登录'
+)
+
+// 登录之后才可以使用 AI 助手（跳过登录模式启动时已写入模拟会话）
+const aiAssistantEnabled = computed(
+  () =>
+    !!(userInfo.getUserId || userInfo.getToken.value) && !isLoginPage.value
+)
+const aiAssistant = aiAssistantStore()
+
+// 失去登录态或进入登录页时关闭面板，避免残留打开状态
+watch(aiAssistantEnabled, enabled => {
+  if (!enabled) aiAssistant.closePanel()
+})
 
 // @ts-ignore
 import NoProgress from 'nprogress'
@@ -124,7 +143,7 @@ router.afterEach(() => {
 </script>
 
 <template>
-  <AiAssistantHost />
+  <AiAssistantHost v-if="aiAssistantEnabled" />
   <router-view v-slot="{ Component }">
     <transition name="all" mode="out-in">
       <keep-alive>
