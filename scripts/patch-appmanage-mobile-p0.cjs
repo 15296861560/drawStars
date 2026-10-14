@@ -71,7 +71,8 @@ write(
     label: 'checksum',
     type: 'input',
     width: 160,
-    placeholder: 'sha256:...'
+    placeholder: 'sha256:...(上传 zip 后自动生成)',
+    hint: '上传 zip 后自动按包内容计算生成，无需手动填写'
   },
   {
     fieldName: 'release_notes',
@@ -146,10 +147,13 @@ write(
     label: '\u6587\u4ef6',
     type: 'upload',
     width: 180,
+    hint: '仅支持 .zip，上传成功后自动计算 sha256 并填充 checksum',
     attrs: {
       field: {
         controlCongfig: {
-          fileType: [3]
+          fileType: [3],
+          autoChecksum: true,
+          autoChecksumField: 'checksum'
         }
       }
     }

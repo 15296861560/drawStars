@@ -35,6 +35,7 @@ import { useVModels } from '@vueuse/core'
 import { ElMessage, ElMessageBox, genFileId } from 'element-plus'
 import type { UploadProps, UploadUserFile, UploadRawFile } from 'element-plus'
 import { findReq } from '@/assets/js/api'
+import { getFileSha256 } from '@/utils/tool'
 
 const props = defineProps<{
   field: AnyObject
@@ -44,6 +45,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:valueModel', value: string): void
+  (e: 'uploaded', payload: AnyObject): void
 }>()
 
 const { valueModel } = useVModels(props, emit)
@@ -55,14 +57,29 @@ const fileDataList = ref<any[]>([])
 const uploading = ref(false)
 
 const initModelValue = () => {
-  fileDataList.value = JSON.parse(valueModel.value || '[]')
+  let parsed: any
+  try {
+    parsed = JSON.parse(valueModel.value || '[]')
+  } catch (e) {
+    parsed = []
+  }
+  // 容错：历史「更新」入口写入的是单对象格式，统一包成数组再解析
+  if (parsed && !Array.isArray(parsed)) {
+    parsed = [parsed]
+  }
+  fileDataList.value = parsed || []
   fileList.value = fileDataList.value?.map((file: AnyObject) => {
     file.url = file.filePath
     file.name = file.fileName
-    return file
+    return file as UploadUserFile
   })
 }
 initModelValue()
+
+// 是否在上传后自动计算 sha256（用于 zip 包 checksum 联动）
+const autoChecksum = computed(
+  () => field.value?.controlCongfig?.autoChecksum === true
+)
 
 watchEffect(() => {
   valueModel.value = JSON.stringify(fileDataList.value)
@@ -140,7 +157,7 @@ const handleRemove: UploadProps['onRemove'] = (file: AnyObject) => {
   fileList.value = fileDataList.value?.map((file: AnyObject) => {
     file.url = file.filePath
     file.name = file.fileName
-    return file
+    return file as UploadUserFile
   })
 }
 
@@ -200,6 +217,11 @@ const handleChange: UploadProps['onChange'] = async (file: AnyObject) => {
     formData.append('type', type)
     uploading.value = true
 
+    // 与上传并行计算 sha256，避免大文件串行等待
+    const sha256Promise = autoChecksum.value
+      ? getFileSha256(file.raw as File)
+      : Promise.resolve('')
+
     const req = findReq('commomController', 'uploadFile')
     const res = await req(formData)
     if (res.status) {
@@ -217,6 +239,22 @@ const handleChange: UploadProps['onChange'] = async (file: AnyObject) => {
         })
       }
       file.url = res.data.url
+
+      if (autoChecksum.value) {
+        const sha256 = await sha256Promise
+        if (!sha256) {
+          ElMessage.warning(
+            'sha256 计算失败，请检查是否为 https/localhost 环境，必要时手动填写 checksum'
+          )
+        }
+        // 抛出上传结果，供表单层联动填充 checksum 等派生字段
+        emit('uploaded', {
+          sha256,
+          filePath: res.data.url,
+          fileName: res.data.name,
+          fileSize: file.size
+        })
+      }
     }
     uploading.value = false
   } catch (e) {

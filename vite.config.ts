@@ -24,6 +24,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: "http://127.0.0.1:8010",
+        // dev：drawStars-serve-node 非生产模式 REST 端口为 8011（8031 是 notify WS端口，HTTP 请求会报 426）
         target: 'http://127.0.0.1:8011',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')

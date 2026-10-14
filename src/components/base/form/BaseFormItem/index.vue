@@ -106,6 +106,7 @@
       v-model:value-model="field"
       v-bind="attrs || {}"
       :disabled="disabled"
+      @uploaded="(payload: any) => emit('uploaded', payload)"
     />
 
     <location-component
@@ -205,6 +206,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:field', value: string | number | boolean | string[] | any): void
+  (e: 'uploaded', payload: AnyObject): void
 }>()
 
 const fallthroughAttrs = useAttrs()

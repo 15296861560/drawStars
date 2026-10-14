@@ -38,6 +38,7 @@
             ...(field.placeholder ? { placeholder: field.placeholder } : {})
           }"
           class="w-full"
+          @uploaded="onUploadFieldUploaded(field, $event)"
         />
         <div v-if="field.hint" class="field-hint">{{ field.hint }}</div>
       </el-form-item>
@@ -126,6 +127,17 @@ function rebuildRules() {
 }
 rebuildRules()
 watch(fieldList, rebuildRules, { deep: true })
+
+// 上传组件联动：依据字段配置自动填充派生字段
+// 如 file_path 配置了 controlCongfig.autoChecksumField: 'checksum'，
+// 上传 zip 成功后自动把计算出的 sha256 写入 checksum 字段
+function onUploadFieldUploaded(field: Field, payload: AnyObject) {
+  const cfg =
+    ((field.attrs as AnyObject)?.field as AnyObject)?.controlCongfig || {}
+  if (cfg.autoChecksumField && payload?.sha256) {
+    formInfo[cfg.autoChecksumField] = payload.sha256
+  }
+}
 
 const formRef = ref()
 

@@ -70,6 +70,7 @@ import i18n from '@/lang/index.js'
 import { exportFile } from '@/utils/commom/importAndExport.ts'
 import router from '@/router'
 import { findReq } from '@/assets/js/api'
+import { getFileSha256, bumpPatchVersion } from '@/utils/tool'
 
 const $t = i18n.global.t
 
@@ -316,33 +317,69 @@ const getDetail = row => {
 }
 
 const uploadApp = async e => {
-  const formData = new FormData()
+  const row = temRow.value
   const file = e.target.files[0]
+  e.target.value = '' // 先取 file 再重置，允许重复选择同一文件
+  if (!file || !row) {
+    temRow.value = null
+    return
+  }
+
+  const formData = new FormData()
   formData.append('file', file)
   formData.append('filename', file.name)
   formData.append('type', 4)
 
-  let appZip = { filePath: '', fileName: '' }
+  // 与上传并行计算 sha256，版本号 patch 位自动 +1
+  const sha256Promise = getFileSha256(file)
+  const newVersion = bumpPatchVersion(row.version)
 
   const req = findReq('commomController', 'uploadFile')
   const res = await req(formData)
-  if (res.status) {
-    appZip = {
-      filePath: res.data.url,
-      fileName: res.data.name
-    }
-  } else {
+  if (!res.status) {
+    temRow.value = null
     return
+  }
+  const appZip = { filePath: res.data.url, fileName: res.data.name }
+
+  const sha256 = await sha256Promise
+  if (!sha256) {
+    showTips('warning', 'sha256 计算失败，请检查是否为 https/localhost 环境，checksum 需手动填写')
   }
 
   const result = await appApi.upgradeApp({
-    id: temRow.value?.id,
-    file_path: JSON.stringify(appZip)
+    id: row.id,
+    file_path: JSON.stringify(appZip),
+    // 算不出时不下发空值，避免误清字段
+    ...(newVersion ? { version: newVersion } : {}),
+    ...(sha256 ? { checksum: sha256 } : {})
   })
   temRow.value = null
-  if (result.status) {
-    showTips('success', '更新成功')
+  if (!result.status) return
+
+  showTips(
+    'success',
+    `更新成功${newVersion ? `：版本已升至 ${newVersion}` : ''}${sha256 ? '，checksum 已自动生成' : ''}`
+  )
+  query()
+
+  // 更新只改应用列表，发布成功后才同步到模块目录；引导一键发布
+  try {
+    await ElMessageBox.confirm(
+      `新包已就绪${newVersion ? `（${newVersion}）` : ''}，是否立即发布？发布成功后才会同步到壳应用模块目录`,
+      '发布确认',
+      { confirmButtonText: '立即发布', cancelButtonText: '稍后再说', type: 'info' }
+    )
+  } catch (err) {
+    showTips('info', '已取消发布，可稍后在列表点「发布」')
+    return
+  }
+  const pub = await appApi.publishApp(row.id)
+  if (pub.status) {
+    showTips('success', '发布成功，壳应用下次同步即可获取新包')
     query()
+  } else {
+    showTips('error', pub.msg || '发布失败，请检查后手动重试')
   }
 }
 
