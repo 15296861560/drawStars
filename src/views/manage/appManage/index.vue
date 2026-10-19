@@ -64,7 +64,7 @@
 import { onMounted, ref, reactive, defineAsyncComponent, computed } from 'vue'
 import appApi from '@/assets/js/api/appController/appApi.js'
 import { showTips } from '@/utils/message/showTips.js'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElLoading } from 'element-plus'
 import { dialogFields, tableFields } from './config/schema'
 import i18n from '@/lang/index.js'
 import { exportFile } from '@/utils/commom/importAndExport.ts'
@@ -333,34 +333,56 @@ const uploadApp = async e => {
   // 与上传并行计算 sha256，版本号 patch 位自动 +1
   const sha256Promise = getFileSha256(file)
   const newVersion = bumpPatchVersion(row.version)
+  let sha256 = ''
 
-  const req = findReq('commomController', 'uploadFile')
-  const res = await req(formData)
-  if (!res.status) {
-    temRow.value = null
-    return
-  }
-  const appZip = { filePath: res.data.url, fileName: res.data.name }
-
-  const sha256 = await sha256Promise
-  if (!sha256) {
-    showTips('warning', 'sha256 计算失败，请检查是否为 https/localhost 环境，checksum 需手动填写')
-  }
-
-  const result = await appApi.upgradeApp({
-    id: row.id,
-    file_path: JSON.stringify(appZip),
-    // 算不出时不下发空值，避免误清字段
-    ...(newVersion ? { version: newVersion } : {}),
-    ...(sha256 ? { checksum: sha256 } : {})
+  // 全屏 loading：大包上传耗时较长，阻断重复操作并提示进度，避免页面看起来卡死
+  const loading = ElLoading.service({
+    lock: true,
+    text: `正在上传安装包「${file.name}」，请稍候…`,
+    background: 'rgba(255, 255, 255, 0.6)'
   })
-  temRow.value = null
-  if (!result.status) return
+
+  try {
+    const req = findReq('commomController', 'uploadFile')
+    const res = await req(formData)
+    if (!res.status) {
+      showTips('error', res.msg || '安装包上传失败')
+      return
+    }
+    const appZip = { filePath: res.data.url, fileName: res.data.name }
+
+    sha256 = await sha256Promise
+    if (!sha256) {
+      showTips(
+        'warning',
+        'sha256 计算失败，请检查是否为 https/localhost 环境，checksum 需手动填写'
+      )
+    }
+
+    loading.setText(
+      `正在更新应用信息${newVersion ? `（版本升至 ${newVersion}）` : ''}…`
+    )
+    const result = await appApi.upgradeApp({
+      id: row.id,
+      file_path: JSON.stringify(appZip),
+      // 算不出时不下发空值，避免误清字段
+      ...(newVersion ? { version: newVersion } : {}),
+      ...(sha256 ? { checksum: sha256 } : {})
+    })
+    if (!result.status) {
+      return
+    }
+  } finally {
+    // 无论成败都关 loading 并复位行，避免遮罩/按钮卡死
+    loading.close()
+    temRow.value = null
+  }
 
   showTips(
     'success',
     `更新成功${newVersion ? `：版本已升至 ${newVersion}` : ''}${sha256 ? '，checksum 已自动生成' : ''}`
   )
+  // 上传更新完成后自动刷新列表，保证版本号/文件链接即时可见
   query()
 
   // 更新只改应用列表，发布成功后才同步到模块目录；引导一键发布
@@ -368,18 +390,33 @@ const uploadApp = async e => {
     await ElMessageBox.confirm(
       `新包已就绪${newVersion ? `（${newVersion}）` : ''}，是否立即发布？发布成功后才会同步到壳应用模块目录`,
       '发布确认',
-      { confirmButtonText: '立即发布', cancelButtonText: '稍后再说', type: 'info' }
+      {
+        confirmButtonText: '立即发布',
+        cancelButtonText: '稍后再说',
+        type: 'info'
+      }
     )
   } catch (err) {
     showTips('info', '已取消发布，可稍后在列表点「发布」')
     return
   }
-  const pub = await appApi.publishApp(row.id)
-  if (pub.status) {
-    showTips('success', '发布成功，壳应用下次同步即可获取新包')
-    query()
-  } else {
-    showTips('error', pub.msg || '发布失败，请检查后手动重试')
+
+  const pubLoading = ElLoading.service({
+    lock: true,
+    text: '正在发布，请稍候…',
+    background: 'rgba(255, 255, 255, 0.6)'
+  })
+  try {
+    const pub = await appApi.publishApp(row.id)
+    if (pub.status) {
+      showTips('success', '发布成功，壳应用下次同步即可获取新包')
+      // 发布完成后再刷新一次，列表状态即时同步
+      query()
+    } else {
+      showTips('error', pub.msg || '发布失败，请检查后手动重试')
+    }
+  } finally {
+    pubLoading.close()
   }
 }
 
