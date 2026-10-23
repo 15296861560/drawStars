@@ -255,13 +255,13 @@ export default {
     position: relative;
     width: 37.5rem /* 600/16 */;
     margin-right: 5rem /* 80/16 */;
-    & deep(.el-textarea__inner) {
+    &:deep(.el-textarea__inner) {
       border-color: transparent;
     }
-    & deep(.el-textarea__inner:hover) {
+    &:deep(.el-textarea__inner:hover) {
       border-color: @color-border-highlight-hover;
     }
-    & deep(.el-textarea__inner:active) {
+    &:deep(.el-textarea__inner:active) {
       border-color: @color-border-highlight-active;
     }
 
@@ -282,7 +282,7 @@ export default {
   }
   .post-translation-lang {
     width: 37.5rem /* 600/16 */;
-    // & deep(.el-textarea__inner) {
+    // &:deep(.el-textarea__inner) {
     //   border: none;
     // }
   }

@@ -14,6 +14,7 @@
     <!-- 登录框 -->
     <el-form :rules="rules" :model="loginForm" v-show="!isRegister">
       <div class="form-container login-form">
+        <img class="login-logo" :src="logoIcon" alt="Draw Stars" />
         <h2 class="welcome">{{ $t('welcome') }}</h2>
         <el-form-item prop="account">
           <el-input
@@ -102,6 +103,7 @@
 
     <!-- 注册账号 -->
     <form class="form-container register-form" v-show="isRegister">
+      <img class="login-logo" :src="logoIcon" alt="Draw Stars" />
       <h2 class="welcome">{{ $t('welcome') }}</h2>
 
       <div class="input-box mb20">
@@ -174,6 +176,7 @@
 </template>
 <script>
 import * as _ from 'lodash'
+import logoIcon from '@/assets/img/logo.svg'
 import { i18nLabelMixin } from '@/views/mixin/i18nLabelMixin'
 import { findReq } from '@/assets/js/api'
 import { isSkipLoginMode } from '@/config/skip-login'
@@ -198,6 +201,7 @@ export default {
   mixins: [i18nLabelMixin],
   data() {
     return {
+      logoIcon,
       particles,
       particlesOptiion: {
         color: '#def5cd', // String	#dedede	粒子颜色
@@ -537,7 +541,7 @@ export default {
 }
 .register-form {
   width: 30vw;
-  height: 50vh;
+  min-height: 50vh;
 }
 
 .form-container {
@@ -555,6 +559,14 @@ export default {
   justify-content: space-between;
   overflow: hidden;
   transition: all ease 0.3s;
+  .login-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(18, 115, 232, 0.25);
+  }
+
   .welcome {
     font-size: 1.5em;
     font-weight: bold;
@@ -603,7 +615,7 @@ export default {
     width: 100%;
   }
 
-  deep(.el-form-item__error) {
+  :deep(.el-form-item__error) {
     left: unset;
     right: 0;
   }

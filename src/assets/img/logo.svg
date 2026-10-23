@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#4D9BFF"/>
+      <stop offset="42%"  stop-color="#1273E8"/>
+      <stop offset="100%" stop-color="#0B2F6E"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="0.52734375" cy="0.4609375" r="0.45899999999999996">
+      <stop offset="0%"   stop-color="#AEF2FF" stop-opacity="0.62"/>
+      <stop offset="50%"  stop-color="#AEF2FF" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#AEF2FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="starGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D8EAFF"/>
+    </linearGradient>
+  </defs>
+  <!-- 底 -->
+  <rect x="0" y="0" width="120" height="120" rx="27.42" fill="url(#bgGrad)"/>
+  <!-- 光晕 -->
+  <circle cx="63.28" cy="55.31" r="55.08" fill="url(#glowGrad)"/>
+  <!-- 绘笔弧光 (二次贝塞尔 stroke, 近似厚度剖面) -->
+  <path d="M 24.61 100.20 Q 16.99 56.25 55.08 27.89" fill="none" stroke="#AEF2FF" stroke-width="5.16" stroke-linecap="round" opacity="0.72"/>
+  <!-- 星形 -->
+  <polygon points="63.28,24.61 72.07,46.50 95.60,48.09 77.50,63.21 83.26,86.09 63.28,73.55 43.31,86.09 49.06,63.21 30.96,48.09 54.49,46.50" fill="url(#starGrad)"/>
+  <!-- 星芒 -->
+  <polygon points="25.55,27.66 26.14,31.04 29.53,31.64 26.14,32.24 25.55,35.63 24.95,32.24 21.56,31.64 24.95,31.04" fill="#AEF2FF"/>
+  <polygon points="95.16,82.27 95.61,84.86 98.20,85.31 95.61,85.77 95.16,88.36 94.70,85.77 92.11,85.31 94.70,84.86" fill="#AEF2FF"/>
+  <polygon points="93.75,17.58 94.45,21.56 98.44,22.27 94.45,22.97 93.75,26.95 93.05,22.97 89.06,22.27 93.05,21.56" fill="#AEF2FF"/>
+  <!-- 装饰圆 -->
+  <circle cx="103.13" cy="49.22" r="0.82" fill="#AEF2FF"/>
+  <circle cx="35.16" cy="103.13" r="0.59" fill="#AEF2FF"/>
+</svg>

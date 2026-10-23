@@ -17,9 +17,20 @@
           ref="asideMenu"
         >
           <el-menu-item index="collapse" class="m-text-center">
-            <el-icon v-show="websiteInfo.isCollapse"><ArrowRight /></el-icon>
+            <el-icon v-show="websiteInfo.isCollapse && !layout.sidebarLogo"
+              ><ArrowRight
+            /></el-icon>
+            <img
+              v-show="websiteInfo.isCollapse && layout.sidebarLogo"
+              class="aside-logo"
+              :src="logoIcon"
+              alt="Draw Starts"
+            />
             <template #title>
-              <span v-if="layout.sidebarLogo">Draw Starts</span>
+              <div v-if="layout.sidebarLogo" class="aside-logo-wrap">
+                <img class="aside-logo" :src="logoIcon" alt="Draw Starts" />
+                <span class="aside-logo-name">Draw Starts</span>
+              </div>
             </template>
           </el-menu-item>
           <el-menu-item index="/home/homepage">
@@ -70,10 +81,7 @@
                   </el-menu-item>
                 </template>
               </el-sub-menu>
-              <el-menu-item
-                v-else-if="item.path"
-                :index="item.path"
-              >
+              <el-menu-item v-else-if="item.path" :index="item.path">
                 <menu-icon :name="item.icon" />
                 <template #title>{{ item.name }}</template>
               </el-menu-item>
@@ -81,39 +89,39 @@
           </template>
 
           <template v-else>
-          <el-sub-menu index="1">
-            <template #title>
-              <el-icon><Shop /></el-icon>
-              <span>{{ $t('aside.module') }}</span>
-            </template>
-            <el-menu-item
-              :index="item.path"
-              v-for="item in pathList"
-              :key="item.path"
-              >{{ $t(item.name) }}</el-menu-item
-            >
-          </el-sub-menu>
-          <el-sub-menu index="logs">
-            <template #title>
-              <el-icon><Document /></el-icon>
-              <span>{{ $t('aside.logManage') }}</span>
-            </template>
-            <el-menu-item index="/home/logs/operation">{{
-              $t('aside.operationLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/business">{{
-              $t('aside.businessLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/api">{{
-              $t('aside.apiLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/performance">{{
-              $t('aside.performanceLog')
-            }}</el-menu-item>
-            <el-menu-item index="/home/logs/traffic">{{
-              $t('aside.trafficStats')
-            }}</el-menu-item>
-          </el-sub-menu>
+            <el-sub-menu index="1">
+              <template #title>
+                <el-icon><Shop /></el-icon>
+                <span>{{ $t('aside.module') }}</span>
+              </template>
+              <el-menu-item
+                :index="item.path"
+                v-for="item in pathList"
+                :key="item.path"
+                >{{ $t(item.name) }}</el-menu-item
+              >
+            </el-sub-menu>
+            <el-sub-menu index="logs">
+              <template #title>
+                <el-icon><Document /></el-icon>
+                <span>{{ $t('aside.logManage') }}</span>
+              </template>
+              <el-menu-item index="/home/logs/operation">{{
+                $t('aside.operationLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/business">{{
+                $t('aside.businessLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/api">{{
+                $t('aside.apiLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/performance">{{
+                $t('aside.performanceLog')
+              }}</el-menu-item>
+              <el-menu-item index="/home/logs/traffic">{{
+                $t('aside.trafficStats')
+              }}</el-menu-item>
+            </el-sub-menu>
           </template>
           <el-sub-menu index="survey">
             <template #title>
@@ -156,6 +164,7 @@
 
 <script>
 import { getHomePathList } from '@/utils/home-path-list'
+import logoIcon from '@/assets/img/logo.svg'
 import { layoutSettingsStore } from '@/stores/layout-settings'
 import { permissionStore } from '@/stores/permission'
 import { mockUndefinedRouteError } from '@/utils/mock-undefined-error'
@@ -167,6 +176,7 @@ export default {
   inject: ['websiteInfo'],
   data() {
     return {
+      logoIcon,
       defaultActive: '/home/homepage',
       pathList: []
     }
@@ -294,5 +304,25 @@ export default {
   min-height: 400px;
   height: 100vh;
   overflow: hidden auto;
+}
+
+/* 左上角 Logo */
+.aside-logo {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.aside-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aside-logo-name {
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 </style>
