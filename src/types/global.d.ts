@@ -4,8 +4,10 @@
  * @LastEditors: “lgy lgy-lgy@qq.com
  * @LastEditTime: 2024-06-16 20:02:55
  * @FilePath: \drawStars-Vue3\src\types\global.d.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koroFileHeader/wiki/%E9%85%8D%E7%BD%AE%E8%AE%BE%E7%BD%AE 进行设置: https://github.com/OBKoro1/koroFileHeader/wiki/%E9%85%8D%E7%BD%AE%E8%AE%BE%E7%BD%AE
  */
+import type { Ref } from 'vue'
+
 // 值为任意类型的Object
 export interface AnyObject {
   [key: string]: any
@@ -67,6 +69,11 @@ export interface TableOption {
   operateFixed?: 'left' | 'right' | false
   rowKey?: string
   tableName?: string
+  /**
+   * 表格 loading：布尔或 Ref<boolean>
+   * 未传时默认跟随全局在途请求自动展示 loading，传 false 可关闭
+   */
+  loading?: boolean | Ref<boolean>
   [key: string]: any
 }
 

@@ -16,6 +16,10 @@ import { showTips, getRequestErrorMessage } from '@/utils/message/showTips.js'
 import router from '@/router'
 
 import reqCache from './cache.js'
+import {
+  trackRequestBegin,
+  trackRequestEnd
+} from '@/composables/useInflightRequests'
 
 const DEFAULT_TIMEOUT = 1000 * 60 * 2
 
@@ -52,6 +56,7 @@ const requests = axios.create({
 requests.defaults.timeout = DEFAULT_TIMEOUT
 requests.interceptors.request.use(config => {
   // console.log('请求拦截器', config)
+  trackRequestBegin()
   let token = getUserInfo().getToken.value
   if (token) {
     // 将token放到请求头发送给服务器,将tokenkey放在请求头中
@@ -62,6 +67,7 @@ requests.interceptors.request.use(config => {
 requests.interceptors.response.use(
   response => {
     // console.log('回复拦截器', response)
+    trackRequestEnd()
     if (
       response.data &&
       response.data.code &&
@@ -77,6 +83,7 @@ requests.interceptors.response.use(
   },
   err => {
     // console.log('报错拦截器',err)
+    trackRequestEnd()
     return Promise.reject(err)
   }
 )

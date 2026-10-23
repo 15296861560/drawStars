@@ -45,6 +45,7 @@
       tooltip-effect="dark"
       border
       stripe
+      v-loading="tableLoading"
       v-bind="tableAttrs"
       :data="tableData"
       :row-key="rowKey || 'id'"
@@ -160,6 +161,7 @@ import {
 } from 'vue'
 import type { AnyObject, TableOption, PageInfo } from '@/types/global'
 import { useRoute } from 'vue-router'
+import { reqInflight } from '@/composables/useInflightRequests'
 
 defineOptions({ inheritAttrs: false })
 
@@ -188,6 +190,19 @@ const tableAttrs = computed(() => {
 const rootClass = computed(
   () => attrs.class as string | Record<string, boolean>
 )
+
+/**
+ * 表格默认自带 loading：
+ * - options.loading 显式传入（布尔或 Ref）时以传入值为准，传 false 可关闭默认 loading
+ * - 未传时默认跟随全局在途请求，初始加载/搜索/翻页等请求期间自动展示
+ */
+const tableLoading = computed(() => {
+  const explicit = (props.options as AnyObject).loading
+  if (explicit !== undefined && explicit !== null) {
+    return typeof explicit === 'object' ? !!explicit.value : !!explicit
+  }
+  return reqInflight.value > 0
+})
 
 const defaultPage = ref({
   layout: 'total, sizes, prev, pager, next, jumper',
