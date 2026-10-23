@@ -96,7 +96,6 @@
         :fixed="resolveOperateFixed"
         align="center"
         :width="operateColumnWidth"
-        :min-width="operateColumnMinWidth"
       >
         <template #default="scope">
           <div class="base-table__row-ops">
@@ -254,24 +253,23 @@ function estimateOperateWidth() {
   return Math.max(88, content + 20)
 }
 
-const hasExplicitOperateWidth = computed(() => {
+/**
+ * 业务侧配置的 tableOperateWidth 仅作为宽度下限，不再锁定列宽；
+ * 列宽始终按当前实际展示的按钮内容自适应，避免按钮被截断出省略号。
+ */
+const operateWidthBaseline = computed(() => {
   const w = tableOperateWidth?.value
-  return w != null && w !== '' && w !== 'auto'
-})
-
-const operateColumnMinWidth = computed(() => {
-  if (hasExplicitOperateWidth.value) return undefined
-  return estimateOperateWidth()
+  if (w == null || w === '' || w === 'auto') return 0
+  const n = Number(w)
+  return Number.isFinite(n) ? n : 0
 })
 
 const operateColumnWidth = computed(() => {
-  if (hasExplicitOperateWidth.value) {
-    return tableOperateWidth?.value
-  }
-  if (measuredOperateWidth.value > 0) {
-    return measuredOperateWidth.value
-  }
-  return estimateOperateWidth()
+  const adaptive =
+    measuredOperateWidth.value > 0
+      ? measuredOperateWidth.value
+      : estimateOperateWidth()
+  return Math.max(adaptive, operateWidthBaseline.value)
 })
 
 function measureOperateColumn() {
@@ -285,7 +283,8 @@ function measureOperateColumn() {
       max = Math.max(max, el.scrollWidth, el.offsetWidth)
     })
     if (max > 0) {
-      const next = Math.ceil(max + 24)
+      // +2 为亚像素舍入缓冲，配合单元格左右共 24px 内边距，保证按钮完整展示
+      const next = Math.ceil(max + 26)
       if (next !== measuredOperateWidth.value) {
         measuredOperateWidth.value = next
         doLayout()
@@ -334,7 +333,7 @@ watch(
   () => tableData?.value,
   () => {
     doLayout()
-    if (!hasExplicitOperateWidth.value) measureOperateColumn()
+    measureOperateColumn()
   },
   { deep: true }
 )
@@ -343,13 +342,13 @@ watch(
   () => pageTableOperate?.value,
   () => {
     measuredOperateWidth.value = 0
-    if (!hasExplicitOperateWidth.value) measureOperateColumn()
+    measureOperateColumn()
   },
   { deep: true }
 )
 
 onMounted(() => {
-  if (!hasExplicitOperateWidth.value) measureOperateColumn()
+  measureOperateColumn()
 })
 
 defineExpose({ tableRef, doLayout })

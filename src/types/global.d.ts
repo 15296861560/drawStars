@@ -61,6 +61,7 @@ export interface TableOption {
   pageTableOperate?: Array<Operate>
   tableOperate?: Array<Operate>
   tableTools?: Array<Operate>
+  /** 操作列宽度下限：实际宽度按展示按钮内容自适应，取两者较大值 */
   tableOperateWidth?: string | number
   /** 操作列固定方式，默认 'right'；设为 false 取消固定 */
   operateFixed?: 'left' | 'right' | false
