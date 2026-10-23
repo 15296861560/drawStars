@@ -16,7 +16,7 @@ export const echartViewsMixin = {
     // 监听窗口发生变化，resize组件
     window.addEventListener('resize', this.resizeChart)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // 释放myChart实例
     this.myChart.clear()
     // 并取消监听事件

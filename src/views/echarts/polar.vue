@@ -26,8 +26,10 @@ export default {
   data() {
     return {
       polarData: {
+        title: '季度销售目标达成率',
+        subtext: '示例数据 · 2026 年 Q4',
         tooltip: '达成率',
-        data: [66.6],
+        data: 86.4,
         name: '已达成'
       }
     }

@@ -21,6 +21,44 @@
 <script>
 import EMap from '@/components/echarts/EMap.vue'
 
+// 各省份本月发货量（件）——固定示例数据，保证排名与色阶稳定
+const PROVINCE_ORDERS = {
+  广东: 208000,
+  江苏: 196000,
+  山东: 187000,
+  浙江: 175000,
+  河南: 168000,
+  四川: 142000,
+  湖北: 121000,
+  福建: 118000,
+  湖南: 113000,
+  河北: 105000,
+  上海: 98000,
+  安徽: 92000,
+  北京: 86000,
+  辽宁: 72000,
+  江西: 65000,
+  陕西: 58000,
+  广西: 55000,
+  重庆: 52000,
+  天津: 46000,
+  云南: 44000,
+  黑龙江: 41000,
+  吉林: 36000,
+  山西: 33000,
+  贵州: 30000,
+  内蒙古: 26000,
+  新疆: 21000,
+  甘肃: 17000,
+  海南: 12000,
+  宁夏: 8000,
+  青海: 3500,
+  西藏: 1800,
+  台湾: 1500,
+  香港: 900,
+  澳门: 400
+}
+
 export default {
   components: {
     EMap
@@ -28,43 +66,12 @@ export default {
   data() {
     return {
       mapData: {
-        title: '发货区域分布图',
-        data: [
-          { name: '北京', value: Math.round(Math.random() * 210000) },
-          { name: '天津', value: Math.round(Math.random() * 210000) },
-          { name: '上海', value: Math.round(Math.random() * 210000) },
-          { name: '重庆', value: Math.round(Math.random() * 210000) },
-          { name: '河北', value: Math.round(Math.random() * 210000) },
-          { name: '河南', value: Math.round(Math.random() * 210000) },
-          { name: '云南', value: Math.round(Math.random() * 210000) },
-          { name: '辽宁', value: Math.round(Math.random() * 210000) },
-          { name: '黑龙江', value: Math.round(Math.random() * 210000) },
-          { name: '湖南', value: Math.round(Math.random() * 210000) },
-          { name: '安徽', value: Math.round(Math.random() * 210000) },
-          { name: '山东', value: Math.round(Math.random() * 210000) },
-          { name: '新疆', value: Math.round(Math.random() * 210000) },
-          { name: '江苏', value: Math.round(Math.random() * 210000) },
-          { name: '浙江', value: Math.round(Math.random() * 210000) },
-          { name: '江西', value: Math.round(Math.random() * 210000) },
-          { name: '湖北', value: Math.round(Math.random() * 210000) },
-          { name: '广西', value: Math.round(Math.random() * 210000) },
-          { name: '甘肃', value: Math.round(Math.random() * 210000) },
-          { name: '山西', value: Math.round(Math.random() * 210000) },
-          { name: '内蒙古', value: Math.round(Math.random() * 210000) },
-          { name: '陕西', value: Math.round(Math.random() * 210000) },
-          { name: '吉林', value: Math.round(Math.random() * 210000) },
-          { name: '福建', value: Math.round(Math.random() * 210000) },
-          { name: '贵州', value: Math.round(Math.random() * 210000) },
-          { name: '广东', value: Math.round(Math.random() * 210000) },
-          { name: '青海', value: Math.round(Math.random() * 210000) },
-          { name: '西藏', value: Math.round(Math.random() * 210000) },
-          { name: '四川', value: Math.round(Math.random() * 210000) },
-          { name: '宁夏', value: Math.round(Math.random() * 210000) },
-          { name: '海南', value: Math.round(Math.random() * 210000) },
-          { name: '台湾', value: Math.round(Math.random() * 210000) },
-          { name: '香港', value: Math.round(Math.random() * 210000) },
-          { name: '澳门', value: Math.round(Math.random() * 210000) }
-        ] // 数据
+        title: '全国发货分布',
+        subtext: '示例数据 · 各省份本月发货量（件）',
+        data: Object.entries(PROVINCE_ORDERS).map(([name, value]) => ({
+          name,
+          value
+        }))
       }
     }
   }

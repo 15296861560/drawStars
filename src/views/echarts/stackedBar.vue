@@ -18,91 +18,16 @@ export default {
   data() {
     return {
       stackedBarData: {
-        color: [
-          '#03E4F6',
-          '#2E86F2',
-          '#E99936',
-          '#FF8A79',
-          '#D9221A',
-          '#A8DE96'
-        ],
-        legend: [
-          {
-            name: '访问方式一',
-            textStyle: {
-              color: 'black'
-            }
-          },
-          {
-            name: '访问方式二',
-            textStyle: {
-              color: 'black'
-            }
-          },
-          {
-            name: '访问方式三',
-            textStyle: {
-              color: 'black'
-            }
-          },
-          {
-            name: '访问方式四',
-            textStyle: {
-              color: 'black'
-            }
-          },
-          {
-            name: '访问方式五',
-            textStyle: {
-              color: 'black'
-            }
-          }
-        ],
-        xAxis: ['周一', '周二', '周三'],
+        title: '商品品类销售结构',
+        subtext: '示例数据 · 最近六个月',
+        yName: '销售额（万元）',
+        xAxis: ['1月', '2月', '3月', '4月', '5月', '6月'],
         series: [
-          {
-            name: '访问方式一',
-            type: 'bar',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [120, 132, 101]
-          },
-          {
-            name: '访问方式二',
-            type: 'bar',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [220, 182, 191]
-          },
-          {
-            name: '访问方式三',
-            type: 'bar',
-            stack: '网络',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [150, 232, 201]
-          },
-          {
-            name: '访问方式四',
-            type: 'bar',
-            stack: '网络',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [150, 232, 201]
-          },
-          {
-            name: '访问方式五',
-            type: 'bar',
-            stack: '网络',
-            emphasis: {
-              focus: 'series'
-            },
-            data: [50, 32, 21]
-          }
+          { name: '数码家电', data: [320, 302, 341, 374, 390, 450] },
+          { name: '服饰鞋包', data: [230, 212, 251, 264, 280, 310] },
+          { name: '美妆个护', data: [158, 172, 143, 185, 196, 214] },
+          { name: '食品生鲜', data: [125, 118, 132, 141, 139, 152] },
+          { name: '家居日用', data: [90, 98, 88, 102, 107, 118] }
         ]
       }
     }

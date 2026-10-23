@@ -26,14 +26,14 @@ export default {
   data() {
     return {
       barData: {
-        title: '标题',
-        symbol: ['none', 'arrow'],
+        title: '销售渠道销量对比',
+        subtext: '示例数据 · 最近一周',
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
         },
         series: [
-          [120, 200, 150, 80, 70, 110, 130],
-          [20, 20, 50, 80, 70, 10, 30]
+          { name: '线上销量', data: [232, 243, 290, 310, 350, 480, 462] },
+          { name: '线下销量', data: [186, 205, 232, 263, 264, 312, 298] }
         ]
       }
     }

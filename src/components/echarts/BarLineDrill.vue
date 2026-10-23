@@ -4,228 +4,144 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import { echartMixin } from '../mixin/echartMixin'
 export default {
   mixins: [echartMixin],
   methods: {
-    initData(newVal) {
-      // 是否开启legend
-      let showLegend = false
-      let legend = []
-      if (newVal.openLegend) {
-        showLegend = true
-        for (let i = 0; i < newVal.legend.length; i++) {
-          if (newVal.legend[i].name.indexOf('率') != -1) {
-            legend.push({
-              show: showLegend,
-              data: [
-                {
-                  name: newVal.legend[i].name,
-                  icon: '', // 'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
-                  textStyle: {
-                    fontWeight: 'bold',
-                    color: newVal.legend[i].textColor
-                  }
-                }
-              ],
-              // data: ["量率", "入库面积"],
-              top: '2%',
-              itemWidth: 13, // 设置宽度
-              itemHeight: 10, // 设置高度
-              right: i == 0 ? 30 : i * 200,
-              textStyle: {
-                color: 'rgba(250,250,250,0.6)',
-                fontSize: 16
-              }
-            })
-          } else {
-            legend.push({
-              show: showLegend,
-              data: [
-                {
-                  name: newVal.legend[i].name,
-                  icon: 'rect', // 'image://../asset/ico/favicon.png',//标志图形类型，默认自动选择（8种类型循环使用，不显示标志图形可设为'none'），默认循环选择类型有：'circle' | 'rectangle' | 'triangle' | 'diamond' |'emptyCircle' | 'emptyRectangle' | 'emptyTriangle' | 'emptyDiamond'另外，还支持五种更特别的标志图形'heart'（心形）、'droplet'（水滴）、'pin'（标注）、'arrow'（箭头）和'star'（五角星），这并不出现在常规的8类图形中，但无论是在系列级还是数据级上你都可以指定使用，同时，'star' + n（n>=3)可变化出N角星，如指定为'star6'则可以显示6角星
-                  textStyle: {
-                    fontWeight: 'bold',
-                    color: newVal.legend[i].textColor
-                  }
-                }
-              ],
-              top: '2%',
-              itemWidth: 10, // 设置宽度//
-              itemHeight: 10, // 设置高度
-              right: i == 0 ? 10 : i * 200,
-              textStyle: {
-                color: 'rgba(250,250,250,0.6)',
-                fontSize: 11
-              }
-            })
-          }
-        }
+    // 覆写 mixin 的 paint：柱线混合图需要在初始化时绑定点击事件，用于向父组件抛出下钻指令
+    paint() {
+      if (this.chartData) {
+        this.initData(this.chartData)
       }
-      let seriesData = []
-      for (let i = 0; i < newVal.series.length; i++) {
-        if (newVal.series[i].type == 'line') {
-          seriesData.push({
-            name: newVal.series[i].name,
-            type: newVal.series[i].type,
-
-            showAllSymbol: true, // 显示所有图形。
-            symbol: 'circle', // 标记的图形为实心圆
-            symbolSize: 10, // 标记的大小
-            itemStyle: {
-              // 折线拐点标志的样式
-              color: newVal.series[i].color,
-              borderColor: '#fff',
-              borderWidth: 2
-              // width: 2,
-              // shadowColor: "#3D7EEB",
-              // shadowBlur: 4
-            },
-            lineStyle: {
-              color: newVal.series[i].color,
-              width: 2,
-              type: newVal.series[i].lineType
-              // shadowColor: "#3D7EEB",
-              // shadowBlur: 4
-            },
-            data: newVal.series[i].data
-          })
-        } else {
-          seriesData.push({
-            name: newVal.series[i].name,
-            type: newVal.series[i].type,
-            barWidth: newVal.barWidth ? newVal.barWidth : 15,
-            itemStyle: {
-              normal: {
-                // 条形颜色
-                color: newVal.series[i].color,
-                barBorderRadius: [30, 30, 30, 30]
-                // shadowColor: 'rgba(0,160,221,1)',
-                // shadowBlur: 4,
-                // barGap: 100,
-              }
-            },
-            data: newVal.series[i].data
-          })
-        }
-      }
-      // 基于准备好的dom，初始化echarts实例
-      // let chart = document.getElementById(this.echartId);
-      // this.myChart = this.$echarts.init(chart);
-
-      let chart = this.$echarts.getInstanceByDom(
-        document.getElementById(this.echartId)
+      this.myChart = markRaw(
+        this.$echarts.init(document.getElementById(this.echartId))
       )
-      if (chart === undefined) {
-        this.myChart = this.$echarts.init(
-          document.getElementById(this.echartId)
-        )
-      } else {
-        this.myChart = chart
-      }
+      // 先解绑再绑定，避免重复触发
+      this.myChart.off('click')
+      this.myChart.on('click', object => {
+        this.$emit('rp', object)
+      })
+      this.myChart.setOption(this.option, true)
+    },
+    initData(newVal) {
+      // 双 y 轴单位名称，依次对应左右轴
+      const yNames = newVal.yNames || ['', '']
 
-      let axisLabel = {}
-      if (newVal.biasText) {
-        // 开启了文字倾斜
-        axisLabel = {
-          interval: 0,
-          rotate: 20,
-          margin: 10,
-          textStyle: {
-            color: 'black', // X轴文字颜色
-            fontSize: 11
+      const seriesData = newVal.series.map(item => {
+        if (item.type === 'line') {
+          return {
+            name: item.name,
+            type: 'line',
+            // 折线默认挂在第二（右）轴
+            yAxisIndex: item.yAxisIndex !== undefined ? item.yAxisIndex : 1,
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 7,
+            showSymbol: false,
+            lineStyle: { width: 3 },
+            itemStyle: {
+              borderWidth: 2,
+              borderColor: '#FFFFFF'
+            },
+            emphasis: { focus: 'series' },
+            data: item.data
           }
         }
-      } else {
-        axisLabel = {
-          show: true,
-          textStyle: {
-            color: 'black', // X轴文字颜色
-            fontSize: 11
-          }
+        return {
+          name: item.name,
+          type: 'bar',
+          // 柱系列默认挂在第一（左）轴
+          yAxisIndex: item.yAxisIndex !== undefined ? item.yAxisIndex : 0,
+          barWidth: newVal.barWidth || '35%',
+          itemStyle: { borderRadius: [4, 4, 0, 0] },
+          emphasis: { focus: 'series' },
+          data: item.data
         }
-      }
+      })
 
       this.option = {
-        color: newVal.color,
-        grid: {
-          top: '19%',
-          // left:'5%',
-          left: newVal.gridLeft ? newVal.gridLeft : '25px',
-          right: newVal.gridRight ? newVal.gridRight : '5%',
-          bottom: newVal.gridBottom ? newVal.gridBottom : '25px'
+        color: ['#5B8FF9', '#F6BD16'],
+        title: {
+          text: newVal.title || '',
+          subtext: newVal.subtext || '',
+          left: 'center',
+          top: 16,
+          textStyle: { fontSize: 16, fontWeight: 600, color: '#1D2129' },
+          subtextStyle: { fontSize: 12, color: '#86909C' }
         },
-        // 提示框组件
         tooltip: {
-          // 触发类型
           trigger: 'axis',
-          // 坐标轴指示器配置项
           axisPointer: {
             type: 'shadow',
-            // 坐标轴指示器的文本标签
-            label: {
-              show: true
-            }
-          }
+            shadowStyle: { color: 'rgba(91, 143, 249, 0.08)' }
+          },
+          backgroundColor: '#FFFFFF',
+          borderColor: '#E5E8EF',
+          borderWidth: 1,
+          padding: [8, 16],
+          textStyle: { color: '#1D2129', fontSize: 12 },
+          extraCssText:
+            'box-shadow: 0 4px 12px rgba(29, 33, 41, 0.08); border-radius: 8px;'
         },
-        legend: legend,
+        legend: {
+          show: newVal.openLegend !== false,
+          top: 22,
+          right: 24,
+          icon: 'circle',
+          itemWidth: 8,
+          itemHeight: 8,
+          itemGap: 20,
+          textStyle: { color: '#4E5969', fontSize: 12 }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          top: '25%',
+          bottom: '10%',
+          containLabel: true
+        },
         xAxis: {
+          type: 'category',
           data: newVal.xAxis,
-          axisLine: {
-            show: true, // 隐藏X轴轴线
-            lineStyle: {
-              color: '#a4a5a6',
-              width: 2
-            }
-          },
-          axisTick: {
-            show: false // 隐藏X轴刻度
-          },
-          axisLabel: axisLabel
+          axisLine: { lineStyle: { color: '#E5E8EF' } },
+          axisTick: { show: false },
+          axisLabel: { color: '#86909C', fontSize: 12, margin: 12 }
         },
+        // 双 y 轴：索引 0 为左轴（承载柱状系列），索引 1 为右轴（承载折线系列，单位可不同）
         yAxis: [
           {
             type: 'value',
+            name: yNames[0] || '',
             nameTextStyle: {
-              color: '#626364',
-              fontSize: 16
+              color: '#86909C',
+              align: 'right',
+              padding: [0, 6, 6, 0]
             },
-            splitLine: {
-              show: false
+            axisLine: { show: false },
+            axisLabel: { color: '#86909C', fontSize: 12 },
+            splitLine: { lineStyle: { color: '#E5E8EF', type: 'dashed' } }
+          },
+          {
+            type: 'value',
+            name: yNames[1] || '',
+            nameTextStyle: {
+              color: '#86909C',
+              align: 'left',
+              padding: [0, 0, 6, 6]
             },
-            axisTick: {
-              show: false
-            },
-            axisLine: {
-              show: true,
-              lineStyle: {
-                color: '#a4a5a6',
-                width: 2
-              }
-            },
+            axisLine: { show: false },
             axisLabel: {
-              show: true,
-              formatter: '{value} ', // 左侧Y轴文字显示
-              textStyle: {
-                color: 'black',
-                fontSize: 11
-              }
-            }
+              color: '#F6BD16',
+              fontSize: 12,
+              formatter: '{value}%'
+            },
+            // 关闭右轴横向网格线，避免与左轴网格线交叉错乱（网格线只保留一根轴的）
+            splitLine: { show: false }
           }
         ],
         series: seriesData
       }
-      // 使用刚指定的配置项和数据显示图表。
-      this.myChart.off('click') // 使点击事件只触发一次
-      this.myChart.on('click', object => {
-        this.drill(object)
-      })
-    },
-    drill(object) {
-      alert(object.name)
-      // 调用父组件重绘方法
-      this.$emit('rp', object)
     }
   }
 }

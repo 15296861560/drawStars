@@ -9,81 +9,89 @@ export default {
   mixins: [echartMixin],
   methods: {
     initData(newVal) {
-      newVal.series.forEach(item => {
-        // 柱样式
-        if (!item.itemStyle) {
-          item.itemStyle = {
-            barBorderRadius: 0
-          }
-        }
-        // 柱宽度
-        if (!item.barWidth) {
-          item.barWidth = '15px'
-        }
-      })
+      const series = newVal.series.map(item => ({
+        name: item.name,
+        type: 'bar',
+        // 未指定 stack 时统一堆叠为「总量」
+        stack: item.stack || '总量',
+        barWidth: item.barWidth || '38%',
+        data: item.data,
+        // hover 聚焦当前系列，其余系列淡化
+        emphasis: { focus: 'series' },
+        // 段间白色分隔线，增强堆叠层辨识度
+        itemStyle: { borderColor: '#FFFFFF', borderWidth: 1 }
+      }))
 
       this.option = {
-        color: newVal.color ? newVal.color : ['#03E4F6', '#2E86F2', '#E99936'],
+        color: newVal.color || [
+          '#5B8FF9',
+          '#5AD8A6',
+          '#F6BD16',
+          '#E8684A',
+          '#6DC8EC',
+          '#9270CA'
+        ],
+        title: {
+          text: newVal.title || '',
+          subtext: newVal.subtext || '',
+          left: 'center',
+          top: 16,
+          textStyle: { fontSize: 16, fontWeight: 600, color: '#1D2129' },
+          subtextStyle: { fontSize: 12, color: '#86909C' }
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
-            label: {
-              show: true
-            }
-          }
+            type: 'shadow',
+            shadowStyle: { color: 'rgba(91, 143, 249, 0.08)' }
+          },
+          backgroundColor: '#FFFFFF',
+          borderColor: '#E5E8EF',
+          borderWidth: 1,
+          padding: [8, 16],
+          textStyle: { color: '#1D2129', fontSize: 12 },
+          extraCssText:
+            'box-shadow: 0 4px 12px rgba(29, 33, 41, 0.08); border-radius: 8px;'
         },
-        legend: newVal.legend,
+        legend: {
+          bottom: 8,
+          left: 'center',
+          icon: 'circle',
+          itemWidth: 8,
+          itemHeight: 8,
+          itemGap: 16,
+          textStyle: { color: '#4E5969', fontSize: 12 }
+        },
         grid: {
-          show: false,
           left: '3%',
           right: '4%',
-          bottom: '3%',
+          top: 90,
+          bottom: '14%',
           containLabel: true
         },
         xAxis: [
           {
             type: 'category',
             data: newVal.xAxis,
-            // 坐标轴轴线相关设置
-            axisLine: {
-              show: false
-            },
-            // 坐标轴刻度相关设置
-            axisTick: {
-              show: false
-            },
-            // 坐标轴刻度标签的相关设置
-            axisLabel: {
-              show: true,
-              textStyle: {
-                color: '#626364', // X轴文字颜色
-                fontSize: 11
-              }
-            }
+            axisLine: { lineStyle: { color: '#E5E8EF' } },
+            axisTick: { show: false },
+            axisLabel: { color: '#86909C', fontSize: 12, margin: 12 }
           }
         ],
         yAxis: [
           {
             type: 'value',
-            axisLine: {
-              lineStyle: {
-                color: '#a4a5a6',
-                width: 0 // 不显示y轴
-              }
+            name: newVal.yName || '',
+            nameTextStyle: {
+              color: '#86909C',
+              align: 'right',
+              padding: [0, 6, 6, 0]
             },
-            // 坐标轴在 grid 区域中的分隔线。
-            splitLine: {
-              show: true
-            },
-            // 坐标轴刻度相关设置
-            axisTick: {
-              show: false
-            }
+            axisLabel: { color: '#86909C', fontSize: 12 },
+            splitLine: { lineStyle: { color: '#E5E8EF', type: 'dashed' } }
           }
         ],
-        series: newVal.series
+        series
       }
     }
   }

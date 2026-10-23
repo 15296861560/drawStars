@@ -39,6 +39,7 @@ export const echartMixin = {
         this.initData(this.chartData)
       }
       // 基于准备好的dom，初始化echarts实例
+      // markRaw：跳过 Vue3 响应式代理，echarts 实例若被 proxy 包裹会破坏内部逻辑
       this.myChart = markRaw(
         this.$echarts.init(document.getElementById(this.echartId))
       )
@@ -69,6 +70,8 @@ export const echartMixin = {
       this.initData(newVal)
       this.myChart.setOption(this.option, true)
     },
+    // 基类默认实现：业务组件覆写 initData 时只需组装出完整 this.option，
+    // setOption 由 paint / repaint 统一调用，组件自身不用关心渲染时机
     initData(newVal) {
       this.option = newVal
     },
@@ -93,7 +96,7 @@ export const echartMixin = {
     // 监听窗口发生变化，resize组件
     window.addEventListener('resize', this.resizeChart)
   },
-  beforeDestroy() {
+  beforeUnmount() {
     // 释放myChart实例
     if (this.myChart) {
       this.myChart.clear()

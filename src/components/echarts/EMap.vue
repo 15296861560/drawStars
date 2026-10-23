@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { markRaw } from 'vue'
 import china from '@/assets/json/china.json'
 import { echartMixin } from '../mixin/echartMixin'
 export default {
@@ -13,7 +14,7 @@ export default {
   data() {
     return {
       myChart: null,
-      mapData: [],
+      // 省份名 → 地图经纬度坐标：[经度, 纬度]
       geoCoordMap: {
         江西: [115.892151, 28.676493],
         河南: [113.665412, 34.757975],
@@ -54,157 +55,185 @@ export default {
     }
   },
   computed: {
+    // 每省引导线的终点坐标（向右侧偏移）
     linesEndCoords() {
-      let linesEndCoords = {}
-      let geoCoordMap = this.geoCoordMap
-      let keys = Object.keys(geoCoordMap)
-      keys.forEach(item => {
+      const linesEndCoords = {}
+      const geoCoordMap = this.geoCoordMap
+      Object.keys(geoCoordMap).forEach(item => {
         linesEndCoords[item] = [130, geoCoordMap[item][1]]
       })
-
       return linesEndCoords
     }
   },
   methods: {
+    // 组装图表配置（setOption 由 paint/repaint 统一调用）
     initData(newVal) {
-      // 显示前10具体数据
-      this.mapData = JSON.parse(JSON.stringify(newVal.data))
-      let datas = this.mapData
-        .sort(function (a, b) {
-          return a.value - b.value
-        })
+      // 引导线榜单取发货量 Top10（降序取最大十条，过滤无坐标数据的省份）
+      const top10 = [...newVal.data]
+        .sort((a, b) => b.value - a.value)
+        .filter(item => this.geoCoordMap[item.name])
         .slice(0, 10)
 
-      let keys = []
-      datas.forEach(item => {
-        keys.push(item.name)
-      })
-
-      // lines的数据
-      let linesData = []
-      let linesEndCoords = this.linesEndCoords
-      let geoCoordMap = this.geoCoordMap
-
-      // 显示的值
-      let showValue = {}
-      datas.forEach(item => {
-        showValue[item.name] = item.value + 'm³'
-      })
-      keys.forEach((item, index) => {
-        let toLocation = linesEndCoords[item]
+      const linesData = top10.map((item, index) => {
+        const toLocation = this.linesEndCoords[item.name]
+        // 终点纬度按排名错落排布：第 1 名最高（40°），之后每名下降 2°，避免右侧标签互相重叠
         toLocation[1] = 40 - index * 2
-        linesData.push({
-          name: item,
-          value: showValue[item], // 显示值
-          coords: [geoCoordMap[item], toLocation], // 起点坐标和终点坐标
-          // 每条线的样式
-          lineStyle: {
-            show: true,
-            type: 'dashed',
-            color: 'red'
-          }
-        })
+        return {
+          name: item.name,
+          value: item.value.toLocaleString() + ' 件',
+          coords: [this.geoCoordMap[item.name], toLocation] // 起点坐标和终点坐标
+        }
       })
 
       this.option = {
         title: {
-          show: true,
           text: newVal.title,
-          x: 'center',
-          textStyle: { color: 'black' },
-          top: '2%'
+          subtext: newVal.subtext || '',
+          left: 'center',
+          top: 16,
+          itemGap: 8,
+          textStyle: { fontSize: 16, fontWeight: 600, color: '#1D2129' },
+          subtextStyle: { fontSize: 12, color: '#86909C' }
         },
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          backgroundColor: '#FFFFFF',
+          borderColor: '#E5E8EF',
+          borderWidth: 1,
+          padding: [8, 16],
+          textStyle: { color: '#1D2129', fontSize: 12 },
+          extraCssText:
+            'box-shadow: 0 4px 12px rgba(29, 33, 41, 0.08); border-radius: 8px;',
+          // 按 seriesType 区分提示内容：悬浮省份=发货量，悬浮引导线标签=榜单名次
+          formatter(params) {
+            if (params.seriesType === 'map') {
+              const value = Number(params.value)
+              return (
+                params.name +
+                '：' +
+                (Number.isFinite(value)
+                  ? value.toLocaleString() + ' 件'
+                  : '暂无数据')
+              )
+            }
+            return (
+              'TOP' +
+              (params.dataIndex + 1) +
+              '：' +
+              params.name +
+              ' ' +
+              params.value
+            )
+          }
         },
 
-        // 左侧小导航图标
+        // 左侧分段导航（分段从大到小书写，inRange 颜色从浅到深由低值至高值取色）
         visualMap: {
-          show: true,
-          left: 20,
-          top: 20,
+          type: 'piecewise',
+          seriesIndex: 0,
+          left: 24,
+          top: 90,
           splitList: [
-            { start: 200000 },
-            { start: 100000, end: 200000 },
-            { start: 10000, end: 100000 },
-            { start: 0, end: 10000 }
+            { start: 150000, label: '15万件及以上' },
+            { start: 90000, end: 150000, label: '9万 - 15万件' },
+            { start: 30000, end: 90000, label: '3万 - 9万件' },
+            { start: 5000, end: 30000, label: '5000 - 3万件' },
+            { start: 0, end: 5000, label: '5000件以下' }
           ],
           inRange: {
-            color: ['#6C2398', '#573BC0', '#32B1FF']
+            color: ['#EEF3FF', '#C3D8FF', '#8FB4FF', '#5B8FF9', '#2E5FD8']
           },
-          // color: ["red", "blue", "yellow", "green"],
-          textStyle: { color: 'black' }
+          textStyle: { color: '#4E5969', fontSize: 12 }
         },
 
         // 配置属性
         series: [
           {
-            name: '数据',
+            name: '发货量',
             type: 'map',
             map: 'china',
-            roam: true, // 是否开启鼠标缩放和平移漫游
+            roam: false, // 双层漫游会与引导线错位，与 geo 保持一致均关闭
             label: {
-              show: true, // 省份信息
-              color: '#626364'
-
-              // formatter: (params) => {
-              //   let label = "";
-
-              //   if (keys.indexOf(params.name) == -1) return;
-              //   label = params.name + "\n" + params.value + "m³ \n 1.8%";
-              //   return label;
-              // },
+              show: true, // 省份名称，白色描边保证在色块上可读
+              color: '#1D2129',
+              fontSize: 10,
+              textBorderColor: '#FFFFFF',
+              textBorderWidth: 2
+            },
+            itemStyle: {
+              borderColor: '#E5E8EF',
+              borderWidth: 1
+            },
+            emphasis: {
+              itemStyle: { areaColor: '#EAF1FF' },
+              label: { show: true, color: '#1D2129', fontWeight: 600 }
             },
             data: newVal.data // 数据
           },
           {
-            // 含引导线的省份，用lines实现
+            // 含引导线的省份，用 lines 实现，以透明 geo 组件作坐标系宿主
             type: 'lines',
-            symbol: 'circle',
-            symbolSize: [6, 4],
+            coordinateSystem: 'geo',
+            geoIndex: 0,
+            // 引导线首尾符号：起点实心圆点、终点箭头
+            symbol: ['circle', 'arrow'],
+            symbolSize: 6,
+            lineStyle: {
+              color: '#9AA7BF',
+              width: 1,
+              type: 'dashed',
+              opacity: 0.85
+            },
             label: {
               show: true,
-              // formatter: "{b}{c}",
               formatter: params => {
-                let showValue = ''
-                // console.log(params)
-                showValue =
-                  params.dataIndex + 1 + ',' + params.name + ' ' + params.value
-
-                return showValue
+                return (
+                  params.dataIndex + 1 + '. ' + params.name + ' ' + params.value
+                )
               },
-              color: 'green'
+              color: '#1D2129',
+              fontSize: 12,
+              fontWeight: 600,
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              padding: [3, 6],
+              borderRadius: 4,
+              borderColor: '#E5E8EF',
+              borderWidth: 1
             },
             data: linesData
           }
         ],
-        // 地理坐标系组件用于地图的绘制，支持在地理坐标系上绘制散点图，线集。
-        geo: [
-          {
-            map: 'china',
-            roam: true
-          }
-        ]
+        // 透明的 geo 组件：仅作 lines 的坐标系宿主，视觉与交互全关，
+        // 避免与 map series 重复渲染同一地图
+        geo: {
+          map: 'china',
+          roam: false,
+          silent: true,
+          itemStyle: { opacity: 0 },
+          label: { show: false }
+        }
       }
-
-      this.myChart.setOption(this.option, true)
-
-      let that = this
-      this.myChart.on('click', function (params) {
-        // that.$router.push({ path: "/MapDetail", query: {} });
-        that.getProvince(params)
-      })
     },
     getProvince(params) {
       // 调用父组件设置的点击事件
       this.$emit('getProvince', params)
     },
     paint() {
+      // 注册地图 GeoJSON，之后 map series 与 geo 组件才能通过 map: 'china' 引用
       this.$echarts.registerMap('china', china)
-      this.myChart = this.$echarts.init(document.getElementById(this.echartId))
       if (this.chartData) {
         this.initData(this.chartData)
       }
+      // markRaw 防止 Vue3 将 echarts 实例代理为响应式对象
+      this.myChart = markRaw(
+        this.$echarts.init(document.getElementById(this.echartId))
+      )
+      this.myChart.setOption(this.option, true)
+      // 先解绑再绑定，避免重绘时重复触发
+      this.myChart.off('click')
+      this.myChart.on('click', params => {
+        this.getProvince(params)
+      })
       // 不重新渲染下排名信息第一次渲染不出来
       this.$nextTick(() => {
         this.resizeChart()
