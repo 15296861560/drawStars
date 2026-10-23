@@ -7,15 +7,12 @@
       :particlesInit="particlesInit"
       :options="particles"
     />
-    <div
-      class="form-bg"
-      :class="isRegister ? 'register-form-bg' : 'login-form-bg'"
-    ></div>
     <!-- 登录框 -->
     <el-form :rules="rules" :model="loginForm" v-show="!isRegister">
       <div class="form-container login-form">
         <img class="login-logo" :src="logoIcon" alt="Draw Stars" />
         <h2 class="welcome">{{ $t('welcome') }}</h2>
+        <p class="welcome-sub">{{ $t('welcomeSub') }}</p>
         <el-form-item prop="account">
           <el-input
             v-model="loginForm.account"
@@ -105,6 +102,7 @@
     <form class="form-container register-form" v-show="isRegister">
       <img class="login-logo" :src="logoIcon" alt="Draw Stars" />
       <h2 class="welcome">{{ $t('welcome') }}</h2>
+      <p class="welcome-sub">{{ $t('welcomeSub') }}</p>
 
       <div class="input-box mb20">
         <input
@@ -513,63 +511,86 @@ export default {
   position: absolute;
   z-index: 2;
 }
-.form-bg {
-  width: 30vw;
-  height: 50vh;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 4px;
-  background: @color-morandi-10;
-  filter: blur(4px);
-  opacity: 0.5;
-  z-index: 3;
-  transition: all ease 0.3s;
-}
-
-.login-form-bg {
-  min-height: 40vh;
-}
-.register-form-bg {
-  height: 50vh;
-}
-
-.login-form {
-  width: 30vw;
-  min-height: 40vh;
-}
-.register-form {
-  width: 30vw;
-  min-height: 50vh;
-}
-
+// 玻璃卡片：磨砂底直接落在表单容器上（原独立 .form-bg 背景层已合并，
+// 避免背景层用固定高度与内容脱节，注册表单内容溢出面板）
 .form-container {
-  background-color: transparent;
+  width: 30vw;
+  min-width: 400px;
   position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 4px;
-  padding: 2rem;
+  padding: 2.5rem;
+  border-radius: @ds-radius-lg;
+  background: fade(@color-morandi-10, 50%);
+  backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid fade(@color-morandi-10, 60%);
+  box-shadow: @ds-shadow-lg;
   z-index: 9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  overflow: hidden;
-  transition: all ease 0.3s;
+  transition: all @ds-duration-base @ds-ease-out;
   .login-logo {
     width: 56px;
     height: 56px;
     border-radius: 14px;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 14px rgba(18, 115, 232, 0.25);
+    margin-bottom: 16px;
+    box-shadow: @ds-shadow-md;
   }
 
   .welcome {
-    font-size: 1.5em;
-    font-weight: bold;
+    margin: 0 0 4px;
+    font-size: @ds-font-xxl;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: @color-text-normal;
+  }
+
+  .welcome-sub {
+    margin: 0 0 12px;
+    font-size: @ds-font-sm;
+    color: @color-text-secondary;
+    letter-spacing: 0.01em;
+  }
+
+  // Element Plus 输入框统一风格：白底、清晰描边、焦点靛蓝光圈
+  :deep(.el-input) {
+    --el-input-height: 40px;
+  }
+
+  :deep(.el-input__wrapper) {
+    border-radius: @ds-radius-md;
+    background-color: @color-bg;
+    box-shadow: 0 0 0 1px @color-liner-border inset;
+    transition: box-shadow @ds-duration-fast @ds-ease-out;
+
+    &:hover {
+      box-shadow: 0 0 0 1px @color-border-hover inset;
+    }
+
+    &.is-focus {
+      box-shadow:
+        0 0 0 1px @ds-primary inset,
+        0 0 0 3px @ds-primary-light inset;
+    }
+  }
+
+  // 前置图标脱离灰底，仅随所属输入框聚焦点亮
+  :deep(.el-input-group__prepend) {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0 6px 0 2px;
+    color: @color-icon-placeholder;
+
+    .el-icon {
+      font-size: 18px;
+      transition: color @ds-duration-fast @ds-ease-out;
+    }
+  }
+
+  :deep(.el-input:focus-within) .el-input-group__prepend .el-icon {
+    color: @ds-primary;
   }
 
   .login-eye {
@@ -581,9 +602,9 @@ export default {
 
   .btn-captcha {
     cursor: pointer;
-    border-left: solid 1px rgb(227, 233, 255);
-    font-size: 0.75rem /* 12/16 */;
-    padding-left: 0.75rem /* 12/16 */;
+    border-left: solid 1px fade(@ds-primary, 20%);
+    font-size: @ds-font-xs;
+    padding-left: 12px;
   }
 
   .switch-row {
@@ -613,6 +634,22 @@ export default {
 
   .btn-submit {
     width: 100%;
+    height: 44px;
+    border-radius: @ds-radius-md;
+    font-size: @ds-font-lg;
+    font-weight: 600;
+    transition:
+      transform @ds-duration-fast @ds-ease-out,
+      box-shadow @ds-duration-fast @ds-ease-out;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: @ds-shadow-md;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
   }
 
   :deep(.el-form-item__error) {
@@ -626,22 +663,27 @@ export default {
   width: 100%;
   .input-box__inner {
     width: 100%;
-    padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    background: none;
-    border-radius: 4px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid @color-liner-border;
+    background: @color-bg;
+    border-radius: @ds-radius-md;
     outline: none;
-    font-size: 1rem;
-    transition: 0.5s;
+    font-size: @ds-font-md;
+    color: @color-text-normal;
+    transition:
+      border-color @ds-duration-fast @ds-ease-out,
+      box-shadow @ds-duration-fast @ds-ease-out;
     &:valid,
     &:focus {
-      border: 1px solid #50c9c3;
+      border-color: @ds-primary;
+      box-shadow: 0 0 0 3px @ds-primary-light;
       & ~ .input-box__tip {
-        color: #50c9c3;
-        transform: translateY(-0.9rem) scale(0.7); /* 变换位置 */
-        padding: 0.5rem;
-        background: #fffaf4;
-        border-radius: 4px;
+        color: @ds-primary;
+        transform: translateY(-0.9rem) scale(0.7);
+        padding: 0 4px;
+        background: @color-bg;
+        border-radius: @ds-radius-sm;
         letter-spacing: 0.1rem;
       }
     }
@@ -653,13 +695,15 @@ export default {
   }
   .input-box__tip {
     position: absolute;
-    left: 0;
+    left: 14px;
     top: 0;
-    color: #939496;
-    padding: 1rem;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    color: @color-text-placeholder;
     pointer-events: none;
-    font-size: 1rem;
-    transition: all ease 0.5s;
+    font-size: @ds-font-md;
+    transition: all @ds-duration-base @ds-ease-out;
   }
 }
 
@@ -670,20 +714,22 @@ export default {
   z-index: 11;
   text-align: left;
   width: 100%;
-  font-size: 1.2rem;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 4px;
-  box-shadow: #cfd5d6 10px 10px 10px;
+  font-size: @ds-font-sm;
+  color: @color-text-secondary;
+  background-color: @color-bg;
+  padding: 12px 16px;
+  border-radius: @ds-radius-md;
+  box-shadow: @ds-shadow-lg;
+  border: 1px solid fade(@color-liner-border, 60%);
   line-height: 2rem;
 }
 
 .icon-error {
-  color: #f44234;
+  color: @color-danger;
   margin-right: 4px;
 }
 .icon-circle-check {
-  color: #6fc362;
+  color: @color-success;
   margin-right: 4px;
 }
 .other-login-area {
@@ -717,8 +763,13 @@ export default {
     align-items: center;
     justify-content: space-around;
     .login-github {
-      color: black;
+      color: @color-text-normal;
       text-decoration: unset;
+      transition: color @ds-duration-fast @ds-ease-out;
+
+      &:hover {
+        color: @ds-primary-hover;
+      }
     }
   }
 }
@@ -731,6 +782,7 @@ export default {
 {
   "zh": {
      "welcome":"欢迎来到绘星!",
+     "welcomeSub":"记录灵感，绘出你的星空",
      "noAccount":"没有账号？",
      "hasAccount":"已有账号，",
      "phoneLogin":"手机号登录",
@@ -775,6 +827,7 @@ export default {
   },
   "en": {
     "welcome":"Welcome to draw starts!",
+    "welcomeSub":"Capture ideas, paint your starry sky",
     "noAccount":"No account?",
     "hasAccount":"Existing account,",
     "phoneLogin":"Login with phone",
