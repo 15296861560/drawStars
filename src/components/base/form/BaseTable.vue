@@ -32,6 +32,7 @@
           <el-button
             circle
             :icon="tool.icon"
+            :aria-label="tool.tip || tool.label"
             :disabled="tool.disabled ? tool.disabled() : false"
             @click="tool.action"
           />
@@ -71,7 +72,6 @@
           :label="fields.label"
           :sortable="fields.sortable"
           show-overflow-tooltip
-          :width="fields.width"
           :min-width="resolveMinWidth(fields)"
           :align="fields.align || 'left'"
         >
@@ -108,7 +108,7 @@
               >
                 <el-button
                   link
-                  :type="operate.type || 'primary'"
+                  :type="resolveOperateType(operate)"
                   :icon="operate.icon"
                   :disabled="handleDisabledButton(operate, scope.row)"
                   @click="operate.action(scope.row)"
@@ -118,7 +118,7 @@
                 v-else-if="handleShowButton(operate, scope.row)"
                 link
                 :color="operate.color"
-                :type="operate.type"
+                :type="resolveOperateType(operate)"
                 :disabled="handleDisabledButton(operate, scope.row)"
                 @click="operate.action(scope.row)"
               >
@@ -308,15 +308,45 @@ function measureOperateColumn() {
   })
 }
 
-/** 已设 width 时不再设 min-width，避免 Element Plus 列宽计算错乱 */
+/**
+ * 配置列统一为弹性列宽：width 仅作为 min-width 下限，不锁死列宽。
+ * 全固定宽会使表格合计小于容器时不再铺满，fixed 操作列随即 sticky 吸附到
+ * 容器右缘、与表体之间拉出大段空隙（“表格断成两截”错位），改用弹性列后
+ * 表格恒等于容器宽；合计超容器时各列收缩到下限再出横向滚动，行为不变。
+ */
 const resolveMinWidth = (fields: AnyObject) => {
   if (fields.minWidth != null && fields.minWidth !== '') return fields.minWidth
-  if (fields.width != null && fields.width !== '') return undefined
+  if (fields.width != null && fields.width !== '') return fields.width
   return 100
 }
 
 const handleShowButton = (operate: AnyObject, row: AnyObject): boolean =>
   operate.show ? operate.show(operate, row, props.options, route) : true
+
+/**
+ * 操作列按钮按功能语义统一配色，避免一列按钮清一色主色无法区分：
+ * 语义词表（前缀匹配）优先，未命中时回退页面显式 type 或主色
+ * - 删除/移除/封禁类 → danger（不可逆）
+ * - 重置/取消/驳回/暂停类 → warning（高风险变更或降级）
+ * - 启用/恢复/发布/通过类 → success（正向状态动作）
+ * - 查看/详情/分析类 → info（只读浏览）
+ */
+const OP_SEMANTIC_TYPES: Array<[string[], string]> = [
+  [['删除', '移除', '清除', '清空', '注销', '拉黑', '封禁'], 'danger'],
+  [['重置', '取消', '驳回', '停用', '禁用', '暂停', '终止', '冻结'], 'warning'],
+  [['启用', '激活', '恢复', '解封', '通过', '发布', '上线'], 'success'],
+  [['查看', '详情', '预览', '分析', '浏览'], 'info']
+]
+
+const resolveOperateType = (operate: AnyObject) => {
+  const label = String(operate?.label || '')
+  for (const [prefixes, type] of OP_SEMANTIC_TYPES) {
+    if (prefixes.some(prefix => label.startsWith(prefix))) {
+      return type
+    }
+  }
+  return operate?.type || 'primary'
+}
 
 const handleDisabledButton = (operate: AnyObject, row: AnyObject): boolean =>
   operate.disabled ? operate.disabled(operate, row) : false
@@ -370,11 +400,9 @@ defineExpose({ tableRef, doLayout })
 </script>
 
 <style scoped lang="less">
+// 视觉皮肤（白卡容器/圆角/内边距）由 g.less「通用表格皮肤」全局规则统一供给：
+// 此处仅保留纯布局样式，避免异步组件 scoped 样式后加载时反向覆盖全局皮肤
 .base-table {
-  background: #fff;
-  border-radius: 4px;
-  padding: 12px 16px 8px;
-
   &__toolbar {
     display: flex;
     align-items: center;
@@ -400,11 +428,6 @@ defineExpose({ tableRef, doLayout })
 
   &__body {
     width: 100%;
-
-    :deep(.el-table__header),
-    :deep(.el-table__body) {
-      width: 100% !important;
-    }
   }
 
   &__row-ops {
@@ -422,7 +445,6 @@ defineExpose({ tableRef, doLayout })
   &__pagination {
     display: flex;
     justify-content: flex-end;
-    padding: 14px 0 6px;
   }
 }
 </style>

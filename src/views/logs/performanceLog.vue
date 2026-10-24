@@ -1,32 +1,28 @@
 <template>
-  <div class="log-container g-list-vertical">
-    <el-row class="mb40" :gutter="20">
-      <el-col :span="20">
-        <div class="flex">
-          <search-item
-            v-for="item in searchItems"
-            :key="item.field"
-            v-model:field="searchInfo[item.field]"
-            :label="item.label"
-            :type="item.type"
-            :placeholder="item.placeholder"
-            :options="item.options"
-            clearable
-            :class="`w-1/${searchItems.length}`"
-          ></search-item>
-        </div>
-      </el-col>
-      <el-col :span="4">
-        <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{
-            $t('btn.search')
-          }}</el-button>
-          <el-button type="warning" @click="reset">{{
-            $t('btn.reset')
-          }}</el-button>
-        </div>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="性能日志" desc="接口耗时与前端性能监控记录">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Timer /></el-icon>
+          共 {{ pageInfo.total }} 条
+        </span>
+      </template>
+    </page-hero>
+
+    <filter-bar @search="query" @reset="reset">
+      <search-item
+        v-for="item in searchItems"
+        :key="item.field"
+        v-model:field="searchInfo[item.field]"
+        :label="item.label"
+        :type="item.type"
+        :placeholder="item.placeholder"
+        :options="item.options"
+        clearable
+      />
+    </filter-bar>
+
     <BaseTable :options="tableOptions" :page="pageInfo" max-height="700" />
   </div>
 </template>
@@ -35,6 +31,7 @@
 import { ref, reactive, computed, onMounted, defineAsyncComponent } from 'vue'
 import { showTips } from '@/utils/message/showTips.js'
 import logApi from '@/assets/js/api/logController/logApi.js'
+import { Timer } from '@element-plus/icons-vue'
 
 const BaseTable = defineAsyncComponent(
   () => import('@/components/base/form/BaseTable.vue')
@@ -42,11 +39,18 @@ const BaseTable = defineAsyncComponent(
 const SearchItem = defineAsyncComponent(
   () => import('@/components/base/SearchItem/index.vue')
 )
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const searchInfo = reactive({
   method: '',
   url: '',
   status: '',
+  timeRange: [],
   startTime: '',
   endTime: ''
 })
@@ -95,8 +99,14 @@ const searchItems = computed(() => [
 ])
 
 async function query() {
+  const range = Array.isArray(searchInfo.timeRange) ? searchInfo.timeRange : []
   const result = await logApi.queryPerformanceLogs({
-    ...searchInfo,
+    method: searchInfo.method || undefined,
+    url: searchInfo.url || undefined,
+    status: searchInfo.status || undefined,
+    startTime: range[0] || searchInfo.startTime || undefined,
+    endTime: range[1] || searchInfo.endTime || undefined,
+    timeRange: range.length >= 2 ? range : undefined,
     curPage: pageInfo.curPage,
     pageSize: pageInfo.pageSize
   })
@@ -107,7 +117,12 @@ async function query() {
 }
 
 const reset = () => {
-  Object.keys(searchInfo).forEach(k => (searchInfo[k] = ''))
+  searchInfo.method = ''
+  searchInfo.url = ''
+  searchInfo.status = ''
+  searchInfo.timeRange = []
+  searchInfo.startTime = ''
+  searchInfo.endTime = ''
   pageInfo.curPage = 1
   query()
 }

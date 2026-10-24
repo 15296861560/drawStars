@@ -1,12 +1,56 @@
 <template>
-  <div class="g-list-vertical">
-    <search-form
-      :model="searchInfo"
-      :items="searchFields"
-      :visible="showSearch"
-      @search="query"
-      @reset="reset"
-    />
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="角色管理" desc="维护系统角色与菜单权限分配">
+      <template #side>
+        <span class="page-hero__pill">共 {{ pageInfo.total }} 个角色</span>
+        <el-button
+          v-permission="'system:role:create'"
+          class="page-hero__btn"
+          :icon="Plus"
+          @click="openCreate"
+          >新建角色</el-button
+        >
+      </template>
+    </page-hero>
+
+    <!-- 筛选栏 -->
+    <filter-bar @search="query" @reset="reset">
+      <el-input
+        v-model="searchInfo.name"
+        class="filter-bar__keyword"
+        :prefix-icon="Search"
+        placeholder="请输入角色名称"
+        clearable
+        @keyup.enter="query"
+        @clear="query"
+      />
+      <el-input
+        v-model="searchInfo.code"
+        class="filter-bar__keyword"
+        placeholder="请输入权限字符"
+        clearable
+        @keyup.enter="query"
+        @clear="query"
+      />
+      <el-select
+        v-model="searchInfo.status"
+        class="filter-bar__status"
+        placeholder="角色状态"
+        clearable
+      >
+        <el-option label="启用" :value="1" />
+        <el-option label="停用" :value="0" />
+      </el-select>
+      <el-date-picker
+        v-model="searchInfo.dateRange"
+        class="filter-bar__date-range"
+        type="daterange"
+        value-format="YYYY-MM-DD"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+      />
+    </filter-bar>
 
     <base-table
       :options="tableOptions"
@@ -61,8 +105,8 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="formVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
       </template>
     </el-dialog>
 
@@ -94,12 +138,12 @@
         :default-checked-keys="[]"
       />
       <template #footer>
-        <el-button v-if="!bindIsSuperAdmin" type="primary" @click="submitBind"
-          >确 定</el-button
-        >
         <el-button @click="bindVisible = false">{{
           bindIsSuperAdmin ? '关 闭' : '取 消'
         }}</el-button>
+        <el-button v-if="!bindIsSuperAdmin" type="primary" @click="submitBind"
+          >确 定</el-button
+        >
       </template>
     </el-dialog>
   </div>
@@ -128,7 +172,7 @@ import roleApi from '@/assets/js/api/roleController/roleApi.js'
 import menuApi from '@/assets/js/api/menuController/menuApi.js'
 import { showTips } from '@/utils/message/showTips.js'
 import { exportFile } from '@/utils/commom/importAndExport.ts'
-import { tableFields, searchFields } from './config/schema'
+import { tableFields } from './config/schema'
 import { permissionStore } from '@/stores/permission'
 
 const perm = permissionStore()
@@ -136,11 +180,13 @@ const perm = permissionStore()
 const BaseTable = defineAsyncComponent(
   () => import('@/components/base/form/BaseTable.vue')
 )
-const SearchForm = defineAsyncComponent(
-  () => import('@/components/base/SearchForm/index.vue')
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
-const showSearch = ref(true)
 const searchInfo = reactive({
   name: '',
   code: '',
@@ -218,10 +264,6 @@ const formatTime = ts => {
   if (Number.isNaN(d.getTime())) return '-'
   const pad = n => String(n).padStart(2, '0')
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
-}
-
-const toggleSearch = () => {
-  showSearch.value = !showSearch.value
 }
 
 const handleSelectionChange = rows => {
@@ -457,7 +499,7 @@ const tableOperate = [
   },
   {
     label: '修改',
-    type: 'success',
+    type: 'primary',
     icon: Edit,
     action: batchEdit,
     show: () => perm.hasPermission('system:role:update'),
@@ -473,14 +515,13 @@ const tableOperate = [
   },
   {
     label: '导出',
-    type: 'warning',
+    type: 'primary',
     icon: Download,
     action: exportData
   }
 ]
 
 const tableTools = [
-  { label: '搜索', tip: '搜索', icon: Search, action: toggleSearch },
   { label: '刷新', tip: '刷新', icon: Refresh, action: query }
 ]
 
@@ -496,7 +537,7 @@ const pageTableOperate = [
   {
     label: '删除',
     tip: '删除',
-    type: 'primary',
+    type: 'danger',
     icon: Delete,
     action: handleDelete,
     show: () => perm.hasPermission('system:role:delete')
@@ -533,6 +574,22 @@ onMounted(query)
 </script>
 
 <style scoped>
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
+
+/* ===== 筛选栏字段宽度 ===== */
+.filter-bar__keyword {
+  width: 280px;
+}
+
+.filter-bar__status {
+  width: 140px;
+}
+
+.filter-bar__date-range {
+  width: 280px;
+}
+
 .mb16 {
   margin-bottom: 16px;
 }

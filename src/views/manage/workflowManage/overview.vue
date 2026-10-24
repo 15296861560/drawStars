@@ -1,19 +1,18 @@
 <template>
-  <div class="workflow-overview">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>流程概览</h3>
-        <p>查看流程执行核心指标、趋势、排行与告警规则</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <page-hero
+      title="流程概览"
+      desc="查看流程执行核心指标、趋势、排行与告警规则"
+    >
+      <template #side>
         <el-button
           v-permission="'system:workflow:list'"
-          type="primary"
+          class="page-hero__btn"
           @click="reload"
           >刷新</el-button
         >
-      </div>
-    </div>
+      </template>
+    </page-hero>
 
     <el-row :gutter="16" class="kpi-row" v-loading="loading">
       <el-col :xs="12" :sm="6" v-for="item in kpiList" :key="item.key">
@@ -136,7 +135,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, nextTick } from 'vue'
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  nextTick
+} from 'vue'
 import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
 import {
@@ -151,6 +157,10 @@ import type {
   Workflow,
   WorkflowAlertRule
 } from '@/types/workflow'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 type TagType = 'primary' | 'success' | 'warning' | 'info' | 'danger'
 
@@ -390,39 +400,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="less">
-.workflow-overview {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+/* 页面骨架间距统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留 KPI 卡与图表卡局部样式 */
 
 .kpi-row {
   :deep(.el-col) {

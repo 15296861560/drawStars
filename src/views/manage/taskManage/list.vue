@@ -1,60 +1,61 @@
 <template>
-  <div class="task-list">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>任务列表</h3>
-        <p>创建、编辑与管理任务生命周期</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="任务列表" desc="创建、编辑与管理任务生命周期">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Tickets /></el-icon>
+          共 {{ store.adminTotal }} 条任务
+        </span>
         <el-button
           v-permission="'system:task:create'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >创建任务</el-button
         >
-        <el-button @click="reload">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
 
-    <el-card shadow="never" class="panel-card">
-      <div class="filter-bar">
-        <el-input
-          v-model="query.title"
-          clearable
-          placeholder="标题 / 任务编号"
-          style="width: 200px"
-          @keyup.enter="search"
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-input
+        v-model="query.title"
+        clearable
+        placeholder="标题 / 任务编号"
+        style="width: 200px"
+        @keyup.enter="search"
+      />
+      <el-select
+        v-model="query.status"
+        clearable
+        placeholder="状态"
+        style="width: 140px"
+      >
+        <el-option
+          v-for="s in statusOptions"
+          :key="s.value"
+          :label="s.label"
+          :value="s.value"
         />
-        <el-select
-          v-model="query.status"
-          clearable
-          placeholder="状态"
-          style="width: 140px"
-        >
-          <el-option
-            v-for="s in statusOptions"
-            :key="s.value"
-            :label="s.label"
-            :value="s.value"
-          />
-        </el-select>
-        <el-select
-          v-model="query.taskType"
-          clearable
-          placeholder="类型"
-          style="width: 140px"
-        >
-          <el-option
-            v-for="t in typeOptions"
-            :key="t.value"
-            :label="t.label"
-            :value="t.value"
-          />
-        </el-select>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </div>
+      </el-select>
+      <el-select
+        v-model="query.taskType"
+        clearable
+        placeholder="类型"
+        style="width: 140px"
+      >
+        <el-option
+          v-for="t in typeOptions"
+          :key="t.value"
+          :label="t.label"
+          :value="t.value"
+        />
+      </el-select>
+    </filter-bar>
 
+    <!-- 任务列表 -->
+    <div class="base-table">
       <el-table
         ref="tableRef"
         :data="store.adminList"
@@ -118,6 +119,7 @@
               <el-button
                 v-permission="'system:task:create'"
                 link
+                type="primary"
                 @click="onCopy(row)"
                 >复制</el-button
               >
@@ -134,6 +136,7 @@
                 v-if="row.status === 'APPROVED'"
                 v-permission="'system:task:status'"
                 link
+                type="warning"
                 @click="onPause(row)"
                 >暂停</el-button
               >
@@ -165,6 +168,7 @@
               <el-button
                 v-permission="'system:task:assign'"
                 link
+                type="primary"
                 @click="openAssign(row)"
                 >指派</el-button
               >
@@ -180,7 +184,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="pager.curPage"
           v-model:page-size="pager.pageSize"
@@ -192,7 +196,7 @@
           @size-change="onSizeChange"
         />
       </div>
-    </el-card>
+    </div>
 
     <TaskFormDialog
       v-model="formVisible"
@@ -223,13 +227,27 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
+import {
+  computed,
+  defineAsyncComponent,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  watch
+} from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { taskStore } from '@/stores/task'
 import { userInfoStore } from '@/stores/user-info'
 import type { CreateTaskPayload, Task } from '@/types/task'
 import * as taskApi from '@/api/task'
 import TaskFormDialog from '@/components/task/admin/TaskFormDialog.vue'
+import FilterBar from '@/components/base/FilterBar/index.vue'
+import { Tickets } from '@element-plus/icons-vue'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const store = taskStore()
 const userStore = userInfoStore()
@@ -323,9 +341,9 @@ function typeText(s: string) {
 
 function statusTag(s: string) {
   if (s === 'APPROVED') return 'success'
-  if (s === 'PENDING') return 'warning'
-  if (s === 'REJECTED' || s === 'OFFLINE') return 'danger'
-  if (s === 'PAUSED') return 'info'
+  if (s === 'PENDING' || s === 'PAUSED') return 'warning'
+  if (s === 'REJECTED') return 'danger'
+  if (s === 'DRAFT' || s === 'OFFLINE') return 'info'
   return ''
 }
 
@@ -424,10 +442,18 @@ async function submitAudit(row: Task) {
 
 async function onPause(row: Task) {
   try {
+    await ElMessageBox.confirm(
+      '确认暂停该任务？暂停后用户端将不可领取',
+      '提示',
+      {
+        type: 'warning'
+      }
+    )
     await store.pauseTask(row.id)
     ElMessage.success('已暂停')
     await reload()
   } catch (e: any) {
+    if (e === 'cancel' || e === 'close') return
     ElMessage.error(e?.message || '操作失败')
   }
 }
@@ -444,10 +470,18 @@ async function onResume(row: Task) {
 
 async function onOffline(row: Task) {
   try {
+    await ElMessageBox.confirm(
+      '确认下线该任务？下线后用户端将不再展示',
+      '提示',
+      {
+        type: 'warning'
+      }
+    )
     await store.offlineTask(row.id)
     ElMessage.success('已下线')
     await reload()
   } catch (e: any) {
+    if (e === 'cancel' || e === 'close') return
     ElMessage.error(e?.message || '操作失败')
   }
 }
@@ -546,50 +580,10 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="less">
-.task-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.panel-card {
-  border-radius: 8px;
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
+/* ===== 单元格 ===== */
 .row-ops {
   display: inline-flex;
   flex-wrap: nowrap;
@@ -605,6 +599,5 @@ onMounted(async () => {
 .pager {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
 </style>

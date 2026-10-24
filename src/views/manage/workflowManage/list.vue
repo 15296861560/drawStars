@@ -1,90 +1,90 @@
 <template>
-  <div class="workflow-list">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>{{ isRecycle ? '流程回收站' : '流程管理' }}</h3>
-        <p>
-          {{
-            isRecycle
-              ? '恢复误删的流程，长期未恢复的流程将被定期彻底清理'
-              : '编排、发布与治理自动化流程'
-          }}
-        </p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero
+      :title="isRecycle ? '流程回收站' : '流程管理'"
+      :desc="
+        isRecycle
+          ? '恢复误删的流程，长期未恢复的流程将被定期彻底清理'
+          : '编排、发布与治理自动化流程'
+      "
+    >
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Share /></el-icon>
+          共 {{ total }} 条流程
+        </span>
         <el-button
           v-if="!isRecycle"
           v-permission="'system:workflow:create'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新建流程</el-button
         >
-        <el-button @click="reload">刷新</el-button>
-      </div>
-    </div>
-
-    <el-card shadow="never" class="panel-card">
-      <div class="filter-bar">
-        <el-input
-          v-model="query.keyword"
-          clearable
-          placeholder="名称 / 描述关键词"
-          style="width: 200px"
-          @keyup.enter="search"
-        />
-        <el-select
-          v-model="query.categoryId"
-          clearable
-          placeholder="分类"
-          style="width: 140px"
-        >
-          <el-option
-            v-for="c in categories"
-            :key="c.id"
-            :label="c.name"
-            :value="c.id"
-          />
-        </el-select>
-        <el-select
-          v-model="query.status"
-          clearable
-          placeholder="状态"
-          style="width: 140px"
-        >
-          <el-option
-            v-for="s in statusOptions"
-            :key="s.value"
-            :label="s.label"
-            :value="s.value"
-          />
-        </el-select>
-        <el-select
-          v-if="!isRecycle"
-          v-model="query.triggerType"
-          clearable
-          placeholder="触发方式"
-          style="width: 140px"
-        >
-          <el-option
-            v-for="t in triggerOptions"
-            :key="t.value"
-            :label="t.label"
-            :value="t.value"
-          />
-        </el-select>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </div>
-
-      <el-alert
-        v-if="isRecycle"
-        class="recycle-alert"
-        type="warning"
-        :closable="false"
-        show-icon
-        title="回收站中的流程可恢复为草稿继续编辑；长期未恢复的流程将被定期彻底删除。"
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-input
+        v-model="query.keyword"
+        clearable
+        placeholder="名称 / 描述关键词"
+        style="width: 200px"
+        @keyup.enter="search"
       />
+      <el-select
+        v-model="query.categoryId"
+        clearable
+        placeholder="分类"
+        style="width: 140px"
+      >
+        <el-option
+          v-for="c in categories"
+          :key="c.id"
+          :label="c.name"
+          :value="c.id"
+        />
+      </el-select>
+      <el-select
+        v-model="query.status"
+        clearable
+        placeholder="状态"
+        style="width: 140px"
+      >
+        <el-option
+          v-for="s in statusOptions"
+          :key="s.value"
+          :label="s.label"
+          :value="s.value"
+        />
+      </el-select>
+      <el-select
+        v-if="!isRecycle"
+        v-model="query.triggerType"
+        clearable
+        placeholder="触发方式"
+        style="width: 140px"
+      >
+        <el-option
+          v-for="t in triggerOptions"
+          :key="t.value"
+          :label="t.label"
+          :value="t.value"
+        />
+      </el-select>
+    </filter-bar>
 
+    <el-alert
+      v-if="isRecycle"
+      type="warning"
+      :closable="false"
+      show-icon
+      title="回收站中的流程可恢复为草稿继续编辑；长期未恢复的流程将被定期彻底删除。"
+    />
+
+    <!-- 流程列表 -->
+    <div class="base-table">
       <el-table :data="list" v-loading="loading" border stripe size="small">
         <template #empty>
           <el-empty
@@ -203,7 +203,7 @@
               <el-button
                 v-permission="'system:workflow:publish'"
                 link
-                type="primary"
+                type="success"
                 @click="onRestore(row)"
                 >恢复</el-button
               >
@@ -294,7 +294,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="pager.curPage"
           v-model:page-size="pager.pageSize"
@@ -306,7 +306,7 @@
           @size-change="onSizeChange"
         />
       </div>
-    </el-card>
+    </div>
 
     <base-dialog
       ref="dialogRef"
@@ -432,9 +432,18 @@ import {
 } from '@/api/workflow'
 import MenuIcon from '@/components/layout/MenuIcon.vue'
 import { dialogFields } from './config/listSchema'
+import { Share } from '@element-plus/icons-vue'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const router = useRouter()
@@ -694,6 +703,15 @@ async function onPublish(row: Workflow) {
 
 async function onPause(row: Workflow) {
   try {
+    await ElMessageBox.confirm(
+      `确认暂停流程「${row.name}」？暂停后该流程将不再自动触发执行。`,
+      '暂停确认',
+      { type: 'warning' }
+    )
+  } catch {
+    return
+  }
+  try {
     const res = await pauseWorkflow(row.id)
     if (res?.status === false) {
       ElMessage.error(res.msg || '暂停失败')
@@ -721,6 +739,15 @@ async function onResume(row: Workflow) {
 }
 
 async function onOffline(row: Workflow) {
+  try {
+    await ElMessageBox.confirm(
+      `确认下线流程「${row.name}」？下线后该流程将不可再触发执行。`,
+      '下线确认',
+      { type: 'warning' }
+    )
+  } catch {
+    return
+  }
   try {
     const res = await offlineWorkflow(row.id)
     if (res?.status === false) {
@@ -914,60 +941,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-.workflow-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.recycle-alert {
-  margin-bottom: 12px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
 .wf-name {
   display: flex;
@@ -1014,7 +989,6 @@ onMounted(() => {
 .pager {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
 
 .audit-meta {

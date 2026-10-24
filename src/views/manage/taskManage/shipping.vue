@@ -1,14 +1,17 @@
 <template>
-  <div class="task-shipping">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>奖励发放</h3>
-        <p>处理实物奖励的发放与物流信息</p>
-      </div>
-      <el-button @click="reload">刷新</el-button>
-    </div>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="奖励发放" desc="处理实物奖励的发放与物流信息">
+      <template #side>
+        <span class="page-hero__pill">
+          共 {{ store.claims.length }} 条记录
+        </span>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
 
-    <el-card shadow="never" class="panel-card">
+    <!-- 发货记录列表 -->
+    <div class="base-table">
       <el-table
         :data="store.claims"
         v-loading="loading"
@@ -62,7 +65,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
+    </div>
 
     <el-dialog v-model="shipVisible" title="填写发货信息" width="420px">
       <el-form label-width="88px">
@@ -84,10 +87,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { taskStore } from '@/stores/task'
 import type { RewardClaimRecord } from '@/types/task'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const store = taskStore()
 const loading = ref(false)
@@ -161,38 +168,10 @@ onMounted(reload)
 </script>
 
 <style scoped lang="less">
-.task-shipping {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.panel-card {
-  border-radius: 8px;
-}
-
+/* ===== 单元格 ===== */
 .muted {
   color: var(--el-text-color-placeholder);
 }

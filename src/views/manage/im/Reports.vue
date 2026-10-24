@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import { reactive, ref, defineAsyncComponent } from 'vue'
 import { Search, Refresh } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 import { showTips } from '@/utils/message/showTips.js'
 import { adminApi } from '@/api/im'
 
@@ -94,6 +95,17 @@ const toggleSearch = () => {
 }
 
 async function handle(row: any, status: 'HANDLED' | 'REJECTED') {
+  if (status === 'REJECTED') {
+    try {
+      await ElMessageBox.confirm(
+        `确认驳回该举报（ID：${row.id}）？驳回后该举报将不再处理。`,
+        '驳回确认',
+        { type: 'warning' }
+      )
+    } catch {
+      return
+    }
+  }
   const res = await adminApi.handleReport(row.id, status as any)
   if (res.status) {
     showTips('success', status === 'HANDLED' ? '已处置' : '已驳回')
@@ -115,7 +127,7 @@ const pageTableOperate = [
   {
     label: '驳回',
     tip: '驳回举报',
-    type: 'info',
+    type: 'warning',
     icon: undefined as any,
     action: (row: any) => handle(row, 'REJECTED'),
     show: (op: any, row: any) => row.status === 'PENDING'

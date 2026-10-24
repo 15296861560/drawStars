@@ -92,8 +92,9 @@ export const allFields = [
     label: '状态',
     type: 'select',
     width: 100,
-    rule: [{ required: true, message: '请选择状态', trigger: 'blur' }],
-    placeholder: '请选择',
+    // 状态与模块目录发布状态强绑定，只能由 发布/下架 动作变更，弹窗中隐藏
+    hideDialog: true,
+    hint: '由发布/下架动作自动维护：发布成功为已发布，下架为未发布，新建为草稿',
     config: { valueKey: 'value', labelKey: 'label' },
     options: [
       { label: '已发布', value: 'published' },

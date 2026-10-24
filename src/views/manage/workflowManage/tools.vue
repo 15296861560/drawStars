@@ -1,62 +1,71 @@
 <template>
-  <div class="workflow-tools">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>工具管理</h3>
-        <p>维护流程可用的内置与自定义工具，支持 OpenAPI 导入与连通性测试</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero
+      title="工具管理"
+      desc="维护流程可用的内置与自定义工具，支持 OpenAPI 导入与连通性测试"
+    >
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><SetUp /></el-icon>
+          共 {{ total }} 个工具
+        </span>
         <el-button
           v-permission="'system:workflow:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新建工具</el-button
         >
-        <el-button v-permission="'system:workflow:operate'" @click="openImport"
+        <el-button
+          v-permission="'system:workflow:operate'"
+          class="page-hero__btn"
+          @click="openImport"
           >导入 OpenAPI</el-button
         >
-        <el-button v-permission="'system:workflow:list'" @click="reload"
+        <el-button
+          v-permission="'system:workflow:list'"
+          class="page-hero__btn"
+          @click="reload"
           >刷新</el-button
         >
-      </div>
-    </div>
-
-    <el-card shadow="never" class="panel-card">
-      <div class="filter-bar">
-        <el-input
-          v-model="query.keyword"
-          clearable
-          placeholder="名称/编码关键词"
-          style="width: 200px"
-          @keyup.enter="search"
-          @clear="search"
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-input
+        v-model="query.keyword"
+        clearable
+        placeholder="名称/编码关键词"
+        style="width: 200px"
+        @keyup.enter="search"
+        @clear="search"
+      />
+      <el-select
+        v-model="query.category"
+        clearable
+        placeholder="分类"
+        style="width: 130px"
+      >
+        <el-option
+          v-for="c in toolCategoryOptions"
+          :key="c.value"
+          :label="c.label"
+          :value="c.value"
         />
-        <el-select
-          v-model="query.category"
-          clearable
-          placeholder="分类"
-          style="width: 130px"
-        >
-          <el-option
-            v-for="c in toolCategoryOptions"
-            :key="c.value"
-            :label="c.label"
-            :value="c.value"
-          />
-        </el-select>
-        <el-select
-          v-model="query.isBuiltin"
-          clearable
-          placeholder="来源"
-          style="width: 120px"
-        >
-          <el-option label="内置" value="true" />
-          <el-option label="自定义" value="false" />
-        </el-select>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </div>
+      </el-select>
+      <el-select
+        v-model="query.isBuiltin"
+        clearable
+        placeholder="来源"
+        style="width: 120px"
+      >
+        <el-option label="内置" value="true" />
+        <el-option label="自定义" value="false" />
+      </el-select>
+    </filter-bar>
 
+    <!-- 工具列表 -->
+    <div class="base-table">
       <el-table
         :data="list"
         v-loading="loading"
@@ -131,7 +140,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="pager.curPage"
           v-model:page-size="pager.pageSize"
@@ -143,7 +152,7 @@
           @size-change="onSizeChange"
         />
       </div>
-    </el-card>
+    </div>
 
     <base-dialog
       ref="dialogRef"
@@ -266,9 +275,18 @@ import {
   toolCategoryOptions,
   toolCategoryText
 } from './config/toolsSchema'
+import { SetUp } from '@element-plus/icons-vue'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const loading = ref(false)
@@ -604,61 +622,10 @@ onMounted(reload)
 </script>
 
 <style scoped lang="less">
-.workflow-tools {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-
-  :deep(.el-card__body) {
-    padding: 16px 20px;
-  }
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
+/* ===== 单元格 ===== */
 .row-ops {
   display: inline-flex;
   flex-wrap: nowrap;
@@ -674,7 +641,6 @@ onMounted(reload)
 .pager {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
 
 // ==================== 导入/测试弹窗 ====================

@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 .im-mg-analytics { padding: 16px; }
 .im-mg-stat-title { font-size: 13px; color: @color-text-placeholder; }
-.im-mg-stat-value { font-size: 26px; font-weight: 600; margin-top: 6px; color: @color-primary; }
+.im-mg-stat-value { font-size: 24px; font-weight: 600; margin-top: 6px; color: @color-primary; }
 .im-mg-chart-title { font-size: 14px; font-weight: 500; margin-bottom: 10px; color: @color-text-normal; }
 .im-mg-chart-box { height: 280px; }
 </style>

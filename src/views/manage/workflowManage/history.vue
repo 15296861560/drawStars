@@ -1,71 +1,77 @@
 <template>
-  <div class="execution-history">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>执行历史</h3>
-        <p>查看流程执行记录，支持取消运行中任务与失败重跑</p>
-      </div>
-      <div class="page-actions">
-        <el-button v-permission="'system:workflow:list'" @click="reload"
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero
+      title="执行历史"
+      desc="查看流程执行记录，支持取消运行中任务与失败重跑"
+    >
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Clock /></el-icon>
+          共 {{ total }} 条执行记录
+        </span>
+        <el-button
+          v-permission="'system:workflow:list'"
+          class="page-hero__btn"
+          @click="reload"
           >刷新</el-button
         >
-      </div>
-    </div>
-
-    <el-card shadow="never" class="panel-card">
-      <div class="filter-bar">
-        <el-select
-          v-model="query.workflowId"
-          clearable
-          filterable
-          placeholder="所属流程"
-          style="width: 180px"
-        >
-          <el-option
-            v-for="w in workflows"
-            :key="w.id"
-            :label="w.name"
-            :value="w.id"
-          />
-        </el-select>
-        <el-select
-          v-model="query.status"
-          clearable
-          placeholder="状态"
-          style="width: 130px"
-        >
-          <el-option
-            v-for="s in statusOptions"
-            :key="s.value"
-            :label="s.label"
-            :value="s.value"
-          />
-        </el-select>
-        <el-select
-          v-model="query.triggerType"
-          clearable
-          placeholder="触发方式"
-          style="width: 130px"
-        >
-          <el-option
-            v-for="t in triggerOptions"
-            :key="t.value"
-            :label="t.label"
-            :value="t.value"
-          />
-        </el-select>
-        <el-date-picker
-          v-model="timeRange"
-          type="datetimerange"
-          range-separator="至"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-          style="width: 360px"
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-select
+        v-model="query.workflowId"
+        clearable
+        filterable
+        placeholder="所属流程"
+        style="width: 180px"
+      >
+        <el-option
+          v-for="w in workflows"
+          :key="w.id"
+          :label="w.name"
+          :value="w.id"
         />
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </div>
+      </el-select>
+      <el-select
+        v-model="query.status"
+        clearable
+        placeholder="状态"
+        style="width: 130px"
+      >
+        <el-option
+          v-for="s in statusOptions"
+          :key="s.value"
+          :label="s.label"
+          :value="s.value"
+        />
+      </el-select>
+      <el-select
+        v-model="query.triggerType"
+        clearable
+        placeholder="触发方式"
+        style="width: 130px"
+      >
+        <el-option
+          v-for="t in triggerOptions"
+          :key="t.value"
+          :label="t.label"
+          :value="t.value"
+        />
+      </el-select>
+      <el-date-picker
+        v-model="timeRange"
+        type="datetimerange"
+        range-separator="至"
+        start-placeholder="开始时间"
+        end-placeholder="结束时间"
+        style="width: 360px"
+      />
+    </filter-bar>
 
+    <!-- 执行历史列表 -->
+    <div class="base-table">
       <el-table
         :data="list"
         v-loading="loading"
@@ -144,7 +150,7 @@
         </el-table-column>
       </el-table>
 
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="pager.curPage"
           v-model:page-size="pager.pageSize"
@@ -156,12 +162,12 @@
           @size-change="onSizeChange"
         />
       </div>
-    </el-card>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Workflow, WorkflowExecution } from '@/types/workflow'
@@ -171,6 +177,12 @@ import {
   getWorkflows,
   rerunExecution
 } from '@/api/workflow'
+import FilterBar from '@/components/base/FilterBar/index.vue'
+import { Clock } from '@element-plus/icons-vue'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const router = useRouter()
 
@@ -392,61 +404,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-.execution-history {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-
-  :deep(.el-card__body) {
-    padding: 16px 20px;
-  }
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
+/* ===== 单元格 ===== */
 .row-ops {
   display: inline-flex;
   flex-wrap: nowrap;
@@ -462,7 +423,6 @@ onMounted(() => {
 .pager {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
 
 .status-cell {

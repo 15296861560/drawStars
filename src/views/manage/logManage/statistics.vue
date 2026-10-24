@@ -187,7 +187,7 @@ function initOperationChart(data) {
 
   .title {
     font-size: 14px;
-    color: #909399;
+    color: @color-text-placeholder;
   }
   .value {
     font-size: 24px;
@@ -195,11 +195,12 @@ function initOperationChart(data) {
   }
   .compare {
     font-size: 12px;
+    // 涨红跌绿（国内惯例）
     .up {
-      color: #f56c6c;
+      color: @ds-color-danger;
     }
     .down {
-      color: #67c23a;
+      color: @ds-color-success;
     }
   }
 }

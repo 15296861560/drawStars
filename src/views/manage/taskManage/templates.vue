@@ -1,14 +1,23 @@
 <template>
-  <div class="task-templates">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>模板管理</h3>
-        <p>维护奖励模板与任务模板，便于快速创建任务</p>
-      </div>
-      <el-button @click="reload">刷新</el-button>
-    </div>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="模板管理" desc="维护奖励模板与任务模板，便于快速创建任务">
+      <template #side>
+        <span class="page-hero__pill">
+          共
+          {{
+            activeTab === 'reward'
+              ? store.rewardTemplates.length
+              : store.taskTemplates.length
+          }}
+          个模板
+        </span>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
 
-    <el-card shadow="never" class="panel-card">
+    <!-- 模板列表（奖励模板 / 任务模板 Tab 切换） -->
+    <div class="base-table">
       <el-tabs v-model="activeTab">
         <el-tab-pane label="奖励模板" name="reward">
           <div class="tab-toolbar">
@@ -118,7 +127,7 @@
           </el-table>
         </el-tab-pane>
       </el-tabs>
-    </el-card>
+    </div>
 
     <el-dialog
       v-model="rewardDialogVisible"
@@ -200,10 +209,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { taskStore } from '@/stores/task'
 import type { RewardTemplate, TaskTemplateRecord } from '@/types/task'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const store = taskStore()
 const loading = ref(false)
@@ -400,38 +413,10 @@ onMounted(reload)
 </script>
 
 <style scoped lang="less">
-.task-templates {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.panel-card {
-  border-radius: 8px;
-}
-
+/* ===== Tab 工具条 ===== */
 .tab-toolbar {
   margin-bottom: 12px;
 }

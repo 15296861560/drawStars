@@ -1,13 +1,10 @@
 <template>
-  <div class="task-overview">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>任务概览</h3>
-        <p>查看核心指标、趋势与用户/奖励维度统计</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="任务概览" desc="查看核心指标、趋势与用户/奖励维度统计">
+      <template #side>
         <el-dropdown @command="onExport">
-          <el-button>
+          <el-button class="page-hero__btn">
             导出数据
             <el-icon class="el-icon--right"><ArrowDown /></el-icon>
           </el-button>
@@ -21,20 +18,24 @@
         </el-dropdown>
         <el-button
           v-permission="'system:task:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="go('list')"
           >任务列表</el-button
         >
-        <el-button @click="reload">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
 
     <el-row :gutter="16" class="kpi-row" v-loading="loading">
       <el-col :xs="12" :sm="6" v-for="item in kpiList" :key="item.key">
         <div
           class="kpi-card"
           :class="{ clickable: !!item.to }"
+          :role="item.to ? 'button' : undefined"
+          :tabindex="item.to ? 0 : undefined"
+          :aria-label="item.to ? '查看' + item.label + '详情' : undefined"
           @click="item.to && go(item.to)"
+          @keyup.enter="item.to && go(item.to)"
         >
           <div class="kpi-label">{{ item.label }}</div>
           <div class="kpi-value">{{ item.value }}</div>
@@ -153,12 +154,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  nextTick
+} from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { ArrowDown } from '@element-plus/icons-vue'
 import * as echarts from 'echarts'
 import { taskStore } from '@/stores/task'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const router = useRouter()
 const store = taskStore()
@@ -300,39 +313,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="less">
-.task-overview {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+/* 页面骨架样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
 .kpi-row {
   :deep(.el-col) {
@@ -345,7 +327,7 @@ onUnmounted(() => {
   width: 100%;
   min-height: 112px;
   box-sizing: border-box;
-  padding: 16px 18px;
+  padding: 16px;
   border: 1px solid var(--el-border-color-lighter);
   border-radius: 8px;
   background: var(--el-bg-color);
@@ -358,7 +340,7 @@ onUnmounted(() => {
 
     &:hover {
       border-color: var(--el-color-primary-light-5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: @ds-shadow-sm;
     }
   }
 }
@@ -369,7 +351,7 @@ onUnmounted(() => {
 }
 
 .kpi-value {
-  margin: 10px 0;
+  margin: 8px 0;
   font-size: 24px;
   font-weight: 600;
   word-break: break-all;

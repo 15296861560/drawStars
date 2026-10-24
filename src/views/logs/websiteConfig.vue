@@ -1,41 +1,26 @@
 <template>
-  <div class="analytics-page g-list-vertical">
-    <el-row class="mb20" :gutter="16" align="middle">
-      <el-col :span="12">
-        <h3 class="page-title">网站配置</h3>
-        <p class="page-desc">
-          配置埋点站点，Website UUID 对应前端 umami-config
-        </p>
-      </el-col>
-      <el-col :span="12" class="text-right">
-        <el-button type="primary" @click="openCreate">新建网站</el-button>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero
+      title="网站配置"
+      desc="配置埋点站点，Website UUID 对应前端 umami-config"
+    >
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Monitor /></el-icon>
+          共 {{ list.length }} 个站点
+        </span>
+        <el-button
+          type="primary"
+          class="page-hero__btn"
+          :icon="Plus"
+          @click="openCreate"
+          >新建网站</el-button
+        >
+      </template>
+    </page-hero>
 
-    <el-table :data="list" stripe border>
-      <el-table-column prop="websiteId" label="ID" width="80" />
-      <el-table-column prop="name" label="名称" min-width="140" />
-      <el-table-column prop="domain" label="域名" min-width="160" />
-      <el-table-column
-        prop="websiteUuid"
-        label="Website UUID"
-        min-width="280"
-      />
-      <el-table-column label="操作" width="320" fixed="right">
-        <template #default="{ row }">
-          <el-button link type="primary" @click="goDashboard(row)"
-            >仪表盘</el-button
-          >
-          <el-button link type="primary" @click="openEdit(row)">编辑</el-button>
-          <el-button link type="warning" @click="handleReset(row)"
-            >清空统计</el-button
-          >
-          <el-button link type="danger" @click="handleDelete(row)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+    <BaseTable :options="tableOptions" />
 
     <el-dialog
       v-model="dialogVisible"
@@ -68,11 +53,19 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 import { showTips } from '@/utils/message/showTips.js'
 import analyticsApi from '@/assets/js/api/analyticsController/analyticsApi.js'
+import { Monitor, Plus } from '@element-plus/icons-vue'
+
+const BaseTable = defineAsyncComponent(
+  () => import('@/components/base/form/BaseTable.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const router = useRouter()
 const list = ref([])
@@ -82,6 +75,27 @@ const form = reactive({
   name: '',
   domain: '',
   websiteUuid: ''
+})
+
+// 表格配置（BaseTable 配置驱动：弹性列宽 + 语义色操作按钮；无分页不传 page）
+// 「清空统计」命中语义词表「清空」→ danger，与删除同色；「仪表盘」为导航浏览类 → info
+const tableOptions = reactive({
+  tableData: list,
+  tableName: '网站配置',
+  tableFields: [
+    { fieldName: 'websiteId', label: 'ID', width: 80 },
+    { fieldName: 'name', label: '名称', width: 140 },
+    { fieldName: 'domain', label: '域名', width: 160 },
+    { fieldName: 'websiteUuid', label: 'Website UUID', width: 280 }
+  ],
+  showIndex: false,
+  showSelection: false,
+  pageTableOperate: [
+    { label: '仪表盘', type: 'info', action: row => goDashboard(row) },
+    { label: '编辑', type: 'primary', action: row => openEdit(row) },
+    { label: '清空统计', type: 'danger', action: row => handleReset(row) },
+    { label: '删除', type: 'danger', action: row => handleDelete(row) }
+  ]
 })
 
 function goDashboard(row) {
@@ -168,18 +182,3 @@ function handleDelete(row) {
 
 onMounted(load)
 </script>
-
-<style scoped lang="less">
-.page-title {
-  margin: 0;
-  font-size: 18px;
-}
-.page-desc {
-  margin: 6px 0 0;
-  color: #909399;
-  font-size: 13px;
-}
-.text-right {
-  text-align: right;
-}
-</style>

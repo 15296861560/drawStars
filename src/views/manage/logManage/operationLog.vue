@@ -1,32 +1,27 @@
 <template>
-  <div class="log-container">
-    <el-row class="mb40" :gutter="20">
-      <el-col :span="22">
-        <div class="flex">
-          <search-item
-            v-for="item in searchItems"
-            :key="item.field"
-            v-model:field="searchInfo[item.field]"
-            :label="item.label"
-            :type="item.type"
-            :placeholder="item.placeholder"
-            :options="item.options"
-            clearable
-            :class="`w-1/${searchItems.length}`"
-          ></search-item>
-        </div>
-      </el-col>
-      <el-col :span="2">
-        <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{
-            $t('btn.search')
-          }}</el-button>
-          <el-button type="warning" @click="reset">{{
-            $t('btn.reset')
-          }}</el-button>
-        </div>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="操作日志" desc="管理端关键操作的审计记录">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Memo /></el-icon>
+          共 {{ pageInfo.total }} 条
+        </span>
+      </template>
+    </page-hero>
+
+    <filter-bar @search="query" @reset="reset">
+      <search-item
+        v-for="item in searchItems"
+        :key="item.field"
+        v-model:field="searchInfo[item.field]"
+        :label="item.label"
+        :type="item.type"
+        :placeholder="item.placeholder"
+        :options="item.options"
+        clearable
+      />
+    </filter-bar>
 
     <BaseTable
       :options="tableOptions"
@@ -43,11 +38,18 @@ import { showTips } from '@/utils/message/showTips.js'
 import { ElMessageBox } from 'element-plus'
 import logApi from '@/assets/js/api/logController/logApi.js'
 import { exportFile } from '@/utils/commom/importAndExport.ts'
+import { Memo } from '@element-plus/icons-vue'
 const BaseTable = defineAsyncComponent(
   () => import('@/components/base/form/BaseTable.vue')
 )
 const SearchItem = defineAsyncComponent(
   () => import('@/components/base/SearchItem/index.vue')
+)
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 // 搜索条件

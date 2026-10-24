@@ -1,30 +1,34 @@
 <template>
-  <div class="workflow-categories">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>流程分类</h3>
-        <p>管理流程分类、排序与启用状态</p>
-      </div>
-      <div class="page-actions">
-        <el-input
-          v-model="keyword"
-          clearable
-          placeholder="名称 / 编码"
-          style="width: 200px"
-          @keyup.enter="search"
-        />
-        <el-button type="primary" @click="search">搜索</el-button>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="流程分类" desc="管理流程分类、排序与启用状态">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Collection /></el-icon>
+          共 {{ page.total }} 个分类
+        </span>
         <el-button
           v-permission="'system:workflow:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新建分类</el-button
         >
-        <el-button @click="load">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="load">刷新</el-button>
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-input
+        v-model="keyword"
+        clearable
+        placeholder="名称 / 编码"
+        style="width: 200px"
+        @keyup.enter="search"
+      />
+    </filter-bar>
 
-    <el-card shadow="never" class="panel-card">
+    <!-- 分类列表 -->
+    <div class="base-table">
       <el-table
         :data="pagedList"
         v-loading="loading"
@@ -85,7 +89,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="page.curPage"
           v-model:page-size="page.pageSize"
@@ -95,7 +99,7 @@
           background
         />
       </div>
-    </el-card>
+    </div>
 
     <base-dialog
       ref="dialogRef"
@@ -118,9 +122,18 @@ import {
 } from '@/api/workflow'
 import { showTips } from '@/utils/message/showTips.js'
 import { dialogFields } from './config/categoriesSchema'
+import { Collection } from '@element-plus/icons-vue'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const loading = ref(false)
@@ -199,6 +212,11 @@ function search() {
   load()
 }
 
+function resetQuery() {
+  keyword.value = ''
+  search()
+}
+
 function openCreate() {
   dialogTitle.value = '新建分类'
   dialogOptions.disabled = false
@@ -237,59 +255,11 @@ onMounted(load)
 </script>
 
 <style scoped lang="less">
-.workflow-categories {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-
-  :deep(.el-card__body) {
-    padding: 16px 20px;
-  }
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
 .pager {
-  margin-top: 12px;
-  padding: 4px 0 0;
   display: flex;
   justify-content: flex-end;
-  border-top: none;
 }
 </style>

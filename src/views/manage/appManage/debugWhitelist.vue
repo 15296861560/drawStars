@@ -1,35 +1,34 @@
 <template>
-  <div class="g-list-vertical">
-    <el-row class="mb40" :gutter="20">
-      <el-col :span="16">
-        <div class="flex">
-          <search-item
-            v-for="item in searchItems"
-            :key="item.field"
-            v-model:field="searchInfo[item.field]"
-            :label="item.label"
-            :type="item.type"
-            :placeholder="item.placeholder"
-            :options="item.options"
-            clearable
-            :class="`w-1/${searchItems.length}`"
-          ></search-item>
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{
-            $t('btn.query')
-          }}</el-button>
-          <el-button type="warning" @click="reset">{{
-            $t('btn.reset')
-          }}</el-button>
-          <el-button type="success" @click="create">{{
-            $t('btn.create')
-          }}</el-button>
-        </div>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="调试白名单" desc="调试设备白名单的维护管理">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Key /></el-icon>
+          共 {{ allList.length }} 条
+        </span>
+        <el-button
+          type="success"
+          class="page-hero__btn"
+          :icon="Plus"
+          @click="create"
+          >{{ $t('btn.create') }}</el-button
+        >
+      </template>
+    </page-hero>
+
+    <filter-bar @search="query" @reset="reset">
+      <search-item
+        v-for="item in searchItems"
+        :key="item.field"
+        v-model:field="searchInfo[item.field]"
+        :label="item.label"
+        :type="item.type"
+        :placeholder="item.placeholder"
+        :options="item.options"
+        clearable
+      />
+    </filter-bar>
 
     <base-table
       ref="tableRef"
@@ -52,6 +51,7 @@
 import { onMounted, ref, reactive, defineAsyncComponent, computed } from 'vue'
 import appApi from '@/assets/js/api/appController/appApi.js'
 import { showTips } from '@/utils/message/showTips.js'
+import { Plus, Key } from '@element-plus/icons-vue'
 import { dialogFields, tableFields } from './config/whitelistSchema'
 import i18n from '@/lang/index.js'
 
@@ -65,6 +65,12 @@ const BaseTable = defineAsyncComponent(
 )
 const SearchItem = defineAsyncComponent(
   () => import('@/components/base/SearchItem/index.vue')
+)
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const searchInfo = reactive({
@@ -167,5 +173,3 @@ const tableOptions = reactive({
 
 onMounted(load)
 </script>
-
-<style></style>

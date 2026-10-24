@@ -1,72 +1,180 @@
 <template>
-  <div class="g-list-vertical">
-    <el-row class="mb40" :gutter="20">
-      <el-col :span="16">
-        <div class="flex">
-          <search-item
-            v-for="item in searchItems"
-            :key="item.field"
-            v-model:field="searchInfo[item.field]"
-            :label="item.label"
-            :type="item.type"
-            :placeholder="item.placeholder"
-            :options="item.options"
-            clearable
-            :class="`w-1/${searchItems.length}`"
-          ></search-item>
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="flex justify-end">
-          <el-button type="primary" @click="query">{{
-            $t('btn.search')
-          }}</el-button>
-          <el-button type="warning" @click="reset">{{
-            $t('btn.reset')
-          }}</el-button>
-          <el-button
-            v-permission="'system:user:create'"
-            type="success"
-            @click="openCreate"
-            >{{ $t('btn.create') }}</el-button
-          >
-        </div>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="用户管理" desc="平台账号、角色与权限的统一管理入口">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><User /></el-icon>
+          共 {{ pageInfo.total }} 位用户
+        </span>
+        <el-button
+          v-permission="'system:user:create'"
+          class="page-hero__btn"
+          :icon="Plus"
+          @click="openCreate"
+          >{{ $t('btn.create') }}</el-button
+        >
+      </template>
+    </page-hero>
 
+    <!-- 筛选栏 -->
+    <filter-bar @search="applyFilter" @reset="reset">
+      <el-input
+        v-model="searchInfo.keyword"
+        class="filter-bar__keyword"
+        :prefix-icon="Search"
+        placeholder="搜索姓名 / 手机 / 邮箱"
+        clearable
+        @keyup.enter="applyFilter"
+        @clear="applyFilter"
+      />
+      <el-segmented
+        v-model="statusSegment"
+        :options="statusSegments"
+        @change="onStatusChange"
+      />
+      <el-select
+        v-model="searchInfo.roleId"
+        class="filter-bar__role"
+        placeholder="全部角色"
+        clearable
+        filterable
+        @change="applyFilter"
+      >
+        <el-option
+          v-for="r in roleOptions"
+          :key="r.id"
+          :label="r.name"
+          :value="r.id"
+        />
+      </el-select>
+    </filter-bar>
+
+    <!-- 用户列表 -->
     <base-table
+      class="user-table"
       :options="tableOptions"
       :page="pageInfo"
+      :border="false"
+      :stripe="false"
       max-height="700"
-    ></base-table>
+    >
+      <template #table>
+        <el-table-column label="用户" min-width="200">
+          <template #default="{ row }">
+            <div class="cell-user">
+              <div
+                class="cell-user__avatar"
+                :class="{ 'is-off': row.status === 'deactivated' }"
+              >
+                {{ avatarChar(row) }}
+              </div>
+              <div class="cell-user__meta">
+                <span class="cell-user__name">{{ row.name || '—' }}</span>
+                <span class="cell-user__alias">{{
+                  row.accountAlias ? `@${row.accountAlias}` : '—'
+                }}</span>
+              </div>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="phone" label="手机号" width="140">
+          <template #default="{ row }">
+            <span class="cell-mono">{{ row.phone || '—' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="email"
+          label="邮箱"
+          min-width="180"
+          show-overflow-tooltip
+        >
+          <template #default="{ row }">
+            <span class="cell-dim">{{ row.email || '—' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" width="96">
+          <template #default="{ row }">
+            <span
+              class="cell-status"
+              :class="row.status === 'active' ? 'is-on' : 'is-off'"
+            >
+              {{ row.status === 'active' ? '正常' : '停用' }}
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="等级" width="80" align="center">
+          <template #default="{ row }">
+            <span class="cell-level">Lv.{{ row.level }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="角色" min-width="220">
+          <template #default="{ row }">
+            <div v-if="roleTagsOf(row).length" class="cell-roles">
+              <span
+                v-for="(name, idx) in roleTagsOf(row).slice(0, 3)"
+                :key="idx"
+                class="cell-roles__chip"
+                >{{ name }}</span
+              >
+              <el-tooltip
+                v-if="roleTagsOf(row).length > 3"
+                placement="top"
+                effect="dark"
+              >
+                <span class="cell-roles__chip cell-roles__more"
+                  >+{{ roleTagsOf(row).length - 3 }}</span
+                >
+                <template #content>
+                  <div v-for="(name, idx) in roleTagsOf(row)" :key="idx">
+                    {{ name }}
+                  </div>
+                </template>
+              </el-tooltip>
+            </div>
+            <span v-else class="cell-dim">未分配</span>
+          </template>
+        </el-table-column>
+      </template>
+    </base-table>
 
     <el-dialog
       v-model="formVisible"
+      class="user-dialog"
       :title="formMode === 'create' ? '新增用户' : '编辑用户'"
       width="520px"
       destroy-on-close
     >
-      <el-form :model="form" label-width="90px">
+      <el-form :model="form" label-width="88px">
         <el-form-item label="姓名">
-          <el-input v-model="form.name" />
+          <el-input v-model="form.name" placeholder="请输入姓名" />
         </el-form-item>
         <el-form-item label="手机">
-          <el-input v-model="form.phone" />
+          <el-input v-model="form.phone" placeholder="请输入手机号" />
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="form.email" />
+          <el-input v-model="form.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item label="账号别名">
-          <el-input v-model="form.accountAlias" />
+          <el-input
+            v-model="form.accountAlias"
+            placeholder="登录账号别名（可选）"
+          />
         </el-form-item>
         <el-form-item v-if="formMode === 'create'" label="密码">
-          <el-input v-model="form.password" type="password" show-password />
+          <el-input
+            v-model="form.password"
+            type="password"
+            show-password
+            placeholder="请输入初始密码"
+            autocomplete="new-password"
+          />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="form.status" class="w-full">
-            <el-option label="正常" value="active" />
-            <el-option label="停用" value="deactivated" />
-          </el-select>
+          <el-radio-group v-model="form.status">
+            <el-radio value="active">正常</el-radio>
+            <el-radio value="deactivated">停用</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="角色">
           <el-select
@@ -74,7 +182,7 @@
             multiple
             clearable
             class="w-full"
-            placeholder="选择角色"
+            placeholder="选择角色（可多选）"
           >
             <el-option
               v-for="r in roleOptions"
@@ -93,16 +201,22 @@
 
     <el-dialog
       v-model="assignVisible"
+      class="user-dialog"
       title="分配角色"
       width="420px"
       destroy-on-close
     >
+      <p class="dialog-context">
+        正在为
+        <strong>{{ assignUserName }}</strong>
+        分配角色，保存后将全量覆盖其现有角色。
+      </p>
       <el-select
         v-model="assignRoleIds"
         multiple
         clearable
         class="w-full"
-        placeholder="选择角色"
+        placeholder="选择角色（可多选）"
       >
         <el-option
           v-for="r in roleOptions"
@@ -119,16 +233,22 @@
 
     <el-dialog
       v-model="pwdVisible"
+      class="user-dialog"
       title="重置密码"
       width="400px"
       destroy-on-close
     >
+      <p class="dialog-context">
+        将为 <strong>{{ pwdUserName }}</strong> 设置新的登录密码。
+      </p>
       <el-input
         v-model="newPassword"
         type="password"
         show-password
-        placeholder="新密码"
+        placeholder="请输入新密码"
+        autocomplete="new-password"
       />
+      <p class="dialog-tip">重置成功后，请通知该用户使用新密码重新登录。</p>
       <template #footer>
         <el-button @click="pwdVisible = false">取消</el-button>
         <el-button type="primary" @click="submitResetPwd">确定</el-button>
@@ -138,13 +258,13 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, computed, defineAsyncComponent } from 'vue'
+import { onMounted, reactive, ref, defineAsyncComponent } from 'vue'
 import { ElMessageBox } from 'element-plus'
+import { Plus, Search } from '@element-plus/icons-vue'
 import userManageApi from '@/assets/js/api/userManageController/userManageApi.js'
 import roleApi from '@/assets/js/api/roleController/roleApi.js'
 import { showTips } from '@/utils/message/showTips.js'
 import { invalidateUserSelectCache } from '@/composables/useUserSelectOptions'
-import { tableFields } from './config/schema'
 import { permissionStore } from '@/stores/permission'
 import i18n from '@/lang/index.js'
 
@@ -154,8 +274,11 @@ const perm = permissionStore()
 const BaseTable = defineAsyncComponent(
   () => import('@/components/base/form/BaseTable.vue')
 )
-const SearchItem = defineAsyncComponent(
-  () => import('@/components/base/SearchItem/index.vue')
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const searchInfo = reactive({
@@ -187,39 +310,37 @@ const form = reactive({
 
 const assignVisible = ref(false)
 const assignUserId = ref(null)
+const assignUserName = ref('')
 const assignRoleIds = ref([])
 
 const pwdVisible = ref(false)
 const pwdUserId = ref(null)
+const pwdUserName = ref('')
 const newPassword = ref('')
 
-const statusOptions = [
+/* 状态筛选（分段控制器，all 映射为空串以查询全部） */
+const statusSegment = ref('all')
+const statusSegments = [
+  { label: '全部', value: 'all' },
   { label: '正常', value: 'active' },
   { label: '停用', value: 'deactivated' }
 ]
+const onStatusChange = val => {
+  searchInfo.status = val === 'all' ? '' : val
+  applyFilter()
+}
 
-const searchItems = computed(() => [
-  {
-    field: 'keyword',
-    label: '关键词',
-    placeholder: '姓名/手机/邮箱',
-    type: 'input'
-  },
-  {
-    field: 'status',
-    label: '状态',
-    placeholder: '请选择',
-    type: 'select',
-    options: statusOptions
-  },
-  {
-    field: 'roleId',
-    label: '角色',
-    placeholder: '请选择',
-    type: 'select',
-    options: roleOptions.value.map(r => ({ label: r.name, value: r.id }))
-  }
-])
+const applyFilter = () => {
+  pageInfo.curPage = 1
+  query()
+}
+
+/* 单元格辅助 */
+const avatarChar = row => {
+  const source = String(row.name || row.accountAlias || row.phone || '').trim()
+  return source ? source.charAt(0).toUpperCase() : '·'
+}
+const roleTagsOf = row => (row.roles || []).map(r => r.name).filter(Boolean)
 
 const loadRoles = async () => {
   const res = await roleApi.queryList({ curPage: 1, pageSize: 100 })
@@ -235,10 +356,7 @@ async function query() {
     pageSize: pageInfo.pageSize
   })
   if (res.status) {
-    tableData.value = (res.data?.list || []).map(item => ({
-      ...item,
-      roleNames: (item.roles || []).map(r => r.name).join('、') || '-'
-    }))
+    tableData.value = res.data?.list || []
     pageInfo.total = res.data?.total || 0
   } else {
     showTips('error', res.msg || '查询失败')
@@ -246,11 +364,11 @@ async function query() {
 }
 
 const reset = () => {
-  Object.keys(searchInfo).forEach(key => {
-    searchInfo[key] = ''
-  })
-  pageInfo.curPage = 1
-  query()
+  searchInfo.keyword = ''
+  searchInfo.status = ''
+  searchInfo.roleId = ''
+  statusSegment.value = 'all'
+  applyFilter()
 }
 
 const openCreate = () => {
@@ -303,6 +421,7 @@ const submitForm = async () => {
 
 const openAssign = row => {
   assignUserId.value = row.id
+  assignUserName.value = row.name || row.accountAlias || row.phone || '该用户'
   assignRoleIds.value = [...(row.roleIds || [])]
   assignVisible.value = true
 }
@@ -323,6 +442,7 @@ const submitAssign = async () => {
 
 const openResetPwd = row => {
   pwdUserId.value = row.id
+  pwdUserName.value = row.name || row.accountAlias || row.phone || '该用户'
   newPassword.value = ''
   pwdVisible.value = true
 }
@@ -368,7 +488,7 @@ const handleDelete = async row => {
 const pageTableOperate = [
   {
     label: '编辑',
-    type: 'warning',
+    type: 'primary',
     action: openEdit,
     show: () => perm.hasPermission('system:user:update')
   },
@@ -380,7 +500,7 @@ const pageTableOperate = [
   },
   {
     label: '重置密码',
-    type: 'info',
+    type: 'primary',
     action: openResetPwd,
     show: () => perm.hasPermission('system:user:update')
   },
@@ -394,12 +514,9 @@ const pageTableOperate = [
 
 const tableOptions = reactive({
   tableData,
-  tableFields,
-  tableName: '用户列表',
   showIndex: false,
   showSelection: false,
   pageTableOperate,
-  // 操作列宽度按按钮文案实测适配
   operateFixed: 'right'
 })
 
@@ -408,3 +525,169 @@ onMounted(async () => {
   query()
 })
 </script>
+
+<style scoped lang="less">
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
+
+/* ===== 筛选栏字段宽度 ===== */
+.filter-bar__keyword {
+  width: 280px;
+}
+
+.filter-bar__role {
+  width: 180px;
+}
+
+/* ===== 单元格 ===== */
+.cell-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 600;
+    color: @ds-primary;
+    background: @ds-primary-light;
+    border-radius: 50%;
+
+    &.is-off {
+      color: @color-text-placeholder;
+      background: @color-gray-scale-4;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__name {
+    font-weight: 500;
+    color: @color-text-normal;
+  }
+
+  &__alias {
+    font-size: @ds-font-xs;
+    color: @color-text-secondary;
+  }
+}
+
+.cell-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-dim {
+  color: @color-text-placeholder;
+}
+
+.cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  &.is-on {
+    color: @ds-color-success;
+
+    &::before {
+      background: @ds-color-success;
+      box-shadow: 0 0 0 3px fade(@ds-color-success, 15%);
+    }
+  }
+
+  &.is-off {
+    color: @ds-color-not-started;
+
+    &::before {
+      background: @ds-color-not-started;
+      box-shadow: 0 0 0 3px fade(@ds-color-not-started, 15%);
+    }
+  }
+}
+
+.cell-level {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: @ds-font-xs;
+  font-weight: 600;
+  line-height: 18px;
+  color: @ds-primary;
+  background: @ds-primary-light;
+  border-radius: @ds-radius-sm;
+}
+
+.cell-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+
+  &__chip {
+    padding: 2px 8px;
+    font-size: @ds-font-xs;
+    line-height: 18px;
+    color: @color-text-secondary;
+    background: @color-gray-scale-4;
+    border-radius: @ds-radius-sm;
+  }
+
+  &__more {
+    color: @ds-primary;
+    background: @ds-primary-light;
+  }
+}
+
+/* ===== 对话框插槽内容 ===== */
+.dialog-context {
+  margin: 0 0 14px;
+  font-size: @ds-font-sm;
+  line-height: 1.7;
+  color: @color-text-secondary;
+
+  strong {
+    font-weight: 600;
+    color: @color-text-normal;
+  }
+}
+
+.dialog-tip {
+  margin: 10px 0 0;
+  font-size: @ds-font-xs;
+  color: @color-text-placeholder;
+}
+</style>
+
+<style lang="less">
+/* el-dialog 传送至 body，标题等 chrome 需要非 scoped 全局样式配合唯一 class 命中 */
+.user-dialog {
+  border-radius: @ds-radius-lg;
+
+  .el-dialog__header {
+    padding-bottom: 12px;
+    margin-right: 0;
+  }
+
+  .el-dialog__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: @color-text-normal;
+  }
+}
+</style>

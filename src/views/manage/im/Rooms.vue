@@ -125,8 +125,20 @@ async function toggleBan(row: any) {
 }
 
 async function toggleOfficial(row: any) {
+  const official = !row.official
+  try {
+    await ElMessageBox.confirm(
+      official
+        ? `确认将房间「${row.title}」设为官方？设为官方后该房间将被优先推荐展示。`
+        : `确认取消房间「${row.title}」的官方标识？取消后该房间不再优先推荐展示。`,
+      '提示',
+      { type: 'warning' }
+    )
+  } catch {
+    return
+  }
   const res = await adminApi.setRoomWeight(row.roomId, {
-    official: !row.official
+    official
   })
   if (res.status) {
     showTips('success', '已更新')

@@ -1,46 +1,49 @@
 <template>
-  <div class="workflow-alerts">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>告警规则</h3>
-        <p>配置流程执行异常的告警阈值与通知方式</p>
-      </div>
-      <div class="page-actions">
-        <el-select
-          v-model="query.workflowId"
-          clearable
-          placeholder="关联流程"
-          style="width: 180px"
-        >
-          <el-option
-            v-for="w in workflowOptions"
-            :key="w.value"
-            :label="w.label"
-            :value="w.value"
-          />
-        </el-select>
-        <el-select
-          v-model="query.enabled"
-          clearable
-          placeholder="状态"
-          style="width: 120px"
-        >
-          <el-option label="启用" value="true" />
-          <el-option label="停用" value="false" />
-        </el-select>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="告警规则" desc="配置流程执行异常的告警阈值与通知方式">
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Bell /></el-icon>
+          共 {{ page.total }} 条规则
+        </span>
         <el-button
           v-permission="'system:workflow:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新建规则</el-button
         >
-        <el-button @click="load">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="load">刷新</el-button>
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-select
+        v-model="query.workflowId"
+        clearable
+        placeholder="关联流程"
+        style="width: 180px"
+      >
+        <el-option
+          v-for="w in workflowOptions"
+          :key="w.value"
+          :label="w.label"
+          :value="w.value"
+        />
+      </el-select>
+      <el-select
+        v-model="query.enabled"
+        clearable
+        placeholder="状态"
+        style="width: 120px"
+      >
+        <el-option label="启用" value="true" />
+        <el-option label="停用" value="false" />
+      </el-select>
+    </filter-bar>
 
-    <el-card shadow="never" class="panel-card">
+    <!-- 规则列表 -->
+    <div class="base-table">
       <el-table :data="list" v-loading="loading" border stripe size="small">
         <el-table-column prop="id" label="ID" width="70" align="center" />
         <el-table-column label="关联流程" min-width="140" show-overflow-tooltip>
@@ -103,7 +106,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="pager">
+      <div class="pager base-table__pagination">
         <el-pagination
           v-model:current-page="page.curPage"
           v-model:page-size="page.pageSize"
@@ -115,7 +118,7 @@
           @current-change="load"
         />
       </div>
-    </el-card>
+    </div>
 
     <base-dialog
       ref="dialogRef"
@@ -139,9 +142,18 @@ import {
 } from '@/api/workflow'
 import { showTips } from '@/utils/message/showTips.js'
 import { dialogFields } from './config/alertsSchema'
+import { Bell } from '@element-plus/icons-vue'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const loading = ref(false)
@@ -335,54 +347,10 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-.workflow-alerts {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-
-  :deep(.el-card__body) {
-    padding: 16px 20px;
-  }
-}
-
+/* ===== 单元格 ===== */
 .channel-tag {
   margin-right: 4px;
 
@@ -392,10 +360,7 @@ onMounted(() => {
 }
 
 .pager {
-  margin-top: 12px;
-  padding: 4px 0 0;
   display: flex;
   justify-content: flex-end;
-  border-top: none;
 }
 </style>

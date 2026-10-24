@@ -170,3 +170,83 @@
   display: flex;
   justify-content: center;
 }
+
+/* ===================== 通用台账页骨架 ===================== */
+// 与 PageHero（星夜页头）+ FilterBar + BaseTable 搭配的统一页面容器：
+// flex 纵向布局、区块间 16px 间距，视觉皮肤由下方「通用表格皮肤」全局段统一供给
+.manage-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  // 页面容器已提供统一 16px 间距，筛选栏自带的 margin 归零
+  // （FilterBar 等子组件样式带 scope id，同特异性下后加载者胜出，故复写类名提升特异性）
+  .filter-bar.filter-bar {
+    margin-bottom: 0;
+  }
+}
+
+/* ===================== 通用表格皮肤 ===================== */
+// 全站表格统一视觉，BaseTable 组件与裸表拆壳页（div.base-table > el-table）双来源同时命中：
+// 白卡容器 + 靛蓝雾底表头 + 极淡靛蓝斑马纹 + 分页收边 + loading 毛玻璃
+// 主干复写类名提升特异性：压过组件 scoped 异步后加载的同名规则，及 el-table 尺寸 (size) 差异
+.base-table.base-table {
+  padding: 0;
+  overflow: hidden;
+  background: @color-gray-scale-1;
+  border: 1px solid @color-border-dialog;
+  border-radius: @ds-radius-lg;
+  box-shadow: @ds-shadow-sm;
+
+  // 工具栏收边（非 manage 台账页仍有表名/整页操作按钮场景）
+  .base-table__toolbar {
+    padding: 12px 16px 0;
+  }
+
+  // 分页收边
+  .base-table__pagination {
+    padding: 12px 16px;
+  }
+
+  .el-table {
+    // EP 皮肤变量集中覆写：表头靛蓝雾底、hover 浅靛、线条统一为更轻盈的冷靛线
+    // 注意：雾底必须用 mix() 预混合为不透明色——fixed 吸附列表头以该变量做遮挡底，
+    // 若带 alpha（fade），横向滚动时滚动列表头文字会从吸附列下方透出形成重叠
+    --el-table-header-bg-color: mix(@ds-primary, @color-gray-scale-1, 4%);
+    --el-table-header-text-color: @color-text-secondary;
+    --el-table-row-hover-bg-color: @ds-primary-light;
+    --el-table-border-color: @color-border-dialog;
+
+    // 数字列等宽对齐，行内时间戳/编号/金额更整齐
+    font-variant-numeric: tabular-nums;
+
+    th.el-table__cell {
+      padding: 12px 0;
+      font-size: @ds-font-xs;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    td.el-table__cell {
+      padding: 12px 0;
+      font-size: @ds-font-sm;
+    }
+    // 斑马纹换极淡靛蓝，比默认灰底更轻盈
+    // 同样用 mix() 预混合为不透明色：fixed 吸附列单元格共享此规则，带 alpha 会在横向滚动时透字
+    .el-table__row--striped td.el-table__cell {
+      background-color: mix(@ds-primary, @color-gray-scale-1, 2%);
+    }
+    .base-table__row-ops .el-button {
+      font-size: @ds-font-sm;
+    }
+    // 空态呼吸感
+    .el-table__empty-block {
+      padding: 20px 0;
+    }
+  }
+
+  // loading 遮罩：半透明白 + 轻毛玻璃，替代默认的整块死白
+  .el-loading-mask {
+    background-color: fade(@color-gray-scale-1, 60%);
+    backdrop-filter: blur(1.5px);
+  }
+}

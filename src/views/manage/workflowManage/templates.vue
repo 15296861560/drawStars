@@ -1,44 +1,46 @@
 <template>
-  <div class="workflow-templates">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>模板市场</h3>
-        <p>浏览并一键安装流程模板，或将已有流程发布为模板</p>
-      </div>
-      <div class="page-actions">
-        <el-button @click="reload">刷新</el-button>
-      </div>
-    </div>
-
-    <el-card shadow="never" class="panel-card">
-      <div class="filter-bar">
-        <el-input
-          v-model="query.keyword"
-          clearable
-          placeholder="模板名称 / 描述"
-          style="width: 220px"
-          @keyup.enter="search"
-          @clear="search"
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero
+      title="模板市场"
+      desc="浏览并一键安装流程模板，或将已有流程发布为模板"
+    >
+      <template #side>
+        <span class="page-hero__pill">
+          <el-icon :size="14"><Present /></el-icon>
+          共 {{ total }} 套模板
+        </span>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
+    <!-- 筛选栏 -->
+    <filter-bar @search="search" @reset="resetQuery">
+      <el-input
+        v-model="query.keyword"
+        clearable
+        placeholder="模板名称 / 描述"
+        style="width: 220px"
+        @keyup.enter="search"
+        @clear="search"
+      />
+      <el-select
+        v-model="query.category"
+        clearable
+        placeholder="分类"
+        style="width: 160px"
+      >
+        <el-option
+          v-for="c in categories"
+          :key="c.code"
+          :label="c.name"
+          :value="c.code"
         />
-        <el-select
-          v-model="query.category"
-          clearable
-          placeholder="分类"
-          style="width: 160px"
-        >
-          <el-option
-            v-for="c in categories"
-            :key="c.code"
-            :label="c.name"
-            :value="c.code"
-          />
-        </el-select>
-        <div class="official-switch">
-          <span>仅官方</span>
-          <el-switch v-model="query.isOfficial" @change="search" />
-        </div>
-        <el-button type="primary" @click="search">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
+      </el-select>
+      <div class="official-switch">
+        <span>仅官方</span>
+        <el-switch v-model="query.isOfficial" @change="search" />
+      </div>
+      <template #actions>
         <el-button
           v-permission="'system:workflow:operate'"
           class="publish-btn"
@@ -47,68 +49,63 @@
           @click="openPublish"
           >发布模板</el-button
         >
-      </div>
+      </template>
+    </filter-bar>
 
-      <div v-loading="loading" class="tpl-area">
-        <el-row v-if="templates.length" :gutter="16" class="tpl-grid">
-          <el-col
-            v-for="t in templates"
-            :key="t.id"
-            :xs="24"
-            :sm="12"
-            :span="6"
-          >
-            <div class="tpl-card">
-              <div class="tpl-head">
-                <div class="tpl-icon">{{ (t.name || '').slice(0, 1) }}</div>
-                <div class="tpl-tags">
-                  <el-tag v-if="t.isOfficial" type="warning" size="small"
-                    >官方</el-tag
-                  >
-                  <el-tag size="small" effect="plain">{{
-                    categoryText(t.category)
-                  }}</el-tag>
-                </div>
-              </div>
-              <div class="tpl-name" :title="t.name">{{ t.name }}</div>
-              <div class="tpl-desc">{{ t.description || '暂无描述' }}</div>
-              <div class="tpl-stats">
-                <span class="tpl-installs">{{ t.installCount }} 次安装</span>
-                <el-rate
-                  :model-value="t.rating"
-                  disabled
-                  size="small"
-                  class="tpl-rate"
-                />
-              </div>
-              <div class="tpl-ops">
-                <el-button
-                  v-permission="'system:workflow:create'"
-                  type="primary"
-                  size="small"
-                  @click="openInstall(t)"
-                  >安装</el-button
+    <!-- 模板列表 -->
+    <div v-loading="loading" class="tpl-area">
+      <el-row v-if="templates.length" :gutter="16" class="tpl-grid">
+        <el-col v-for="t in templates" :key="t.id" :xs="24" :sm="12" :span="6">
+          <div class="tpl-card">
+            <div class="tpl-head">
+              <div class="tpl-icon">{{ (t.name || '').slice(0, 1) }}</div>
+              <div class="tpl-tags">
+                <el-tag v-if="t.isOfficial" type="warning" size="small"
+                  >官方</el-tag
                 >
-                <el-button size="small" @click="openDetail(t)">详情</el-button>
+                <el-tag size="small" effect="plain">{{
+                  categoryText(t.category)
+                }}</el-tag>
               </div>
             </div>
-          </el-col>
-        </el-row>
-        <el-empty v-else-if="!loading" description="暂无模板" />
-      </div>
+            <div class="tpl-name" :title="t.name">{{ t.name }}</div>
+            <div class="tpl-desc">{{ t.description || '暂无描述' }}</div>
+            <div class="tpl-stats">
+              <span class="tpl-installs">{{ t.installCount }} 次安装</span>
+              <el-rate
+                :model-value="t.rating"
+                disabled
+                size="small"
+                class="tpl-rate"
+              />
+            </div>
+            <div class="tpl-ops">
+              <el-button
+                v-permission="'system:workflow:create'"
+                type="primary"
+                size="small"
+                @click="openInstall(t)"
+                >安装</el-button
+              >
+              <el-button size="small" @click="openDetail(t)">详情</el-button>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+      <el-empty v-else-if="!loading" description="暂无模板" />
+    </div>
 
-      <el-pagination
-        v-model:current-page="pager.curPage"
-        v-model:page-size="pager.pageSize"
-        :total="total"
-        :page-sizes="[8, 12, 20]"
-        layout="total, sizes, prev, pager, next"
-        background
-        class="pager"
-        @current-change="reload"
-        @size-change="onSizeChange"
-      />
-    </el-card>
+    <el-pagination
+      v-model:current-page="pager.curPage"
+      v-model:page-size="pager.pageSize"
+      :total="total"
+      :page-sizes="[8, 12, 20]"
+      layout="total, sizes, prev, pager, next"
+      background
+      class="pager"
+      @current-change="reload"
+      @size-change="onSizeChange"
+    />
 
     <!-- 安装模板 -->
     <el-dialog
@@ -271,7 +268,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import {
@@ -283,6 +280,7 @@ import {
   getWorkflowDetail,
   getCategories
 } from '@/api/workflow'
+import FilterBar from '@/components/base/FilterBar/index.vue'
 import type {
   WorkflowTemplate,
   WorkflowCategory,
@@ -290,6 +288,11 @@ import type {
   GraphData,
   TemplatePayload
 } from '@/types/workflow'
+import { Present } from '@element-plus/icons-vue'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const router = useRouter()
 
@@ -555,51 +558,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less">
-.workflow-templates {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.panel-card {
-  border-radius: 8px;
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 12px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
 .official-switch {
   display: inline-flex;
@@ -640,7 +600,7 @@ onMounted(() => {
 
   &:hover {
     border-color: var(--el-color-primary-light-5);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: @ds-shadow-sm;
   }
 }
 
@@ -674,7 +634,7 @@ onMounted(() => {
 }
 
 .tpl-name {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--el-text-color-primary);
   white-space: nowrap;
@@ -726,7 +686,6 @@ onMounted(() => {
 .pager {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
 }
 
 .detail-body {

@@ -1,38 +1,31 @@
 <template>
-  <div class="g-list-vertical">
-    <el-row class="mb40" :gutter="20">
-      <el-col :span="16">
-        <div class="flex">
-          <search-item
-            v-for="item in searchItems"
-            :key="item.field"
-            v-model:field="searchInfo[item.field]"
-            :label="item.label"
-            :type="item.type"
-            :placeholder="item.placeholder"
-            :options="item.options"
-            clearable
-            :class="`w-1/${searchItems.length}`"
-          ></search-item>
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="flex justify-end">
-          <el-button type="primary" @click="loadTree">{{
-            $t('btn.search')
-          }}</el-button>
-          <el-button type="warning" @click="reset">{{
-            $t('btn.reset')
-          }}</el-button>
-          <el-button
-            v-permission="'system:menu:create'"
-            type="success"
-            @click="openCreate(0)"
-            >{{ $t('btn.create') }}</el-button
-          >
-        </div>
-      </el-col>
-    </el-row>
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="菜单配置" desc="系统菜单结构与权限标识的配置管理">
+      <template #side>
+        <el-button
+          v-permission="'system:menu:create'"
+          type="primary"
+          class="page-hero__btn"
+          :icon="Plus"
+          @click="openCreate(0)"
+          >{{ $t('btn.create') }}</el-button
+        >
+      </template>
+    </page-hero>
+
+    <filter-bar @search="loadTree" @reset="reset">
+      <search-item
+        v-for="item in searchItems"
+        :key="item.field"
+        v-model:field="searchInfo[item.field]"
+        :label="item.label"
+        :type="item.type"
+        :placeholder="item.placeholder"
+        :options="item.options"
+        clearable
+      />
+    </filter-bar>
 
     <base-table
       class="menu-tree-table"
@@ -55,6 +48,7 @@
 <script setup>
 import { onMounted, reactive, ref, computed, defineAsyncComponent } from 'vue'
 import { ElMessageBox } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 import menuApi from '@/assets/js/api/menuController/menuApi.js'
 import { showTips } from '@/utils/message/showTips.js'
 import { tableFields, dialogFields } from './config/schema'
@@ -72,6 +66,12 @@ const SearchItem = defineAsyncComponent(
 )
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+const FilterBar = defineAsyncComponent(
+  () => import('@/components/base/FilterBar/index.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const searchInfo = reactive({
@@ -312,7 +312,7 @@ const pageTableOperate = [
   },
   {
     label: '编辑',
-    type: 'warning',
+    type: 'primary',
     action: openEdit,
     show: () => perm.hasPermission('system:menu:update')
   },

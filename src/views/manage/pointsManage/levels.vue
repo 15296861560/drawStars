@@ -1,22 +1,20 @@
 <template>
-  <div class="points-levels">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>等级配置</h3>
-        <p>配置会员等级门槛、权益与排序</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="等级配置" desc="配置会员等级门槛、权益与排序">
+      <template #side>
+        <span class="page-hero__pill">共 {{ list.length }} 项</span>
         <el-button
           v-permission="'system:points:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新增等级</el-button
         >
-        <el-button @click="load">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="load">刷新</el-button>
+      </template>
+    </page-hero>
 
-    <el-card shadow="never" class="panel-card">
+    <div class="base-table">
       <el-table :data="list" v-loading="loading" border stripe size="small">
         <el-table-column prop="level" label="等级" width="80" align="center" />
         <el-table-column
@@ -68,7 +66,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
+    </div>
 
     <base-dialog
       ref="dialogRef"
@@ -95,6 +93,9 @@ import { dialogFields } from './config/levelsSchema'
 
 const BaseDialog = defineAsyncComponent(
   () => import('@/components/base/form/BaseDialog.vue')
+)
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
 )
 
 const store = pointsStore()
@@ -224,51 +225,6 @@ onMounted(load)
 </script>
 
 <style scoped lang="less">
-.points-levels {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.panel-card {
-  border-radius: 8px;
-
-  :deep(.el-card__body) {
-    padding: 16px 20px;
-  }
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件无页面局部定制 */
 </style>

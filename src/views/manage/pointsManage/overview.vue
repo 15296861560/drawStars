@@ -1,27 +1,30 @@
 <template>
-  <div class="points-overview">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>积分概览</h3>
-        <p>查看核心指标，快速进入规则、等级与积分发放</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <page-hero
+      title="积分概览"
+      desc="查看核心指标，快速进入规则、等级与积分发放"
+    >
+      <template #side>
         <el-button
           v-permission="'system:points:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="go('adjust')"
           >给用户新增积分</el-button
         >
-        <el-button @click="reload">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="reload">刷新</el-button>
+      </template>
+    </page-hero>
 
     <el-row :gutter="16" class="kpi-row" v-loading="loading">
       <el-col :xs="12" :sm="6" v-for="item in kpiList" :key="item.key">
         <div
           class="kpi-card"
           :class="{ clickable: !!item.to }"
+          :role="item.to ? 'button' : undefined"
+          :tabindex="item.to ? 0 : undefined"
+          :aria-label="item.to ? '查看' + item.label + '详情' : undefined"
           @click="item.to && go(item.to)"
+          @keyup.enter="item.to && go(item.to)"
         >
           <div class="kpi-label">{{ item.label }}</div>
           <div class="kpi-value">{{ item.value }}</div>
@@ -113,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   usePointsAccount,
@@ -122,6 +125,10 @@ import {
 } from '@/composables/usePoints'
 import { pointsStore } from '@/stores/points'
 import { userInfoStore } from '@/stores/user-info'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const router = useRouter()
 const userStore = userInfoStore()
@@ -183,45 +190,8 @@ onMounted(reload)
 </script>
 
 <style scoped lang="less">
-.points-overview {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  text-align: left;
-
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--el-text-color-primary);
-    line-height: 1.4;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-    line-height: 1.4;
-  }
-}
-
-.page-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
+/* 页面骨架间距统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留 KPI 卡与内容卡局部样式 */
 
 .kpi-row {
   :deep(.el-col) {
@@ -234,7 +204,7 @@ onMounted(reload)
   width: 100%;
   min-height: 112px;
   box-sizing: border-box;
-  padding: 16px 18px;
+  padding: 16px;
   border: 1px solid var(--el-border-color-lighter);
   border-radius: 8px;
   background: var(--el-bg-color);
@@ -250,7 +220,7 @@ onMounted(reload)
 
     &:hover {
       border-color: var(--el-color-primary-light-5);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: @ds-shadow-sm;
     }
   }
 }
@@ -262,7 +232,7 @@ onMounted(reload)
 }
 
 .kpi-value {
-  margin: 10px 0;
+  margin: 8px 0;
   font-size: 24px;
   font-weight: 600;
   color: var(--el-text-color-primary);

@@ -107,7 +107,7 @@
                 refY="3"
                 orient="auto"
               >
-                <path d="M0,0 L6,3 L0,6 Z" fill="#909399" />
+                <path d="M0,0 L6,3 L0,6 Z" fill="#939496" />
               </marker>
             </defs>
             <g v-for="(log, i) in stepLogs" :key="log.id">
@@ -117,11 +117,18 @@
                 :y1="nodeTop(i - 1) + NODE_H"
                 :x2="nodeCenterX"
                 :y2="nodeTop(i) - 6"
-                stroke="#909399"
+                stroke="#939496"
                 stroke-width="1.5"
                 marker-end="url(#flow-arrow)"
               />
-              <g class="flow-node" @click="locateNode(log.nodeId)">
+              <g
+                class="flow-node"
+                role="button"
+                tabindex="0"
+                :aria-label="`定位节点：${log.nodeName || log.nodeId}`"
+                @click="locateNode(log.nodeId)"
+                @keyup.enter="locateNode(log.nodeId)"
+              >
                 <rect
                   :x="NODE_X"
                   :y="nodeTop(i)"
@@ -339,19 +346,19 @@ const STEP_TEXT: Record<string, string> = {
 }
 
 const STEP_COLOR: Record<string, string> = {
-  PENDING: '#c0c4cc',
-  RUNNING: '#e6a23c',
-  SUCCEEDED: '#67c23a',
-  FAILED: '#f56c6c',
-  SKIPPED: '#c0c4cc'
+  PENDING: '#A4A5A6',
+  RUNNING: '#D97706',
+  SUCCEEDED: '#2BA471',
+  FAILED: '#DC2626',
+  SKIPPED: '#A4A5A6'
 }
 
 const STEP_FILL: Record<string, string> = {
-  PENDING: '#f4f4f5',
-  RUNNING: '#fdf6ec',
-  SUCCEEDED: '#f0f9eb',
-  FAILED: '#fef0f0',
-  SKIPPED: '#f4f4f5'
+  PENDING: '#F3F4F5',
+  RUNNING: '#FBF1E6',
+  SUCCEEDED: '#EAF6F1',
+  FAILED: '#FCE9E9',
+  SKIPPED: '#F3F4F5'
 }
 
 const STEP_TAG: Record<string, string> = {
@@ -379,11 +386,11 @@ function stepText(s: string) {
 }
 
 function stepColor(s: string) {
-  return STEP_COLOR[s] || '#c0c4cc'
+  return STEP_COLOR[s] || '#A4A5A6'
 }
 
 function stepFill(s: string) {
-  return STEP_FILL[s] || '#f4f4f5'
+  return STEP_FILL[s] || '#F3F4F5'
 }
 
 function stepTagType(s: string) {
@@ -691,7 +698,7 @@ onUnmounted(stopPolling)
 
 .node-name {
   font-size: 13px;
-  fill: #303133;
+  fill: @color-text-normal;
 }
 
 .node-status {

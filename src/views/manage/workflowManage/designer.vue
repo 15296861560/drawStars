@@ -38,12 +38,14 @@
           <el-button
             :icon="ZoomOut"
             :disabled="zoom <= MIN_ZOOM"
+            aria-label="缩小画布"
             @click="zoomOut"
           />
           <span class="zoom-text">{{ Math.round(zoom * 100) }}%</span>
           <el-button
             :icon="ZoomIn"
             :disabled="zoom >= MAX_ZOOM"
+            aria-label="放大画布"
             @click="zoomIn"
           />
         </div>
@@ -82,8 +84,12 @@
           :key="item.type"
           class="node-item"
           draggable="true"
+          role="button"
+          tabindex="0"
+          :aria-label="`添加${item.label}节点`"
           @dragstart="onDragStart(item.type, $event)"
           @click="addNode(item.type)"
+          @keyup.enter="addNode(item.type)"
         >
           <span class="node-dot" :style="{ background: item.color }" />
           <div class="node-item-text">
@@ -126,15 +132,19 @@
                 refY="4"
                 orient="auto"
               >
-                <path d="M 0 0 L 8 4 L 0 8 Z" fill="#b1b5ba" />
+                <path d="M 0 0 L 8 4 L 0 8 Z" fill="#BABBBD" />
               </marker>
             </defs>
             <g v-for="edge in graph.edges" :key="edge.id">
               <path
                 class="edge-hit"
+                role="button"
+                tabindex="0"
+                aria-label="删除连线，双击设置标签"
                 :d="edgePath(edge)"
                 @click.stop="onEdgeClick(edge)"
                 @dblclick.stop="onEdgeLabel(edge)"
+                @keyup.enter.stop="onEdgeClick(edge)"
               />
               <path class="edge-line" :d="edgePath(edge)" />
               <text
@@ -167,8 +177,12 @@
               left: `${node.position.x}px`,
               top: `${node.position.y}px`
             }"
+            role="button"
+            tabindex="0"
+            :aria-label="`选中节点：${node.name}`"
             @mousedown.stop="onNodeMouseDown(node, $event)"
             @click.stop="onNodeClick(node)"
+            @keyup.enter.stop="onNodeClick(node)"
           >
             <div class="node-header">
               <span
@@ -188,8 +202,12 @@
             <div
               class="node-port"
               title="点击后选择目标节点进行连线"
+              role="button"
+              tabindex="0"
+              aria-label="开始连线"
               @mousedown.stop
               @click.stop="startLink(node)"
+              @keyup.enter.stop="startLink(node)"
             />
           </div>
         </div>
@@ -423,6 +441,7 @@
                       :icon="Delete"
                       circle
                       size="small"
+                      aria-label="删除分支"
                       :disabled="conditionBranches.length <= 1"
                       @click="removeBranch(i)"
                     />
@@ -661,13 +680,13 @@ const NODE_TYPES: Array<{
     type: 'TRIGGER',
     label: '触发器',
     desc: '手动 / 定时 / Webhook / 事件',
-    color: '#e6a23c'
+    color: '#D97706'
   },
   {
     type: 'AGENT',
     label: 'AI 节点',
     desc: '调用大模型处理内容',
-    color: '#7c3aed'
+    color: '#7C3AED'
   },
   {
     type: 'TOOL',
@@ -679,19 +698,19 @@ const NODE_TYPES: Array<{
     type: 'CONDITION',
     label: '条件分支',
     desc: '按表达式分流执行',
-    color: '#f56c6c'
+    color: '#DC2626'
   },
   {
     type: 'TRANSFORM',
     label: '数据转换',
     desc: '映射 / 过滤 / 转换数据',
-    color: '#67c23a'
+    color: '#2BA471'
   },
   {
     type: 'OUTPUT',
     label: '输出节点',
     desc: '飞书 / 邮件 / 回调等',
-    color: '#909399'
+    color: '#86909C'
   }
 ]
 
@@ -1354,7 +1373,7 @@ async function onTest() {
     ]
     if (exec.errorMessage)
       rows.push(
-        `<p style="color:#f56c6c"><b>错误：</b>${exec.errorMessage}</p>`
+        `<p style="color:#DC2626"><b>错误：</b>${exec.errorMessage}</p>`
       )
     ElMessageBox.alert(rows.join(''), '测试运行完成', {
       dangerouslyUseHTMLString: true,
@@ -1474,7 +1493,7 @@ onBeforeUnmount(() => {
   min-height: 520px;
   background: #fff;
   border-radius: 8px;
-  border: 1px solid #e4e7ed;
+  border: 1px solid @color-bg-divider;
   overflow: hidden;
 }
 
@@ -1485,7 +1504,7 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid #e4e7ed;
+  border-bottom: 1px solid @color-bg-divider;
   flex-shrink: 0;
 
   .toolbar-left {
@@ -1515,7 +1534,7 @@ onBeforeUnmount(() => {
         width: 44px;
         text-align: center;
         font-size: 12px;
-        color: #606266;
+        color: @color-text-secondary;
       }
     }
   }
@@ -1533,13 +1552,13 @@ onBeforeUnmount(() => {
   width: 220px;
   flex-shrink: 0;
   padding: 12px;
-  border-right: 1px solid #e4e7ed;
+  border-right: 1px solid @color-bg-divider;
   overflow-y: auto;
 
   .panel-title {
     font-size: 13px;
     font-weight: 600;
-    color: #303133;
+    color: @color-text-normal;
     margin-bottom: 12px;
   }
 
@@ -1549,11 +1568,11 @@ onBeforeUnmount(() => {
     gap: 10px;
     padding: 10px;
     margin-bottom: 8px;
-    border: 1px solid #e4e7ed;
+    border: 1px solid @color-bg-divider;
     border-radius: 6px;
     cursor: grab;
     transition: all 0.2s;
-    background: #fafafa;
+    background: @color-gray-scale-2;
 
     &:hover {
       border-color: var(--el-color-primary);
@@ -1577,12 +1596,12 @@ onBeforeUnmount(() => {
       .node-item-name {
         font-size: 13px;
         font-weight: 500;
-        color: #303133;
+        color: @color-text-normal;
       }
 
       .node-item-desc {
         font-size: 11px;
-        color: #909399;
+        color: @color-text-placeholder;
         margin-top: 2px;
         white-space: nowrap;
         overflow: hidden;
@@ -1593,7 +1612,7 @@ onBeforeUnmount(() => {
 
   .panel-tip {
     font-size: 11px;
-    color: #909399;
+    color: @color-text-placeholder;
     line-height: 1.6;
     margin-top: 10px;
   }
@@ -1605,12 +1624,12 @@ onBeforeUnmount(() => {
   flex: 1;
   min-width: 0;
   overflow: auto;
-  background-color: #f5f7fa;
+  background-color: @color-base-bg;
   background-image: linear-gradient(
-      rgba(144, 147, 153, 0.12) 1px,
+      rgba(147, 148, 150, 0.12) 1px,
       transparent 1px
     ),
-    linear-gradient(90deg, rgba(144, 147, 153, 0.12) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(147, 148, 150, 0.12) 1px, transparent 1px);
   background-size: 20px 20px;
 
   .canvas {
@@ -1634,7 +1653,7 @@ onBeforeUnmount(() => {
 
     .edge-line {
       fill: none;
-      stroke: #b1b5ba;
+      stroke: @color-gray-scale-7;
       stroke-width: 2;
       marker-end: url(#workflow-arrow);
       pointer-events: none;
@@ -1642,15 +1661,15 @@ onBeforeUnmount(() => {
 
     .edge-hit:hover + .edge-line,
     .edge-hit:hover {
-      stroke: #f56c6c;
+      stroke: @ds-color-danger;
     }
 
     .edge-label {
       font-size: 12px;
-      fill: #606266;
+      fill: @color-text-secondary;
       text-anchor: middle;
       paint-order: stroke;
-      stroke: #f5f7fa;
+      stroke: @color-base-bg;
       stroke-width: 4px;
       pointer-events: none;
     }
@@ -1669,12 +1688,12 @@ onBeforeUnmount(() => {
     width: 180px;
     height: 64px;
     background: #fff;
-    border: 1.5px solid #dcdfe6;
+    border: 1.5px solid @color-liner-border;
     border-radius: 8px;
     padding: 10px 12px;
     cursor: move;
     user-select: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 6px rgba(23, 32, 74, 0.06);
     transition:
       border-color 0.2s,
       box-shadow 0.2s;
@@ -1689,8 +1708,8 @@ onBeforeUnmount(() => {
     }
 
     &.link-target {
-      border-color: #67c23a;
-      box-shadow: 0 0 0 3px rgba(103, 194, 58, 0.2);
+      border-color: @ds-color-success;
+      box-shadow: 0 0 0 3px rgba(43, 164, 113, 0.2);
     }
 
     .node-header {
@@ -1708,7 +1727,7 @@ onBeforeUnmount(() => {
       .node-name {
         font-size: 13px;
         font-weight: 500;
-        color: #303133;
+        color: @color-text-normal;
         flex: 1;
         min-width: 0;
         white-space: nowrap;
@@ -1724,7 +1743,7 @@ onBeforeUnmount(() => {
 
     .node-sub {
       font-size: 11px;
-      color: #909399;
+      color: @color-text-placeholder;
       margin-top: 6px;
       white-space: nowrap;
       overflow: hidden;
@@ -1770,7 +1789,7 @@ onBeforeUnmount(() => {
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: #909399;
+    color: @color-text-placeholder;
     font-size: 14px;
     pointer-events: none;
   }
@@ -1780,14 +1799,14 @@ onBeforeUnmount(() => {
 .config-panel {
   width: 320px;
   flex-shrink: 0;
-  border-left: 1px solid #e4e7ed;
+  border-left: 1px solid @color-bg-divider;
   padding: 12px;
   overflow-y: auto;
 
   .panel-title {
     font-size: 13px;
     font-weight: 600;
-    color: #303133;
+    color: @color-text-normal;
     margin-bottom: 12px;
   }
 
@@ -1804,7 +1823,7 @@ onBeforeUnmount(() => {
 
   .config-tip {
     font-size: 11px;
-    color: #909399;
+    color: @color-text-placeholder;
     line-height: 1.6;
     margin-top: 4px;
   }
@@ -1833,7 +1852,7 @@ onBeforeUnmount(() => {
 
   :deep(.el-divider__text) {
     font-size: 12px;
-    color: #606266;
+    color: @color-text-secondary;
   }
 }
 
@@ -1843,10 +1862,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 20px;
   padding: 6px 16px;
-  border-top: 1px solid #e4e7ed;
+  border-top: 1px solid @color-bg-divider;
   font-size: 12px;
-  color: #909399;
+  color: @color-text-placeholder;
   flex-shrink: 0;
-  background: #fafafa;
+  background: @color-gray-scale-2;
 }
 </style>

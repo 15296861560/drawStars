@@ -1,22 +1,23 @@
 <template>
-  <div class="task-categories">
-    <div class="page-toolbar">
-      <div class="page-title">
-        <h3>分类管理</h3>
-        <p>维护任务分类，供任务创建与大厅筛选使用</p>
-      </div>
-      <div class="page-actions">
+  <div class="manage-page">
+    <!-- 星夜页头（PageHero 通用组件） -->
+    <page-hero title="分类管理" desc="维护任务分类，供任务创建与大厅筛选使用">
+      <template #side>
+        <span class="page-hero__pill">
+          共 {{ store.adminCategories.length }} 个分类
+        </span>
         <el-button
           v-permission="'system:task:operate'"
-          type="primary"
+          class="page-hero__btn"
           @click="openCreate"
           >新增分类</el-button
         >
-        <el-button @click="load">刷新</el-button>
-      </div>
-    </div>
+        <el-button class="page-hero__btn" @click="load">刷新</el-button>
+      </template>
+    </page-hero>
 
-    <el-card shadow="never" class="panel-card">
+    <!-- 分类列表 -->
+    <div class="base-table">
       <el-table
         :data="store.adminCategories"
         v-loading="loading"
@@ -47,7 +48,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
+    </div>
 
     <el-dialog
       v-model="dialogVisible"
@@ -81,11 +82,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from 'vue'
+import { defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
 import { taskStore } from '@/stores/task'
 import type { TaskCategory } from '@/types/task'
+
+const PageHero = defineAsyncComponent(
+  () => import('@/components/base/PageHero/index.vue')
+)
 
 const store = taskStore()
 const loading = ref(false)
@@ -177,40 +182,6 @@ onMounted(load)
 </script>
 
 <style scoped lang="less">
-.task-categories {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.page-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.page-title {
-  h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: var(--el-text-color-secondary);
-  }
-}
-
-.page-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.panel-card {
-  border-radius: 8px;
-}
+/* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
+   星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 </style>
