@@ -212,7 +212,11 @@
 import { defineAsyncComponent, onMounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { taskStore } from '@/stores/task'
-import type { RewardTemplate, TaskTemplateRecord } from '@/types/task'
+import type {
+  RewardItem,
+  RewardTemplate,
+  TaskTemplateRecord
+} from '@/types/task'
 
 const PageHero = defineAsyncComponent(
   () => import('@/components/base/PageHero/index.vue')
@@ -262,7 +266,8 @@ async function reload() {
 }
 
 function buildRewardConfig(points: number, exp: number) {
-  const rewards = []
+  // 显式标注为 RewardItem[]：空数组字面量推断为 never[]，push 会报 never
+  const rewards: RewardItem[] = []
   if (points > 0) {
     rewards.push({
       type: 'POINTS' as const,
@@ -416,8 +421,16 @@ onMounted(reload)
 /* 页面骨架与表格白卡样式统一由 .manage-page 全局类（g.less）接管；
    星夜页头样式统一由 PageHero 通用组件携带，本文件仅保留页面局部定制 */
 
-/* ===== Tab 工具条 ===== */
+/* ===== Tab 收边 ===== */
+// el-tabs 直接放进白卡容器（.base-table padding:0）时，头部零内边距会
+// 让标签文字压住卡片边框与左上圆角——按 BaseTable toolbar（12px 16px 0）规格统一收边
+:deep(.el-tabs__header) {
+  padding: 12px 16px 0;
+}
+
+// Tab 工具条与 Tab 头左缘对齐（16px 收边，表格仍铺满白卡）
 .tab-toolbar {
+  padding: 0 16px;
   margin-bottom: 12px;
 }
 </style>
