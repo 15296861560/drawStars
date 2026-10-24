@@ -106,54 +106,100 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="less">
+// 品牌卡：星夜 -> 靛蓝渐变 + 白色星点微光
 .points-card {
-  padding: 20px;
-  background: linear-gradient(135deg, #1d4e89 0%, #2a9d8f 100%);
-  border-radius: 4px;
-  color: #fff;
+  position: relative;
+  padding: 1.5rem;
+  overflow: hidden;
+  color: var(--ds-night-text-active);
+  background: linear-gradient(
+    135deg,
+    var(--ds-night-deep),
+    var(--ds-primary-active)
+  );
+  border-radius: var(--ds-radius-lg);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(
+        circle at 84% 18%,
+        rgba(255, 255, 255, 0.85) 0 1.5px,
+        transparent 2px
+      ),
+      radial-gradient(
+        circle at 72% 64%,
+        rgba(255, 255, 255, 0.5) 0 1px,
+        transparent 1.5px
+      ),
+      radial-gradient(
+        circle at 10% 78%,
+        rgba(255, 255, 255, 0.6) 0 1.5px,
+        transparent 2px
+      ),
+      radial-gradient(
+        circle at 26% 12%,
+        rgba(255, 255, 255, 0.45) 0 1px,
+        transparent 1.5px
+      ),
+      radial-gradient(
+        circle at 95% 55%,
+        rgba(255, 255, 255, 0.35) 0 1px,
+        transparent 1.5px
+      );
+  }
 
   .points-balance {
-    margin-bottom: 20px;
+    position: relative;
+    margin-bottom: 1.25rem;
 
     .balance-info {
       display: flex;
       align-items: baseline;
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 0.625rem;
+      margin-bottom: 0.75rem;
 
       .label {
-        font-size: 14px;
+        font-size: @ds-font-md;
         opacity: 0.85;
       }
 
       .value {
-        font-size: 32px;
+        font-size: 2rem;
         font-weight: bold;
+        line-height: 1.1;
       }
     }
 
     .level-info {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.625rem;
       flex-wrap: wrap;
 
       .level-progress {
         flex: 1;
-        min-width: 100px;
+        min-width: 6.25rem;
+
+        :deep(.el-progress-bar__outer) {
+          background-color: rgba(255, 255, 255, 0.15);
+        }
       }
 
       .next-level-tip {
-        font-size: 12px;
+        font-size: @ds-font-xs;
         opacity: 0.85;
       }
     }
   }
 
   .quick-actions {
+    position: relative;
     display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
     flex-wrap: wrap;
 
     :deep(.el-button) {
@@ -169,7 +215,7 @@ onMounted(async () => {
       &:not(.el-button--primary) {
         background: rgba(255, 255, 255, 0.1);
         border-color: rgba(255, 255, 255, 0.2);
-        color: #fff;
+        color: var(--ds-night-text-active);
 
         &:hover {
           background: rgba(255, 255, 255, 0.2);
@@ -179,20 +225,21 @@ onMounted(async () => {
   }
 
   .check-in-streak {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
     background: rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
+    border-radius: var(--ds-radius-md);
 
     .streak-label {
-      font-size: 12px;
+      font-size: @ds-font-xs;
       opacity: 0.85;
     }
 
     .streak-value {
-      font-size: 16px;
+      font-size: @ds-font-lg;
       font-weight: bold;
     }
   }

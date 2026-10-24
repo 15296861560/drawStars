@@ -4,17 +4,28 @@
       <div class="base-info-head pc-page-title">{{ $t('baseInfo') }}</div>
 
       <div class="base-info-content pc-page-body">
-        <div class="avatar-block">
-          <el-avatar
-            class="avatar-img"
-            :size="80"
-            :src="personalData.avatar || undefined"
-          >
-            {{ (personalData.nickname || 'U').slice(0, 1) }}
-          </el-avatar>
+        <!-- 头像信息区 -->
+        <div class="avatar-hero">
+          <div class="avatar-frame">
+            <el-avatar
+              class="avatar-img"
+              :size="88"
+              :src="personalData.avatar || undefined"
+            >
+              {{ (personalData.nickname || 'U').slice(0, 1) }}
+            </el-avatar>
+          </div>
           <div class="avatar-meta">
-            <div class="avatar-name">
-              {{ personalData.nickname || $t('personalData.nickname') }}
+            <div class="avatar-name-row">
+              <span class="avatar-name">
+                {{ personalData.nickname || $t('personalData.nickname') }}
+              </span>
+              <span v-if="roleInfo.roleName" class="chip chip--primary">
+                {{ roleInfo.roleName }}
+              </span>
+              <span v-if="roleInfo.level" class="chip">
+                Lv.{{ roleInfo.level }}
+              </span>
             </div>
             <div class="avatar-id">
               {{ $t('personalData.userID') }}：{{ personalData.userID || '-' }}
@@ -27,9 +38,10 @@
                 accept="image/jpg,image/jpeg,image/png"
                 :on-change="onAvatarChange"
               >
-                <el-button link type="primary">{{
-                  $t('btn.uploadAvatar')
-                }}</el-button>
+                <el-button link type="primary">
+                  <el-icon class="btn-icon"><Camera /></el-icon>
+                  {{ $t('btn.uploadAvatar') }}
+                </el-button>
               </el-upload>
               <el-button
                 v-if="personalData.avatar"
@@ -37,6 +49,7 @@
                 type="danger"
                 @click="removeAvatar"
               >
+                <el-icon class="btn-icon"><Delete /></el-icon>
                 {{ $t('btn.deleteAvatar') }}
               </el-button>
             </div>
@@ -47,8 +60,7 @@
           ref="form"
           class="base-form"
           :model="personalData"
-          label-width="7rem"
-          label-position="right"
+          label-position="top"
         >
           <el-form-item :label="$t('personalData.accountAlias')">
             <el-input
@@ -58,30 +70,11 @@
             />
           </el-form-item>
 
-          <el-form-item :label="$t('personalData.roleName')">
-            <span class="readonly-text">{{ roleInfo.roleName || '-' }}</span>
-          </el-form-item>
-
-          <el-form-item :label="$t('personalData.level')">
-            <span class="readonly-text">{{ roleInfo.level || '-' }}</span>
-          </el-form-item>
-
           <el-form-item :label="$t('personalData.nickname')" required>
             <el-input
               v-model="personalData.nickname"
               :placeholder="$t('placeholder.nickname')"
               clearable
-            />
-          </el-form-item>
-
-          <el-form-item :label="$t('personalData.introduction')">
-            <el-input
-              type="textarea"
-              v-model="personalData.introduction"
-              :placeholder="$t('placeholder.introduction')"
-              :rows="3"
-              maxlength="255"
-              show-word-limit
             />
           </el-form-item>
 
@@ -103,7 +96,18 @@
             </el-radio-group>
           </el-form-item>
 
-          <el-form-item :label="$t('personalData.region')">
+          <el-form-item :label="$t('personalData.introduction')" class="span-2">
+            <el-input
+              type="textarea"
+              v-model="personalData.introduction"
+              :placeholder="$t('placeholder.introduction')"
+              :rows="3"
+              maxlength="255"
+              show-word-limit
+            />
+          </el-form-item>
+
+          <el-form-item :label="$t('personalData.region')" class="span-2">
             <el-cascader
               :placeholder="$t('placeholder.region')"
               v-model="personalData.region"
@@ -113,12 +117,12 @@
             />
           </el-form-item>
 
-          <el-form-item class="form-actions">
+          <div class="form-actions">
             <el-button type="primary" @click="updateUserInfo">{{
               $t('btn.save')
             }}</el-button>
             <el-button @click="cancel">{{ $t('btn.cancel') }}</el-button>
-          </el-form-item>
+          </div>
         </el-form>
       </div>
     </div>
@@ -317,98 +321,145 @@ export default {
   .base-info {
     display: flex;
     flex-direction: column;
+  }
 
-    .base-info-content {
-      max-width: 36rem;
+  .base-info-content {
+    max-width: 44rem;
+  }
 
-      .avatar-block {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-        margin: 0 0 1.5rem 7rem;
-        padding-bottom: 1.25rem;
-        border-bottom: 1px solid @color-bg-divider;
-      }
+  /* ========== 头像信息区（浅靛横幅） ========== */
+  .avatar-hero {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1.75rem;
+    background: var(--ds-primary-light);
+    border-radius: var(--ds-radius-lg);
+  }
 
-      .avatar-img {
-        flex-shrink: 0;
-        background: @color-fill-hover;
-        color: @color-text-secondary;
-        border: 1px solid @color-liner-border;
-        font-size: 1.5rem;
-        font-weight: 600;
-      }
+  .avatar-frame {
+    flex-shrink: 0;
+    padding: 4px;
+    background: var(--ds-bg);
+    border-radius: var(--ds-radius-round);
+    box-shadow: var(--ds-shadow-sm);
+  }
 
-      .avatar-meta {
-        min-width: 0;
-      }
+  .avatar-img {
+    background: @color-fill-hover;
+    color: @color-text-secondary;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
 
-      .avatar-name {
-        font-size: 1rem;
-        font-weight: 600;
-        color: @color-text-normal;
-        line-height: 1.4;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+  .avatar-meta {
+    flex: 1;
+    min-width: 0;
+  }
 
-      .avatar-id {
-        margin-top: 0.25rem;
-        font-size: 0.8125rem;
-        color: @color-text-placeholder;
-        line-height: 1.4;
-      }
+  .avatar-name-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 
-      .avatar-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-top: 0.5rem;
-      }
+  .avatar-name {
+    max-width: 100%;
+    font-size: var(--ds-font-size-lg);
+    font-weight: 600;
+    color: @color-text-normal;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-      .avatar-upload {
-        display: inline-flex;
-        line-height: 1;
-      }
+  .chip {
+    flex-shrink: 0;
+    padding: 0.125rem 0.625rem;
+    font-size: var(--ds-font-size-xs);
+    color: @color-text-secondary;
+    background: var(--ds-bg);
+    border-radius: var(--ds-radius-round);
+  }
 
-      .base-form {
-        :deep(.el-form-item) {
-          margin-bottom: 1.25rem;
-        }
+  .chip--primary {
+    font-weight: 500;
+    color: var(--ds-primary);
+  }
 
-        :deep(.el-form-item__label) {
-          color: @color-text-secondary;
-        }
+  .avatar-id {
+    margin-top: 0.25rem;
+    font-size: var(--ds-font-size-sm);
+    color: @color-text-placeholder;
+    line-height: 1.4;
+  }
 
-        :deep(.el-input),
-        :deep(.el-textarea) {
-          width: 100%;
-        }
+  .avatar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-top: 0.75rem;
+  }
 
-        :deep(.el-radio) {
-          margin-right: 0.75rem;
-        }
-      }
+  .btn-icon {
+    margin-right: 0.25rem;
+  }
 
-      .readonly-text {
-        color: @color-text-normal;
-        line-height: 1.5;
-      }
+  .avatar-upload {
+    display: inline-flex;
+    line-height: 1;
+  }
 
-      .region,
-      .full-width {
-        width: 100%;
-      }
+  /* ========== 表单（顶部标签 · 双列栅格） ========== */
+  .base-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
 
-      .form-actions {
-        margin-top: 0.5rem;
-        margin-bottom: 0;
+    :deep(.el-form-item) {
+      margin-bottom: 1.25rem;
+    }
 
-        :deep(.el-form-item__content) {
-          gap: 0.75rem;
-        }
-      }
+    :deep(.el-form-item__label) {
+      margin-bottom: 0.375rem;
+      font-weight: 500;
+      color: @color-text-secondary;
+    }
+
+    :deep(.el-input),
+    :deep(.el-textarea) {
+      width: 100%;
+    }
+
+    :deep(.el-radio) {
+      margin-right: 0.75rem;
+    }
+  }
+
+  .span-2 {
+    grid-column: 1 / -1;
+  }
+
+  .region,
+  .full-width {
+    width: 100%;
+  }
+
+  .form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid @color-bg-divider;
+  }
+
+  @media (max-width: 40rem) {
+    .base-form {
+      grid-template-columns: 1fr;
     }
   }
 }

@@ -7,21 +7,45 @@
         type="warning"
         show-icon
         :closable="false"
-        class="mb16"
+        class="life-alert"
       />
-      <el-form label-width="7rem" style="max-width: 28rem">
-        <el-form-item :label="$t('password')">
-          <el-input v-model="password" type="password" show-password />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="warning" @click="deactivate">{{
-            $t('deactivate')
-          }}</el-button>
-          <el-button type="danger" @click="remove">{{
-            $t('delete')
-          }}</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="password-block">
+        <div class="block-label">{{ $t('password') }}</div>
+        <el-input
+          v-model="password"
+          type="password"
+          show-password
+          class="password-input"
+        />
+      </div>
+      <div class="danger-grid">
+        <div class="danger-card danger-card--warning">
+          <div class="card-head">
+            <span class="card-tile is-warning" aria-hidden="true">
+              <component :is="'Warning'" />
+            </span>
+            <div class="card-title">{{ $t('deactivate') }}</div>
+          </div>
+          <div class="card-foot">
+            <el-button type="warning" plain @click="deactivate">{{
+              $t('deactivate')
+            }}</el-button>
+          </div>
+        </div>
+        <div class="danger-card danger-card--danger">
+          <div class="card-head">
+            <span class="card-tile is-danger" aria-hidden="true">
+              <component :is="'CircleClose'" />
+            </span>
+            <div class="card-title">{{ $t('delete') }}</div>
+          </div>
+          <div class="card-foot">
+            <el-button type="danger" plain @click="remove">{{
+              $t('delete')
+            }}</el-button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -97,8 +121,99 @@ export default {
 </script>
 <style lang="less" scoped>
 .lifecycle {
-  .mb16 {
-    margin-bottom: 1rem;
+  .life-alert {
+    max-width: 40rem;
+    margin-bottom: 2rem;
+  }
+
+  .password-block {
+    max-width: 24rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .block-label {
+    margin-bottom: 0.375rem;
+    font-size: @ds-font-sm;
+    font-weight: 500;
+    color: @color-text-secondary;
+    text-align: left;
+  }
+
+  .password-input {
+    width: 100%;
+  }
+
+  .danger-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+    max-width: 40rem;
+  }
+
+  .danger-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--ds-bg);
+    border: 1px solid @color-bg-divider;
+    border-radius: var(--ds-radius-lg);
+    transition:
+      border-color var(--ds-duration-fast) var(--ds-ease-out),
+      box-shadow var(--ds-duration-fast) var(--ds-ease-out);
+  }
+
+  .danger-card--warning:hover {
+    border-color: var(--el-color-warning);
+    box-shadow: var(--ds-shadow-sm);
+  }
+
+  .danger-card--danger:hover {
+    border-color: var(--el-color-danger);
+    box-shadow: var(--ds-shadow-sm);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-width: 0;
+  }
+
+  .card-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    font-size: 1.125rem;
+    border-radius: var(--ds-radius-md);
+
+    &.is-warning {
+      color: var(--el-color-warning);
+      background: var(--el-color-warning-light-9);
+    }
+
+    &.is-danger {
+      color: var(--el-color-danger);
+      background: var(--el-color-danger-light-9);
+    }
+  }
+
+  .card-title {
+    font-size: @ds-font-md;
+    font-weight: 600;
+    color: @color-text-normal;
+    text-align: left;
+  }
+
+  .card-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.875rem;
+    border-top: 1px solid @color-bg-divider;
   }
 }
 </style>

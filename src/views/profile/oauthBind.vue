@@ -2,43 +2,57 @@
   <div class="oauth-bind pc-page">
     <div class="section-head pc-page-title">{{ $t('title') }}</div>
     <div class="section-body pc-page-body">
-      <div v-for="item in list" :key="item.platform" class="oauth-item">
-        <div class="left">
-          <span
-            class="platform-icon"
-            :class="'platform-icon--' + item.platform"
-            aria-hidden="true"
-          >
-            <i
-              v-if="item.platform === 'github'"
-              class="drawstars-icon-gitHub"
-            ></i>
-            <svg
-              v-else
-              class="platform-svg"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+      <p class="oauth-lead">{{ $t('lead') }}</p>
+      <div class="oauth-grid">
+        <div
+          v-for="item in list"
+          :key="item.platform"
+          class="oauth-card"
+          :class="{ 'is-unavailable': !item.available }"
+        >
+          <div class="card-head">
+            <span
+              class="platform-icon"
+              :class="'platform-icon--' + item.platform"
+              aria-hidden="true"
             >
-              <path :d="iconPathOf(item.platform)" fill="currentColor" />
-            </svg>
-          </span>
-          <div class="info">
-            <div class="name">{{ labelOf(item.platform) }}</div>
-            <div class="status">
-              {{ item.bound ? $t('bound') : $t('unbound') }}
-              <span v-if="!item.available" class="muted"
-                >（{{ $t('unavailable') }}）</span
+              <i
+                v-if="item.platform === 'github'"
+                class="drawstars-icon-gitHub"
+              ></i>
+              <svg
+                v-else
+                class="platform-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
+                <path :d="iconPathOf(item.platform)" fill="currentColor" />
+              </svg>
+            </span>
+            <div class="card-info">
+              <div class="name">{{ labelOf(item.platform) }}</div>
+              <div class="status">
+                <el-tag
+                  :type="item.bound ? 'success' : 'info'"
+                  size="small"
+                  effect="light"
+                >
+                  {{ item.bound ? $t('bound') : $t('unbound') }}
+                </el-tag>
+                <span v-if="!item.available" class="muted">{{
+                  $t('unavailable')
+                }}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="right">
-          <el-button v-if="!item.bound" type="primary" @click="bind(item)">{{
-            $t('bind')
-          }}</el-button>
-          <el-button v-else type="danger" plain @click="unbind(item)">{{
-            $t('unbind')
-          }}</el-button>
+          <div class="card-foot">
+            <el-button v-if="!item.bound" type="primary" @click="bind(item)">{{
+              $t('bind')
+            }}</el-button>
+            <el-button v-else type="danger" plain @click="unbind(item)">{{
+              $t('unbind')
+            }}</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -127,15 +141,48 @@ export default {
 </script>
 <style lang="less" scoped>
 .oauth-bind {
-  .oauth-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0.25rem;
-    border-bottom: 1px solid @color-bg-divider;
+  .oauth-lead {
+    margin: 0 0 1.25rem;
+    font-size: @ds-font-sm;
+    color: @color-text-secondary;
   }
 
-  .left {
+  .oauth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: 1rem;
+    max-width: 64rem;
+  }
+
+  .oauth-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--ds-bg);
+    border: 1px solid @color-bg-divider;
+    border-radius: var(--ds-radius-lg);
+    transition:
+      border-color var(--ds-duration-fast) var(--ds-ease-out),
+      box-shadow var(--ds-duration-fast) var(--ds-ease-out);
+
+    &:hover {
+      border-color: var(--ds-primary);
+      box-shadow: var(--ds-shadow-md);
+    }
+  }
+
+  .is-unavailable {
+    border-style: dashed;
+
+    .platform-icon {
+      filter: grayscale(100%);
+      opacity: 0.55;
+    }
+  }
+
+  .card-head {
     display: flex;
     align-items: center;
     gap: 0.875rem;
@@ -146,20 +193,21 @@ export default {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--ds-radius-lg);
     flex-shrink: 0;
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     color: #fff;
     background: @color-text-secondary;
   }
 
   .platform-svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.375rem;
+    height: 1.375rem;
   }
 
+  // 平台品牌色（品牌标识允许使用字面量）
   .platform-icon--wechat {
     background: #07c160;
   }
@@ -181,24 +229,34 @@ export default {
     background: #111;
   }
 
-  .info {
+  .card-info {
     min-width: 0;
   }
 
   .name {
+    margin-bottom: 0.375rem;
+    font-size: @ds-font-md;
     font-weight: 600;
-    margin-bottom: 4px;
     color: @color-text-normal;
     text-align: left;
   }
 
   .status {
-    color: @color-text-secondary;
-    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
   }
 
   .muted {
+    font-size: @ds-font-xs;
     color: @color-text-placeholder;
+  }
+
+  .card-foot {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.875rem;
+    border-top: 1px solid @color-bg-divider;
   }
 }
 </style>
@@ -206,6 +264,7 @@ export default {
 {
   "en": {
     "title": "Linked Accounts",
+    "lead": "Bind a third-party account to sign in with one tap",
     "bound": "Bound",
     "unbound": "Not bound",
     "unavailable": "Unavailable",
@@ -218,6 +277,7 @@ export default {
   },
   "zh": {
     "title": "第三方账号关联",
+    "lead": "绑定第三方账号，无需密码即可快速登录",
     "bound": "已绑定",
     "unbound": "未绑定",
     "unavailable": "暂不可用",

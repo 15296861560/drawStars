@@ -155,7 +155,7 @@ function formatTime(time: string) {
 
 async function handleFilter() {
   const result = await load({
-    userId: Number(userStore.getUserId) || undefined,
+    userId: Number(userStore.getUserId) || 1,
     page: currentPage.value,
     pageSize: pageSize.value,
     type: filterType.value || undefined,

@@ -1,34 +1,28 @@
 <template>
-  <div class="points-page g-list-vertical">
+  <div class="points-page g-list-vertical pc-page">
+    <div class="pc-page-title">我的积分</div>
     <points-card
-      class="mb20"
       @view-history="showHistory = true"
       @view-rules="showRules = true"
     />
 
-    <el-row :gutter="16" class="stats-row mb20" v-loading="statsLoading">
-      <el-col :xs="24" :sm="8">
-        <el-card shadow="hover">
-          <div class="stat-label">今日获得</div>
-          <div class="stat-value">{{ statistics.todayEarned }}</div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="8">
-        <el-card shadow="hover">
-          <div class="stat-label">本月获得</div>
-          <div class="stat-value">{{ statistics.monthEarned }}</div>
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="8">
-        <el-card shadow="hover">
-          <div class="stat-label">即将过期</div>
-          <div class="stat-value warn">
-            {{ statistics.expiringPoints }}
-            <span class="stat-extra">{{ statistics.expiringDays }}天内</span>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <div v-loading="statsLoading" class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">今日获得</div>
+        <div class="stat-value">{{ statistics.todayEarned }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">本月获得</div>
+        <div class="stat-value">{{ statistics.monthEarned }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">即将过期</div>
+        <div class="stat-value warn">
+          {{ statistics.expiringPoints }}
+          <span class="stat-extra">{{ statistics.expiringDays }}天内</span>
+        </div>
+      </div>
+    </div>
 
     <points-history v-model="showHistory" />
     <points-rules v-model="showRules" />
@@ -63,44 +57,56 @@ onMounted(async () => {
 
 <style scoped lang="less">
 .points-page {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  border-radius: 4px;
-}
+  gap: 1.25rem;
 
-.mb20 {
-  margin-bottom: 20px;
-}
-
-.stats-row {
-  padding: 0 16px 16px;
-  box-sizing: border-box;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  width: 100%;
-}
-
-.stat-label {
-  font-size: 13px;
-  color: #909399;
-  margin-bottom: 8px;
-}
-
-.stat-value {
-  font-size: 24px;
-  font-weight: 600;
-  color: #303133;
-
-  &.warn {
-    color: #e6a23c;
+  .pc-page-title {
+    margin-bottom: 0;
   }
 
-  .stat-extra {
-    margin-left: 8px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #909399;
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem 1.5rem;
+    background: var(--ds-bg);
+    border: 1px solid @color-bg-divider;
+    border-radius: var(--ds-radius-lg);
+    transition:
+      border-color var(--ds-duration-fast) var(--ds-ease-out),
+      box-shadow var(--ds-duration-fast) var(--ds-ease-out);
+
+    &:hover {
+      border-color: var(--ds-primary);
+      box-shadow: var(--ds-shadow-sm);
+    }
+  }
+
+  .stat-label {
+    margin-bottom: 0.5rem;
+    font-size: @ds-font-sm;
+    color: @color-text-secondary;
+    text-align: left;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: @color-text-normal;
+    text-align: left;
+
+    &.warn {
+      color: var(--ds-color-warning);
+    }
+
+    .stat-extra {
+      margin-left: 0.5rem;
+      font-size: @ds-font-xs;
+      font-weight: 400;
+      color: @color-text-placeholder;
+    }
   }
 }
 </style>

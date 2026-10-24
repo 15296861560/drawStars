@@ -1,24 +1,21 @@
 <template>
   <div class="notify-settings pc-page">
-    <section class="notify-section">
-      <h3 class="section-title">{{ $t('sections.channel') }}</h3>
+    <div class="section-head pc-page-title">{{ $t('title') }}</div>
+    <div class="section-body pc-page-body">
+      <h3 class="group-title">{{ $t('sections.channel') }}</h3>
       <div class="card-grid">
         <div v-for="item in channelItems" :key="item.id" class="notify-card">
+          <span class="card-tile" aria-hidden="true">
+            <component :is="item.icon" />
+          </span>
           <div class="card-text">
             <div class="card-title">{{ item.title }}</div>
             <div class="card-desc">{{ item.desc }}</div>
           </div>
-          <el-select
-            v-model="prefs[item.pref]"
-            class="card-select"
-            @change="onChange"
-          >
-            <el-option :label="$t('options.receive')" :value="true" />
-            <el-option :label="$t('options.reject')" :value="false" />
-          </el-select>
+          <el-switch v-model="prefs[item.pref]" @change="onChange" />
         </div>
       </div>
-    </section>
+    </div>
   </div>
 </template>
 
@@ -50,24 +47,28 @@ export default {
         {
           id: 'inApp',
           pref: 'inApp',
+          icon: 'Bell',
           title: this.$t('items.inApp.title'),
           desc: this.$t('items.inApp.desc')
         },
         {
           id: 'websocket',
           pref: 'websocket',
+          icon: 'Lightning',
           title: this.$t('items.websocket.title'),
           desc: this.$t('items.websocket.desc')
         },
         {
           id: 'email',
           pref: 'email',
+          icon: 'Message',
           title: this.$t('items.email.title'),
           desc: this.$t('items.email.desc')
         },
         {
           id: 'sms',
           pref: 'sms',
+          icon: 'Iphone',
           title: this.$t('items.sms.title'),
           desc: this.$t('items.sms.desc')
         }
@@ -115,67 +116,76 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.section-title {
-  margin: 0 0 14px;
-  font-size: 16px;
-  font-weight: 600;
-  color: @color-text-normal;
-  line-height: 1.4;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px 20px;
-}
-
-.notify-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 84px;
-  padding: 18px 20px;
-  background: @color-bg;
-  border: 1px solid @color-bg-divider;
-  box-sizing: border-box;
-}
-
-.card-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.card-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: @color-text-normal;
-  line-height: 1.4;
-}
-
-.card-desc {
-  margin-top: 6px;
-  font-size: 12px;
-  color: @color-text-placeholder;
-  line-height: 1.5;
-}
-
-.card-select {
-  width: 168px;
-  flex-shrink: 0;
-
-  :deep(.el-input__wrapper) {
-    box-shadow: 0 0 0 1px @color-liner-border inset;
+.notify-settings {
+  .group-title {
+    margin: 0 0 1rem;
+    font-size: @ds-font-sm;
+    font-weight: 600;
+    color: @color-text-secondary;
   }
-}
 
-@media (max-width: 960px) {
   .card-grid {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 1rem;
+    max-width: 56rem;
   }
 
-  .card-select {
-    width: 148px;
+  .notify-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--ds-bg);
+    border: 1px solid @color-bg-divider;
+    border-radius: var(--ds-radius-lg);
+    box-sizing: border-box;
+    transition:
+      border-color var(--ds-duration-fast) var(--ds-ease-out),
+      box-shadow var(--ds-duration-fast) var(--ds-ease-out);
+
+    &:hover {
+      border-color: var(--ds-primary);
+      box-shadow: var(--ds-shadow-sm);
+    }
+  }
+
+  .card-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    font-size: 1.125rem;
+    color: var(--ds-primary);
+    background: var(--ds-primary-light);
+    border-radius: var(--ds-radius-md);
+  }
+
+  .card-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-title {
+    font-size: @ds-font-md;
+    font-weight: 600;
+    color: @color-text-normal;
+    line-height: 1.4;
+    text-align: left;
+  }
+
+  .card-desc {
+    margin-top: 0.375rem;
+    font-size: @ds-font-sm;
+    color: @color-text-secondary;
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  :deep(.el-switch) {
+    flex-shrink: 0;
   }
 }
 </style>
@@ -183,12 +193,9 @@ export default {
 <i18n>
 {
   "en": {
+    "title": "Notification Settings",
     "sections": {
       "channel": "Notification Channels"
-    },
-    "options": {
-      "receive": "Receive these messages",
-      "reject": "Do not receive"
     },
     "items": {
       "inApp": {
@@ -212,12 +219,9 @@ export default {
     "fail": "Save failed"
   },
   "zh": {
+    "title": "通知设置",
     "sections": {
       "channel": "通知渠道"
-    },
-    "options": {
-      "receive": "接收此类消息",
-      "reject": "不接收此类消息"
     },
     "items": {
       "inApp": {

@@ -2,75 +2,89 @@
   <div class="credentials pc-page">
     <!-- list view -->
     <div v-if="view === 'list'" class="settings-list">
-      <h2 class="settings-title">{{ $t('account.title') }}</h2>
+      <div class="settings-head pc-page-title">{{ $t('account.title') }}</div>
 
       <div class="setting-row">
-        <span class="setting-label letter-space">{{
-          $t('password.label')
-        }}</span>
-        <div class="setting-right">
-          <span class="setting-value">{{ $t('password.hint') }}</span>
-          <button
-            type="button"
-            class="setting-action"
-            @click="openView('password')"
-          >
-            {{ $t('btn.setPassword') }}
-          </button>
+        <div class="row-tile">
+          <el-icon><Lock /></el-icon>
         </div>
+        <div class="row-main">
+          <div class="row-label">{{ $t('password.label') }}</div>
+          <div class="row-value">{{ $t('password.hint') }}</div>
+        </div>
+        <button type="button" class="row-action" @click="openView('password')">
+          {{ $t('btn.setPassword') }}
+        </button>
       </div>
 
       <div class="setting-row">
-        <span class="setting-label letter-space">{{ $t('phone.label') }}</span>
-        <div class="setting-right">
-          <span class="setting-value">{{ maskedPhone }}</span>
-          <button
-            type="button"
-            class="setting-action"
-            @click="openView('phone')"
-          >
-            {{ phone ? $t('btn.modifyPhone') : $t('btn.bindPhone') }}
-          </button>
+        <div class="row-tile">
+          <el-icon><Iphone /></el-icon>
         </div>
+        <div class="row-main">
+          <div class="row-label">{{ $t('phone.label') }}</div>
+          <div class="row-value">
+            <span>{{ maskedPhone }}</span>
+            <el-tag :type="phone ? 'success' : 'info'" size="small">
+              {{ phone ? $t('common.bound') : $t('common.unbound') }}
+            </el-tag>
+          </div>
+        </div>
+        <button type="button" class="row-action" @click="openView('phone')">
+          {{ phone ? $t('btn.modifyPhone') : $t('btn.bindPhone') }}
+        </button>
       </div>
 
       <div class="setting-row">
-        <span class="setting-label letter-space">{{ $t('email.label') }}</span>
-        <div class="setting-right">
-          <span class="setting-value">{{ maskedEmail }}</span>
-          <button
-            type="button"
-            class="setting-action"
-            @click="openView('email')"
-          >
-            {{ email ? $t('btn.modifyEmail') : $t('btn.bindEmail') }}
-          </button>
+        <div class="row-tile">
+          <el-icon><Message /></el-icon>
         </div>
+        <div class="row-main">
+          <div class="row-label">{{ $t('email.label') }}</div>
+          <div class="row-value">
+            <span>{{ maskedEmail }}</span>
+            <el-tag :type="email ? 'success' : 'info'" size="small">
+              {{ email ? $t('common.bound') : $t('common.unbound') }}
+            </el-tag>
+          </div>
+        </div>
+        <button type="button" class="row-action" @click="openView('email')">
+          {{ email ? $t('btn.modifyEmail') : $t('btn.bindEmail') }}
+        </button>
       </div>
 
       <div class="setting-row">
-        <span class="setting-label">{{ $t('prefs.smsLogin') }}</span>
-        <div class="setting-right">
-          <el-switch v-model="smsLoginEnabled" @change="savePrefs" />
+        <div class="row-tile">
+          <el-icon><ChatDotRound /></el-icon>
         </div>
+        <div class="row-main">
+          <div class="row-label">{{ $t('prefs.smsLogin') }}</div>
+        </div>
+        <el-switch v-model="smsLoginEnabled" @change="savePrefs" />
       </div>
 
-      <div class="setting-row setting-row--last">
-        <span class="setting-label">{{ $t('prefs.oauthLogin') }}</span>
-        <div class="setting-right">
-          <el-switch v-model="oauthLoginEnabled" @change="savePrefs" />
+      <div class="setting-row">
+        <div class="row-tile">
+          <el-icon><Link /></el-icon>
         </div>
+        <div class="row-main">
+          <div class="row-label">{{ $t('prefs.oauthLogin') }}</div>
+        </div>
+        <el-switch v-model="oauthLoginEnabled" @change="savePrefs" />
       </div>
     </div>
 
     <!-- phone edit flow -->
     <div v-else-if="view === 'phone'" class="verify-flow">
-      <div class="verify-crumb">
-        <button type="button" class="crumb-link" @click="backToList">
-          {{ $t('account.title') }}
+      <div class="verify-header">
+        <button type="button" class="verify-back" @click="backToList">
+          <el-icon><ArrowLeft /></el-icon>
+          <span>{{ $t('account.title') }}</span>
         </button>
-        <span class="crumb-sep"> / </span>
-        <span>{{ phone ? $t('phone.settings') : $t('phone.bindTitle') }}</span>
+        <span class="verify-sep">/</span>
+        <span class="verify-current">{{
+          phone ? $t('phone.settings') : $t('phone.bindTitle')
+        }}</span>
       </div>
 
       <div class="verify-main">
@@ -172,12 +186,15 @@
 
     <!-- email edit flow -->
     <div v-else-if="view === 'email'" class="verify-flow">
-      <div class="verify-crumb">
-        <button type="button" class="crumb-link" @click="backToList">
-          {{ $t('account.title') }}
+      <div class="verify-header">
+        <button type="button" class="verify-back" @click="backToList">
+          <el-icon><ArrowLeft /></el-icon>
+          <span>{{ $t('account.title') }}</span>
         </button>
-        <span class="crumb-sep"> / </span>
-        <span>{{ email ? $t('email.settings') : $t('email.bindTitle') }}</span>
+        <span class="verify-sep">/</span>
+        <span class="verify-current">{{
+          email ? $t('email.settings') : $t('email.bindTitle')
+        }}</span>
       </div>
 
       <div class="verify-main">
@@ -283,12 +300,13 @@
 
     <!-- password edit flow -->
     <div v-else-if="view === 'password'" class="verify-flow">
-      <div class="verify-crumb">
-        <button type="button" class="crumb-link" @click="backToList">
-          {{ $t('account.title') }}
+      <div class="verify-header">
+        <button type="button" class="verify-back" @click="backToList">
+          <el-icon><ArrowLeft /></el-icon>
+          <span>{{ $t('account.title') }}</span>
         </button>
-        <span class="crumb-sep"> / </span>
-        <span>{{ $t('password.settings') }}</span>
+        <span class="verify-sep">/</span>
+        <span class="verify-current">{{ $t('password.settings') }}</span>
       </div>
 
       <div class="verify-main">
@@ -543,119 +561,140 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.settings-title {
-  margin: 0 0 0.5rem;
-  padding: 0.25rem 0 1rem;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: @color-text-normal;
-  line-height: 1.4;
+/* ========== 设置列表 ========== */
+.settings-list {
+  max-width: 40rem;
 }
 
 .setting-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 3.5rem;
-  padding: 1rem 0;
+  gap: 1rem;
+  padding: 1.125rem 0;
   border-bottom: 1px solid @color-bg-divider;
 
-  &--last {
+  &:last-child {
     border-bottom: none;
   }
 }
 
-.setting-label {
-  flex: 0 0 6rem;
-  color: @color-text-normal;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  white-space: nowrap;
-}
-
-.letter-space {
-  letter-spacing: 0.5em;
-  margin-right: -0.5em;
-}
-
-.setting-right {
-  flex: 1;
+.row-tile {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 1.25rem;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-primary-light);
+  color: var(--ds-primary);
+  font-size: 1.25rem;
+}
+
+.row-main {
+  flex: 1;
   min-width: 0;
 }
 
-.setting-value {
-  color: @color-text-secondary;
-  font-size: 0.875rem;
+.row-label {
+  font-size: var(--ds-font-size-md);
+  font-weight: 500;
+  color: @color-text-normal;
   line-height: 1.5;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.setting-action {
+.row-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: var(--ds-font-size-sm);
+  color: @color-text-secondary;
+  line-height: 1.5;
+
+  > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.row-action {
   flex-shrink: 0;
   margin: 0;
   padding: 0;
   border: none;
   background: transparent;
   color: @color-primary;
-  font-size: 0.875rem;
+  font-size: var(--ds-font-size-md);
   line-height: 1.5;
   white-space: nowrap;
   cursor: pointer;
+  transition: color var(--ds-duration-fast) var(--ds-ease-out);
 
   &:hover {
     color: @color-text-hover;
   }
 }
 
+/* ========== 验证流程 ========== */
 .verify-flow {
   min-height: 28rem;
 }
 
-.verify-crumb {
-  color: @color-text-placeholder;
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  margin-bottom: 3rem;
-  white-space: nowrap;
+.verify-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid @color-bg-divider;
+  font-size: var(--ds-font-size-sm);
 }
 
-.crumb-link {
+.verify-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   margin: 0;
   padding: 0;
   border: none;
   background: transparent;
-  color: @color-text-placeholder;
-  cursor: pointer;
+  color: @color-text-secondary;
   font-size: inherit;
+  cursor: pointer;
+  transition: color var(--ds-duration-fast) var(--ds-ease-out);
+
+  .el-icon {
+    font-size: 1rem;
+  }
 
   &:hover {
     color: @color-primary;
   }
 }
 
-.crumb-sep {
-  margin: 0 0.15rem;
+.verify-sep {
+  color: @color-text-placeholder;
+}
+
+.verify-current {
+  color: @color-text-normal;
+  font-weight: 500;
 }
 
 .verify-main {
-  width: 26rem;
+  width: 24rem;
+  max-width: 100%;
   margin: 0 auto;
-  text-align: center;
 }
 
 .verify-lead {
   margin: 0;
   color: @color-text-normal;
-  font-size: 0.9375rem;
+  font-size: var(--ds-font-size-md);
+  font-weight: 500;
   line-height: 1.6;
-  white-space: nowrap;
 }
 
 .verify-strong {
@@ -664,31 +703,25 @@ export default {
 }
 
 .verify-sub {
-  margin: 0.5rem 0 2rem;
+  margin: 0.5rem 0 1.75rem;
   color: @color-text-placeholder;
-  font-size: 0.8125rem;
+  font-size: var(--ds-font-size-sm);
   line-height: 1.5;
 }
 
 .verify-field {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   margin-bottom: 1.25rem;
-  text-align: left;
 }
 
 .verify-field-label {
-  flex-shrink: 0;
-  width: 5.5rem;
-  text-align: right;
+  display: block;
+  margin-bottom: 0.375rem;
   color: @color-text-secondary;
-  font-size: 0.875rem;
-  white-space: nowrap;
+  font-size: var(--ds-font-size-sm);
+  font-weight: 500;
 }
 
 .verify-input {
-  flex: 1;
   width: 100%;
 
   :deep(.el-input-group__append) {
@@ -708,7 +741,7 @@ export default {
   border: none;
   background: transparent;
   color: @color-primary;
-  font-size: 0.8125rem;
+  font-size: var(--ds-font-size-sm);
   white-space: nowrap;
   cursor: pointer;
 
@@ -724,9 +757,8 @@ export default {
 
 .verify-next {
   width: 100%;
-  max-width: 20.5rem;
-  margin-top: 0.5rem;
   height: 2.5rem;
+  margin-top: 0.5rem;
 }
 
 .verify-footer-link {
@@ -736,7 +768,7 @@ export default {
   border: none;
   background: transparent;
   color: @color-primary;
-  font-size: 0.875rem;
+  font-size: var(--ds-font-size-sm);
   white-space: nowrap;
   cursor: pointer;
 
@@ -750,18 +782,18 @@ export default {
 {
   "en": {
     "account": { "title": "Account Settings" },
-    "common": { "unbound": "Not bound" },
+    "common": { "bound": "Bound", "unbound": "Not bound" },
     "phone": {
       "label": "Phone",
       "settings": "Phone Settings",
       "bindTitle": "Bind Phone",
       "sendTip": "Code will be sent to",
       "sendHelp": "If you do not receive the code, check SMS blocking.",
-      "fillCaptcha": "Captcha:",
+      "fillCaptcha": "Captcha",
       "captchaPh": "Enter captcha",
       "bindLead": "Bind a new phone number",
       "bindHelp": "Enter the new phone and captcha to continue.",
-      "newPhoneLabel": "Phone:",
+      "newPhoneLabel": "New phone",
       "newPhonePh": "Enter new phone"
     },
     "email": {
@@ -770,11 +802,11 @@ export default {
       "bindTitle": "Bind Email",
       "sendTip": "Code will be sent to",
       "sendHelp": "If you do not receive the code, check spam folder.",
-      "fillCaptcha": "Captcha:",
+      "fillCaptcha": "Captcha",
       "captchaPh": "Enter captcha",
       "bindLead": "Bind a new email",
       "bindHelp": "Enter the new email and captcha to continue.",
-      "newEmailLabel": "Email:",
+      "newEmailLabel": "New email",
       "newEmailPh": "Enter new email"
     },
     "password": {
@@ -783,9 +815,9 @@ export default {
       "settings": "Password Settings",
       "lead": "Change login password",
       "help": "Use a strong password with letters and numbers.",
-      "old": "Old:",
-      "new": "New:",
-      "confirm": "Confirm:",
+      "old": "Current password",
+      "new": "New password",
+      "confirm": "Confirm password",
       "oldPh": "Current password",
       "newPh": "New password",
       "confirmPh": "Confirm password"
@@ -817,18 +849,18 @@ export default {
   },
   "zh": {
     "account": { "title": "账号设置" },
-    "common": { "unbound": "未绑定" },
+    "common": { "bound": "已绑定", "unbound": "未绑定" },
     "phone": {
       "label": "手机",
       "settings": "手机设置",
       "bindTitle": "绑定手机",
       "sendTip": "验证码将发送到手机",
       "sendHelp": "如果长时间未收到验证码，请检查是否将运营商拉黑",
-      "fillCaptcha": "填写验证码：",
+      "fillCaptcha": "填写验证码",
       "captchaPh": "请输入验证码",
       "bindLead": "绑定新的手机号码",
       "bindHelp": "请输入新手机号并完成验证码校验",
-      "newPhoneLabel": "新手机号：",
+      "newPhoneLabel": "新手机号",
       "newPhonePh": "请输入新手机号"
     },
     "email": {
@@ -837,11 +869,11 @@ export default {
       "bindTitle": "绑定邮箱",
       "sendTip": "验证码将发送到邮箱",
       "sendHelp": "如果长时间未收到验证码，请检查垃圾邮件箱",
-      "fillCaptcha": "填写验证码：",
+      "fillCaptcha": "填写验证码",
       "captchaPh": "请输入验证码",
       "bindLead": "绑定新的邮箱",
       "bindHelp": "请输入新邮箱并完成验证码校验",
-      "newEmailLabel": "新邮箱：",
+      "newEmailLabel": "新邮箱",
       "newEmailPh": "请输入新邮箱"
     },
     "password": {
@@ -850,9 +882,9 @@ export default {
       "settings": "密码设置",
       "lead": "修改登录密码",
       "help": "建议使用字母、数字组合的强密码",
-      "old": "当前密码：",
-      "new": "新密码：",
-      "confirm": "确认密码：",
+      "old": "当前密码",
+      "new": "新密码",
+      "confirm": "确认密码",
       "oldPh": "请输入当前密码",
       "newPh": "请输入新密码",
       "confirmPh": "请再次输入新密码"

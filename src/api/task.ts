@@ -32,6 +32,14 @@ import {
   $axiosGet,
   requests
 } from '@/assets/js/axios-api/axios-config.js'
+import { userInfoStore } from '@/stores/user-info'
+
+// ==================== 当前用户 ====================
+
+/** 登录用户 ID；store 未就绪时兜底为 1（与 points 模块约定一致） */
+function currentUserId(): number {
+  return Number(userInfoStore().getUserId) || 1
+}
 
 // ==================== Mock 数据 ====================
 
@@ -712,7 +720,7 @@ export async function acceptTask(id: number): Promise<TaskInstance> {
     }
     return inst
   }
-  const res = await $axios({}, `/tasks/${id}/accept`)
+  const res = await $axios({ userId: currentUserId() }, `/tasks/${id}/accept`)
   if (!res?.status) throw new Error(res?.msg || '接取失败')
   return res.data
 }
@@ -793,7 +801,10 @@ export async function submitTask(
     void payload
     return { ...inst, task: attachProgress(task) }
   }
-  const res = await $axios(payload || {}, `/tasks/${id}/submit`)
+  const res = await $axios(
+    { ...(payload || {}), userId: currentUserId() },
+    `/tasks/${id}/submit`
+  )
   if (!res?.status) throw new Error(res?.msg || '提交失败')
   return res.data
 }
@@ -839,7 +850,7 @@ export async function claimReward(id: number): Promise<{
       instance: { ...inst, task: attachProgress(task) }
     }
   }
-  const res = await $axios({}, `/tasks/${id}/claim`)
+  const res = await $axios({ userId: currentUserId() }, `/tasks/${id}/claim`)
   if (!res?.status) throw new Error(res?.msg || '领取失败')
   return res.data
 }
@@ -864,7 +875,10 @@ export async function saveShippingAddress(
     if (inst) inst.shippingAddress = { ...address }
     return { ...claim }
   }
-  const res = await $axios(address, `/tasks/${id}/claim/shipping`)
+  const res = await $axios(
+    { ...address, userId: currentUserId() },
+    `/tasks/${id}/claim/shipping`
+  )
   if (!res?.status) throw new Error(res?.msg || '保存地址失败')
   return res.data
 }
@@ -911,7 +925,7 @@ export async function getMyTasks(tab?: string): Promise<{
     const key = map[tab] || 'inProgress'
     return { list: groups[key] || [], groups }
   }
-  const res = await $axiosGet({ tab }, '/tasks/my')
+  const res = await $axiosGet({ tab, userId: currentUserId() }, '/tasks/my')
   return res.data
 }
 
@@ -936,7 +950,7 @@ export async function getMyStats(): Promise<{
       totalPoints: 360
     }
   }
-  const res = await $axiosGet({}, '/tasks/my/stats')
+  const res = await $axiosGet({ userId: currentUserId() }, '/tasks/my/stats')
   return res.data
 }
 
@@ -948,7 +962,10 @@ export async function getAchievements(): Promise<Task[]> {
       .filter(t => t.taskType === 'ACHIEVEMENT' && t.status !== 'DELETED')
       .map(attachProgress)
   }
-  const res = await $axiosGet({}, '/tasks/achievements')
+  const res = await $axiosGet(
+    { userId: currentUserId() },
+    '/tasks/achievements'
+  )
   return res.data
 }
 
@@ -963,7 +980,10 @@ export async function getNotifications(): Promise<TaskNotification[]> {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
   }
-  const res = await $axiosGet({}, '/tasks/notifications')
+  const res = await $axiosGet(
+    { userId: currentUserId() },
+    '/tasks/notifications'
+  )
   return res.data
 }
 
@@ -983,7 +1003,10 @@ export async function confirmReceipt(
     claim.status = 'RECEIVED'
     return { ...claim }
   }
-  const res = await $axios({}, `/tasks/${taskId}/claim/confirm`)
+  const res = await $axios(
+    { userId: currentUserId() },
+    `/tasks/${taskId}/claim/confirm`
+  )
   if (!res?.status) throw new Error(res?.msg || '确认收货失败')
   return res.data
 }
@@ -996,7 +1019,10 @@ export async function readNotification(id: number): Promise<boolean> {
     if (n) n.read = true
     return true
   }
-  const res = await $axios({}, `/tasks/notifications/${id}/read`)
+  const res = await $axios(
+    {},
+    `/tasks/notifications/${id}/read?userId=${currentUserId()}`
+  )
   if (!res?.status) throw new Error(res?.msg || '标记失败')
   return true
 }
