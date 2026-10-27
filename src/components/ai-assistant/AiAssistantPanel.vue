@@ -34,6 +34,8 @@ import ConversationSidebar from './ConversationSidebar.vue'
 import MessageList from './MessageList.vue'
 import ChatInput from './ChatInput.vue'
 import AiTooltip from './AiTooltip.vue'
+import { ttsSupported } from '@/composables/useTts'
+import { trackEvent } from '@/plugins/tracker'
 
 const store = aiAssistantStore()
 const panelRef = ref<HTMLElement | null>(null)
@@ -155,12 +157,21 @@ onMounted(() => {
   })
 })
 
+/** TTS 引擎不可用一次性埋点（每次前端会话仅上报一次，PRD 附录 B） */
+let ttsUnavailableTracked = false
+function ensureTtsUnavailableTracked() {
+  if (ttsUnavailableTracked) return
+  ttsUnavailableTracked = true
+  if (!ttsSupported()) trackEvent('module_open_ai_tts_unavailable')
+}
+
 watch(
   () => store.panelOpen,
   open => {
     if (open) {
       applyLayoutFromStore()
       if (!store.conversations.length) store.loadConversations()
+      ensureTtsUnavailableTracked()
     }
   }
 )

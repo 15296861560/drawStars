@@ -1,4 +1,5 @@
 import type { AiMessage, AiMessageType } from '@/types/ai-assistant'
+import { dataQueryCapability } from './data-query'
 
 export interface AiCapabilityHandler {
   id: string
@@ -127,7 +128,9 @@ const capabilities: AiCapabilityHandler[] = [
         '<p>已记录提醒（Mock）：</p><ul><li>明日 09:00 团队站会</li><li>周五 18:00 提交周报</li></ul>',
       capabilityId: 'reminder'
     })
-  }
+  },
+  // 问数能力注册在末尾：既有能力（表格/图表等）优先匹配，保证 F08 零改动（PRD 9.4 缺陷 4）
+  dataQueryCapability
 ]
 
 /** 注册新能力：在 capabilities 数组末尾 push 即可 */

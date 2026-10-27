@@ -28,7 +28,11 @@
           @keydown="onKeydown"
         />
         <div class="input-actions">
-          <AiTooltip :content="$t('aiAssistant.voiceInput')" placement="top">
+          <AiTooltip
+            v-if="canVoice"
+            :content="$t('aiAssistant.voiceInput')"
+            placement="top"
+          >
             <el-button
               class="tool-btn"
               circle
@@ -77,12 +81,21 @@ import { Microphone, Paperclip, Promotion } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { aiAssistantStore } from '@/stores/ai-assistant'
-import { useSpeechRecognition } from '@/composables/useSpeechRecognition'
+import { permissionStore } from '@/stores/permission'
+import { AI_PERM } from '@/config/ai-assistant-perms'
+import {
+  useSpeechRecognition,
+  AiVoiceError
+} from '@/composables/useSpeechRecognition'
+import { isAiMockMode } from '@/api/ai-assistant'
 import { listCapabilityHints } from '@/services/ai-assistant/reply-engine'
+import { DATA_QUERY_HINTS } from '@/services/ai-assistant/data-query'
+import { trackEvent } from '@/plugins/tracker'
 import AiTooltip from './AiTooltip.vue'
 
 const { t } = useI18n()
 const store = aiAssistantStore()
+const permission = permissionStore()
 const speech = useSpeechRecognition()
 const text = ref('')
 const inputRef = ref<{
@@ -90,7 +103,19 @@ const inputRef = ref<{
   textarea?: HTMLTextAreaElement
 } | null>(null)
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const hints = listCapabilityHints()
+// 无 query 权限时不展示问数快捷入口（PRD 6.2）
+const hints = computed(() => {
+  const base = listCapabilityHints()
+  return permission.hasPermission(AI_PERM.query)
+    ? [...DATA_QUERY_HINTS, ...base]
+    : base
+})
+// F01：无 voice 权限或浏览器不支持语音识别时隐藏麦克风入口（Mock 演示模式除外，PRD 4.1.3 / 6.2）
+const canVoice = computed(
+  () =>
+    permission.hasPermission(AI_PERM.voice) &&
+    (speech.supported.value || isAiMockMode())
+)
 
 const canSend = computed(() => text.value.trim().length > 0 && !store.sending)
 
@@ -124,17 +149,20 @@ async function toggleVoice() {
     return
   }
   try {
+    trackEvent('ai_voice_start')
     const transcript = await speech.start()
+    trackEvent('ai_voice_success')
     if (transcript) {
       text.value = transcript
       await store.sendUserMessage(transcript, { type: 'voice' })
     }
-  } catch {
-    ElMessage({
-      type: 'warning',
-      message: t('aiAssistant.voiceFailed'),
-      customClass: 'ai-assistant-message'
-    })
+  } catch (err) {
+    // 用户主动取消（再次点击麦克风）静默处理（PRD 4.1.3）
+    const code = err instanceof AiVoiceError ? err.code : 'ASR_NETWORK'
+    if (code === 'VOICE_ABORTED') return
+    trackEvent('ai_voice_fail', { code })
+    // 语音错误用消息流内提示，避免全屏 toast 打断对话（PRD 4.1.3）
+    store.pushSystemNotice(t(`aiAssistant.voiceErrors.${code}`), 'voice-notice')
   }
 }
 

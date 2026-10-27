@@ -291,7 +291,16 @@ export default {
     voiceInput: '语音输入',
     uploadFile: '上传文件',
     listening: '正在聆听',
-    voiceFailed: '语音识别失败，已使用 Mock 文本',
+    ttsPlay: '播放语音',
+    ttsStop: '停止播放',
+    voiceErrors: {
+      MIC_PERMISSION_DENIED: '未获得麦克风权限，请在浏览器设置中允许后重试',
+      MIC_UNAVAILABLE: '未检测到可用麦克风或当前浏览器不支持语音识别',
+      ASR_NO_SPEECH: '未识别到语音内容，请再试一次',
+      ASR_NETWORK: '语音识别服务异常或网络不可用，请稍后重试',
+      ASR_TIMEOUT: '识别超时，请靠近麦克风后重试',
+      VOICE_ABORTED: '语音输入已取消'
+    },
     uploadFailed: '文件上传失败，请重试',
     thinking: '正在思考…',
     thinkingProcess: '思考过程',
@@ -304,6 +313,21 @@ export default {
     resize: '拖拽调整窗口大小',
     dragHint: '拖拽移动 · 双击标题栏重置',
     inputHint: 'Enter 发送 · Shift+Enter 换行 · Esc 关闭',
+    queryNoPerm:
+      '抱歉，您暂无数据问数权限（system:ai-assistant:query），请联系管理员开通',
+    queryDatasetNone:
+      '抱歉，暂未找到能回答该问题的数据集，可换个问法试试，如：本月积分发放了多少、统计任务完成率',
+    queryDatasetNoPerm:
+      '抱歉，您尚无「{dataset}」数据的查看权限，请联系管理员开通',
+    queryEmpty: '未查询到符合条件的数据',
+    queryOverLimit: '已返回前 200 行，如需更多结果，可缩小时间范围后继续追问',
+    datasets: {
+      points: '积分数据',
+      workflow: '审批流程',
+      tasks: '任务工单',
+      survey: '调研问卷',
+      logs: '操作日志'
+    },
     group: {
       today: '今天',
       yesterday: '昨天',

@@ -16,6 +16,8 @@ export interface AiVoicePayload {
   durationSec: number
   transcript: string
   audioUrl?: string
+  /** 转写来源：v1.0 浏览器本地识别；v1.1+ 预留服务端 ASR 回填（PRD 2.2） */
+  asrSource?: 'web-speech' | 'server'
 }
 
 export interface AiFilePayload {
@@ -79,6 +81,14 @@ export interface AiSendMessagePayload {
 export interface AiChatResponse {
   userMessage: AiMessage
   assistantMessage: AiMessage
+}
+
+/** 数据问数接口响应（PRD 7.3：POST /api/ai-assistant/data-query） */
+export interface AiDataQueryResponse {
+  /** 成功时 type 为 table / chart；拒绝或澄清时为 text */
+  assistantMessage: AiMessage
+  /** 服务端 SQL 审计流水号，用于问数行为留痕（PRD 4.5.4） */
+  sqlAuditId: string
 }
 
 export interface AiPanelLayout {

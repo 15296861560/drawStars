@@ -292,7 +292,20 @@ export default {
     voiceInput: 'Voice input',
     uploadFile: 'Upload file',
     listening: 'Listening',
-    voiceFailed: 'Speech recognition failed, using mock text',
+    ttsPlay: 'Play voice',
+    ttsStop: 'Stop playing',
+    voiceErrors: {
+      MIC_PERMISSION_DENIED:
+        'Microphone permission denied. Allow it in browser settings and retry',
+      MIC_UNAVAILABLE:
+        'No microphone detected, or this browser does not support speech recognition',
+      ASR_NO_SPEECH: 'No speech detected. Please try again',
+      ASR_NETWORK:
+        'Speech recognition service error or network unavailable. Please retry later',
+      ASR_TIMEOUT:
+        'Recognition timed out. Move closer to the microphone and retry',
+      VOICE_ABORTED: 'Voice input cancelled'
+    },
     uploadFailed: 'File upload failed, please try again',
     thinking: 'Thinking…',
     thinkingProcess: 'Reasoning',
@@ -306,6 +319,22 @@ export default {
     resize: 'Drag to resize window',
     dragHint: 'Drag to move · Double-click title to reset',
     inputHint: 'Enter to send · Shift+Enter for newline · Esc to close',
+    queryNoPerm:
+      'Sorry, you do not have the data query permission (system:ai-assistant:query). Please contact the administrator',
+    queryDatasetNone:
+      'Sorry, no dataset can answer this question. Try another phrasing, e.g. points issued this month, task completion rate',
+    queryDatasetNoPerm:
+      'Sorry, you do not have permission to view "{dataset}" data. Please contact the administrator',
+    queryEmpty: 'No data matched the given conditions',
+    queryOverLimit:
+      'Only the first 200 rows are returned. Narrow the time range and follow up for more',
+    datasets: {
+      points: 'Points',
+      workflow: 'Approvals',
+      tasks: 'Tasks',
+      survey: 'Surveys',
+      logs: 'Operation logs'
+    },
     group: {
       today: 'Today',
       yesterday: 'Yesterday',

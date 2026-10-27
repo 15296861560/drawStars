@@ -8,6 +8,8 @@ import type {
   AiPanelLayout
 } from '@/types/ai-assistant'
 import * as aiApi from '@/api/ai-assistant'
+import { stopTts } from '@/composables/useTts'
+import { trackEvent } from '@/plugins/tracker'
 
 const PANEL_DEFAULT: AiPanelLayout = {
   x: -1,
@@ -135,6 +137,8 @@ export const aiAssistantStore = defineStore(
         fileMeta
       }
 
+      // 发送新消息时中断当前语音播报（PRD 4.3.1）
+      stopTts()
       sending.value = true
       streaming.value = false
       streamContent.value = ''
@@ -238,15 +242,52 @@ export const aiAssistantStore = defineStore(
       }
     }
 
+    /** 模块打开一次性埋点（每次前端会话仅上报一次，PRD 附录 B） */
+    let moduleOpenTracked = false
+    function ensureModuleOpenTracked() {
+      if (moduleOpenTracked) return
+      moduleOpenTracked = true
+      trackEvent('module_open_ai_assistant')
+    }
+
+    /** 语音识别等错误以消息流内系统提示呈现（非崩溃式反馈，PRD 4.1.3） */
+    async function pushSystemNotice(
+      content: string,
+      capabilityId = 'system-notice'
+    ) {
+      let convId = activeConversationId.value
+      if (!convId) {
+        try {
+          const conv = await newConversation()
+          convId = conv.id
+        } catch {
+          return
+        }
+      }
+      messages.value.push({
+        id: `notice-${Date.now()}`,
+        conversationId: convId,
+        role: 'assistant',
+        type: 'text',
+        content,
+        capabilityId,
+        createdAt: new Date().toISOString()
+      })
+    }
+
     function togglePanel() {
       panelOpen.value = !panelOpen.value
-      if (panelOpen.value && !conversations.value.length) {
-        loadConversations()
+      if (panelOpen.value) {
+        ensureModuleOpenTracked()
+        if (!conversations.value.length) {
+          loadConversations()
+        }
       }
     }
 
     function openPanel() {
       panelOpen.value = true
+      ensureModuleOpenTracked()
       if (!conversations.value.length) loadConversations()
     }
 
@@ -288,6 +329,7 @@ export const aiAssistantStore = defineStore(
       selectConversation,
       newConversation,
       sendUserMessage,
+      pushSystemNotice,
       togglePanel,
       openPanel,
       closePanel,

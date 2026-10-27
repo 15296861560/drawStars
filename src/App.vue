@@ -43,6 +43,7 @@ import { userInfoStore } from '@/stores/user-info'
 import { permissionStore } from '@/stores/permission'
 import { aiAssistantStore } from '@/stores/ai-assistant'
 import { isSkipLoginMode } from '@/config/skip-login'
+import { AI_PERM } from '@/config/ai-assistant-perms'
 
 const userInfo = userInfoStore()
 const permission = permissionStore()
@@ -53,10 +54,12 @@ const isLoginPage = computed(
   () => route.path === '/login' || route.path === '/' || route.name === '登录'
 )
 
-// 登录之后才可以使用 AI 助手（跳过登录模式启动时已写入模拟会话）
+// 登录之后可以使用 AI 助手（跳过登录模式启动时已写入模拟会话），且需具备 AI 助手使用权限（PRD F02）
 const aiAssistantEnabled = computed(
   () =>
-    !!(userInfo.getUserId || userInfo.getToken.value) && !isLoginPage.value
+    !!(userInfo.getUserId || userInfo.getToken.value) &&
+    !isLoginPage.value &&
+    permission.hasPermission(AI_PERM.use)
 )
 const aiAssistant = aiAssistantStore()
 

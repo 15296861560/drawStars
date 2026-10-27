@@ -5,12 +5,15 @@
 import type {
   AiChatResponse,
   AiConversation,
+  AiDataQueryResponse,
   AiMessage,
   AiSendMessagePayload
 } from '@/types/ai-assistant'
 import { $axios, $axiosGet } from '@/assets/js/axios-api/axios-config.js'
 import { apiInfoStore } from '@/stores/api-info'
 import { userInfoStore } from '@/stores/user-info'
+import { trackEvent } from '@/plugins/tracker'
+import { buildDataQueryReplyMessage } from '@/services/ai-assistant/data-query'
 import * as mockService from '@/services/ai-assistant'
 
 const USE_MOCK = import.meta.env.VITE_AI_ASSISTANT_MOCK !== 'false'
@@ -46,6 +49,11 @@ export interface AiStreamHandlers {
   onDelta?: (chunk: string, full: string) => void
   onDone?: (res: AiChatResponse) => void
   onError?: (message: string) => void
+}
+
+/** 当前是否处于 AI Mock 演示模式（语音输入入口等场景判断用，真实模式隐藏不支持的能力） */
+export function isAiMockMode(): boolean {
+  return USE_MOCK
 }
 
 export async function getConversations(): Promise<AiConversation[]> {
@@ -159,7 +167,11 @@ export async function sendMessageStream(
     const res = await mockService.sendChatMessage(payload)
     handlers.onUserMessage?.(res.userMessage)
     handlers.onThinkingStart?.()
-    const thinking = '分析问题意图…\n检索可用能力与上下文…\n组织回复结构…'
+    // 问数回复展示问数过程文案（PRD 4.5.1 思考过程），其余能力走通用文案
+    const thinking =
+      res.assistantMessage.capabilityId === 'data-query'
+        ? '识别到数据查询意图…\n正在校验数据问数权限…\n检索可用数据集并生成只读查询…\n正在执行查询并装载结果…'
+        : '分析问题意图…\n检索可用能力与上下文…\n组织回复结构…'
     let thinkingAcc = ''
     for (const ch of thinking) {
       thinkingAcc += ch
@@ -292,4 +304,41 @@ export function preferStream(): boolean {
 export async function voiceToText(): Promise<string> {
   if (USE_MOCK) return mockService.mockVoiceToText()
   return mockService.mockVoiceToText()
+}
+
+/**
+ * 数据问数同步接口（PRD 7.3：POST /api/ai-assistant/data-query）
+ * 流式对话内问数由 /chat/stream 下发同构消息，此函数用于同步问数与审计对接。
+ * Mock 分支复用 data-query 能力（权限校验/话术随 Mock 同构）。
+ */
+export async function dataQuery(payload: {
+  conversationId: string
+  question: string
+}): Promise<AiDataQueryResponse> {
+  if (USE_MOCK) {
+    const assistantMessage = buildDataQueryReplyMessage(
+      payload.question,
+      payload.conversationId
+    )
+    return {
+      assistantMessage,
+      sqlAuditId: `mock-audit-${Date.now()}`
+    }
+  }
+
+  trackEvent('ai_query_submit', { question: payload.question.slice(0, 50) })
+  try {
+    const res = await $axios(payload, '/api/ai-assistant/data-query')
+    const data = unwrap<AiDataQueryResponse>(res)
+    trackEvent('ai_query_success', {
+      capabilityId: data.assistantMessage.capabilityId,
+      type: data.assistantMessage.type
+    })
+    return data
+  } catch (err) {
+    trackEvent('ai_query_fail', {
+      code: err instanceof Error ? err.message.slice(0, 50) : 'QUERY_DB_ERROR'
+    })
+    throw err
+  }
 }

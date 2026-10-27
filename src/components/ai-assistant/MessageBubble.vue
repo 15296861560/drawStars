@@ -119,6 +119,26 @@
         />
       </div>
 
+      <div
+        v-if="canSpeak"
+        class="ai-msg-tools"
+        :class="{ 'is-playing': speaking }"
+      >
+        <AiTooltip
+          :content="
+            speaking ? $t('aiAssistant.ttsStop') : $t('aiAssistant.ttsPlay')
+          "
+          placement="top"
+        >
+          <button type="button" class="tts-btn" @click="toggleSpeak">
+            <el-icon>
+              <Mute v-if="speaking" />
+              <Headset v-else />
+            </el-icon>
+          </button>
+        </AiTooltip>
+      </div>
+
       <div class="ai-msg-time">{{ formatTime(message.createdAt) }}</div>
     </div>
   </div>
@@ -132,9 +152,12 @@ import {
   MagicStick,
   Microphone,
   Cpu,
-  ArrowDown
+  ArrowDown,
+  Headset,
+  Mute
 } from '@element-plus/icons-vue'
 import { resolveFileVisual } from './file-icon'
+import AiTooltip from './AiTooltip.vue'
 import type {
   AiChartPayload,
   AiFilePayload,
@@ -144,6 +167,7 @@ import type {
   AiVoicePayload
 } from '@/types/ai-assistant'
 import { aiAssistantStore } from '@/stores/ai-assistant'
+import { useTts } from '@/composables/useTts'
 
 const props = defineProps<{
   message: AiMessage
@@ -190,6 +214,25 @@ const chartPayload = computed(
   () => props.message.payload as AiChartPayload | undefined
 )
 const chartHeight = computed(() => chartPayload.value?.height ?? 200)
+
+// F03：assistant 文本类气泡的语音播报工具条（引擎不可用时隐藏，PRD 4.3.1）
+const tts = useTts()
+const canSpeak = computed(
+  () =>
+    props.message.role === 'assistant' &&
+    (props.message.type === 'text' || props.message.type === 'rich') &&
+    !!props.message.content &&
+    tts.supported
+)
+const speaking = computed(() => tts.playingId.value === props.message.id)
+
+function toggleSpeak() {
+  if (speaking.value) {
+    tts.stop(props.message.id)
+  } else {
+    tts.speak(props.message.id, props.message.content)
+  }
+}
 
 function formatSize(size?: number) {
   if (!size) return ''
@@ -724,6 +767,8 @@ onBeforeUnmount(() => {
     margin: 0 0 10px;
     font-size: 13px;
     color: @ai-text-secondary;
+    /* 答案自述与超 200 行提示分行显示（PRD 4.6） */
+    white-space: pre-line;
   }
 
   .inner-table {
@@ -737,6 +782,45 @@ onBeforeUnmount(() => {
   min-width: 240px;
   border-radius: @ai-radius-sm;
   background: #fafbfd;
+}
+
+.ai-msg-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  &.is-playing {
+    opacity: 1;
+  }
+
+  .tts-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: @ai-radius-sm;
+    background: transparent;
+    color: @ai-text-muted;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background: fade(@ai-primary, 8%);
+      color: @ai-primary-dark;
+    }
+  }
+}
+
+/* 气泡 hover 时显示播报工具条；播报中的气泡常显 */
+.ai-msg-row.is-assistant:hover .ai-msg-tools {
+  opacity: 1;
 }
 
 .ai-msg-time {
