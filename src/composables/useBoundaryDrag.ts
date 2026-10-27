@@ -1,4 +1,4 @@
-import { onBeforeUnmount, type Ref } from 'vue'
+import { onBeforeUnmount, ref, type Ref } from 'vue'
 
 export type BoundaryRect = {
   left: number
@@ -16,6 +16,8 @@ export function useBoundaryDrag(options: {
   onDragEnd?: () => void
 }) {
   let dragging = false
+  /** 拖动进行中（响应式）：供外部收起/禁用随面板移动会错位的浮层（如标题栏 tooltip） */
+  const isDragging = ref(false)
   let didMove = false
   let startX = 0
   let startY = 0
@@ -54,6 +56,7 @@ export function useBoundaryDrag(options: {
   const onUp = () => {
     if (!dragging) return
     dragging = false
+    isDragging.value = false
     document.removeEventListener('mousemove', onMove)
     document.removeEventListener('mouseup', onUp)
     options.onDragEnd?.()
@@ -64,6 +67,7 @@ export function useBoundaryDrag(options: {
     const el = options.handleRef?.value || options.targetRef.value
     if (!el) return
     dragging = true
+    isDragging.value = true
     didMove = false
     startX = e.clientX
     startY = e.clientY
@@ -90,5 +94,5 @@ export function useBoundaryDrag(options: {
 
   const hasMoved = () => didMove
 
-  return { bind, unbind, onDown, hasMoved }
+  return { bind, unbind, onDown, hasMoved, isDragging }
 }

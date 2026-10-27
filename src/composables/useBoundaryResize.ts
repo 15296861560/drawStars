@@ -1,4 +1,4 @@
-import { onBeforeUnmount, type Ref } from 'vue'
+import { onBeforeUnmount, ref, type Ref } from 'vue'
 
 export function useBoundaryResize(options: {
   position: Ref<{ x: number; y: number }>
@@ -12,6 +12,8 @@ export function useBoundaryResize(options: {
   const minW = options.minWidth ?? 380
   const minH = options.minHeight ?? 320
   let resizing = false
+  /** 缩放进行中（响应式）：供外部收起/禁用随面板移动会错位的浮层（如缩放手柄 tooltip） */
+  const isResizing = ref(false)
   let startX = 0
   let startY = 0
   let startW = 0
@@ -31,6 +33,7 @@ export function useBoundaryResize(options: {
   const onUp = () => {
     if (!resizing) return
     resizing = false
+    isResizing.value = false
     document.removeEventListener('mousemove', onMove)
     document.removeEventListener('mouseup', onUp)
     options.onResizeEnd?.()
@@ -39,6 +42,7 @@ export function useBoundaryResize(options: {
   const onDown = (e: MouseEvent) => {
     if (e.button !== 0) return
     resizing = true
+    isResizing.value = true
     startX = e.clientX
     startY = e.clientY
     startW = options.size.value.width
@@ -54,5 +58,5 @@ export function useBoundaryResize(options: {
     document.removeEventListener('mouseup', onUp)
   })
 
-  return { onDown }
+  return { onDown, isResizing }
 }

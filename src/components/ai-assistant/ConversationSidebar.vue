@@ -62,6 +62,7 @@ function onSelect(id: string) {
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 侧栏：深夜玻璃底，主题色仅用于激活态渲染
 .ai-sidebar {
   width: 220px;
   flex-shrink: 0;
@@ -85,8 +86,12 @@ function onSelect(id: string) {
     width: 4px;
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.1);
+    background: @ai-scrollbar-thumb;
     border-radius: @ai-radius-full;
+
+    &:hover {
+      background: @ai-scrollbar-thumb-hover;
+    }
   }
 }
 
@@ -117,22 +122,29 @@ function onSelect(id: string) {
   cursor: pointer;
   margin-bottom: 2px;
   border: none;
-  transition: background 0.15s ease;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.04);
+    background: @ai-fill-04;
+
+    .conv-icon {
+      color: @ai-night-text;
+    }
   }
 
   &.active {
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    // 主题色薄雾 + 左缘 2px 指示条
+    background: @ai-primary-soft;
+    box-shadow: inset 2px 0 0 @ai-primary;
 
     .conv-icon {
-      color: @ai-primary;
+      color: @ai-primary-hover;
     }
 
     .conv-title {
-      color: @ai-text;
+      color: @ai-text-strong;
       font-weight: 600;
     }
   }

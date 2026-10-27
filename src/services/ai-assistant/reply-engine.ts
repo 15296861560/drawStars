@@ -178,7 +178,6 @@ export function listCapabilityHints(): string[] {
     '翻译 hello',
     '生成图表',
     '展示表格',
-    '写一段 vue 代码',
     '设置提醒',
     '上传文件说明'
   ]

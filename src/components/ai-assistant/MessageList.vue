@@ -67,6 +67,7 @@ watch(
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 消息流：透明底让面板星域透出，滚动条走夜色 token
 .ai-message-list {
   flex: 1;
   overflow-y: auto;
@@ -79,11 +80,12 @@ watch(
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.12);
+    background: @ai-scrollbar-thumb;
     border-radius: @ai-radius-full;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: @ai-scrollbar-thumb-hover;
+    }
   }
 }
 
@@ -106,7 +108,8 @@ watch(
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+    // 主题色光晕（40% 主题色），随主题呼吸
+    box-shadow: 0 8px 24px @ai-primary-fog;
   }
 
   .empty-title {
@@ -120,12 +123,13 @@ watch(
   .empty-desc {
     margin: 0;
     font-size: 14px;
-    color: @ai-text-secondary;
+    color: @ai-text-muted;
     line-height: 1.6;
     max-width: 280px;
   }
 }
 
+// 等待卡片：夜色薄玻璃
 .ai-typing {
   display: flex;
   align-items: center;
@@ -133,7 +137,7 @@ watch(
   color: @ai-text-secondary;
   font-size: 13px;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.8);
+  background: @ai-fill-04;
   border-radius: @ai-radius-md;
   border: 1px solid @ai-border;
   width: fit-content;
@@ -149,7 +153,8 @@ watch(
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: @ai-primary;
+    // 亮变体在夜色底上更醒目
+    background: @ai-primary-hover;
     animation: ai-typing-bounce 1.2s ease-in-out infinite;
 
     &:nth-child(2) {
@@ -158,19 +163,6 @@ watch(
     &:nth-child(3) {
       animation-delay: 0.3s;
     }
-  }
-}
-
-@keyframes ai-typing-bounce {
-  0%,
-  80%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  40% {
-    transform: translateY(-5px);
-    opacity: 1;
   }
 }
 </style>

@@ -1,62 +1,184 @@
-// AI 助手设计令牌 — 参考 ChatGPT / Gemini / 豆包 等主流助手风格
-@ai-primary: #4c5edb;
-@ai-primary-light: #6c7ce8;
-@ai-primary-dark: #3a4ac2;
-@ai-accent: #6366f1;
-@ai-accent-soft: #818cf8;
+// ============================================================
+// AI 语音助手设计令牌 v2 —— 「夜色玻璃 + 主题色强调」
+// 呼应应用主题「星与夜」：全部颜色绑定运行时主题变量（--ds-*），
+// 随 11 套主题自动适配；fallback 取默认主题 starry-indigo。
+//
+// ⚠ LESS 的 fade()/lighten() 无法作用于运行时 CSS 变量，
+//   半透明主题色一律用 color-mix(in srgb, ...) 交由浏览器解析。
+//   字面 hex 的 fade() 不受此限（如文件类型 tone 色）。
+//
+// 本文件被各组件 scoped 样式引入：@keyframes 会按组件作用域重命名，
+// 引用处自动同步，跨组件互不冲突（与旧版 ai-shimmer 同机制）。
+// ============================================================
 
-@ai-gradient: linear-gradient(135deg, #6366f1 0%, #4c5edb 45%, #38bdf8 100%);
-@ai-gradient-orb: linear-gradient(
+// ---------- 主题强调色（运行时变量 + starry-indigo 兜底） ----------
+@ai-primary: var(--ds-primary, #4c5edb);
+// hover 恒为亮变体（theme-style 派生），夜色上作文字/图标色更可读
+@ai-primary-hover: var(--ds-primary-hover, #6c7ce8);
+@ai-primary-active: var(--ds-primary-active, #3a4ac2);
+@ai-primary-light: var(--ds-primary-light, #edeffb);
+@ai-night: var(--ds-night, #1e2438);            // 夜色基底
+@ai-night-deep: var(--ds-night-deep, #171c2b);  // 沉一档的深夜
+@ai-night-text: var(--ds-night-text, #a6acc8); // 夜色次级文字
+
+// ---------- 主题色透明度派生（color-mix 浏览器解析，禁用 fade()） ----------
+@ai-primary-veil: color-mix(in srgb, var(--ds-primary, #4c5edb) 8%, transparent);  // 轻微 hover wash
+@ai-primary-soft: color-mix(in srgb, var(--ds-primary, #4c5edb) 14%, transparent); // active wash / 语音卡底
+@ai-primary-tint: color-mix(in srgb, var(--ds-primary, #4c5edb) 22%, transparent); // 录音态描边 / 思考区激活边
+@ai-primary-fog: color-mix(in srgb, var(--ds-primary, #4c5edb) 40%, transparent);  // FAB 光环 / focus ring
+@ai-primary-glow: color-mix(in srgb, var(--ds-primary, #4c5edb) 55%, transparent); // FAB 辉光
+@ai-night-text-dim: color-mix(in srgb, var(--ds-night-text, #a6acc8) 62%, transparent); // 弱化文字
+
+// ---------- 白色叠层中性层（在夜色上堆层次） ----------
+@ai-fill-04: rgba(255, 255, 255, 0.04);
+@ai-fill-06: rgba(255, 255, 255, 0.06);
+@ai-fill-08: rgba(255, 255, 255, 0.08);
+@ai-fill-12: rgba(255, 255, 255, 0.12);
+@ai-fill-16: rgba(255, 255, 255, 0.16);
+
+// ---------- 文本三级（夜色高对比方案） ----------
+@ai-text: rgba(255, 255, 255, 0.92);
+@ai-text-strong: #ffffff;
+@ai-text-secondary: @ai-night-text;
+@ai-text-muted: @ai-night-text-dim;
+
+// ---------- 边框 / 分隔线（白色发丝线） ----------
+@ai-border: @ai-fill-08;
+@ai-border-strong: @ai-fill-12;
+
+// ---------- 表面（夜色玻璃） ----------
+@ai-bg-panel: color-mix(in srgb, var(--ds-night, #1e2438) 90%, transparent);         // 面板容器
+@ai-bg-sidebar: color-mix(in srgb, var(--ds-night-deep, #171c2b) 60%, transparent);  // 侧栏沉一层
+@ai-bg-chat: transparent;                                                             // 消息区透出星域
+@ai-bg-input: color-mix(in srgb, var(--ds-night-deep, #171c2b) 55%, transparent);    // 输入卡微沉
+
+// ---------- 渐变（主题单色系：hover → primary → active） ----------
+@ai-gradient: linear-gradient(
   135deg,
-  #818cf8 0%,
-  #4c5edb 40%,
-  #22d3ee 100%
+  var(--ds-primary-hover, #6c7ce8) 0%,
+  var(--ds-primary, #4c5edb) 50%,
+  var(--ds-primary-active, #3a4ac2) 100%
 );
-@ai-gradient-soft: linear-gradient(
+@ai-gradient-orb: linear-gradient(
+  145deg,
+  var(--ds-primary-hover, #6c7ce8) 0%,
+  var(--ds-primary, #4c5edb) 45%,
+  var(--ds-primary-active, #3a4ac2) 100%
+);
+@ai-gradient-header: linear-gradient(
   180deg,
-  rgba(255, 255, 255, 0.95) 0%,
-  rgba(248, 250, 252, 0.98) 100%
+  color-mix(in srgb, var(--ds-night-deep, #171c2b) 65%, transparent) 0%,
+  color-mix(in srgb, var(--ds-night-deep, #171c2b) 12%, transparent) 100%
 );
-@ai-gradient-header: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
 
-@ai-bg-panel: rgba(255, 255, 255, 0.92);
-@ai-bg-sidebar: #f4f4f5;
-@ai-bg-chat: #f7f7f8;
-@ai-bg-input: #ffffff;
-@ai-border: rgba(0, 0, 0, 0.06);
-@ai-border-strong: rgba(0, 0, 0, 0.1);
+// ---------- 阴影（深夜幕布 + 白 hairline 环） ----------
+@ai-shadow-panel:
+  0 0 0 1px rgba(255, 255, 255, 0.07),
+  0 24px 48px rgba(6, 8, 20, 0.55),
+  0 8px 16px rgba(6, 8, 20, 0.38);
+@ai-shadow-fab:
+  0 6px 18px @ai-primary-fog,
+  0 0 0 1px rgba(255, 255, 255, 0.18) inset,
+  0 0 0 6px @ai-primary-veil;
+@ai-shadow-input:
+  0 0 0 1px rgba(255, 255, 255, 0.08),
+  0 10px 26px rgba(6, 8, 20, 0.35);
 
-@ai-text: #0d0d0d;
-@ai-text-secondary: #676767;
-@ai-text-muted: #9b9b9b;
+// ---------- 气泡 ----------
+@ai-user-bubble: linear-gradient(
+  135deg,
+  var(--ds-primary-hover, #6c7ce8),
+  var(--ds-primary-active, #3a4ac2)
+);
+@ai-user-text: rgba(255, 255, 255, 0.96);
+// 助手气泡：微透白膜（组件内补 box-shadow hairline 边）
+@ai-assistant-bubble: rgba(255, 255, 255, 0.04);
 
+// ---------- 滚动条（夜色白系） ----------
+@ai-scrollbar-thumb: rgba(255, 255, 255, 0.14);
+@ai-scrollbar-thumb-hover: rgba(255, 255, 255, 0.22);
+
+// ---------- 圆角 ----------
 @ai-radius-sm: 10px;
 @ai-radius-md: 14px;
 @ai-radius-lg: 20px;
 @ai-radius-xl: 24px;
 @ai-radius-full: 999px;
 
+// ---------- 层级 ----------
 @ai-z-fab: 9999;
 @ai-z-panel: 10000;
 @ai-z-popper: 10050;
 @ai-z-message: 10051;
 
-@ai-shadow-panel:
-  0 0 0 1px rgba(0, 0, 0, 0.04),
-  0 24px 48px rgba(0, 0, 0, 0.12),
-  0 8px 16px rgba(0, 0, 0, 0.06);
-@ai-shadow-fab:
-  0 4px 14px rgba(99, 102, 241, 0.35),
-  0 0 0 1px rgba(255, 255, 255, 0.2) inset;
-@ai-shadow-input:
-  0 0 0 1px rgba(0, 0, 0, 0.06),
-  0 4px 16px rgba(0, 0, 0, 0.06);
+// ---------- 星点 mixin（纯 CSS 星域，A/B 两层错相位闪烁） ----------
+.ai-starfield-a() {
+  background-image:
+    radial-gradient(1px 1px at 8% 22%, rgba(255, 255, 255, 0.55) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 22% 68%, rgba(255, 255, 255, 0.4) 50%, transparent 100%),
+    radial-gradient(1px 1px at 34% 14%, rgba(255, 255, 255, 0.6) 50%, transparent 100%),
+    radial-gradient(1px 1px at 48% 82%, rgba(255, 255, 255, 0.3) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 62% 30%, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
+    radial-gradient(1px 1px at 76% 90%, rgba(255, 255, 255, 0.35) 50%, transparent 100%),
+    radial-gradient(1px 1px at 85% 40%, rgba(255, 255, 255, 0.55) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 95% 12%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+}
 
-@ai-user-bubble: #4c5edb;
-@ai-user-text: #ffffff;
-@ai-assistant-bubble: transparent;
+.ai-starfield-b() {
+  background-image:
+    radial-gradient(1px 1px at 14% 48%, rgba(255, 255, 255, 0.4) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 26% 26%, rgba(255, 255, 255, 0.55) 50%, transparent 100%),
+    radial-gradient(1px 1px at 40% 58%, rgba(255, 255, 255, 0.3) 50%, transparent 100%),
+    radial-gradient(1px 1px at 55% 18%, rgba(255, 255, 255, 0.5) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 68% 74%, rgba(255, 255, 255, 0.45) 50%, transparent 100%),
+    radial-gradient(1px 1px at 80% 56%, rgba(255, 255, 255, 0.35) 50%, transparent 100%),
+    radial-gradient(1px 1px at 90% 78%, rgba(255, 255, 255, 0.55) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 5% 86%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+}
 
-// 通用动画
+// ---------- 共享 keyframes（Vue scoped 会自动重命名并同步引用） ----------
+
+// FAB 极光球呼吸（亮度 + 饱和度缓动，替代旧 hue-rotate）
+@keyframes ai-orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1) saturate(1);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.16) saturate(1.15);
+  }
+}
+
+// FAB 待唤脉冲环
+@keyframes ai-fab-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+// 星点闪烁（A/B 层用不同 duration + delay 错相位）
+@keyframes ai-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+// 流光扫过（thinking 激活渐变底 / FAB 高光）
 @keyframes ai-shimmer {
   0% {
     background-position: 200% center;
@@ -66,14 +188,81 @@
   }
 }
 
-@keyframes ai-orb-glow {
+// 语音消息波形跳动
+@keyframes ai-voice-wave {
   0%,
   100% {
-    filter: hue-rotate(0deg);
-    transform: scale(1);
+    transform: scaleY(0.6);
   }
   50% {
-    filter: hue-rotate(12deg);
-    transform: scale(1.02);
+    transform: scaleY(1);
+  }
+}
+
+// 录音 / 播报中脉冲（主题色 45% 扩至淡出；小元素用 --ai-rec-spread 收窄半径）
+@keyframes ai-rec-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-primary, #4c5edb) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 var(--ai-rec-spread, 10px) transparent;
+  }
+}
+
+// TTS 播放中迷你均衡器（供伪元素双柱错拍使用）
+@keyframes ai-eq-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+// 等待三点
+@keyframes ai-typing-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+// 消息入场
+@keyframes ai-msg-in {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 流式输出光标
+@keyframes ai-cursor-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+// 思考中图标旋转（thinking 卡 is-live 态的 CPU 图标）
+@keyframes ai-think-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

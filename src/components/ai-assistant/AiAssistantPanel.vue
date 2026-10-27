@@ -6,7 +6,7 @@
       class="ai-assistant-panel"
       :style="panelStyle"
     >
-      <PanelToolbar @reset-layout="resetLayout" />
+      <PanelToolbar :dragging="drag.isDragging.value" @reset-layout="resetLayout" />
       <div class="ai-panel-body">
         <ConversationSidebar />
         <div class="ai-panel-main">
@@ -14,7 +14,11 @@
           <ChatInput ref="chatInputRef" />
         </div>
       </div>
-      <AiTooltip :content="$t('aiAssistant.resize')" placement="top-end">
+      <AiTooltip
+        :content="$t('aiAssistant.resize')"
+        placement="top-end"
+        :disabled="resize.isResizing.value"
+      >
         <div class="ai-resize-handle" @mousedown="resize.onDown">
           <span class="resize-grip" />
         </div>
@@ -190,22 +194,57 @@ defineExpose({ resetLayout, panelRef, focusInput })
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 夜色玻璃容器：深夜幕布底 + 顶部主题色极光晕染 + 双层星域
 .ai-assistant-panel {
   position: fixed;
   z-index: @ai-z-panel;
   display: flex;
   flex-direction: column;
-  background: @ai-bg-panel;
+  background:
+    // 顶缘一抹主题色极光（随主题变化）
+    radial-gradient(140% 90% at 80% -12%, @ai-primary-veil 0%, transparent 62%),
+    @ai-bg-panel;
   border-radius: @ai-radius-xl;
   box-shadow: @ai-shadow-panel;
   overflow: hidden;
   min-width: 400px;
   min-height: 360px;
-  backdrop-filter: blur(20px) saturate(1.2);
-  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  backdrop-filter: blur(24px) saturate(1.35);
+  -webkit-backdrop-filter: blur(24px) saturate(1.35);
+
+  // 星域 A/B 两层：错相位闪烁，垫在内容之下
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &::before {
+    .ai-starfield-a();
+    animation: ai-star-twinkle 5s ease-in-out infinite;
+  }
+
+  &::after {
+    .ai-starfield-b();
+    animation: ai-star-twinkle 7.5s ease-in-out 2.5s infinite;
+  }
+
+  // 内容层压在星域之上
+  &:deep(.ai-panel-toolbar) {
+    position: relative;
+    z-index: 2;
+    // 表头外层是 AiTooltip 的 inline-flex 触发层（块化为行向 flex），
+    // header 会按内容收缩；铺满宽度才能恢复整条头部的渐变背景与把手居中
+    width: 100%;
+  }
 }
 
 .ai-panel-body {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex: 1;
   min-height: 0;
@@ -237,14 +276,14 @@ defineExpose({ resetLayout, panelRef, focusInput })
   .resize-grip {
     width: 10px;
     height: 10px;
-    border-right: 2px solid fade(@ai-primary, 50%);
-    border-bottom: 2px solid fade(@ai-primary, 50%);
+    border-right: 2px solid @ai-primary-fog;
+    border-bottom: 2px solid @ai-primary-fog;
     border-bottom-right-radius: @ai-radius-md;
     transition: border-color 0.2s;
   }
 
   &:hover .resize-grip {
-    border-color: @ai-primary;
+    border-color: @ai-primary-hover;
   }
 }
 

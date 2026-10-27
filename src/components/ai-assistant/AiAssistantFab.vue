@@ -21,7 +21,7 @@
       <span class="fab-ring" aria-hidden="true" />
       <span class="fab-inner">
         <span class="fab-shimmer" aria-hidden="true" />
-        <el-icon :size="22"><ChatDotRound /></el-icon>
+        <el-icon :size="24"><AiRobotIcon /></el-icon>
       </span>
     </div>
   </el-tooltip>
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
-import { ChatDotRound } from '@element-plus/icons-vue'
+import AiRobotIcon from './AiRobotIcon.vue'
 import { aiAssistantStore } from '@/stores/ai-assistant'
 import { useBoundaryDrag } from '@/composables/useBoundaryDrag'
 
@@ -107,6 +107,7 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 主题色极光呼吸球：极简夜色光环 + 单色系主题渐变
 .ai-assistant-fab {
   position: fixed;
   z-index: @ai-z-fab;
@@ -127,14 +128,15 @@ onBeforeUnmount(() => {
     transform: scale(1.08);
 
     .fab-glow {
-      opacity: 0.55;
-      transform: scale(1.15);
+      opacity: 0.6;
+      transform: scale(1.18);
     }
 
     .fab-inner {
       box-shadow:
-        0 8px 28px rgba(99, 102, 241, 0.45),
-        0 0 0 1px rgba(255, 255, 255, 0.25) inset;
+        0 8px 28px @ai-primary-fog,
+        0 0 0 1px rgba(255, 255, 255, 0.28) inset,
+        0 0 0 8px @ai-primary-veil;
     }
   }
 
@@ -155,27 +157,30 @@ onBeforeUnmount(() => {
   }
 }
 
+// 夜色中的主题色晕染
 .fab-glow {
   position: absolute;
-  inset: -8px;
+  inset: -10px;
   border-radius: @ai-radius-full;
   background: radial-gradient(
     circle,
-    fade(@ai-accent, 40%) 0%,
+    @ai-primary-glow 0%,
+    @ai-primary-fog 28%,
     transparent 70%
   );
-  opacity: 0.35;
+  opacity: 0.4;
   pointer-events: none;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
 }
 
+// 外圈细描光环（待唤时脉冲扩散）
 .fab-ring {
   position: absolute;
   inset: -3px;
   border-radius: @ai-radius-full;
-  border: 1.5px solid fade(@ai-accent-soft, 45%);
+  border: 1.5px solid @ai-primary-fog;
   opacity: 0.6;
   pointer-events: none;
 }
@@ -193,7 +198,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   box-shadow: @ai-shadow-fab;
   overflow: hidden;
-  animation: ai-orb-glow 4s ease-in-out infinite;
+  animation: ai-orb-breathe 4.5s ease-in-out infinite;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
@@ -205,26 +210,11 @@ onBeforeUnmount(() => {
   background: linear-gradient(
     105deg,
     transparent 30%,
-    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0.32) 50%,
     transparent 70%
   );
   background-size: 200% 100%;
   animation: ai-shimmer 3s ease-in-out infinite;
   pointer-events: none;
-}
-
-@keyframes ai-fab-pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.7;
-  }
-  70% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
 }
 </style>

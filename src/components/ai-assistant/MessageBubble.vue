@@ -10,9 +10,16 @@
       class="ai-msg-avatar"
       :class="message.role === 'user' ? 'avatar-user' : 'avatar-ai'"
     >
-      <el-icon :size="18">
+      <img
+        v-if="message.role === 'user' && showUserAvatar"
+        class="avatar-img"
+        :src="userAvatar"
+        alt=""
+        @error="avatarLoadError = true"
+      />
+      <el-icon v-else :size="18">
         <UserFilled v-if="message.role === 'user'" />
-        <MagicStick v-else />
+        <AiRobotIcon v-else />
       </el-icon>
     </div>
     <div class="ai-msg-body">
@@ -91,7 +98,13 @@
         class="ai-msg-card ai-msg-table"
       >
         <p v-if="message.content" class="card-caption">{{ message.content }}</p>
+        <!-- 单列单条：单值问数（如「本月发放积分总数」）以指标卡突出数值 -->
+        <div v-if="isSingleMetric && metricCell" class="metric-card">
+          <p class="metric-label">{{ metricCell.label }}</p>
+          <p class="metric-value">{{ metricCell.value }}</p>
+        </div>
         <el-table
+          v-else
           :data="tablePayload?.rows || []"
           size="small"
           stripe
@@ -119,27 +132,28 @@
         />
       </div>
 
-      <div
-        v-if="canSpeak"
-        class="ai-msg-tools"
-        :class="{ 'is-playing': speaking }"
-      >
-        <AiTooltip
-          :content="
-            speaking ? $t('aiAssistant.ttsStop') : $t('aiAssistant.ttsPlay')
-          "
-          placement="top"
+      <div class="ai-msg-time" :class="{ 'has-tools': canSpeak }">
+        <span>{{ formatTime(message.createdAt) }}</span>
+        <div
+          v-if="canSpeak"
+          class="ai-msg-tools"
+          :class="{ 'is-playing': speaking }"
         >
-          <button type="button" class="tts-btn" @click="toggleSpeak">
-            <el-icon>
-              <Mute v-if="speaking" />
-              <Headset v-else />
-            </el-icon>
-          </button>
-        </AiTooltip>
+          <AiTooltip
+            :content="
+              speaking ? $t('aiAssistant.ttsStop') : $t('aiAssistant.ttsPlay')
+            "
+            placement="top"
+          >
+            <button type="button" class="tts-btn" @click="toggleSpeak">
+              <el-icon>
+                <Mute v-if="speaking" />
+                <Headset v-else />
+              </el-icon>
+            </button>
+          </AiTooltip>
+        </div>
       </div>
-
-      <div class="ai-msg-time">{{ formatTime(message.createdAt) }}</div>
     </div>
   </div>
 </template>
@@ -149,7 +163,6 @@ import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import {
   UserFilled,
-  MagicStick,
   Microphone,
   Cpu,
   ArrowDown,
@@ -158,6 +171,7 @@ import {
 } from '@element-plus/icons-vue'
 import { resolveFileVisual } from './file-icon'
 import AiTooltip from './AiTooltip.vue'
+import AiRobotIcon from './AiRobotIcon.vue'
 import type {
   AiChartPayload,
   AiFilePayload,
@@ -167,6 +181,7 @@ import type {
   AiVoicePayload
 } from '@/types/ai-assistant'
 import { aiAssistantStore } from '@/stores/ai-assistant'
+import { userInfoStore } from '@/stores/user-info'
 import { useTts } from '@/composables/useTts'
 
 const props = defineProps<{
@@ -176,6 +191,17 @@ const props = defineProps<{
 
 const store = aiAssistantStore()
 const thinkingExpanded = ref(true)
+
+// 用户气泡头像：优先登录态真实头像，缺失或加载失败回退默认人形图标
+const userStore = userInfoStore()
+const userAvatar = computed(() => userStore.getAvatar)
+const avatarLoadError = ref(false)
+const showUserAvatar = computed(
+  () => !!userAvatar.value && !avatarLoadError.value
+)
+watch(userAvatar, () => {
+  avatarLoadError.value = false
+})
 
 const chartRef = ref<HTMLElement | null>(null)
 let chartInst: echarts.ECharts | null = null
@@ -210,6 +236,23 @@ const fileExtLabel = computed(() => fileVisual.value.ext.toUpperCase())
 const tablePayload = computed(
   () => props.message.payload as AiTablePayload | undefined
 )
+// 单列单条即单值问数：1×1 表格只是壳，改走指标卡渲染（保持消息结构不变）
+const isSingleMetric = computed(
+  () =>
+    (tablePayload.value?.columns?.length ?? 0) === 1 &&
+    (tablePayload.value?.rows?.length ?? 0) === 1
+)
+// 指标卡数据：label 用列名，value 取数值千分位化（非数值保持原文，缺失以 — 兜底）
+const metricCell = computed(() => {
+  if (!isSingleMetric.value || !tablePayload.value) return null
+  const col = tablePayload.value.columns[0]
+  const raw = tablePayload.value.rows[0]?.[col.prop]
+  const value =
+    typeof raw === 'number' && Number.isFinite(raw)
+      ? raw.toLocaleString('zh-CN')
+      : String(raw ?? '—')
+  return { label: col.label, value }
+})
 const chartPayload = computed(
   () => props.message.payload as AiChartPayload | undefined
 )
@@ -276,6 +319,9 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 动画 keyframes（ai-msg-in / ai-shimmer / ai-rec-pulse / ai-typing-bounce /
+// ai-cursor-blink / ai-voice-wave / ai-eq-bounce）均来自 token 共享版
+
 .ai-msg-row {
   display: flex;
   gap: 12px;
@@ -290,7 +336,7 @@ onBeforeUnmount(() => {
       background: @ai-user-bubble;
       border: none;
       border-radius: @ai-radius-md @ai-radius-md 4px @ai-radius-md;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(6, 8, 20, 0.35);
     }
 
     .ai-msg-text,
@@ -313,11 +359,12 @@ onBeforeUnmount(() => {
 
     .ai-msg-time {
       text-align: right;
-      color: rgba(255, 255, 255, 0.65);
+      color: rgba(255, 255, 255, 0.72);
     }
 
+    // 用户气泡常驻头像：与 AI 侧一致的顶部光学对齐
     .ai-msg-avatar {
-      display: none;
+      margin-top: 2px;
     }
 
     .ai-msg-file {
@@ -345,24 +392,12 @@ onBeforeUnmount(() => {
     .ai-msg-body {
       background: @ai-assistant-bubble;
       border: none;
-      padding: 4px 0 4px 0;
-      box-shadow: none;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
     }
 
     .ai-msg-avatar {
       margin-top: 2px;
     }
-  }
-}
-
-@keyframes ai-msg-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -374,17 +409,27 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 
   &.avatar-user {
-    background: linear-gradient(135deg, #94bfff, @ai-primary);
+    background: @ai-gradient-orb;
     color: #fff;
   }
 
   &.avatar-ai {
     background: @ai-gradient;
     color: #fff;
-    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+    box-shadow: 0 2px 8px @ai-primary-fog;
   }
+}
+
+// 登录态真实头像：圆形铺满，cover 防拉伸变形
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  display: block;
 }
 
 .ai-msg-body {
@@ -394,23 +439,29 @@ onBeforeUnmount(() => {
   text-align: left;
 }
 
+// 思考过程：夜色薄卡，激活时主题色流光扫过
 .ai-msg-thinking {
   margin-bottom: 12px;
   border-radius: @ai-radius-md;
   border: 1px solid @ai-border;
-  background: rgba(255, 255, 255, 0.8);
+  background: @ai-fill-04;
   overflow: hidden;
 
   &.is-live {
-    border-color: fade(@ai-accent, 25%);
+    border-color: @ai-primary-tint;
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 0.9) 0%,
-      fade(@ai-accent, 6%) 50%,
-      rgba(255, 255, 255, 0.9) 100%
+      @ai-primary-veil 0%,
+      @ai-primary-soft 50%,
+      @ai-primary-veil 100%
     );
     background-size: 200% 100%;
     animation: ai-shimmer 2.5s ease-in-out infinite;
+
+    // 查询/思考中：CPU 图标持续旋转，与流光背景、live-dot 共同表达进行中
+    .thinking-icon {
+      animation: ai-think-spin 1.6s linear infinite;
+    }
   }
 }
 
@@ -429,14 +480,15 @@ onBeforeUnmount(() => {
   text-align: left;
 
   .thinking-icon {
-    color: @ai-primary;
+    color: @ai-primary-hover;
   }
 
   .thinking-live-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: @ai-primary;
+    background: @ai-primary-hover;
+    --ai-rec-spread: 5px;
     animation: ai-rec-pulse 1s ease infinite;
   }
 
@@ -462,8 +514,8 @@ onBeforeUnmount(() => {
     word-break: break-word;
     font-size: 12px;
     line-height: 1.55;
-    color: @ai-text-secondary;
-    background: rgba(255, 255, 255, 0.75);
+    color: @ai-night-text;
+    background: @ai-fill-06;
     border-radius: @ai-radius-sm;
     border: 1px solid @ai-border;
     font-family: inherit;
@@ -487,7 +539,8 @@ onBeforeUnmount(() => {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: @ai-primary;
+    // 亮变体在夜色底上更醒目
+    background: @ai-primary-hover;
     animation: ai-typing-bounce 1.2s ease-in-out infinite;
 
     &:nth-child(2) {
@@ -496,39 +549,6 @@ onBeforeUnmount(() => {
     &:nth-child(3) {
       animation-delay: 0.3s;
     }
-  }
-}
-
-@keyframes ai-typing-bounce {
-  0%,
-  80%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.4;
-  }
-  40% {
-    transform: translateY(-5px);
-    opacity: 1;
-  }
-}
-
-@keyframes ai-rec-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 fade(@ai-primary, 40%);
-  }
-  50% {
-    box-shadow: 0 0 0 5px fade(@ai-primary, 0%);
-  }
-}
-
-@keyframes ai-cursor-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
   }
 }
 
@@ -547,15 +567,30 @@ onBeforeUnmount(() => {
   color: @ai-text;
   letter-spacing: -0.01em;
 
-  &.is-streaming::after {
-    content: '';
-    display: inline-block;
-    width: 2px;
-    height: 1em;
-    margin-left: 2px;
-    vertical-align: text-bottom;
-    background: @ai-primary;
-    animation: ai-cursor-blink 0.9s step-end infinite;
+  // 打字机光标：紧跟最新文字的行尾。流式内容是块级 HTML（p/ul/pre...），
+  // 容器 ::after 会被末尾块级元素顶到下一行独占，因此光标优先内嵌进
+  // 「最后一个块级元素」内部；仅当容器无元素子级（纯文本节点）时才由
+  // 容器 ::after 兜底
+  &.is-streaming {
+    &::after,
+    :deep(
+        > :is(p, h1, h2, h3, h4, h5, h6, div, blockquote, pre):last-child
+      )::after,
+    :deep(> :is(ul, ol):last-child > li:last-child)::after {
+      content: '';
+      display: inline-block;
+      width: 2px;
+      height: 1em;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      background: @ai-primary-hover;
+      animation: ai-cursor-blink 0.9s step-end infinite;
+    }
+
+    // 容器有元素子级时隐藏容器尾光标，避免与内部光标重复出现
+    &:has(> *)::after {
+      content: none;
+    }
   }
 
   :deep(p) {
@@ -569,7 +604,7 @@ onBeforeUnmount(() => {
     padding-left: 18px;
   }
   :deep(pre) {
-    background: #f3f6fb;
+    background: @ai-night-deep;
     padding: 10px 12px;
     border-radius: @ai-radius-sm;
     overflow-x: auto;
@@ -577,23 +612,24 @@ onBeforeUnmount(() => {
     font-size: 12px;
   }
   :deep(code) {
-    background: #eef2f7;
+    background: @ai-primary-veil;
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 12px;
-    color: @ai-primary-dark;
+    color: @ai-primary-hover;
   }
 }
 
+// 语音卡：14% 主题色薄雾 + 亮变体波形
 .ai-msg-voice {
   .voice-bar {
     display: flex;
     align-items: center;
     gap: 6px;
     padding: 6px 10px;
-    background: fade(@ai-primary, 8%);
+    background: @ai-primary-soft;
     border-radius: @ai-radius-full;
-    color: @ai-primary-dark;
+    color: @ai-primary-hover;
     font-size: 13px;
   }
 
@@ -608,7 +644,7 @@ onBeforeUnmount(() => {
     display: inline-block;
     width: 3px;
     height: 10px;
-    background: @ai-primary;
+    background: @ai-primary-hover;
     border-radius: 2px;
     animation: ai-voice-wave 0.8s ease-in-out infinite;
 
@@ -643,18 +679,6 @@ onBeforeUnmount(() => {
   }
 }
 
-@keyframes ai-voice-wave {
-  0%,
-  100% {
-    transform: scaleY(0.6);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scaleY(1);
-    opacity: 1;
-  }
-}
-
 .ai-msg-file {
   display: flex;
   align-items: center;
@@ -675,49 +699,50 @@ onBeforeUnmount(() => {
       background 0.2s,
       color 0.2s;
 
+    // 字面 hex 的 fade 合法；字色统一提亮一档保证夜底可读
     &.tone-image {
-      background: fade(#10b981, 12%);
-      color: #059669;
+      background: fade(#10b981, 16%);
+      color: #34d399;
     }
     &.tone-video {
-      background: fade(#8b5cf6, 12%);
-      color: #7c3aed;
+      background: fade(#8b5cf6, 16%);
+      color: #a78bfa;
     }
     &.tone-audio {
-      background: fade(#f59e0b, 14%);
-      color: #d97706;
+      background: fade(#f59e0b, 16%);
+      color: #fbbf24;
     }
     &.tone-pdf {
-      background: fade(#ef4444, 12%);
-      color: #dc2626;
+      background: fade(#ef4444, 16%);
+      color: #f87171;
     }
     &.tone-word {
-      background: fade(#2563eb, 12%);
-      color: #1d4ed8;
+      background: fade(#2563eb, 16%);
+      color: #60a5fa;
     }
     &.tone-excel {
-      background: fade(#16a34a, 12%);
-      color: #15803d;
+      background: fade(#16a34a, 16%);
+      color: #4ade80;
     }
     &.tone-ppt {
-      background: fade(#ea580c, 12%);
-      color: #c2410c;
+      background: fade(#ea580c, 16%);
+      color: #fb923c;
     }
     &.tone-archive {
-      background: fade(#78716c, 12%);
-      color: #57534e;
+      background: fade(#78716c, 16%);
+      color: #a8a29e;
     }
     &.tone-code {
-      background: fade(#6366f1, 12%);
-      color: #4f46e5;
+      background: fade(#6366f1, 16%);
+      color: #818cf8;
     }
     &.tone-text {
-      background: fade(@ai-text-muted, 14%);
-      color: @ai-text-secondary;
+      background: @ai-fill-06;
+      color: @ai-night-text;
     }
     &.tone-default {
-      background: fade(@ai-primary, 10%);
-      color: @ai-primary;
+      background: @ai-primary-soft;
+      color: @ai-primary-hover;
     }
   }
 
@@ -752,8 +777,8 @@ onBeforeUnmount(() => {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.04em;
-    background: fade(@ai-text-muted, 12%);
-    color: @ai-text-secondary;
+    background: @ai-fill-08;
+    color: @ai-night-text;
     line-height: 1.4;
   }
 
@@ -775,20 +800,60 @@ onBeforeUnmount(() => {
     border-radius: @ai-radius-sm;
     overflow: hidden;
   }
+
+  // 单值指标卡：小号标签 + 大号主题色数值，主题色轻纱底与思考卡区分层级
+  .metric-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border: 1px solid @ai-border;
+    border-radius: @ai-radius-sm;
+    background: @ai-primary-veil;
+  }
+
+  .metric-label {
+    margin: 0;
+    font-size: 12px;
+    color: @ai-text-secondary;
+  }
+
+  .metric-value {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
+    color: @ai-primary-hover;
+    font-variant-numeric: tabular-nums;
+    // 超长统计值（长别名/字符串）兜底换行，不撑破气泡
+    overflow-wrap: anywhere;
+  }
+}
+
+// el-table 暗色玻璃：局部覆写组件 CSS 变量（透明底 + 白叠层表头/斑马纹）
+:deep(.inner-table.el-table) {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: @ai-fill-06;
+  --el-table-header-text-color: @ai-night-text;
+  --el-table-border-color: @ai-border;
+  --el-table-text-color: @ai-text;
+  --el-table-row-hover-bg-color: @ai-fill-04;
+  --el-fill-color-lighter: @ai-fill-04;
 }
 
 .chart-box {
   width: 100%;
   min-width: 240px;
   border-radius: @ai-radius-sm;
-  background: #fafbfd;
+  background: @ai-fill-04;
 }
 
+// 播报按钮并入时间行（时间后在后跟按钮，减少整块占位）
 .ai-msg-tools {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 4px;
   opacity: 0;
   transition: opacity 0.2s;
 
@@ -800,20 +865,47 @@ onBeforeUnmount(() => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border: none;
     border-radius: @ai-radius-sm;
     background: transparent;
-    color: @ai-text-muted;
+    color: @ai-night-text;
     cursor: pointer;
     transition:
       background 0.2s,
       color 0.2s;
 
     &:hover {
-      background: fade(@ai-primary, 8%);
-      color: @ai-primary-dark;
+      background: @ai-primary-veil;
+      color: @ai-primary-hover;
+    }
+
+    // 播报中：藏图标，双伪元素柱组成迷你均衡器（错拍起伏）
+    &.is-playing {
+      gap: 2px;
+      color: @ai-primary-hover;
+
+      :deep(.el-icon) {
+        display: none;
+      }
+
+      &::before,
+      &::after {
+        content: '';
+        width: 3px;
+        height: 12px;
+        border-radius: 2px;
+        background: currentColor;
+      }
+
+      &::before {
+        animation: ai-eq-bounce 0.9s ease-in-out infinite;
+      }
+
+      &::after {
+        animation: ai-eq-bounce 0.9s ease-in-out 0.45s infinite;
+      }
     }
   }
 }
@@ -827,5 +919,12 @@ onBeforeUnmount(() => {
   margin-top: 6px;
   font-size: 11px;
   color: @ai-text-muted;
+
+  // 有播报按钮时单行 flex 布局，按钮紧随时间文字
+  &.has-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 }
 </style>

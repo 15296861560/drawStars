@@ -37,7 +37,6 @@
               class="tool-btn"
               circle
               :class="{ 'is-recording': speech.listening.value }"
-              :loading="speech.listening.value"
               @click="toggleVoice"
             >
               <el-icon><Microphone /></el-icon>
@@ -62,7 +61,8 @@
             :disabled="!canSend"
             @click="submit"
           >
-            <el-icon><Promotion /></el-icon>
+            <!-- sending 时隐藏纸飞机，让 EP 内建 spinner 独占按钮，避免两图标并排挤压 -->
+            <el-icon v-if="!store.sending"><Promotion /></el-icon>
           </el-button>
         </div>
       </div>
@@ -193,6 +193,8 @@ defineExpose({ focus })
 <style scoped lang="less">
 @import './ai-variables.less';
 
+// 录音脉冲 keyframes 来自 token 共享版（ai-rec-pulse，主题色）
+
 .ai-chat-input {
   flex-shrink: 0;
   padding: 12px 16px 14px;
@@ -213,37 +215,46 @@ defineExpose({ focus })
     margin-right: 2px;
   }
 
+  // el-tag plain 暗色化：覆写组件级 CSS 变量
   .hint-tag {
+    --el-tag-bg-color: @ai-fill-06;
+    --el-tag-border-color: @ai-border;
+    --el-tag-text-color: @ai-night-text;
     cursor: pointer;
-    border: 1px solid @ai-border-strong;
-    background: @ai-bg-input;
-    color: @ai-text;
     font-size: 12px;
     padding: 0 12px;
     height: 28px;
     transition: all 0.2s;
 
     &:hover {
-      background: #fff;
-      border-color: fade(@ai-primary, 40%);
-      color: @ai-primary-dark;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --el-tag-bg-color: @ai-primary-veil;
+      --el-tag-border-color: @ai-primary-tint;
+      --el-tag-text-color: @ai-primary-hover;
     }
   }
 }
 
+// 夜玻璃输入卡：悬浮主题描边，聚焦主题色光圈
 .input-card {
   background: @ai-bg-input;
+  backdrop-filter: blur(12px);
   border: none;
   border-radius: @ai-radius-xl;
   padding: 6px 8px 6px 16px;
   box-shadow: @ai-shadow-input;
   transition: box-shadow 0.2s;
 
+  &:hover {
+    box-shadow:
+      0 0 0 1px @ai-primary-tint,
+      0 10px 26px rgba(6, 8, 20, 0.35);
+  }
+
   &:focus-within {
     box-shadow:
-      0 0 0 1px fade(@ai-primary, 30%),
-      0 4px 20px rgba(76, 94, 219, 0.12);
+      0 0 0 1px @ai-primary-tint,
+      0 0 0 4px @ai-primary-veil,
+      0 10px 26px rgba(6, 8, 20, 0.35);
   }
 }
 
@@ -277,44 +288,58 @@ defineExpose({ focus })
   display: flex;
   align-items: center;
   gap: 2px;
+  // 显式按内容测宽，杜绝容器宽度跟随已收缩内容自洽
+  width: max-content;
   flex-shrink: 0;
   padding-bottom: 2px;
 }
 
-.tool-btn {
-  color: @ai-text-secondary;
-  border: none;
+// 选择器带 .el-button 提升特异性：
+// 否则 width 会被 Element Plus 的 .el-button.is-circle { width: 32px } 同级且后置的规则压回 32
+.el-button.tool-btn {
   width: 34px;
   height: 34px;
+  border: none;
+  // 正常态与 hover 配色互换：常态用原 hover 配色（微白玻璃底 + 亮图标）
+  color: @ai-text;
+  background: @ai-fill-06;
+  // 宁可溢出也不被压扁：圆形按钮必须保持正圆
+  flex-shrink: 0;
+  // hover 手感对齐发送按钮：缩放 + 透明度过渡
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
 
+  // hover：中性白纱提亮一档（06→12）替代 EP 纯白实底——暗色玻璃上明度差过大会刺眼；
+  // 图标保持亮档维持可读对比，缩放手感与发送按钮一致
   &:hover {
     color: @ai-text;
-    background: rgba(0, 0, 0, 0.05);
+    background: @ai-fill-12;
+    transform: scale(1.06);
+    opacity: 0.95;
   }
 
+  // 录音态：主题色渐变 + 脉冲光环（弃红色）
   &.is-recording {
     color: #fff !important;
-    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    background: @ai-gradient !important;
     animation: ai-rec-pulse 1.2s ease-in-out infinite;
   }
 }
 
-@keyframes ai-rec-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
-  }
-}
-
-.send-btn {
+// 发送：主题渐变球 + 主题色辉光 + 白色内发丝线
+// 同 tool-btn：带 .el-button 防 EP .el-button.is-circle 的 width 覆盖
+.el-button.send-btn {
   width: 36px;
   height: 36px;
   background: @ai-gradient !important;
   border: none;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 14px @ai-primary-fog,
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset;
   transition:
     transform 0.15s ease,
     opacity 0.15s ease;
@@ -325,31 +350,52 @@ defineExpose({ focus })
   }
 
   &:disabled {
-    opacity: 0.35;
+    background: @ai-fill-12 !important;
+    color: @ai-night-text;
+    opacity: 0.6;
     box-shadow: none;
-    background: @ai-text-muted !important;
+  }
+
+  // 发送中：保持渐变球 + 白色 spinner 独占，不给 disabled 灰底
+  // 特异性靠 .is-loading（0,3,0）压过 :disabled（0,2,1）不叠加灰化样式
+  &.is-loading {
+    background: @ai-gradient !important;
+    color: #fff;
+    opacity: 1;
+    box-shadow:
+      0 4px 14px @ai-primary-fog,
+      0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+
+    // EP 的 `.el-button [class*=el-icon]+span { margin-left: 6px }` 会给
+    // spinner 后面空置的 slot 容器 span 加 6px 外边距，把 spinner 挤得偏左
+    // 3px；loading 态归零间距，保证 spinner 在圆钮正中
+    :deep(span) {
+      margin: 0;
+    }
   }
 }
 
+// 临时听写胶囊：夜色薄玻璃 + 主题色描边
 .interim {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: @ai-primary-dark;
+  color: @ai-night-text;
   margin: 10px 4px 0;
   padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.9);
+  background: @ai-fill-06;
   border-radius: @ai-radius-full;
-  border: 1px solid fade(@ai-primary, 20%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid @ai-primary-tint;
+  box-shadow: 0 2px 8px rgba(6, 8, 20, 0.25);
 }
 
 .interim-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ef4444;
+  background: @ai-primary-hover;
+  --ai-rec-spread: 5px;
   animation: ai-rec-pulse 1s ease infinite;
   flex-shrink: 0;
 }
