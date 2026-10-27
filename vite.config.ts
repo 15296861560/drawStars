@@ -48,6 +48,24 @@ export default defineConfig({
       }
     }
   },
+  optimizeDeps: {
+    // 这些依赖只被懒加载路由引用，dev 下首次进入对应页面时才被 Vite 发现，
+    // 会触发依赖二次预构建并强制整页刷新（体感：第一次点菜单先卡几秒）。
+    // 这里随服务启动一次性预构建完，并开启常用的转换缓存。
+    include: [
+      'xlsx',
+      'quill',
+      'sortablejs',
+      'video.js',
+      'agora-rtc-sdk-ng',
+      'agora-rtm-sdk',
+      'tsparticles',
+      'mockjs',
+      'baidu-map-vue3',
+      'leaflet.wmts',
+      '@geoman-io/leaflet-geoman-free'
+    ]
+  },
   plugins: [
     vue(),
     vueJsx(),

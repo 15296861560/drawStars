@@ -4,11 +4,15 @@
  * @LastEditors: “lgy lgy-lgy@qq.com
  * @LastEditTime: 2024-06-16 13:56:26
  * @FilePath: \drawStars-Vue3\src\utils\commom\importAndExport.ts
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 这是默认设置，请设置`customMade`, 打开koroFileHeader进行配置 设置: https://github.com/OBKoro1/koroFileHeader配置
  */
-import * as XLSX from 'xlsx'
+import type { WritingOptions } from 'xlsx'
 
-const importFile = f => {
+// xlsx 体积超过 1MB，静态引入会拖慢所有引用页面的路由首次加载
+// （开发期还会触发 Vite 依赖二次预构建并整页刷新）。这里改为真正需要时才加载。
+
+const importFile = async f => {
+  const XLSX = await import('xlsx')
   const promise = new Promise((resolve, reject) => {
     let reader = new FileReader()
 
@@ -46,9 +50,10 @@ const importFile = f => {
   return promise
 }
 
-const exportFile = (tableTdData = [], fileName = '导出文件') => {
+const exportFile = async (tableTdData = [], fileName = '导出文件') => {
+  const XLSX = await import('xlsx')
   let sheet = XLSX.utils.json_to_sheet(tableTdData)
-  openDownloadDialog(sheet2blob(sheet, 'sheet'), `${fileName}.xlsx`)
+  openDownloadDialog(sheet2blob(XLSX, sheet, 'sheet'), `${fileName}.xlsx`)
 }
 
 const openDownloadDialog = (url, saveName) => {
@@ -82,7 +87,7 @@ const openDownloadDialog = (url, saveName) => {
   }
   aLink.dispatchEvent(event)
 }
-const sheet2blob = (sheet, sheetName) => {
+const sheet2blob = (XLSX: typeof import('xlsx'), sheet, sheetName) => {
   sheetName = sheetName || '默认名'
   const workbook = {
     SheetNames: [sheetName],
@@ -90,7 +95,7 @@ const sheet2blob = (sheet, sheetName) => {
   }
   workbook.Sheets[sheetName] = sheet
   // 生成excel的配置项
-  const wopts: XLSX.WritingOptions = {
+  const wopts: WritingOptions = {
     bookType: 'xlsx', // 要生成的文件类型
     bookSST: false, // 是否生成Shared String Table，官方解释是，如果开启生成速度会下降，但在低版本IOS设备上有更好的兼容性
     type: 'binary'
