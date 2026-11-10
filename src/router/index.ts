@@ -77,6 +77,26 @@ export const RouterList = [
       public: true
     }
   },
+  {
+    // 问星广场（心智测评 C 端聚合页，PRD 6.1）
+    path: '/assessment/list',
+    name: '问星广场',
+    component: () => import('@/views/assessment/plaza/index.vue'),
+    meta: {
+      title: ['问星广场'],
+      public: true
+    }
+  },
+  {
+    // 测评分享海报页（PRD 4.3.4 / 原型 poster.html）
+    path: '/assessment/poster/:responseId',
+    name: '测评海报',
+    component: () => import('@/views/assessment/poster/index.vue'),
+    meta: {
+      title: ['分享海报'],
+      public: true
+    }
+  },
   // 所有未定义路由，全部重定向到404页
   {
     path: '/:pathMatch(.*)*',

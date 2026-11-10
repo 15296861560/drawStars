@@ -108,6 +108,10 @@ router.beforeEach(async (to, from) => {
     to.name === '忘记密码' ||
     to.path.startsWith('/survey/fill') ||
     to.path.startsWith('/survey/result') ||
+    to.path.startsWith('/assessment/list') ||
+    to.path.startsWith('/assessment/poster') ||
+    // 心智测评（问星）C 端页统一为游客可访问（PRD 3.6.8）
+    (to.meta?.public === true) ||
     to.name === '填写问卷' ||
     to.name === '问卷结果'
 

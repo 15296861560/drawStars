@@ -33,3 +33,7 @@ coverage
 .env.*
 !.env.example
 
+# 心智测评本地交付物（高保真原型与工具缓存，不入库）
+/prototype/
+/.trae-html-share-packages/
+
