@@ -282,7 +282,7 @@ export function buildMockFillPayload(shareCode: string) {
   const def = MOCK_SURVEYS[shareCode]
   if (!def) return null
   const typeDef = ASSESSMENT_TYPE_REGISTRY[def.typeKey]
-  const info = MOCK_DB.infos.find(i => i.shareCode === shareCode)
+  const info = loadDB().infos.find(i => i.shareCode === shareCode)
   const survey = {
     id: def.surveyId,
     title: info?.title || typeDef.fullName,
