@@ -70,6 +70,20 @@
   min-height: 100vh;
   letter-spacing: 0.01em;
 
+  /* 工程修复：全局 body{overflow:hidden}（reset.less）锁死文档滚动，
+     .asmt-h5 作为页面根节点（广场/海报/报告页）时需自建视口高滚动容器
+     （同 survey-fill-page 做法）；嵌套在既有滚动容器内的完成态 .fill-complete
+     除外，由父容器 .survey-fill-page 滚动，不设高度上限。 */
+  &:not(.fill-complete) {
+    height: 100vh;
+    height: 100dvh; /* 支持动态视口高时优先生效，避免移动端地址栏遮挡底部 */
+    min-height: 100dvh; /* 覆盖上面的 min-height:100vh（不支持的浏览器回退保留） */
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* iOS 惯性滚动 */
+    overscroll-behavior: contain; /* 防滚动穿透到文档层 */
+  }
+
   .serif {
     font-family: var(--font-serif);
   }
