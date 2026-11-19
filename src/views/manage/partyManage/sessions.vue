@@ -2,7 +2,7 @@
   <div class="manage-page">
     <page-hero
       title="对局查询"
-      desc="派对房间按口令 / 游戏 / 状态检索（readonly 运营回溯，数据留存 180 天）"
+      desc="派对房间按口令 / 游戏 / 状态检索（只读运营回溯，数据留存 180 天）"
     >
       <template #side>
         <span class="page-hero__pill">共 {{ pageInfo.total }} 局</span>

@@ -98,7 +98,7 @@
             filterable
             allow-create
             default-first-option
-            placeholder="选择或输入主题 tagKey"
+            placeholder="选择或输入主题标识"
           >
             <el-option v-for="key in themeKeys" :key="key" :label="key" :value="key" />
           </el-select>
@@ -111,7 +111,7 @@
             filterable
             allow-create
             default-first-option
-            placeholder="选择或输入主题 tagKey"
+            placeholder="选择或输入主题标识"
           >
             <el-option v-for="key in themeKeys" :key="key" :label="key" :value="key" />
           </el-select>

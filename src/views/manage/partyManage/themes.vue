@@ -52,7 +52,7 @@
         <el-form-item label="标签名" prop="name">
           <el-input v-model="form.name" maxlength="12" show-word-limit placeholder="如：星盘 / 情绪 / 青春" />
         </el-form-item>
-        <el-form-item label="tagKey" prop="tagKey">
+        <el-form-item label="标签标识" prop="tagKey">
           <el-input
             v-model="form.tagKey"
             :disabled="!!form.id"
@@ -72,7 +72,7 @@
           <el-color-picker v-model="form.color" show-alpha />
           <span class="theme-color-preview">{{ form.color || '未选择' }}</span>
         </el-form-item>
-        <el-form-item label="Emoji">
+        <el-form-item label="表情图标">
           <el-input v-model="form.emoji" maxlength="4" style="width: 120px" placeholder="如：✨" />
         </el-form-item>
         <el-form-item label="排序">
@@ -139,7 +139,7 @@ const tableOptions = reactive({
   tableData,
   tableFields: [
     { fieldName: 'name', label: '标签名', minWidth: 140, align: 'left' },
-    { fieldName: 'tagKey', label: 'tagKey', width: 150, align: 'left' },
+    { fieldName: 'tagKey', label: '标签标识', width: 150, align: 'left' },
     {
       fieldName: 'scene',
       label: '场景',
@@ -148,7 +148,7 @@ const tableOptions = reactive({
       type: 'tag',
       options: PARTY_THEME_SCENE_TAGS
     },
-    { fieldName: 'emoji', label: 'Emoji', width: 80, align: 'center' },
+    { fieldName: 'emoji', label: '表情', width: 80, align: 'center' },
     { fieldName: 'colorLabel', label: '面板色', width: 100, align: 'left' },
     { fieldName: 'sort', label: '排序', width: 80, align: 'center' },
     {

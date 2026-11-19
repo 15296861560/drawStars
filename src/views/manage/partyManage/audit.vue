@@ -2,7 +2,7 @@
   <div class="manage-page">
     <page-hero
       title="内容举报"
-      desc="题目 / 词库 / 提示词举报流转：复核中 pending → reviewing，结案须填写处理备注，可联动下架 / 删除被举报内容"
+      desc="题目 / 词库 / 提示词举报流转：待处理 → 复核中 → 已结案，结案须填写处理备注，可联动下架 / 删除被举报内容"
     >
       <template #side>
         <span class="page-hero__pill">共 {{ pageInfo.total }} 条</span>
@@ -144,7 +144,7 @@ const tableOptions = reactive({
   pageTableOperate: [
     {
       label: '复核',
-      tip: '开始复核（pending → reviewing）',
+      tip: '开始复核（待处理 → 复核中）',
       show: (op, row) => (row as PartyReport).status === 'pending',
       action: row => reviewReport(row as PartyReport)
     },

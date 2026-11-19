@@ -92,7 +92,6 @@ const tableOptions = reactive({
   tableData,
   tableFields: [
     { fieldName: 'gameLabel', label: '游戏', minWidth: 170, align: 'left' },
-    { fieldName: 'gameType', label: 'gameType', width: 100, align: 'center' },
     {
       fieldName: 'status',
       label: '上架开关',
