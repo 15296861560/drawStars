@@ -52,15 +52,17 @@
       <div class="showTable" ref="printcontent">
         <div class="table-th bg-gray-white">
           <table width="100%" cellspacing="0" cellpadding="0" align="center">
-            <tr>
-              <th
-                v-for="(th, thIndex) in tableThData"
-                :key="thIndex"
-                style="width: 20%"
-              >
-                {{ th }}
-              </th>
-            </tr>
+            <thead>
+              <tr>
+                <th
+                  v-for="(th, thIndex) in tableThData"
+                  :key="thIndex"
+                  style="width: 20%"
+                >
+                  {{ th }}
+                </th>
+              </tr>
+            </thead>
           </table>
         </div>
         <div class="table-body">
@@ -71,15 +73,17 @@
             cellpadding="0"
             align="center"
           >
-            <tr v-for="(item, index) in singelTableTdData" :key="index">
-              <td style="width: 20%">
-                {{ (currentPage - 1) * pageSize + index + 1 }}
-              </td>
-              <td style="width: 20%">{{ item.Name }}</td>
-              <td style="width: 20%">{{ item.Code }}</td>
-              <td style="width: 20%">{{ item.CreateTime }}</td>
-              <td style="width: 20%">{{ item.UpdateTime }}</td>
-            </tr>
+            <tbody>
+              <tr v-for="(item, index) in singelTableTdData" :key="index">
+                <td style="width: 20%">
+                  {{ (currentPage - 1) * pageSize + index + 1 }}
+                </td>
+                <td style="width: 20%">{{ item.Name }}</td>
+                <td style="width: 20%">{{ item.Code }}</td>
+                <td style="width: 20%">{{ item.CreateTime }}</td>
+                <td style="width: 20%">{{ item.UpdateTime }}</td>
+              </tr>
+            </tbody>
           </table>
           <div v-else class="m-empty">
             暂无数据，请导入 Excel 或点击「加载示例数据」

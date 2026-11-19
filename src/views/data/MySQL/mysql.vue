@@ -40,31 +40,35 @@
         cellpadding="0"
         align="center"
       >
-        <tr>
-          <th>{{ $t('text.selected') }}</th>
-          <th>{{ $t('text.userName') }}</th>
-          <th>{{ $t('text.level') }}</th>
-          <th>{{ $t('text.phone') }}</th>
-          <th>{{ $t('text.operate') }}</th>
-        </tr>
-        <tr v-for="(item, index) in tableData" :key="index">
-          <td>
-            <input
-              style="cursor: pointer"
-              type="checkbox"
-              v-model="checkList"
-              :value="item.id"
-            />
-          </td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.level }}</td>
-          <td>{{ item.phone }}</td>
-          <td>
-            <el-button type="danger" @click="deleteRow(item.phone)">{{
-              $t('btn.delete')
-            }}</el-button>
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th>{{ $t('text.selected') }}</th>
+            <th>{{ $t('text.userName') }}</th>
+            <th>{{ $t('text.level') }}</th>
+            <th>{{ $t('text.phone') }}</th>
+            <th>{{ $t('text.operate') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td>
+              <input
+                style="cursor: pointer"
+                type="checkbox"
+                v-model="checkList"
+                :value="item.id"
+              />
+            </td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.level }}</td>
+            <td>{{ item.phone }}</td>
+            <td>
+              <el-button type="danger" @click="deleteRow(item.phone)">{{
+                $t('btn.delete')
+              }}</el-button>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

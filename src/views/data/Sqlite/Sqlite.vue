@@ -54,27 +54,31 @@
         cellpadding="0"
         align="center"
       >
-        <tr>
-          <th>{{ $t('text.selected') }}</th>
-          <th>ID</th>
-          <th>{{ $t('text.userName') }}</th>
-          <th>{{ $t('text.balance') }}</th>
-          <th>{{ $t('text.operate') }}</th>
-        </tr>
-        <tr v-for="(item, index) in tableData" :key="index">
-          <td>
-            <!-- <el-checkbox v-model="item.selected" @click.native="item.selected=!item.selected">{{ index }}</el-checkbox> -->
-            <input type="checkbox" v-model="checkList" :value="item.id" />
-          </td>
-          <td>{{ item.id }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.balance }}</td>
-          <td>
-            <el-button type="danger" @click="deleteRow(item.id)">{{
-              $t('btn.delete')
-            }}</el-button>
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th>{{ $t('text.selected') }}</th>
+            <th>ID</th>
+            <th>{{ $t('text.userName') }}</th>
+            <th>{{ $t('text.balance') }}</th>
+            <th>{{ $t('text.operate') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in tableData" :key="index">
+            <td>
+              <!-- <el-checkbox v-model="item.selected" @click.native="item.selected=!item.selected">{{ index }}</el-checkbox> -->
+              <input type="checkbox" v-model="checkList" :value="item.id" />
+            </td>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.balance }}</td>
+            <td>
+              <el-button type="danger" @click="deleteRow(item.id)">{{
+                $t('btn.delete')
+              }}</el-button>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
