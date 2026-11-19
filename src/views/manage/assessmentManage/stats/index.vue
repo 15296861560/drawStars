@@ -36,7 +36,7 @@
 
       <!-- ② 七级漏斗 + 注册/积分 -->
       <el-row :gutter="16" class="mb16">
-        <el-col :xs="24" :lg="14">
+        <el-col :xs="24" :lg="14" class="sync-col">
           <el-card shadow="never" class="funnel-card">
             <template #header>
               <div class="card-head">
@@ -76,7 +76,7 @@
           </el-card>
         </el-col>
 
-        <el-col :xs="24" :lg="10">
+        <el-col :xs="24" :lg="10" class="sync-col">
           <el-card shadow="never" class="mb16">
             <template #header>注册转化（曝光 → 注册成功）</template>
             <div class="reg-row">
@@ -117,7 +117,7 @@
             </div>
           </el-card>
 
-          <el-card shadow="never">
+          <el-card shadow="never" class="points-card">
             <template #header>积分发放（点数整体口径）</template>
             <div class="reg-row">
               <div class="reg-item">
@@ -174,15 +174,15 @@
 
       <!-- ④ 趋势 & Top 榜 -->
       <el-row :gutter="16" class="mb16">
-        <el-col :xs="24" :lg="14">
-          <el-card shadow="never">
+        <el-col :xs="24" :lg="14" class="sync-col">
+          <el-card shadow="never" class="trend-card">
             <template #header>行为趋势（进入 / 完成测评 / 注册成功）</template>
             <div v-if="hasTrend" ref="trendRef" class="trend-chart"></div>
             <el-empty v-else description="暂无趋势数据（口径：次日 01:00 聚合，T+1 更新）" />
           </el-card>
         </el-col>
-        <el-col :xs="24" :lg="10">
-          <el-card shadow="never" :body-style="{ padding: 0 }">
+        <el-col :xs="24" :lg="10" class="sync-col">
+          <el-card shadow="never" class="top10-card" :body-style="{ padding: 0 }">
             <template #header>测评贡献 Top 10（按点击曝光与完成量）</template>
             <el-table :data="overview?.topSurveys || []" empty-text="暂无完成数据">
               <el-table-column label="#" width="50" align="center">
@@ -566,10 +566,11 @@ onBeforeUnmount(() => {
     color: var(--el-text-color-placeholder);
   }
 
-  /* 趋势 */
+  /* 趋势：常规高度随 Top 10 卡撑满剩余空间，300px 为无折行小屏时的最低保底 */
   .trend-chart {
+    flex: 1 1 auto;
     width: 100%;
-    height: 300px;
+    min-height: 300px;
   }
 
   /* Top 榜 */
@@ -601,6 +602,37 @@ onBeforeUnmount(() => {
     li {
       color: var(--el-text-color-regular);
     }
+  }
+
+  /* 等高同步：行 ② 漏斗卡与右侧双卡（注册转化 + 积分发放）同高，
+     行 ④ 趋势卡与测评贡献 Top 10 同高。列转 flex 后卡片随行内最高一列拉伸
+     （el-row 默认 align-items: stretch），左右两侧底边始终对齐 */
+  .sync-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .funnel-card,
+  .points-card,
+  .trend-card,
+  .top10-card {
+    flex: 1 1 auto;
+  }
+
+  .funnel-card,
+  .trend-card {
+    display: flex;
+    flex-direction: column;
+
+    :deep(.el-card__body) {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+  }
+
+  .funnel-card .form-tip {
+    margin-top: auto;
   }
 }
 </style>
