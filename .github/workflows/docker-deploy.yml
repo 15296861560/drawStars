@@ -60,6 +60,9 @@ jobs:
           platforms: ${{ matrix.platform }}
           push: true
           outputs: type=image,name=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+          # 拾星趣局管理 key：GitHub 仓库 Variables 配 VITE_PARTY_ADMIN_KEY 可覆盖（须与后端 PARTY_ADMIN_KEY 一致）
+          build-args: |
+            VITE_PARTY_ADMIN_KEY=${{ vars.VITE_PARTY_ADMIN_KEY }}
           cache-from: type=gha,scope=web-${{ env.PLATFORM_PAIR }}
           cache-to: type=gha,mode=max,scope=web-${{ env.PLATFORM_PAIR }}
 
