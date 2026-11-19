@@ -76,8 +76,15 @@ export const echartMixin = {
       this.option = newVal
     },
     resizeChart() {
-      if (this.myChart) {
-        this.myChart.resize()
+      // 窗口拖拽时 resize 事件会高频连发，多个图表同时同步重排开销大；
+      // 以 rAF 合帧，每帧最多执行一次，且跳过组件销毁后的残余调用
+      if (this.myChart && !this._resizeFrame) {
+        this._resizeFrame = requestAnimationFrame(() => {
+          this._resizeFrame = null
+          if (this.myChart) {
+            this.myChart.resize()
+          }
+        })
       }
     }
   },
@@ -96,10 +103,20 @@ export const echartMixin = {
     // 监听窗口发生变化，resize组件
     window.addEventListener('resize', this.resizeChart)
   },
+  activated() {
+    // keep-alive 路由页恢复显示时尺寸可能已变化（如侧栏折叠后缓存页重建）
+    this.resizeChart()
+  },
   beforeUnmount() {
-    // 释放myChart实例
+    if (this._resizeFrame) {
+      cancelAnimationFrame(this._resizeFrame)
+      this._resizeFrame = null
+    }
+    // 释放myChart实例：dispose 才会解除事件/定时器并释放内存，
+    // clear 仅清空画布内容，实例本身会泄漏
     if (this.myChart) {
-      this.myChart.clear()
+      this.myChart.dispose()
+      this.myChart = null
     }
     // 并取消监听事件
     window.removeEventListener('resize', this.resizeChart)

@@ -152,10 +152,18 @@ router.afterEach(() => {
 <template>
   <AiAssistantHost v-if="aiAssistantEnabled" />
   <router-view v-slot="{ Component }">
-    <transition name="all" mode="out-in">
-      <keep-alive>
+    <!--
+      keep-alive 门控：只依据「顶层路由记录」自身的 meta.keepAlive 判断
+      （route.meta 是父子记录合并结果，/home 下的子页 meta 会渗透到顶层，
+      令 v-if 分支在不同子页间翻转，反而造成 Index 布局壳整体反复重挂载）。
+      顶层路由默认不缓存 → 离开即销毁，访问过的页面不再常驻内存；
+      子路由级缓存由 Index.vue 内层 router-view 按 meta.keepAlive 处理。
+    -->
+    <transition name="route" mode="out-in">
+      <keep-alive v-if="route.matched[0]?.meta.keepAlive">
         <component :is="Component" />
       </keep-alive>
+      <component v-else :is="Component" />
     </transition>
   </router-view>
 </template>
@@ -168,15 +176,15 @@ body,
   height: 100%;
 }
 
-.all-enter-active,
-.all-leave-active {
-  transition: all 0.5s ease;
+/* 路由过渡：只走合成器友好的 opacity（GPU 合成层），
+   避免 transition:all 让整棵页面树逐帧参与样式计算与重绘 */
+.route-enter-active,
+.route-leave-active {
+  transition: opacity 0.25s ease;
 }
 
-.all-enter {
-  opacity: 1;
-}
-.all-leave-to {
+.route-enter-from,
+.route-leave-to {
   opacity: 0;
 }
 </style>

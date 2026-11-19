@@ -138,6 +138,12 @@ onBeforeUnmount(() => {
         0 0 0 1px rgba(255, 255, 255, 0.28) inset,
         0 0 0 8px @ai-primary-veil;
     }
+
+    // 流光高光仅在悬停反馈时运行：background-position 无限动画会逐帧重绘，
+    // 常驻运行等于让全站每个页面持续付出样式/绘制成本
+    .fab-shimmer {
+      animation: ai-shimmer 3s ease-in-out infinite;
+    }
   }
 
   &.active {
@@ -214,7 +220,19 @@ onBeforeUnmount(() => {
     transparent 70%
   );
   background-size: 200% 100%;
-  animation: ai-shimmer 3s ease-in-out infinite;
   pointer-events: none;
+  // 默认不运行动画（见 :hover 内的说明）
+}
+
+// 减弱动态效果偏好（系统设置/低性能设备）时停掉呼吸、脉冲与流光
+@media (prefers-reduced-motion: reduce) {
+  .fab-inner,
+  .fab-shimmer {
+    animation: none !important;
+  }
+
+  .ai-assistant-fab.pulse .fab-ring {
+    animation: none !important;
+  }
 }
 </style>

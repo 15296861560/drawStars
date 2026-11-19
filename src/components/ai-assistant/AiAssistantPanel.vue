@@ -177,7 +177,10 @@ watch(
       if (!store.conversations.length) store.loadConversations()
       ensureTtsUnavailableTracked()
     }
-  }
+  },
+  // immediate：面板由 Host 懒挂载（首次打开才 mount），
+  // 打开动作可能发生在挂载之前，需在 setup 时立即执行一次初始化
+  { immediate: true }
 )
 
 watch(

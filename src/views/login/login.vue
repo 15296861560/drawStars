@@ -181,6 +181,9 @@ import { isSkipLoginMode } from '@/config/skip-login'
 import { userInfoStore } from '@/stores/user-info'
 import { particles } from './particles.js'
 import { loadFull } from 'tsparticles'
+// tsparticles 仅登录页使用，改为局部按需注册，
+// 使其进入登录页懒加载 chunk 而非主启动包（详见 plugins/index.ts 说明）
+import { ParticlesComponent } from 'particles.vue3'
 
 const LOGIN_MODE = {
   password: 'password', // 密码登录
@@ -196,6 +199,9 @@ const debounceOption = {
 const debounceTime = 1000
 export default {
   name: 'Login',
+  components: {
+    Particles: ParticlesComponent
+  },
   mixins: [i18nLabelMixin],
   data() {
     return {

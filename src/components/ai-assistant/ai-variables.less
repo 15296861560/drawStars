@@ -138,16 +138,15 @@
 
 // ---------- 共享 keyframes（Vue scoped 会自动重命名并同步引用） ----------
 
-// FAB 极光球呼吸（亮度 + 饱和度缓动，替代旧 hue-rotate）
+// FAB 极光球呼吸：仅保留 transform 缩放（GPU 合成层，不产生重绘）。
+// 原 filter: brightness/saturate 动画无限循环且全站常驻，会令元素逐帧重绘，已移除。
 @keyframes ai-orb-breathe {
   0%,
   100% {
     transform: scale(1);
-    filter: brightness(1) saturate(1);
   }
   50% {
     transform: scale(1.04);
-    filter: brightness(1.16) saturate(1.15);
   }
 }
 

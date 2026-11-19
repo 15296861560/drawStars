@@ -10,7 +10,8 @@ import installEcharts from '@/plugins/echarts'
 import installLeaflet from '@/plugins/leaflet'
 // @ts-ignore
 import i18n from '@/lang/index.js'
-import Particles from 'particles.vue3'
+// particles.vue3 已从全局注册移除：tsparticles 体积大且仅登录页使用，
+// 体积会被打进主启动包拖慢首屏；现已改为登录页内局部按需注册（login.vue）。
 // 自定义指令
 import installDirectives from '@/utils/directives'
 import { applySkipLoginSession, isSkipLoginMode } from '@/config/skip-login'
@@ -30,7 +31,6 @@ import * as _Vue from 'vue'
 export default (app: _Vue.App<Element>) => {
   app.use(router)
   app.use(i18n)
-  app.use(Particles)
 
   installStore(app)
   // Pinia 就绪后再拉高德 Key，避免 getActivePinia 报错
