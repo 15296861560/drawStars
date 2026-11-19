@@ -2,7 +2,7 @@
   <div class="manage-page asmt-list-page">
     <page-hero
       title="测评上架管理"
-      desc="问星广场选品：把已发布问卷包装为广场商品，四项上架校验前置（问卷 published / 类型注册 / 规则对应 / 展示信息）"
+      desc="问星广场选品：把已发布的问卷包装为广场商品，四项上架校验前置（问卷已发布 / 类型注册 / 规则对应 / 展示信息）"
     >
       <template #side>
         <span class="page-hero__pill">
@@ -444,7 +444,7 @@ async function save() {
 async function publishRow(row: AssessmentInfo) {
   const t = typeOf(row)
   const checklist = [
-    `① 问卷 ${row.surveyId} 需为已发布（published）态 —— 服务端校验`,
+    `① 关联问卷（编号 ${row.surveyId}）需为「已发布」状态 —— 服务端校验`,
     `② 类型 ${t?.fullName} 已在类型库注册 —— 通过`,
     `③ 计分规则与 ${t?.judgeModel} 判定模型对应 —— 服务端校验`,
     `④ 题数快照 ${row.questionNum} 题 > 0 —— 通过`

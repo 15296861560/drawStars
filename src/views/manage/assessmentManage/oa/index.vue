@@ -2,7 +2,7 @@
   <div class="manage-page asmt-oa-page">
     <page-hero
       title="公众号配置"
-      desc="公众号信息与引导位配置（assessment_oa_config 单行表），保存即生效，C 端缓存 ≤ 5 分钟"
+      desc="公众号信息与引导位配置（全局唯一一套），保存即生效，用户端缓存 ≤ 5 分钟"
     >
       <template #side>
         <span class="page-hero__pill">
@@ -136,7 +136,7 @@
             type="info"
             :closable="false"
             show-icon
-            :title="`引导位已关闭：C 端报告页 / 完成页 / 海报三处引导位全部隐藏（数据保留，重新打开立即恢复）；E06/E07 事件停止上报，其余埋点照常`"
+            :title="`引导位已关闭：报告页 / 完成页 / 海报三处引导位对用户全部隐藏（数据保留，重新打开立即恢复）；引导位曝光统计停止记录，其余数据统计照常`"
           />
 
           <div class="section-title">通用兜底话术（位置文案留空时回退）</div>

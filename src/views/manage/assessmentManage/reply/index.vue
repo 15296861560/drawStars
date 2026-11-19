@@ -2,8 +2,7 @@
   <div class="manage-page asmt-reply-page">
     <page-hero
       title="回复规则管理"
-      desc="assessment_reply_rules：关键词 / 欢迎语两类回复；文案与渠道一致（网络效应），绑定目标页需可访问
-（{link} 占位符自动替换为带渠道参数链接）"
+      desc="关键词 / 欢迎语两类自动回复规则；文案与渠道保持一致，绑定的目标页须可访问（{link} 占位符自动替换为带渠道参数的链接）"
     >
       <template #side>
         <span class="page-hero__pill">
@@ -38,7 +37,7 @@
           <template #prefix><el-icon><Search /></el-icon></template>
         </el-input>
         <span class="filter-tip">
-          「待同步」= 内容已变更尚未粘贴到公众号后台；pending 超 3 天自动高亮（4.5.4 看板口径）
+          「待同步」= 内容已变更尚未粘贴到公众号后台；待同步超 3 天自动高亮（4.5.4 看板口径）
         </span>
       </div>
     </el-card>
@@ -132,7 +131,7 @@
             </el-button>
             <el-button link type="primary" @click="openEdit(row)">编辑</el-button>
             <el-popconfirm
-              :title="`删除「${row.refId}」规则后需在公众号后台同步摘除自动回复，确认删除？`"
+              :title="`删除「${row.refId || sourceLabel(row)}」规则后需在公众号后台同步摘除自动回复，确认删除？`"
               confirm-button-text="删除"
               cancel-button-text="取消"
               @confirm="removeRow(row)"
@@ -158,7 +157,7 @@
         type="info"
         :closable="false"
         show-icon
-        title="文案与渠道一致（网络效应）：{link} 与绑定渠道的 tgt / shareCode 信息强一致；保存与标记同步前会校验渠道可访问性"
+        title="文案与渠道保持一致：{link} 替换出的链接与绑定渠道的目标页 / 分享码信息一致；保存与标记同步前会校验渠道可访问性"
       />
       <el-form ref="formRef" :model="form" :rules="formRules" label-width="100px">
         <el-form-item label="规则类型">
@@ -179,7 +178,7 @@
           <div class="form-tip">触发词全局唯一、互不重叠；已用 {{ parsedKeywords.length }}/10 个</div>
         </el-form-item>
         <el-form-item label="绑定渠道" prop="refId">
-          <el-select v-model="form.refId" placeholder="选择同来源渠道（refId）" style="width: 100%">
+          <el-select v-model="form.refId" placeholder="选择同来源的渠道" style="width: 100%">
             <el-option
               v-for="opt in channelOptions"
               :key="opt.value"
@@ -334,7 +333,7 @@ function bindState(rule: AssessmentReplyRule): { level: 'ok' | 'warn' | 'error';
     return { level: 'error', text: '未绑定渠道，{link} 无法带渠道参数（请编辑绑定）' }
   }
   if (!channel) {
-    return { level: 'error', text: `渠道 ${rule.refId || '—'} 不存在，{link} 失配` }
+    return { level: 'error', text: `绑定渠道「${rule.refId || sourceLabel(rule)}」不存在，{link} 无法正确替换` }
   }
   if (channel.status !== 1) {
     return { level: 'warn', text: '渠道已停用（文案暂不可达）' }
@@ -397,7 +396,7 @@ async function copyRule(rule: AssessmentReplyRule) {
     lines.push('【欢迎语规则】新关注后自动回复')
   }
   lines.push('【回复文案】', content)
-  lines.push(`【绑定渠道】${rule.source} · ${rule.refId || '—'}`)
+  lines.push(`【绑定渠道】${findBoundChannel(rule)?.name || rule.refId || '—'}`)
   const text = lines.join('\n')
   try {
     await navigator.clipboard.writeText(text)
@@ -478,7 +477,7 @@ const channelOptions = computed(() => {
     const valid = c.status === 1
     opts.push({
       value: c.refId || '',
-      label: `${c.name}${c.refId ? `（refId: ${c.refId}）` : '（无 refId）'}${inValidStatus ? ' · 目标未上架' : ''}${valid ? '' : ' · 已停用'}`,
+      label: `${c.name}${c.refId ? `（标识：${c.refId}）` : '（无标识）'}${inValidStatus ? ' · 目标未上架' : ''}${valid ? '' : ' · 已停用'}`,
       disabled: inValidStatus
     })
   }

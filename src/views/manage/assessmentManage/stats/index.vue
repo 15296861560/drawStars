@@ -2,7 +2,7 @@
   <div class="manage-page asmt-stats-page">
     <page-hero
       title="数据看板"
-      desc="E01–E09 埋点次日 01:00 聚合至 assessment_events_daily（T+1 非实时）；E10 follow_scan 为 v1.2+ 预留事件，本版不入看板"
+      desc="全部行为数据每日 01:00 汇总更新（T+1 非实时）；「关注引导扫码」为 v1.2+ 预留行为，本版暂不入看板"
     >
       <template #side>
         <el-radio-group v-model="days" size="small" @change="reload">
@@ -40,7 +40,7 @@
           <el-card shadow="never" class="funnel-card">
             <template #header>
               <div class="card-head">
-                <span>七级转化漏斗（L1 会话去重口径）</span>
+                <span>七级转化漏斗（会话去重口径）</span>
                 <span class="card-head-tip">相对上一级转化率</span>
               </div>
             </template>
@@ -58,12 +58,12 @@
                   <template v-if="i === 0"><span class="f-base">基准</span></template>
                   <template v-else-if="i === 2">
                     <el-tag size="small" type="primary" effect="plain">
-                      E02 点击→完成 {{ pct(step.rate) }}
+                      点击→完成 {{ pct(step.rate) }}
                     </el-tag>
                   </template>
                   <template v-else-if="i === 4">
                     <el-tag size="small" type="warning" effect="plain">
-                      E04 曝光→E05 {{ pct(step.rate) }}
+                      曝光→注册 {{ pct(step.rate) }}
                     </el-tag>
                   </template>
                   <template v-else>{{ pct(step.rate) }}</template>
@@ -71,17 +71,17 @@
               </div>
             </div>
             <div class="form-tip">
-              L1 = channel_visit 按「会话+来源+refId」三元组去重；「注册成功」按 isNewUser 计；「分享行为」= E08 海报 + E09 链接分享
+              渠道进入按「会话 × 来源 × 渠道标识」去重回合计；「注册成功」仅计首次注册的新访客；「分享行为」= 海报生成 + 链接分享
             </div>
           </el-card>
         </el-col>
 
         <el-col :xs="24" :lg="10">
           <el-card shadow="never" class="mb16">
-            <template #header>注册转化（E04 曝光 → E05 注册）</template>
+            <template #header>注册转化（曝光 → 注册成功）</template>
             <div class="reg-row">
               <div class="reg-item">
-                <div class="core-label">曝光 E04</div>
+                <div class="core-label">注册曝光</div>
                 <div class="reg-num">{{ fmt(register.showCount) }}</div>
               </div>
               <div class="reg-item">
@@ -105,15 +105,15 @@
               type="error"
               :closable="false"
               show-icon
-              :title="`注册率 ${pct(register.rate)} 触发红黄线（< ${pct(REGISTER_RATE_ALERT)}，REGISTER_RATE_ALERT）`"
+              :title="`注册率 ${pct(register.rate)} 已低于预警红线 ${pct(REGISTER_RATE_ALERT)}，请自查引导链路`"
             >
-              E06 / E07 引导需自检：① 公众号文风与测评名称是否存在歧义；② 关注后欢迎语是否误触发（频控 1 次 / 会话）；③ 缓存未更新最长 5 分钟
+              公众号引导注册链路需自检：① 公众号文风与测评名称是否存在歧义；② 关注后欢迎语是否误触发（频控 1 次 / 会话）；③ 缓存未更新最长 5 分钟
             </el-alert>
             <div v-else-if="register.showCount === 0" class="form-tip mt8">
-              当前窗口无 E04 注册曝光，注册率不计算；开启 OA 引导位（引导开关）后开始采集
+              当前时间范围暂无注册曝光，注册率不计算；开启公众号引导位后开始采集
             </div>
             <div v-else class="form-tip mt8">
-              注册率 ≥ 红线 {{ pct(REGISTER_RATE_ALERT) }}；分享页模板与 OA 引导位正常投放
+              注册率 ≥ 预警红线 {{ pct(REGISTER_RATE_ALERT) }}；分享页与公众号引导位均正常投放
             </div>
           </el-card>
 
@@ -149,8 +149,8 @@
       <el-card shadow="never" class="mb16" :body-style="{ padding: 0 }">
         <template #header>
           <div class="card-head">
-            <span>渠道透视（polling 明细，按 source+refId 采集）</span>
-            <span class="card-head-tip">E01 缺 refId 时归入 article 渠道</span>
+            <span>渠道透视（按来源 + 渠道标识采集明细）</span>
+            <span class="card-head-tip">无渠道标识的进入默认计入文章渠道</span>
           </div>
         </template>
         <el-table :data="overview?.channelPivot || []" empty-text="暂无渠道数据">
@@ -160,10 +160,10 @@
               {{ sourceLabel(row.source) }}
             </template>
           </el-table-column>
-          <el-table-column label="进入 E01 (人次)" prop="visits" align="right" width="130" />
-          <el-table-column label="完成 E03" prop="completes" align="right" width="110" />
-          <el-table-column label="注册 E05" prop="registers" align="right" width="110" />
-          <el-table-column label="海报 E08" prop="posters" align="right" width="110" />
+          <el-table-column label="进入（人次）" prop="visits" align="right" width="130" />
+          <el-table-column label="完成测评" prop="completes" align="right" width="110" />
+          <el-table-column label="注册成功" prop="registers" align="right" width="110" />
+          <el-table-column label="海报生成" prop="posters" align="right" width="110" />
           <el-table-column label="点击→完成率" align="right" width="130">
             <template #default="{ row }">
               <span :class="{ 'rate-zero': row.completeRate === 0 }">{{ pct(row.completeRate) }}</span>
@@ -176,14 +176,14 @@
       <el-row :gutter="16" class="mb16">
         <el-col :xs="24" :lg="14">
           <el-card shadow="never">
-            <template #header>事件趋势（E01 进入 / E03 完成 / E05 注册成功）</template>
+            <template #header>行为趋势（进入 / 完成测评 / 注册成功）</template>
             <div v-if="hasTrend" ref="trendRef" class="trend-chart"></div>
             <el-empty v-else description="暂无趋势数据（口径：次日 01:00 聚合，T+1 更新）" />
           </el-card>
         </el-col>
         <el-col :xs="24" :lg="10">
           <el-card shadow="never" :body-style="{ padding: 0 }">
-            <template #header>测评贡献 Top 10（点击 visit=曝光 + 完成）</template>
+            <template #header>测评贡献 Top 10（按点击曝光与完成量）</template>
             <el-table :data="overview?.topSurveys || []" empty-text="暂无完成数据">
               <el-table-column label="#" width="50" align="center">
                 <template #default="{ $index }">
@@ -213,19 +213,19 @@
 
       <!-- ⑤ 口径说明 -->
       <el-card shadow="never">
-        <template #header>指标口径（E01–E10）</template>
+        <template #header>统计口径说明</template>
         <el-collapse>
-          <el-collapse-item title="埋点事件与聚合口径" name="1">
+          <el-collapse-item title="行为指标与数据汇总口径" name="1">
             <ul class="schema-list">
-              <li>E01 channel_visit 渠道进入：链接携带 source+refId 参数进入，人次 + 会话去重（L1）双口径</li>
-              <li>E02 plaza_click 广场列表点击：单测评卡片点击（列表点击→完成率为核心转化指标）</li>
-              <li>E03 response_complete 测评完成：按 userId 去重后计完成人数</li>
-              <li>E04 register_show 注册曝光：分享页模板曝光</li>
-              <li>E05 register_success 注册成功：isNewUser 判定蹭量与自然新增</li>
-              <li>E06 guide_complete_show / E07 guide_result_show 引导位曝光（关闭开关后停止上报）</li>
-              <li>E08 poster_create 海报生成 / E09 share_click 分享点击：转发链路</li>
-              <li>E10 follow_scan 关注引导扫码：v1.2+ 预留事件，本版不入看板</li>
-              <li>全部事件次日 01:00（服务器本地时区）聚合至 assessment_events_daily；看板为 T+1 非实时数据</li>
+              <li>渠道进入：用户经投放链接（自动附带来源与渠道标识参数）进入，同时统计人次与会话去重两种口径</li>
+              <li>广场列表点击：单张测评卡片点击（列表点击→完成率为核心转化指标）</li>
+              <li>测评完成：按用户去重后计完成人数</li>
+              <li>注册曝光：分享页注册模块展示</li>
+              <li>注册成功：区分新注册访客与老访客回流，便于识别自然新增</li>
+              <li>引导位曝光：完成页与结果页引导展示（关闭引导开关后停止统计）</li>
+              <li>分享行为：海报生成与分享点击（转发链路）</li>
+              <li>关注引导扫码：v1.2+ 预留行为，本版暂不入看板</li>
+              <li>全部数据每日 01:00（服务器本地时区）汇总；看板为 T+1 非实时数据</li>
             </ul>
           </el-collapse-item>
         </el-collapse>
@@ -282,9 +282,9 @@ const coreCards = computed(() => {
   const f = funnelSteps.value
   const step = (i: number) => f[i]?.value ?? 0
   return [
-    { label: '渠道进入 E01（去重）', value: fmt(step(0)), sub: 'L1 会话×来源×refId', cls: '' },
-    { label: '广场点击 E02', value: fmt(step(1)), sub: '卡片点击次数', cls: '' },
-    { label: '测评完成 E03', value: fmt(step(2)), sub: '完成人数', cls: '' },
+    { label: '渠道进入（去重）', value: fmt(step(0)), sub: '会话 × 来源 × 标识去重', cls: '' },
+    { label: '广场点击', value: fmt(step(1)), sub: '卡片点击次数', cls: '' },
+    { label: '测评完成', value: fmt(step(2)), sub: '完成人数', cls: '' },
     {
       label: '注册成功（新用户）',
       value: fmt(register.value.newCount),
@@ -346,7 +346,7 @@ function renderTrend() {
   chart.setOption({
     grid: { left: 44, right: 16, top: 36, bottom: 28 },
     tooltip: { trigger: 'axis' },
-    legend: { data: ['E01 进入', 'E03 完成', 'E05 注册成功'], top: 4, textStyle: { fontSize: 12 } },
+    legend: { data: ['进入', '完成测评', '注册成功'], top: 4, textStyle: { fontSize: 12 } },
     xAxis: {
       type: 'category',
       data: trend.map(t => t.date.slice(5)),
@@ -355,7 +355,7 @@ function renderTrend() {
     yAxis: { type: 'value', minInterval: 1, axisLabel: { fontSize: 11 } },
     series: [
       {
-        name: 'E01 进入',
+        name: '进入',
         type: 'line',
         smooth: true,
         symbolSize: 6,
@@ -363,7 +363,7 @@ function renderTrend() {
         itemStyle: { color: '#7c6ff0' }
       },
       {
-        name: 'E03 完成',
+        name: '完成测评',
         type: 'line',
         smooth: true,
         symbolSize: 6,
@@ -371,7 +371,7 @@ function renderTrend() {
         itemStyle: { color: '#34b78f' }
       },
       {
-        name: 'E05 注册成功',
+        name: '注册成功',
         type: 'line',
         smooth: true,
         symbolSize: 6,

@@ -2,7 +2,7 @@
   <div class="manage-page asmt-channel-page">
     <page-hero
       title="渠道入口管理"
-      desc="assessment_channel 渠道表：5 种原生来源系统预置不可删，仅可改挂载目标与启用状态；新建仅限自定义渠道"
+      desc="5 种原生来源渠道由系统预置、不可删除，仅可改挂载目标与启用状态；新建仅限自定义渠道"
     >
       <template #side>
         <span class="page-hero__pill">
@@ -32,7 +32,7 @@
             </div>
             <div class="nc-usage">{{ nc.usage }}</div>
             <div class="nc-meta">
-              <span class="nc-k">refId</span>
+              <span class="nc-k">渠道标识</span>
               <code class="nc-ref">{{ nc.row?.refId || '—' }}</code>
             </div>
             <div class="nc-meta">
@@ -83,12 +83,12 @@
                 v-for="nc in nativeList"
                 :key="nc.source"
                 :value="nc.source"
-                :label="`${nc.label}（${nc.source}）`"
+                :label="nc.label"
               />
             </el-select>
             <el-input
               v-model="filterKeyword"
-              placeholder="搜渠道名 / refId"
+              placeholder="搜渠道名 / 渠道标识"
               clearable
               style="width: 200px"
             >
@@ -117,7 +117,7 @@
             <el-tag size="small" effect="plain">{{ sourceLabel(row.source) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="refId" prop="refId" width="140">
+        <el-table-column label="渠道标识" prop="refId" width="140">
           <template #default="{ row }">
             <code class="nc-ref">{{ row.refId || '—' }}</code>
           </template>
@@ -125,7 +125,7 @@
         <el-table-column label="挂载目标页" min-width="180">
           <template #default="{ row }">
             <div>{{ targetText(row) }}</div>
-            <div v-if="row.targetType === 'fill'" class="cc-sub">shareCode: {{ row.shareCode }}</div>
+            <div v-if="row.targetType === 'fill'" class="cc-sub">分享码：{{ row.shareCode }}</div>
           </template>
         </el-table-column>
         <el-table-column label="链接" min-width="200">
@@ -152,7 +152,7 @@
             <el-button link type="primary" @click="showQr(row)">二维码</el-button>
             <el-button link type="primary" @click="openEdit(row, false)">编辑</el-button>
             <el-popconfirm
-              :title="`删除后软删除并保留历史数据；若线上仍有已散播入口，需摘除或复建同 refId 渠道。确认删除「${row.name}」？`"
+              :title="`删除后软删除并保留历史数据；若线上仍有已散播入口，需摘除或复建同渠道标识的渠道。确认删除「${row.name}」？`"
               confirm-button-text="删除"
               cancel-button-text="取消"
               @confirm="removeRow(row)"
@@ -179,7 +179,7 @@
         type="info"
         :closable="false"
         show-icon
-        title="原生预置渠道：名称 / 来源 / refId 固定不可改，删除已禁用；仅可修改挂载目标页与启用状态"
+        title="原生预置渠道：名称、来源、渠道标识均固定不可改，删除已禁用；仅可修改挂载目标页与启用状态"
       />
       <el-form ref="formRef" :model="form" :rules="formRules" label-width="110px">
         <el-form-item label="渠道名" prop="name">
@@ -198,18 +198,18 @@
                   v-for="nc in nativeList"
                   :key="nc.source"
                   :value="nc.source"
-                  :label="`${nc.icon} ${nc.label}（${nc.source}）`"
+                  :label="`${nc.icon} ${nc.label}`"
                 />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="refId" prop="refId">
+            <el-form-item label="渠道标识" prop="refId">
               <el-input
                 v-model.trim="form.refId"
                 :disabled="dialogMode === 'preset'"
                 maxlength="32"
-                placeholder="文章批次 / 触发词 / 菜单 key，可空"
+                placeholder="文章批次 / 触发词 / 菜单按钮标识，可空"
               />
             </el-form-item>
           </el-col>
@@ -230,12 +230,12 @@
               v-for="info in publishedInfos"
               :key="info.id"
               :value="info.id"
-              :label="`${info.title}（${info.shareCode}）`"
+              :label="`${info.title}（分享码 ${info.shareCode}）`"
             />
           </el-select>
           <div v-if="staleTargetTip" class="form-tip warn">{{ staleTargetTip }}</div>
           <div v-else class="form-tip">
-            保存后自动携带 info 对应问卷 ID 与公开分享码（groupBy 渠道下钻依据）
+            保存后链接自动携带对应问卷与公开分享码（数据看板按渠道下钻的依据）
           </div>
         </el-form-item>
         <el-form-item label="启用状态">
@@ -309,10 +309,10 @@ const NATIVE_LIST: Array<{
   usage: string
 }> = [
   { source: 'article', label: '文章', icon: '📝', usage: '运营刊文软性引导，底部「阅读原文」挂测评 / 广场' },
-  { source: 'keyword', label: '关键词', icon: '💬', usage: '对话关键词触发自动回复，refId 存触发词（如「测评」）' },
+  { source: 'keyword', label: '关键词', icon: '💬', usage: '对话关键词触发自动回复，渠道标识记录触发词（如「测评」）' },
   { source: 'welcome', label: '欢迎语', icon: '👋', usage: '被关注自动欢迎语，配合「回复规则管理」使用' },
-  { source: 'menu', label: '菜单', icon: '📋', usage: '自定义菜单直达入口，refId 存菜单 key 保持唯一' },
-  { source: 'share', label: '分享', icon: '🔗', usage: '海报 / 链接分享回流页（ref 可空）' }
+  { source: 'menu', label: '菜单', icon: '📋', usage: '自定义菜单直达入口，渠道标识记录菜单按钮标识保持唯一' },
+  { source: 'share', label: '分享', icon: '🔗', usage: '海报 / 链接分享回流页（渠道标识可留空）' }
 ]
 
 const nativeRows = ref<Record<string, AssessmentChannel | null>>({})
@@ -486,7 +486,7 @@ async function copyText(text: string, tip = '已复制到剪贴板') {
 function copyLink(row: AssessmentChannel | null) {
   const link = linkOf(row)
   if (!link) return
-  copyText(link, '渠道链接已复制（含 source / refId 埋点参数）')
+  copyText(link, '渠道链接已复制（已自动附带来源与渠道归因参数，供数据看板统计）')
 }
 
 const qrVisible = ref(false)
@@ -633,7 +633,7 @@ async function save() {
 async function removeRow(row: AssessmentChannel) {
   try {
     await deleteChannel(row.id)
-    ElMessage.success(`「${row.name}」已删除（软删除，同 refId 可复建）`)
+    ElMessage.success(`「${row.name}」已删除（软删除，同渠道标识可复建）`)
     await refreshNativeRows()
   } catch (e: any) {
     ElMessage.error(e?.message || '删除失败')
