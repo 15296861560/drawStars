@@ -58,8 +58,9 @@
           查看完整报告
         </button>
 
-        <!-- 完成页引导位 OaFollowGuide(position=complete) -->
-        <OaFollowGuide position="complete" />
+        <!-- 完成页引导位 OaFollowGuide(position=complete)：mt-6 与金色按钮保持间距，
+             引导卡不渲染时该间距随之消失，由注册 CTA 的 mt-4 兜底 -->
+        <OaFollowGuide position="complete" class="mt-6" />
 
         <!-- 游客注册 CTA（4.3.2：完成态显式触点，与浮条并存） -->
         <button
