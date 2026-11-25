@@ -29,11 +29,13 @@ export const userInfoStore = defineStore(
       roles: [] as string[]
     }) as UserInfo
     const token = ref('')
+    const refreshToken = ref('')
     const getUserInfo = computed(() => userInfo)
     const getUserId = computed(() => userInfo.userId)
     const getUserName = computed(() => userInfo.name || userInfo.accountAlias)
     const getAvatar = computed(() => userInfo.avatar)
     const getToken = computed(() => token)
+    const getRefreshToken = computed(() => refreshToken)
 
     function changeUserInfo(newVal: Partial<UserInfo>) {
       if (newVal.name !== undefined) userInfo.name = String(newVal.name || '')
@@ -57,6 +59,11 @@ export const userInfoStore = defineStore(
       token.value = newVal
     }
 
+    function updateAuthTokens(newToken: string, newRefreshToken: string) {
+      token.value = newToken
+      refreshToken.value = newRefreshToken
+    }
+
     function clearUserInfo() {
       userInfo.name = ''
       userInfo.userId = 0
@@ -67,17 +74,21 @@ export const userInfoStore = defineStore(
       userInfo.level = 1
       userInfo.roles = []
       token.value = ''
+      refreshToken.value = ''
     }
 
     return {
       userInfo,
       token,
+      refreshToken,
       getUserInfo,
       getUserId,
       getUserName,
       getAvatar,
       getToken,
+      getRefreshToken,
       updateToken,
+      updateAuthTokens,
       changeUserInfo,
       clearUserInfo
     }

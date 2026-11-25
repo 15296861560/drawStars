@@ -64,33 +64,110 @@ requests.interceptors.request.use(config => {
   }
   return config
 })
+/** 登录态失效统一处理：清空本地凭证并跳登录（已在登录页则不重复跳转） */
+const handleTokenFail = () => {
+  if (import.meta.env.VITE_SKIP_LOGIN === 'true') return
+  const userInfo = getUserInfo()
+  userInfo.clearUserInfo()
+  if (router.currentRoute && router.currentRoute.value) {
+    if (router.currentRoute.value.path !== '/login') {
+      router.push({ path: '/login' })
+    }
+  } else {
+    router.push({ path: '/login' })
+  }
+}
+
+let refreshPromise = null
+
+/** 并发 401 共享同一次轮换，避免旧 refresh token 被后续请求判定为重放 */
+const refreshAuthTokens = () => {
+  if (refreshPromise) return refreshPromise
+  const userInfo = getUserInfo()
+  const currentRefreshToken = userInfo.getRefreshToken.value
+  const url = getApiInfo().getURL.value + '/loginApi/refreshToken'
+  refreshPromise = axios
+    .post(
+      url,
+      { refreshToken: currentRefreshToken },
+      { timeout: 30000 }
+    )
+    .then(res => {
+      const body = res.data || {}
+      const data = body.data || {}
+      if (!body.status || !data.token || !data.refreshToken) {
+        const error = new Error(body.msg || '刷新登录态失败')
+        error.response = res
+        throw error
+      }
+      userInfo.updateAuthTokens(data.token, data.refreshToken)
+      return data
+    })
+    .catch(err => {
+      const status = err && err.response && err.response.status
+      const code =
+        err && err.response && err.response.data && err.response.data.code
+      if (status === 401 || code === 'TOKEN-FAIL') {
+        handleTokenFail()
+      }
+      return Promise.reject(err)
+    })
+    .finally(() => {
+      refreshPromise = null
+    })
+  return refreshPromise
+}
+
+const retryAuthorizedRequest = config => {
+  const userInfo = getUserInfo()
+  if (!config || config._retry || !userInfo.getRefreshToken.value) {
+    handleTokenFail()
+    return null
+  }
+  config._retry = true
+  return refreshAuthTokens().then(data => {
+    config.headers = config.headers || {}
+    config.headers.accessToken = data.token
+    return requests(config)
+  })
+}
+
+const logoutAuthSession = () => {
+  const refreshToken = getUserInfo().getRefreshToken.value
+  if (!refreshToken) return Promise.resolve()
+  const url = getApiInfo().getURL.value + '/loginApi/logout'
+  return axios.post(url, { refreshToken }, { timeout: 30000 })
+}
+
 requests.interceptors.response.use(
   response => {
-    // console.log('回复拦截器', response)
     trackRequestEnd()
-    if (
-      response.data &&
-      response.data.code &&
-      response.data.code === 'TOKEN-FAIL'
-    ) {
-      if (import.meta.env.VITE_SKIP_LOGIN !== 'true') {
-        router.push({
-          path: '/login'
-        })
-      }
+    if (response.data && response.data.code === 'TOKEN-FAIL') {
+      return retryAuthorizedRequest(response.config) || response
     }
     return response
   },
   err => {
-    // console.log('报错拦截器',err)
     trackRequestEnd()
+    const status = err && err.response && err.response.status
+    const code =
+      err && err.response && err.response.data && err.response.data.code
+    if (status === 401 || code === 'TOKEN-FAIL') {
+      return retryAuthorizedRequest(err.config) || Promise.reject(err)
+    }
     return Promise.reject(err)
   }
 )
 
 const rejectWithBizMessage = function (err, fallback) {
   const bizMsg = getRequestErrorMessage(err, fallback)
-  showTips('error', bizMsg)
+  const status = err && err.response && err.response.status
+  const code =
+    err && err.response && err.response.data && err.response.data.code
+  // 登录失效已由拦截器统一跳转，避免再叠加报错弹窗
+  if (status !== 401 && code !== 'TOKEN-FAIL') {
+    showTips('error', bizMsg)
+  }
   const next = new Error(bizMsg)
   next.response = err && err.response
   next.code = err && err.code
@@ -179,4 +256,10 @@ const $axiosGet = function (params = {}, methodURL = '', options = {}) {
   })
 }
 
-export { $axios, $axiosGet, requests, getRequestErrorMessage }
+export {
+  $axios,
+  $axiosGet,
+  requests,
+  getRequestErrorMessage,
+  logoutAuthSession
+}

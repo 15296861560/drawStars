@@ -117,6 +117,7 @@ import errorLog from '@/components/part/errorLog.vue'
 import TopHomeMenu from '@/components/layout/TopHomeMenu.vue'
 import { layoutSettingsStore } from '@/stores/layout-settings'
 import { notifyStore } from '@/stores/notify'
+import { logoutAuthSession } from '@/assets/js/axios-api/axios-config'
 
 const settingInfo = settingInfoStore()
 const userInfo = userInfoStore()
@@ -209,7 +210,7 @@ export default {
         path: toPath
       })
     },
-    logout() {
+    async logout() {
       if (isSkipLoginMode()) {
         applySkipLoginSession()
         this.$message({
@@ -218,20 +219,26 @@ export default {
         })
         return
       }
-      if (userInfo.clearUserInfo) {
-        userInfo.clearUserInfo()
-      } else {
-        userInfo.changeUserInfo({})
-        userInfo.updateToken('')
-      }
-      import('@/stores/permission').then(({ permissionStore }) => {
-        permissionStore().clearPermission()
-      })
-      notifyInfo.clear()
+      try {
+        await logoutAuthSession()
+      } catch {
+        // 撤销失败不阻断本地退出
+      } finally {
+        if (userInfo.clearUserInfo) {
+          userInfo.clearUserInfo()
+        } else {
+          userInfo.changeUserInfo({})
+          userInfo.updateToken('')
+        }
+        import('@/stores/permission').then(({ permissionStore }) => {
+          permissionStore().clearPermission()
+        })
+        notifyInfo.clear()
 
-      this.$router.push({
-        path: '/login'
-      })
+        this.$router.push({
+          path: '/login'
+        })
+      }
     },
     toFirstPage() {
       this.$router

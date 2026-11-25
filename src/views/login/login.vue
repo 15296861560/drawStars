@@ -402,7 +402,12 @@ export default {
         accountAlias: userInfoData.accountAlias,
         level: userInfoData.level
       })
-      userInfo.updateToken(userInfoData.token)
+      if (userInfoData.token) {
+        userInfo.updateAuthTokens(
+          userInfoData.token,
+          userInfoData.refreshToken || ''
+        )
+      }
 
       import('@/stores/permission').then(({ permissionStore }) => {
         permissionStore()
